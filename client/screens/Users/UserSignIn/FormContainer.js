@@ -1,25 +1,42 @@
-
-import { reduxForm, SubmissionError } from 'redux-form';
-import { push } from 'react-router-redux';
-import { connect } from 'react-redux';
+import {
+  reduxForm,
+  SubmissionError
+} from 'redux-form';
+import {
+  push
+} from 'react-router-redux';
+import {
+  connect
+} from 'react-redux';
 import errors from 'feathers-errors';
 
-import { config } from '../../../utils/config';
-import { feathersAuthentication }
-  from '../../../feathers';
+import {
+  config
+} from '../../../utils/config';
+import {
+  feathersAuthentication
+}
+from '../../../feathers';
 import usersClientValidations from '../../../../common/helpers/usersClientValidations';
 import Form from './Form';
 
-const handleSubmit = (values, dispatch) => new Promise((resolve, reject) => {
-  dispatch(feathersAuthentication.authenticate(
-    { type: 'local', email: values.email, password: values.password }
-  ))
-    .then(() => resolve())
-    .catch(err => reject(err instanceof errors.BadRequest
-      ? new SubmissionError(Object.assign({}, err.errors, { _error: err.message || '' }))
-      : err
-    ));
-});
+const handleSubmit = (values, dispatch) => {
+  return new Promise((resolve, reject) => {
+    dispatch(feathersAuthentication.authenticate({
+        strategy: 'local',
+        type: 'local',
+        email: values.email,
+        password: values.password
+      }))
+      .then(() => resolve())
+      .catch(err => reject(err instanceof errors.BadRequest ?
+        new SubmissionError(Object.assign({}, err.errors, {
+          _error: err.message || ''
+        })) :
+        err
+      ));
+  })
+};
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isSignedIn,

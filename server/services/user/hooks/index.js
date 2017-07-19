@@ -3,7 +3,11 @@
 /* global require */
 
 const hooks = require('feathers-hooks-common');
+const { callbackToPromise, validate } = require('feathers-hooks-common');
 const auth = require('feathers-authentication').hooks;
+const local = require('feathers-authentication-local');
+const { restrictToOwner } = require('feathers-authentication-hooks');
+const populate = require('feathers-populate-hook');
 const verifyHooks = require('feathers-service-verify-reset').hooks;
 const validateSchema = require('feathers-hooks-validate-joi');
 const config = require('config');
@@ -22,43 +26,33 @@ exports.before = (app) => {
   return {
     all: [],
     find: [
-      auth.verifyToken(),
-      auth.populateUser(),
-      auth.restrictToAuthenticated(),
+      auth.authenticate(['jwt', 'local']),
     ],
     get: [
-      auth.verifyToken(),
-      auth.populateUser(),
-      auth.restrictToAuthenticated(),
-      auth.restrictToOwner({ ownerField: idName }),
+      auth.authenticate(['jwt', 'local']),
+      restrictToOwner({ ownerField: idName })
     ],
     create: [
       validateSchema.form(schemas.signup, schemas.options), // schema validation
-      hooks.validateSync(client.signup),  // redo redux-form client validation
-      hooks.validateUsingPromise(values => verifyReset.create( // redo redux-form async
+      validate(client.signup),  // redo redux-form client validation
+      hooks.validate(values => verifyReset.create( // redo redux-form async
         { action: 'unique', value: { username: values.username, email: values.email } }
       )),
-      hooks.validateUsingCallback(server.signup, { app }), // server validation
+      hooks.validate(callbackToPromise(server.signup, { app })), // server validation
       hooks.remove('confirmPassword'),
       verifyHooks.addVerification(), // set email addr verification info
-      auth.hashPassword(),
+      local.hooks.hashPassword()
     ],
     update: [
-      auth.verifyToken(),
-      auth.populateUser(),
-      auth.restrictToAuthenticated(),
-      auth.restrictToOwner({ ownerField: idName }),
+      auth.authenticate(['jwt', 'local']),
+      restrictToOwner({ ownerField: idName }),
     ],
     patch: [ // client route /user/rolechange patches roles. todo might check its an admin acct
-      auth.verifyToken(),
-      auth.populateUser(),
-      auth.restrictToAuthenticated(),
+      auth.authenticate(['jwt', 'local'])
     ],
     remove: [
-      auth.verifyToken(),
-      auth.populateUser(),
-      auth.restrictToAuthenticated(),
-      auth.restrictToOwner({ ownerField: idName }),
+      auth.authenticate(['jwt', 'local']),
+      restrictToOwner({ ownerField: idName }),
     ],
   };
 };

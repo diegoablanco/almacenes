@@ -5,7 +5,7 @@ var clientConfig = {}; // eslint-disable-line no-var
 
 // Load client config. Async.
 module.exports.configLoad = (store, feathersServices) =>
-  store.dispatch(feathersServices.config.get())
+  store.dispatch(feathersServices.config.get(1))
     .then(res => {
       if (!localStorage.deviceId) {
         localStorage.deviceId = randomString(30);

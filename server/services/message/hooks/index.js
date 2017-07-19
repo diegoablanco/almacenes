@@ -4,9 +4,7 @@ const verifyHooks = require('feathers-service-verify-reset').hooks;
 
 exports.before = {
   all: [
-    auth.verifyToken(),
-    auth.populateUser(),
-    auth.restrictToAuthenticated(),
+    auth.authenticate['jwt', 'local'],
     verifyHooks.restrictToVerified(),
   ],
   find: [],

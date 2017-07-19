@@ -37,9 +37,7 @@ module.exports = {
   },
   // unused so far
   auth: {
-    token: {
-      secret: undefined,
-    },
+    secret: undefined,
     local: {},
   },
   client: {

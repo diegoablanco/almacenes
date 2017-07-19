@@ -34,8 +34,7 @@ module.exports = function () { // 'function' needed as we use 'this'
   app.use('/logs', {
     before: {
       create: [
-        tryHook(auth.verifyToken()),
-        tryHook(auth.populateUser()),
+        tryHook(auth.authenticate['jwt', 'local']),
       ],
     },
     create({ level, msg, payload }, params) {
