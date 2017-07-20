@@ -18,6 +18,7 @@ const schemas = require('../../../validations/schemas');
 const server = require('../../../validations/usersServerValidations');
 
 const idName = config.database.idName;
+const app = this;
 
 exports.before = (app) => {
   const verifyReset = app.service('/verifyreset');
@@ -35,7 +36,7 @@ exports.before = (app) => {
     create: [
       validateSchema.form(schemas.signup, schemas.options), // schema validation
       validate(client.signup),  // redo redux-form client validation
-      hooks.validate(values => verifyReset.create(
+      hooks.validate(values => app.services.authManagement.create(
         { action: 'checkUnique', value: { username: values.username, email: values.email } }
       )),
       hooks.validate(callbackToPromise(server.signup, { app })), // server validation

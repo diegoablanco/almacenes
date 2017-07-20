@@ -10,8 +10,8 @@ import Form from './Form';
 import usersClientValidations from '../../../../common/helpers/usersClientValidations';
 
 const asyncValidate = (values, dispatch) => new Promise((resolve, reject) => {
-  dispatch(feathersServices.verifyReset.create({
-    action: 'unique',
+  dispatch(feathersServices.authManagement.create({
+    action: 'checkUnique',
     value: { username: values.username, email: values.email },
     meta: { noErrMsg: true },
   }))

@@ -5,12 +5,12 @@ import { feathersServices, feathersAuthentication } from '../../../feathers';
 import Component from './Component'; // eslint-disable-line import/no-unresolved
 
 const mapStateToProps = (state) => ({
-  user: state.verifyReset.data || {},
+  user: state.authManagement.data || {},
   signUpEmailTokenStatus: (() => {
-    const vr = state.verifyReset;
-    if (!vr.isFinished) { return 'checking'; }
-    if (!vr.isError) { return 'verified'; }
-    const vrErr = vr.isError.errors;
+    const {authManagement} = state;
+    if (!authManagement.isFinished) { return 'checking'; }
+    if (!authManagement.isError) { return 'verified'; }
+    const vrErr = authManagement.isError.errors;
     if (!vrErr || !vrErr.$className) { return 'general'; }
     return vrErr.$className;
   })(),
@@ -18,7 +18,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   validateSignUpEmailToken: (emailToken) => {
-    dispatch(feathersServices.verifyReset.create({ action: 'verify', value: emailToken }))
+    dispatch(feathersServices.authManagement.create({ action: 'verifySignupLong', value: emailToken }))
       .catch(() => {}); // Nav bar will display error status
   },
   resetMe: () => {
