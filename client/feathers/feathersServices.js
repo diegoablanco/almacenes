@@ -7,8 +7,7 @@ export const mapServicePathsToNames = {
   messages: 'messages',
   logs: 'logs',
   config: 'config',
-  // Do not change the following. Hardcoded path for custom service: human name for further use.
-  '/verifyReset/:action/:value': 'verifyReset',
+  authManagement: 'authManagement'
 };
 
 // See feathers-reduxify-services::getServicesStatus. Order highest priority msg first.

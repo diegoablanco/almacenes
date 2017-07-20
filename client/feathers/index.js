@@ -22,8 +22,7 @@ export const feathersAuthentication = reduxifyAuthentication(app,
 );
 
 // Configure services
-const verifyResetRoute = '/verifyReset/:action/:value'; // must match what server uses
-const verifyReset = app.service(verifyResetRoute); // eslint-disable-line no-unused-vars
+const verifyReset = app.service('/verifyReset'); // eslint-disable-line no-unused-vars
 
 // Reduxify feathers services
 export const feathersServices = reduxifyServices(app, mapServicePathsToNames);

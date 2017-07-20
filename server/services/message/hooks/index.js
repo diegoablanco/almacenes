@@ -1,11 +1,11 @@
 
 const auth = require('feathers-authentication').hooks;
-const verifyHooks = require('feathers-service-verify-reset').hooks;
+const verifyHooks = require('feathers-authentication-management').hooks;
 
 exports.before = {
   all: [
     auth.authenticate['jwt', 'local'],
-    verifyHooks.restrictToVerified(),
+    verifyHooks.isVerified(),
   ],
   find: [],
   get: [],

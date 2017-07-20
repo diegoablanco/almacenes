@@ -9,7 +9,7 @@ export default {
   auth: feathersAuthentication.reducer,
   users: feathersServices.users.reducer,
   messages: feathersServices.messages.reducer,
-  verifyReset: feathersServices.verifyReset.reducer,
+  authManagement: feathersServices.authManagement.reducer,
   form: reduxFormReducer, // reducers required by redux-form
 };
 

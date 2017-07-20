@@ -6,7 +6,6 @@ const config = require('config');
 const auth = require('feathers-authentication').hooks;
 
 const authentication = require('./authentication');
-const verifyReset = require('./verifyReset');
 const user = require('./user');
 const message = require('./message');
 const tryHook = require('./hooks/tryHook');
@@ -19,7 +18,6 @@ module.exports = function () { // 'function' needed as we use 'this'
   const app = this;
 
   app.configure(authentication);
-  app.configure(verifyReset);
   app.configure(user);
   app.configure(message);
 

@@ -1792,13 +1792,19 @@ debug@2.6.0:
   dependencies:
     ms "0.7.2"
 
+debug@2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.3.tgz#0f7eb8c30965ec08c72accfa0130c8b79984141d"
+  dependencies:
+    ms "0.7.2"
+
 debug@2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.7.tgz#92bad1f6d05bbb6bba22cca88bcd0ec894c2861e"
   dependencies:
     ms "2.0.0"
 
-debug@2.6.8, debug@^2.1.1, debug@^2.2.0, debug@^2.3.1, debug@^2.3.2, debug@^2.6.0, debug@^2.6.6, debug@^2.6.8, debug@~2.6.4, debug@~2.6.6:
+debug@2.6.8, debug@^2.1.1, debug@^2.2.0, debug@^2.3.1, debug@^2.3.2, debug@^2.6.0, debug@^2.6.4, debug@^2.6.6, debug@^2.6.8, debug@~2.6.4, debug@~2.6.6:
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
   dependencies:
@@ -2543,7 +2549,7 @@ feathers-authentication-jwt@^0.3.2:
     lodash.pick "^4.4.0"
     passport-jwt "^2.2.1"
 
-feathers-authentication-local@^0.4.3:
+feathers-authentication-local@^0.4.0, feathers-authentication-local@^0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/feathers-authentication-local/-/feathers-authentication-local-0.4.3.tgz#8ff73c812f007c67b27e972f555ed2d38b41bc7b"
   dependencies:
@@ -2556,7 +2562,17 @@ feathers-authentication-local@^0.4.3:
     lodash.pick "^4.4.0"
     passport-local "^1.0.0"
 
-feathers-authentication@0.7.12, feathers-authentication@^0.7.11:
+feathers-authentication-management@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/feathers-authentication-management/-/feathers-authentication-management-0.4.2.tgz#0cd4379e3e2859a6442f6f69cd598cc52eade1c8"
+  dependencies:
+    bcryptjs "^2.3.0"
+    debug "^2.6.4"
+    feathers-authentication-local "^0.4.0"
+    feathers-errors "^2.7.1"
+    feathers-hooks-common "^3.0.0"
+
+feathers-authentication@0.7.12:
   version "0.7.12"
   resolved "https://registry.yarnpkg.com/feathers-authentication/-/feathers-authentication-0.7.12.tgz#858e9ec3b91b8404be0e55c3f040f8489f1066a9"
   dependencies:
@@ -2629,13 +2645,13 @@ feathers-errors@2.5.0:
   dependencies:
     debug "^2.2.0"
 
-feathers-errors@^2.0.1, feathers-errors@^2.2.0, feathers-errors@^2.4.0, feathers-errors@^2.5.0, feathers-errors@^2.8.2:
+feathers-errors@^2.0.1, feathers-errors@^2.2.0, feathers-errors@^2.4.0, feathers-errors@^2.5.0, feathers-errors@^2.7.1, feathers-errors@^2.8.2:
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/feathers-errors/-/feathers-errors-2.8.2.tgz#081485d8ffe3a6ae2711db8615bc581532e7d5dc"
   dependencies:
     debug "^2.2.0"
 
-feathers-hooks-common@^1.6.1, feathers-hooks-common@^1.7.2:
+feathers-hooks-common@^1.6.1:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-1.7.2.tgz#d779423eefa76d2506eb63523c2e8230f6c15723"
   dependencies:
@@ -2652,7 +2668,7 @@ feathers-hooks-common@^2.0.3:
     feathers-errors "^2.4.0"
     traverse "0.6.6"
 
-feathers-hooks-common@^3.5.5:
+feathers-hooks-common@^3.0.0, feathers-hooks-common@^3.5.5:
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-3.5.5.tgz#40f0f61c3411d3c4a413bace0f31237a1a32d041"
   dependencies:
@@ -2738,6 +2754,13 @@ feathers-reduxify-authentication@^0.1.1:
     debug "^2.2.0"
     object.assign "^4.0.4"
 
+feathers-reduxify-services@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/feathers-reduxify-services/-/feathers-reduxify-services-1.1.0.tgz#a7bf9b7d6220b602b4f594b72422d0b36b172b0a"
+  dependencies:
+    debug "2.6.3"
+    redux-actions "2.0.2"
+
 feathers-rest@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/feathers-rest/-/feathers-rest-1.6.0.tgz#2ff4eb74445882c4f8901841b436cff7ad3de971"
@@ -2755,18 +2778,6 @@ feathers-rest@^1.8.0:
     feathers-commons "^0.8.0"
     feathers-errors "^2.0.1"
     qs "^6.4.0"
-
-feathers-service-verify-reset@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/feathers-service-verify-reset/-/feathers-service-verify-reset-1.0.6.tgz#ddd30f8973c6d41935ffe7c55cdc73fa45b2b8c8"
-  dependencies:
-    bcryptjs "^2.3.0"
-    crypto "^0.0.3"
-    debug "^2.2.0"
-    feathers-authentication "^0.7.11"
-    feathers-errors "^2.4.0"
-    feathers-hooks-common "^1.7.2"
-    object.assign "^4.0.4"
 
 feathers-socket-commons@^2.0.0, feathers-socket-commons@^2.3.1:
   version "2.4.0"
@@ -5300,6 +5311,15 @@ reduce-function-call@^1.0.1:
 reduce-reducers@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/reduce-reducers/-/reduce-reducers-0.1.2.tgz#fa1b4718bc5292a71ddd1e5d839c9bea9770f14b"
+
+redux-actions@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/redux-actions/-/redux-actions-2.0.2.tgz#49b2d9511c240a96cb2c0ca27cb15d016faecec0"
+  dependencies:
+    invariant "^2.2.1"
+    lodash "^4.13.1"
+    lodash-es "^4.17.4"
+    reduce-reducers "^0.1.0"
 
 redux-actions@^0.11.0:
   version "0.11.0"

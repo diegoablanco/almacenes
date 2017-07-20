@@ -8,7 +8,7 @@ const auth = require('feathers-authentication').hooks;
 const local = require('feathers-authentication-local');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const populate = require('feathers-populate-hook');
-const verifyHooks = require('feathers-service-verify-reset').hooks;
+const verifyHooks = require('feathers-authentication-management').hooks;
 const validateSchema = require('feathers-hooks-validate-joi');
 const config = require('config');
 
@@ -20,7 +20,7 @@ const server = require('../../../validations/usersServerValidations');
 const idName = config.database.idName;
 
 exports.before = (app) => {
-  const verifyReset = app.service('/verifyReset/:action/:value');
+  const verifyReset = app.service('/verifyreset');
   const users = app.service('/users'); // eslint-disable-line no-unused-vars
 
   return {
@@ -35,8 +35,8 @@ exports.before = (app) => {
     create: [
       validateSchema.form(schemas.signup, schemas.options), // schema validation
       validate(client.signup),  // redo redux-form client validation
-      hooks.validate(values => verifyReset.create( // redo redux-form async
-        { action: 'unique', value: { username: values.username, email: values.email } }
+      hooks.validate(values => verifyReset.create(
+        { action: 'checkUnique', value: { username: values.username, email: values.email } }
       )),
       hooks.validate(callbackToPromise(server.signup, { app })), // server validation
       hooks.remove('confirmPassword'),

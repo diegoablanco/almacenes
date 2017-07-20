@@ -1,14 +1,27 @@
-
 import makeDebug from 'debug';
-import { browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import {
+  browserHistory
+} from 'react-router';
+import {
+  syncHistoryWithStore
+} from 'react-router-redux';
 
 
 import configureStore from './store';
-import { feathersServices, feathersAuthentication } from './feathers'; // does feathers init
-import { setClientValidationsConfig } from '../common/helpers/usersClientValidations';
-import { configLoad } from './utils/config';
-import { initLogger, logger } from './utils/loggerRedux';
+import {
+  feathersServices,
+  feathersAuthentication
+} from './feathers'; // does feathers init
+import {
+  setClientValidationsConfig
+} from '../common/helpers/usersClientValidations';
+import {
+  configLoad
+} from './utils/config';
+import {
+  initLogger,
+  logger
+} from './utils/loggerRedux';
 import './utils/react-tap-event';
 
 // __processEnvNODE_ENV__ is replaced during the webpack build process
@@ -28,8 +41,10 @@ if (nodeEnv === 'production') {
 }
 
 // Sign in with the JWT currently in localStorage
-if (localStorage['feathers-jwt']) {
-  store.dispatch(feathersAuthentication.authenticate())
+const token = localStorage['feathers-jwt']
+if (token) {
+  store.dispatch(feathersAuthentication.authenticate({ strategy: 'jwt',
+        type: 'local', accessToken: token }))
     .catch(err => {
       console.log('authenticate catch', err); // eslint-disable-line no-console
       return err;
@@ -52,7 +67,7 @@ configLoad(store, feathersServices)
 
     router(store, history);
   });
-  // you cannot place a catch here because of the require inside then()
+// you cannot place a catch here because of the require inside then()
 
 // Handle uncaught exceptions
 function setupOnUncaughtExceptions() { // eslint-disable-line no-unused-vars
@@ -69,10 +84,14 @@ function setupOnUncaughtExceptions() { // eslint-disable-line no-unused-vars
     // We cannot depend on the logger running properly. Try to log to server directly.
     if (store && store.dispatch && feathersServices && feathersServices.logs) {
       store.dispatch(feathersServices.logs.create({
-        level: 'error',
-        msg: 'Uncaught exception',
-        error: { message, stack, deviceId: localStorage.deviceId },
-      }))
+          level: 'error',
+          msg: 'Uncaught exception',
+          error: {
+            message,
+            stack,
+            deviceId: localStorage.deviceId
+          },
+        }))
         .catch(err => console.log( // eslint-disable-line no-console
           'onUncaughtExceptions error while logging:\n', err
         ));
