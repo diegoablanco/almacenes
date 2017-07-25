@@ -3,13 +3,12 @@ import {
   SubmissionError
 } from 'redux-form';
 import {
-  push
+  replace
 } from 'react-router-redux';
 import {
   connect
 } from 'react-redux';
 import errors from 'feathers-errors';
-
 import {
   config
 } from '../../../utils/config';
@@ -47,7 +46,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(feathersAuthentication.logout());
   },
   handleRedirect: () => {
-    dispatch(push(ownProps.redirectTo || config.client.defaultRoute));
+    ownProps.history.replace(ownProps.redirectTo || config.client.defaultRoute);
   },
 });
 

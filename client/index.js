@@ -1,12 +1,5 @@
 import makeDebug from 'debug';
-import {
-  browserHistory
-} from 'react-router';
-import {
-  syncHistoryWithStore
-} from 'react-router-redux';
-
-
+import createHistory from 'history/createBrowserHistory'
 import configureStore from './store';
 import {
   feathersServices,
@@ -32,8 +25,8 @@ debug(`client starting. Built for ${nodeEnv} env.`);
 console.log(`..This bundle was built for the ${nodeEnv} env.`); // eslint-disable-line no-console
 
 // Initialize Redux
+const history = createHistory()
 const store = configureStore();
-const history = syncHistoryWithStore(browserHistory, store);
 
 // Handle uncaught exceptions.
 if (nodeEnv === 'production') {

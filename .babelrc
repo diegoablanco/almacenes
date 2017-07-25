@@ -3,7 +3,8 @@
   "plugins": ["transform-runtime"],
   "env": {
     "development": {
-      "sourceMaps": "dev"
+      "sourceMaps": "dev",
+      "retainLines": true
     },
     "production": {
       "plugins": [
