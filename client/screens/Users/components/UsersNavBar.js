@@ -2,22 +2,10 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router-dom';
 
-import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-
 import MessageBar from '../../components/MessageBar';
 
 export const UsersNavBar = ({ label, screen, message }) => (
   <div>
-    <AppBar
-      title={<span>Authentication - {label}</span>}
-      iconElementLeft={<div />}
-      iconElementRight={makeBarButtons(screen)}
-    />
     <MessageBar message={message} />
   </div>
 );

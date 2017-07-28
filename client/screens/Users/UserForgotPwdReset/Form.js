@@ -3,8 +3,6 @@
 
 import React, { PropTypes } from 'react';
 import { Field } from 'redux-form';
-import { TextField } from 'redux-form-material-ui';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import style from '../components/button.css';
 

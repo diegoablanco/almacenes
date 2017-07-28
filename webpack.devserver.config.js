@@ -22,6 +22,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, './public/dist'),
     filename: 'bundle.js',
+    publicPath: 'http://localhost:8080/'
   },
   module: {
     loaders: [
@@ -45,7 +46,7 @@ module.exports = {
         include: /client/,
         loaders: [
           'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=' +
+          'css-loader?modules&importLoaders=1&localIdentName=' +
           '[name]__[local]___[hash:base64:5]',
           'postcss-loader',
         ],
@@ -55,7 +56,27 @@ module.exports = {
         test: /\.css$/,
         exclude: /client/,
         loader: 'style!css',
+      },      
+      {
+          test: /\.(png|gif)$/,
+          loader: 'url-loader?limit=1024&name=[name]-[hash:8].[ext]!image-webpack-loader'
       },
+      {
+          test: /\.jpg$/,
+          loader: 'file-loader'
+      },
+      {
+          test: /\.less$/, // import css from 'foo.less';
+          use: [
+              'style-loader',
+              'css-loader',
+              'less-loader'
+          ]
+      },
+      {
+          test: /\.(ico|ttf|eot|svg|woff|woff2?)(\?.*)?$/,
+          loader: 'file-loader'
+      }
     ],
   },
   resolve: {

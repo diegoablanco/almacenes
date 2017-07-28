@@ -1,20 +1,20 @@
 
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
 import { getFeathersStatus } from '../../feathers';
+import { Message } from 'semantic-ui-react'
 
-const MessageBar = ({ message, servicesRootState }) => {
-  const barMessage = message || getFeathersStatus(servicesRootState).message;
+class MessageBar extends Component {
+  static propTypes = {
+    message: PropTypes.string, // optional message to display
+    servicesRootState: PropTypes.object.isRequired, // parent of all services' states
+  }
+  render(){
+    const barMessage = this.props.message || getFeathersStatus(this.props.servicesRootState).message;
 
-  return !barMessage
-    ? <div />
-    : <RaisedButton label={barMessage} disabled fullWidth />;
-};
+    return !barMessage && <Message content={barMessage} />;
 
-MessageBar.propTypes = {
-  message: PropTypes.string, // optional message to display
-  servicesRootState: PropTypes.object.isRequired, // parent of all services' states
+  }
 };
 
 const mapStateToProps = (state, ownProps) => ({

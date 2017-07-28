@@ -16,6 +16,7 @@ import {
   logger
 } from './utils/loggerRedux';
 import './utils/react-tap-event';
+import 'semantic-ui-css/semantic.css';
 
 // __processEnvNODE_ENV__ is replaced during the webpack build process
 const nodeEnv = __processEnvNODE_ENV__; // eslint-disable-line no-undef, camelcase

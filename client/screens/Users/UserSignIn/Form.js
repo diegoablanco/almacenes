@@ -1,12 +1,25 @@
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { TextField } from 'redux-form-material-ui';
-import RaisedButton from 'material-ui/RaisedButton';
+import { Button, Form, Grid } from 'semantic-ui-react'
+import classnames from 'classnames'
 
 import style from '../components/button.css';
 
-class Form extends Component {
+class SignInForm extends Component {
+  static propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired,
+    handleLogout: PropTypes.func.isRequired,
+    handleRedirect: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    pristine: PropTypes.bool.isRequired,
+    invalid: PropTypes.bool.isRequired,
+    reset: PropTypes.func.isRequired,
+    submitting: PropTypes.bool.isRequired,
+  }
+
   componentWillMount() {
     this.props.handleLogout();
   }
@@ -17,56 +30,42 @@ class Form extends Component {
     }
   }
 
+  renderField = (props) => {
+      const { input, label, type, meta: { touched, error }, ...rest } = props;
+      return (
+        <Form.Field className={classnames({ error: touched && error })} style={{ marginBottom: '1em' }}>
+          <label>{label}</label>
+          <Form.Input {...input} {...rest} placeholder={label} type={type} />
+          {touched && error && <span className="error">{error.message}</span>}
+        </Form.Field>
+      )
+  }
+    
   render() {
     const { handleSubmit, pristine, reset, submitting, invalid } = this.props;
 
-    const a = (
-      <form onSubmit={handleSubmit}>
-
-        <Field name="email"
-          component={TextField}
-          props={{ floatingLabelText: 'Email', hintText: 'Your email address.', autoFocus: true }}
-        />
-        <br />
-
-        <Field name="password"
-          component={TextField}
-          props={{ floatingLabelText: 'Password', hintText: 'Your password.', type: 'password' }}
-        />
-        <br />
-
-        <div>
-          <RaisedButton label={submitting ? 'Signing In...' : 'Sign In'}
-            disabled={invalid || submitting}
-            className={style.button}
-            type="submit"
-            primary
-          />
-          <RaisedButton label="Clear Values"
-            disabled={pristine || submitting}
-            className={style.button}
-            onTouchTap={reset}
-            secondary
-          />
-        </div>
-
-      </form>
-    );
-
-    return a;
+    return (
+      <Grid verticalAlign="middle" centered textAlign="center">
+        <Grid.Column tablet={10} mobile={16} computer={6}>
+          <Form onSubmit={handleSubmit} size='large'>
+            <Field name="email" 
+                type="text" 
+                label="Email"
+                icon='user'
+                iconPosition='left' 
+                component={this.renderField}/>        
+            <Field name="password" 
+                label="Contraseña"  
+                type="password" 
+                icon='lock'
+                iconPosition='left' 
+                component={this.renderField}/>
+            <Button primary type='submit' size='large' disabled={pristine || submitting} loading={submitting}>Entrar</Button>
+          </Form>
+        </Grid.Column>
+      </Grid>
+    )
   }
 }
 
-Form.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  handleLogout: PropTypes.func.isRequired,
-  handleRedirect: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  pristine: PropTypes.bool.isRequired,
-  invalid: PropTypes.bool.isRequired,
-  reset: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
-};
-
-export default Form;
+export default SignInForm;

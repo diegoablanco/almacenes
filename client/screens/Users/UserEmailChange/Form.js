@@ -1,12 +1,11 @@
 
 import React, { PropTypes } from 'react';
 import { Field } from 'redux-form';
-import { TextField } from 'redux-form-material-ui';
-import RaisedButton from 'material-ui/RaisedButton';
+import { Button, Form } from 'semantic-ui-react'
 
 import style from '../components/button.css';
 
-const Form = props => {
+const EmailChangeForm = props => {
   const { handleSubmit, pristine, reset, submitting, invalid } = props;
 
   return (
@@ -35,13 +34,13 @@ const Form = props => {
       <br />
 
       <div>
-        <RaisedButton label={submitting ? 'Changing email...' : 'Change email'}
+        <Button label={submitting ? 'Changing email...' : 'Change email'}
           disabled={pristine || invalid || submitting}
           className={style.button}
           type="submit"
           primary
         />
-        <RaisedButton label="Clear Values"
+        <Button label="Clear Values"
           disabled={pristine || submitting}
           className={style.button}
           onTouchTap={reset}
@@ -53,7 +52,7 @@ const Form = props => {
   );
 };
 
-Form.propTypes = {
+EmailChangeForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
@@ -62,4 +61,4 @@ Form.propTypes = {
   submitting: PropTypes.bool.isRequired,
 };
 
-export default Form;
+export default EmailChangeForm;

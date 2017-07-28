@@ -1,8 +1,6 @@
 
 import React, { Component, PropTypes } from 'react';
 import { Field, FieldArray } from 'redux-form';
-import { TextField } from 'redux-form-material-ui';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import style from '../components/button.css';
 import styleTable from './style.css';

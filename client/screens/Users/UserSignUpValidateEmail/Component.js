@@ -3,7 +3,6 @@
 
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import { config } from '../../../utils/config';
 import style from './style.css';

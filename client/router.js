@@ -8,7 +8,6 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
 import { routerReducer, routerActions, routerMiddleware, push } from 'react-router-redux'
 import { UserAuthWrapper } from 'redux-auth-wrapper';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import { config } from './utils/config';
 
@@ -63,31 +62,31 @@ const UserIsAdmin = connectedRouterRedirect({
 // Routing
 export default function (store, history) {
   ReactDOM.render(
-    <MuiThemeProvider>
       <Provider store={store}>
         <Router history={history}>
-            <Switch>
-              <Redirect exact path="/" to={config.client.defaultRoute} />
-              <Route path={config.client.defaultRoute} component={UserIsAuthenticated(App)} />
-              <Route path="/user/signin" component={UserSignIn} />
-              <Route path="/user/signup" component={UserSignUp} />
-              <Route path="/user/signupsendemail" component={UserSignUpSendEmail} />
-              <Route path="/user/verify/:token" component={UserSignUpValidateEmail} />
-              <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />
-              <Route path="/user/forgot/:token" component={UserForgotPwdReset} />
-              <Route path="/user/passwordchange"
-                component={UserIsAuthenticated(UserPasswordChange)}
-              />
-              <Route path="/user/emailchange" component={UserIsAuthenticated(UserEmailChange)} />
-              <Route path="/user/profilechange" component={UserIsAuthenticated(UserProfileChange)} />
-              <Route path="/user/roleschange"
-                component={UserIsAuthenticated(UserIsAdmin(UserRolesChange))}
-              />
-              <Route path="/user/profile" component={UserIsAuthenticated(UserProfile)} />
-            </Switch>
+            <App>
+              <Switch>
+                <Redirect exact path="/" to={config.client.defaultRoute} />
+                <Route path={config.client.defaultRoute} component={UserIsAuthenticated(App)} />
+                <Route path="/user/signin" component={UserSignIn} />
+                <Route path="/user/signup" component={UserSignUp} />
+                <Route path="/user/signupsendemail" component={UserSignUpSendEmail} />
+                <Route path="/user/verify/:token" component={UserSignUpValidateEmail} />
+                <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />
+                <Route path="/user/forgot/:token" component={UserForgotPwdReset} />
+                <Route path="/user/passwordchange"
+                  component={UserIsAuthenticated(UserPasswordChange)}
+                />
+                <Route path="/user/emailchange" component={UserIsAuthenticated(UserEmailChange)} />
+                <Route path="/user/profilechange" component={UserIsAuthenticated(UserProfileChange)} />
+                <Route path="/user/roleschange"
+                  component={UserIsAuthenticated(UserIsAdmin(UserRolesChange))}
+                />
+                <Route path="/user/profile" component={UserIsAuthenticated(UserProfile)} />
+              </Switch>
+            </App>
         </Router>
-      </Provider>
-    </MuiThemeProvider>,
+      </Provider>,
     document.getElementById('root')
   );
 }
