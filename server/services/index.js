@@ -8,18 +8,21 @@ const auth = require('feathers-authentication').hooks;
 const authentication = require('./authentication');
 const user = require('./user');
 const message = require('./message');
+const customers = require('./customers/customers.service.js');
+
 const tryHook = require('./hooks/tryHook');
 const logger = require('../utils/loggerProduction');
 
 debug('Required');
 
-module.exports = function () { // 'function' needed as we use 'this'
+module.exports = function () {
   debug('Config');
   const app = this;
 
   app.configure(authentication);
   app.configure(user);
   app.configure(message);
+  app.configure(customers);
 
   // get client config file
   app.use('/config', {

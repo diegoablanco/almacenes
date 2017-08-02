@@ -8,15 +8,15 @@ class AppNavBar extends Component{
   LoggedInMenuItems = () => {
     const {user} = this.props
     return([       
-      <Menu.Item>
+      <Menu.Item key="customers">
         <Link to="customers">Clientes</Link>
       </Menu.Item>,
-      <Menu.Item as='a'>Page 2</Menu.Item>,
-      <Menu.Menu position='right'>
+      <Menu.Item as='a' key="page1">Page 11</Menu.Item>,
+      <Menu.Menu position='right' key="profile">
         <Dropdown item text={user.username} >
           <Dropdown.Menu>
             <Dropdown.Item>
-              <Link to="users/signin">Salir</Link>
+              <Link to="user/signin">Salir</Link>
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

@@ -1,5 +1,9 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import makeDebug from 'debug';
 import createHistory from 'history/createBrowserHistory'
+import { Provider } from 'react-redux';
 import configureStore from './store';
 import {
   feathersServices,
@@ -16,7 +20,7 @@ import {
   logger
 } from './utils/loggerRedux';
 import './utils/react-tap-event';
-import 'semantic-ui-css/semantic.css';
+import 'semantic-ui-less/semantic.less';
 
 // __processEnvNODE_ENV__ is replaced during the webpack build process
 const nodeEnv = __processEnvNODE_ENV__; // eslint-disable-line no-undef, camelcase
@@ -57,9 +61,24 @@ configLoad(store, feathersServices)
 
     // Setup React Router which starts up the rest of the app.
     // A hack. Lemme know if you have a better idea.
-    const router = require('./router').default; // eslint-disable-line global-require
+    const AppRouter = require('./router').default; // eslint-disable-line global-require
 
-    router(store, history);
+    
+    const render = Component => {
+      ReactDOM.render(
+        <Provider store={store}>
+          <Router history={history}>
+            <Component />
+          </Router>
+        </Provider>,
+        document.getElementById('root')
+      )
+    }
+    render(AppRouter)
+
+    if (module.hot) {
+      module.hot.accept('./router', () => { render(require('./router').default) })
+    }
   });
 // you cannot place a catch here because of the require inside then()
 

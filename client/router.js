@@ -1,10 +1,7 @@
-
+import React, { Component } from 'react';
 /* eslint new-cap: 0 */
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { AppContainer } from 'react-hot-loader'
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
 import { routerReducer, routerActions, routerMiddleware, push } from 'react-router-redux'
 import { UserAuthWrapper } from 'redux-auth-wrapper';
@@ -60,33 +57,32 @@ const UserIsAdmin = connectedRouterRedirect({
 });
 
 // Routing
-export default function (store, history) {
-  ReactDOM.render(
-      <Provider store={store}>
-        <Router history={history}>
-            <App>
-              <Switch>
-                <Redirect exact path="/" to={config.client.defaultRoute} />
-                <Route path={config.client.defaultRoute} component={UserIsAuthenticated(App)} />
-                <Route path="/user/signin" component={UserSignIn} />
-                <Route path="/user/signup" component={UserSignUp} />
-                <Route path="/user/signupsendemail" component={UserSignUpSendEmail} />
-                <Route path="/user/verify/:token" component={UserSignUpValidateEmail} />
-                <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />
-                <Route path="/user/forgot/:token" component={UserForgotPwdReset} />
-                <Route path="/user/passwordchange"
-                  component={UserIsAuthenticated(UserPasswordChange)}
-                />
-                <Route path="/user/emailchange" component={UserIsAuthenticated(UserEmailChange)} />
-                <Route path="/user/profilechange" component={UserIsAuthenticated(UserProfileChange)} />
-                <Route path="/user/roleschange"
-                  component={UserIsAuthenticated(UserIsAdmin(UserRolesChange))}
-                />
-                <Route path="/user/profile" component={UserIsAuthenticated(UserProfile)} />
-              </Switch>
-            </App>
-        </Router>
-      </Provider>,
-    document.getElementById('root')
-  );
+export default class AppRouter extends Component {
+  render(){
+    return (
+      <AppContainer>
+                <App>
+                  <Switch>
+                    <Redirect exact path="/" to={config.client.defaultRoute} />
+                    <Route path={config.client.defaultRoute} component={UserIsAuthenticated(App)} />
+                    <Route path="/user/signin" component={UserSignIn} />
+                    <Route path="/user/signup" component={UserSignUp} />
+                    <Route path="/user/signupsendemail" component={UserSignUpSendEmail} />
+                    <Route path="/user/verify/:token" component={UserSignUpValidateEmail} />
+                    <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />
+                    <Route path="/user/forgot/:token" component={UserForgotPwdReset} />
+                    <Route path="/user/passwordchange"
+                      component={UserIsAuthenticated(UserPasswordChange)}
+                    />
+                    <Route path="/user/emailchange" component={UserIsAuthenticated(UserEmailChange)} />
+                    <Route path="/user/profilechange" component={UserIsAuthenticated(UserProfileChange)} />
+                    <Route path="/user/roleschange"
+                      component={UserIsAuthenticated(UserIsAdmin(UserRolesChange))}
+                    />
+                    <Route path="/user/profile" component={UserIsAuthenticated(UserProfile)} />
+                  </Switch>
+                </App>
+      </AppContainer>
+      )
+    }
 }

@@ -1,6 +1,6 @@
 {
-  "presets": ["es2015", "stage-0", "react"],
-  "plugins": ["transform-runtime"],
+  "presets": [["es2015", {"modules": false}], "stage-0", "react"],
+  "plugins": ["react-hot-loader/babel"],
   "env": {
     "development": {
       "sourceMaps": "dev",
