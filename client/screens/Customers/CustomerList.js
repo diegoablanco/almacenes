@@ -7,7 +7,7 @@ export default class CustomerList extends Component{
         this.props.getList()
     }
     render(){
-        const { customers } = this.props
+        const { customers: { queryResult } } = this.props
         return(
             <Table striped>            
                 <Table.Header>
@@ -18,13 +18,13 @@ export default class CustomerList extends Component{
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {customers.map(customer => {
-                        <Table.Row>
+                    { queryResult && queryResult.map(customer => (
+                        <Table.Row key={customer._id}>
                             <Table.Cell>{customer.name}</Table.Cell>
                             <Table.Cell>{customer.email}</Table.Cell>
                             <Table.Cell>{customer.phone}</Table.Cell>
                         </Table.Row>
-                    })}
+                    ))}
                 </Table.Body>
             </Table>
         )

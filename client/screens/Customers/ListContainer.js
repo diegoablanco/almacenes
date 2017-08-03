@@ -1,33 +1,23 @@
 import { connect } from 'react-redux';
+import { feathersServices } from '../../feathers';
 import CustomerList from './CustomerList'
 
-const loadCustomers = (startCustomerName, isGte) => {
+const loadCustomers = () => {
   const query = {
-    name: { [isGte ? '$gte' : '$gt']: startCustomerName },
     $sort: { name: 1 },
     $limit: 10,
-    $select: ['id', '_id', 'username', 'roles'],
+    $select: ['_id', 'name', 'email', 'phone'],
   };
 
   return feathersServices.customers.find({ query });
 };
 
-const mapStateToProps = (state, ownProps) => {
-  const queryResult = state.customers.queryResult || {};
-
-  initialValues = {
-    filter: getFormValue(state, 'filter') || '',
-    customers: queryResult.data || [],
-  };
-
-  return {
-    initialValues,
-  };
-
-}
+const mapStateToProps = (state, ownProps) => ({
+    customers: state.customers
+})
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getList: () => {
-    dispatch(loadCustomers(initialValues.filter, true))
+    dispatch(loadCustomers())
   }
 })
 

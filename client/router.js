@@ -22,6 +22,8 @@ import UserProfile from './screens/Users/UserProfile';
 import UserSignInPending from './screens/Users/UserSignInPending';
 import App from './screens/App';
 
+import Customers from './screens/Customers';
+
 // Authentication Higher Order Components to wrap route components.
 const UserIsAuthenticated = connectedRouterRedirect({
   // extract user data from state
@@ -80,6 +82,7 @@ export default class AppRouter extends Component {
                       component={UserIsAuthenticated(UserIsAdmin(UserRolesChange))}
                     />
                     <Route path="/user/profile" component={UserIsAuthenticated(UserProfile)} />
+                    <Route path="/customers" component={UserIsAuthenticated(Customers)} />
                   </Switch>
                 </App>
       </AppContainer>

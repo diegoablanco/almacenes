@@ -11,5 +11,6 @@ export default {
   messages: feathersServices.messages.reducer,
   authManagement: feathersServices.authManagement.reducer,
   form: reduxFormReducer, // reducers required by redux-form
+  customers: feathersServices.customers.reducer,
 };
 
