@@ -7652,6 +7652,16 @@ react@^15.4.2:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
+reactabular-table@^8.9.0:
+  version "8.9.0"
+  resolved "https://registry.yarnpkg.com/reactabular-table/-/reactabular-table-8.9.0.tgz#46f6cef639cd9bd4b2baf1f14e2686fb2b35e284"
+  dependencies:
+    classnames "^2.2.5"
+
+reactabular@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/reactabular/-/reactabular-8.3.0.tgz#4622473f0725a356ca93769e6828381aa9d068a0"
+
 read-all-stream@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/read-all-stream/-/read-all-stream-3.1.0.tgz#35c3e177f2078ef789ee4bfafa4373074eaef4fa"

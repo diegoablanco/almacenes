@@ -98,6 +98,7 @@
     "react-router-redux": "^4.0.8",
     "react-simple-input": "^0.2.1",
     "react-tap-event-plugin": "^2.0.1",
+    "reactabular-table": "^8.9.0",
     "redux": "^3.6.0",
     "redux-actions": "^0.11.0",
     "redux-promise-middleware": "^4.0.0",
