@@ -1,40 +1,37 @@
 import React, {Component} from 'react'
-import { Link } from 'react-router-dom'
+import { Input, Menu, Button, Modal, Header, Icon } from 'semantic-ui-react'
 import * as Table from 'reactabular-table';
+import {createColumns} from '../../utils/reactabularHelpers'
 
 export default class CustomerList extends Component{    
-    columns = [
-        {
-            property: 'name',
-            header: {
-                label: 'Nombre'
+    columns = createColumns(['name', 'Nombre'], ['email', 'E-mail'], ['phone', 'Teléfono'])
+    getActionColumns (){
+        const {editHandler, deleteHandler} = this.props
+        return [
+            {
+                property: "_id",
+                cell:{
+                    props: { style: {collapsing: true} },
+                    formatters: [(id) => (<Button.Group>
+                        <Button icon="write" onClick={() => editHandler(id)} />
+                        <Button icon="delete" onClick={() => deleteHandler(id)} />
+                    </Button.Group>)]
+                }
             }
-        },
-        {
-            property: 'email',
-            header: {
-                label: 'E-mail'
-            }
-        },
-        {
-            property: 'phone',
-            header: {
-                label: 'Teléfono'
-            }
-        }
-    ]
-    componentDidMount(){
-        this.props.getList()
+        ]
     }
     render(){
-        const { customers: { queryResult } } = this.props
+        const { queryResult } = this.props
+        const columns = [...this.getActionColumns(), ...this.columns]
         return(
-            <Table.Provider
-                className="ui striped table"
-                columns={this.columns} >
-                <Table.Header />
-                <Table.Body rows={queryResult || []} rowKey="_id" />
-            </Table.Provider>
+            <div>
+                <Table.Provider
+                    className="ui striped table"
+                    columns={columns} >
+                    <Table.Header />
+                    <Table.Body rows={queryResult || []} rowKey="_id" />
+                </Table.Provider>
+            </div>
         )
     }
 }

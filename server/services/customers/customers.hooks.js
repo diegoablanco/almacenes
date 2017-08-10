@@ -1,4 +1,9 @@
 const auth = require('feathers-authentication').hooks;
+const Ajv = require('ajv')
+const commonHooks = require('feathers-hooks-common');
+const { validateSchema, setCreatedAt, setUpdatedAt } = commonHooks;
+const schema = require('../../../common/validation/customer.json')
+const errorReducer = require('../../helpers/errorReducer')
 
 module.exports = {
   before: {
@@ -7,7 +12,7 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [validateSchema(schema, Ajv, {addNewError: errorReducer}), setCreatedAt()],
     update: [],
     patch: [],
     remove: []

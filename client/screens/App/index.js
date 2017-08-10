@@ -11,7 +11,7 @@ export default class App extends Component{
     return (
       <Container>
         <AppNavBar label="App" screen="app/main" history={this.props.history} />
-        <Container style={{ marginTop: '7em' }}>
+        <Container className="main-container">
           {children}
         </Container>
       </Container>

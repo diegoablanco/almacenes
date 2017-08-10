@@ -1,8 +1,9 @@
-
 import { routerReducer } from 'react-router-redux';
 import { reducer as reduxFormReducer } from 'redux-form';
-
-import { feathersServices, feathersAuthentication } from './feathers';
+import { combineReducers } from 'redux'
+import { feathersServices, feathersAuthentication } from '../feathers';
+import customersPage from './customers'
+import messageBar from './messageBar'
 
 export default {
   routing: routerReducer,
@@ -12,5 +13,9 @@ export default {
   authManagement: feathersServices.authManagement.reducer,
   form: reduxFormReducer, // reducers required by redux-form
   customers: feathersServices.customers.reducer,
+  ui: combineReducers({
+    customers: customersPage,
+    messageBar
+  })
 };
 

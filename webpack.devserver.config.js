@@ -5,6 +5,7 @@ const path = require('path');
 const RewriteImportPlugin = require("less-plugin-rewrite-import")
 const ROOT_DIR = path.resolve(__dirname);
 const NODE_MODULES_DIR = path.resolve(__dirname, 'node_modules');
+const WebpackBundleSizeAnalyzerPlugin = require('webpack-bundle-size-analyzer').WebpackBundleSizeAnalyzerPlugin
 
 // ********** Note require('config') is not used here. Any params must be set in process.env *******
 var reactDomLibPath = path.join(__dirname, "./node_modules/react-dom/lib");
@@ -82,7 +83,7 @@ module.exports = {
                     paths: {
                       '../../theme.config':  __dirname + '/client/semantic-ui/theme.config',
                     },
-                  }),
+                  })
                 ],
               }
           }]
@@ -109,5 +110,6 @@ module.exports = {
       'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV) }, // used by React, etc?
       __processEnvNODE_ENV__: JSON.stringify(process.env.NODE_ENV), // used by us
     }),
+    new WebpackBundleSizeAnalyzerPlugin('./webpack-report.txt')
   ],
 };

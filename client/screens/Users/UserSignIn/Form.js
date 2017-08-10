@@ -1,9 +1,9 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Button, Form, Grid } from 'semantic-ui-react'
 import classnames from 'classnames'
+import { renderField } from '../../../utils/formHelpers'
 
 import style from '../components/button.css';
 
@@ -29,17 +29,6 @@ class SignInForm extends Component {
       this.props.handleRedirect();
     }
   }
-
-  renderField = (props) => {
-      const { input, label, type, meta: { touched, error }, ...rest } = props;
-      return (
-        <Form.Field className={classnames({ error: touched && error })} style={{ marginBottom: '1em' }}>
-          <label>{label}</label>
-          <Form.Input {...input} {...rest} placeholder={label} type={type} />
-          {touched && error && <span className="error">{error.message}</span>}
-        </Form.Field>
-      )
-  }
     
   render() {
     const { handleSubmit, pristine, reset, submitting, invalid } = this.props;
@@ -53,13 +42,13 @@ class SignInForm extends Component {
                 label="Email"
                 icon='user'
                 iconPosition='left' 
-                component={this.renderField}/>        
+                component={renderField}/>        
             <Field name="password" 
                 label="Contraseña"  
                 type="password" 
                 icon='lock'
                 iconPosition='left' 
-                component={this.renderField}/>
+                component={renderField}/>
             <Button primary type='submit' size='large' disabled={pristine || submitting} loading={submitting}>Entrar</Button>
           </Form>
         </Grid.Column>

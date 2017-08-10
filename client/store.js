@@ -1,8 +1,8 @@
 
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 
-import reducers from './reducers';
 import middleware from './middleware';
+import reducers from './reducers/index';
 
 export default function configureStore(initialState) {
   return createStore(
