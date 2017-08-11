@@ -3,26 +3,53 @@ import { connect } from 'react-redux';
 import { feathersServices } from '../../feathers';
 import ToolbarContainer from './ToolbarContainer.js';
 import MessageBar from '../../common/MessageBar/MessageBar'
+import ConfirmModal from '../../common/ConfirmModal'
 import CustomerList from './CustomerList'
 import CustomerFormModal from './CustomerFormModal'
 import { hideModal, showModal } from '../../actions/customers'
+import { entityDeleted } from '../../actions/messageBar'
 
 import CustomerForm, {formName} from './CustomerFormContainer'
 
-class Screen extends Component{  
+class Screen extends Component{
+  state = {
+    confirmModalOptions:{
+      show: false,
+      onCancel: () => this.setState({ confirmModalOptions: {...this.state.confirmModalOptions, show: false }})
+    }
+  }
+
   componentDidMount(){
       this.props.getList()
   }
+
   onEdit = (id) => {
     const {showEditModal} = this.props
     showEditModal(id)
   }
-  
-  onCrudAction = (entity) => {
+
+  onDelete = (id) => {
+    const { deleteEntity, getList} = this.props
+    this.setState({ confirmModalOptions: { ...this.state.confirmModalOptions, 
+      show: true, 
+      onConfirm: () => deleteEntity(id, this.handleDeleted)
+    }})
+  }
+
+  handleDeleted = () => {
+      const { getList } = this.props
+      this.hideConfirmModal()
+      getList()    
+  }
+
+  hideConfirmModal = () => this.setState({ confirmModalOptions: { ...this.state.confirmModalOptions, show: false }})
+
+  handleCreatedOrUpdated = (entity) => {
       const { closeModal, getList } = this.props
       closeModal()
       getList(entity)
   }
+    
   render(){    
     const { queryResult, closeModal, showModal, id } = this.props
     return (
@@ -32,14 +59,19 @@ class Screen extends Component{
         <CustomerList 
           queryResult={queryResult} 
           editHandler={this.onEdit}
+          deleteHandler={this.onDelete}
           />
         <CustomerFormModal 
           showModal={showModal}
           id={id} 
-          onCreated={this.onCrudAction} 
-          onUpdated={this.onCrudAction} 
+          onCreated={this.handleCreatedOrUpdated} 
+          onUpdated={this.handleCreatedOrUpdated} 
           handleClose={closeModal} 
           />
+        <ConfirmModal 
+          {...this.state.confirmModalOptions}
+          title="Eliminar Cliente"
+          message="¿Confirma eliminar el cliente?"/>
       </div>
     )
   }  
@@ -71,7 +103,13 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   closeModal: () => dispatch(hideModal()),
   showEditModal: (id) => dispatch(showModal(id)),
-  onDelete: (id) => {},
+  deleteEntity: (id, onComplete) => {
+    dispatch(feathersServices.customers.remove(id))
+    .then(() => {
+      dispatch(entityDeleted())
+      onComplete()      
+    })
+  },
   get: (id) => dispatch(feathersServices.customers.get(id))
 })
 

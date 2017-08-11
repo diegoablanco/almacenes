@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Input, Menu, Button, Modal, Header, Icon } from 'semantic-ui-react'
+import { Button, Modal, Header, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import { submit, isPristine, isSubmitting, hasSubmitSucceeded } from 'redux-form'
 

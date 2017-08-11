@@ -4,7 +4,7 @@ export const ENTITY_CREATED = 'ENTITY_CREATED'
 export const ENTITY_UPDATED = 'ENTITY_UPDATED'
 export const ENTITY_DELETED = 'ENTITY_DELETED'
 
-const messageDuration = 2000
+const messageDuration = 4 * 1000
 
 function showMessageTimeout(messageActionCreator){
     return (dispatch) => {
