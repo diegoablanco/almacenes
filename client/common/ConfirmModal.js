@@ -13,7 +13,7 @@ export default class ConfirmModal extends Component {
         } = this.props
 
         return(
-            <Modal open={show} mini>
+            <Modal open={show} size="mini">
                 <Modal.Header content={title} />
                 <Modal.Content content={message} />
                 <Modal.Actions>

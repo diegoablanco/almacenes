@@ -25,14 +25,14 @@ module.exports = function () {
   app.configure(customers);
 
   // get client config file
-  app.use('/config', {
+  app.use(`${config.apiPath}/config`, {
     get() {
       return Promise.resolve(config.clientConfig);
     },
   });
 
   // create log entry
-  app.use('/logs', {
+  app.use(`${config.apiPath}/logs`, {
     before: {
       create: [
         tryHook(auth.authenticate['jwt', 'local']),

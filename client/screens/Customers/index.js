@@ -6,7 +6,7 @@ import MessageBar from '../../common/MessageBar/MessageBar'
 import ConfirmModal from '../../common/ConfirmModal'
 import CustomerList from './CustomerList'
 import CustomerFormModal from './CustomerFormModal'
-import { hideModal, showModal } from '../../actions/customers'
+import { hideModal, showModal, setSortingColumns } from '../../actions/customers'
 import { entityDeleted } from '../../actions/messageBar'
 
 import CustomerForm, {formName} from './CustomerFormContainer'
@@ -20,7 +20,24 @@ class Screen extends Component{
   }
 
   componentDidMount(){
-      this.props.getList()
+      this.find()
+  }
+  buildSortFromSortingColumns(sortingColumns){
+    var sort = {}
+    Object.keys(sortingColumns).forEach(
+      column => sort[column] = sortingColumns[column].direction === "asc" ? 1 : -1
+    )
+    return sort
+  }
+  find = () => {
+    const {filter, sortingColumns, find} = this.props
+    const query = {
+      $sort: this.buildSortFromSortingColumns(sortingColumns),
+      $limit: 3,
+      // $select: ['_id', 'name', 'email', 'phone'],
+    };
+
+    find(Object.assign(query, filter))
   }
 
   onEdit = (id) => {
@@ -29,7 +46,7 @@ class Screen extends Component{
   }
 
   onDelete = (id) => {
-    const { deleteEntity, getList} = this.props
+    const { deleteEntity } = this.props
     this.setState({ confirmModalOptions: { ...this.state.confirmModalOptions, 
       show: true, 
       onConfirm: () => deleteEntity(id, this.handleDeleted)
@@ -37,29 +54,34 @@ class Screen extends Component{
   }
 
   handleDeleted = () => {
-      const { getList } = this.props
       this.hideConfirmModal()
-      getList()    
+      this.find()
   }
 
   hideConfirmModal = () => this.setState({ confirmModalOptions: { ...this.state.confirmModalOptions, show: false }})
 
   handleCreatedOrUpdated = (entity) => {
-      const { closeModal, getList } = this.props
+      const { closeModal } = this.props
       closeModal()
-      getList(entity)
+      this.find()
   }
-    
+  handleSort = (sortingColumns) => {
+    const { setSortingColumns } = this.props
+    setSortingColumns(sortingColumns)
+    this.find()
+  }
   render(){    
-    const { queryResult, closeModal, showModal, id } = this.props
+    const { queryResult, closeModal, showModal, id, sortingColumns, setSortingColumns } = this.props
     return (
       <div>
         <MessageBar />
-        <ToolbarContainer />
         <CustomerList 
           queryResult={queryResult} 
           editHandler={this.onEdit}
-          deleteHandler={this.onDelete}
+          deleteHandler={this.onDelete}  
+          handleFilter={this.find}
+          handleSort={this.handleSort}
+          sortingColumns={sortingColumns}        
           />
         <CustomerFormModal 
           showModal={showModal}
@@ -77,16 +99,6 @@ class Screen extends Component{
   }  
 }
 
-const loadCustomers = () => {
-    const query = {
-      $sort: { name: 1 },
-      $limit: 10,
-      $select: ['_id', 'name', 'email', 'phone'],
-    };
-
-    return feathersServices.customers.find({ query });
-}
-
 const mapStateToProps = (state, ownProps) => {
   const { customers: {queryResult, data } } = state
   const props = {
@@ -98,8 +110,8 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  getList: () => {
-    dispatch(loadCustomers())
+  find: (query) => {
+    dispatch(feathersServices.customers.find({query}))
   },
   closeModal: () => dispatch(hideModal()),
   showEditModal: (id) => dispatch(showModal(id)),
@@ -110,7 +122,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       onComplete()      
     })
   },
-  get: (id) => dispatch(feathersServices.customers.get(id))
+  get: (id) => dispatch(feathersServices.customers.get(id)),
+  setSortingColumns: sortingColumns => dispatch(setSortingColumns(sortingColumns))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Screen);

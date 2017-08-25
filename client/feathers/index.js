@@ -9,7 +9,7 @@ import { mapServicePathsToNames, prioritizedListServices } from './feathersServi
 
 // Configure feathers-client
 const app = feathers()
-  .configure(feathers.rest('http://localhost:3030').fetch(window.fetch))
+  .configure(feathers.rest('http://localhost:3030/api').fetch(window.fetch))
   .configure(feathers.hooks())
   .configure(feathers.authentication({
     storage: window.localStorage, // store the token in localStorage and initially sign in with that

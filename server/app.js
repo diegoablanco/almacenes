@@ -48,6 +48,7 @@ const app = feathers()
   // Routing for app. Load app; the client will handle rest of the routing.
   .use(config.client.defaultRoute, serveHtmlForEnvironment) // default is '/app ...'
   .use('/user', serveHtmlForEnvironment) // for '/user ...'
+  .use('/customers', serveHtmlForEnvironment) // for '/user ...'
 
   // Utilities
   .use(compress())

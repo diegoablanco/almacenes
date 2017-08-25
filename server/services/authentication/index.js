@@ -2,7 +2,7 @@ const debug = require('debug')('service:feathers-authentication')
 const authentication = require('feathers-authentication')
 const jwt = require('feathers-authentication-jwt')
 const local = require('feathers-authentication-local')
-const authConfig = require('config').auth;
+const config = require('config')
 const debugHook = require('../hooks/debugHook')
 const authManagement = require('feathers-authentication-management')
 debug('Required');
@@ -10,13 +10,14 @@ debug('Required');
 module.exports = function () { // 'function' needed as we use 'this'
   debug('Config');
   const app = this;
-
+  const authConfig = config.auth;
+  
   app.configure(authentication(authConfig))
     .configure(jwt())
     .configure(local(authConfig.local))
     .configure(authManagement({}))
 
-  app.service('auth/local').hooks({
+  app.service(`${config.apiPath}/auth/local`).hooks({
     before: {
       all: debugHook(),
       create: [

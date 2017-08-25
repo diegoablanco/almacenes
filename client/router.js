@@ -23,11 +23,13 @@ import UserSignInPending from './screens/Users/UserSignInPending';
 import App from './screens/App';
 
 import Customers from './screens/Customers';
-
+const authenticatedSelector = state => {
+  return state.auth.user && state.auth.user.isVerified
+}
 // Authentication Higher Order Components to wrap route components.
 const UserIsAuthenticated = connectedRouterRedirect({
   // extract user data from state
-  authenticatedSelector: state => state.auth.user && state.auth.user.isVerified,
+  authenticatedSelector: authenticatedSelector,
   /* When signin is pending but not fulfilled: */
   // determine if signin is pending
   authenticatingSelector: state => state.auth.isLoading,
