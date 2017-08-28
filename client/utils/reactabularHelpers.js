@@ -18,3 +18,11 @@ export function addHeaderTransforms(columns, headerTransforms) {
                 header: { ...column.header, transforms: headerTransforms }} 
         })
 }
+    
+export function buildSortFromSortingColumns(sortingColumns){
+    var sort = {}
+    Object.keys(sortingColumns).forEach(
+        column => sort[column] = sortingColumns[column].direction === "asc" ? 1 : -1
+    )
+    return sort
+}

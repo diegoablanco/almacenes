@@ -8,7 +8,7 @@ const config = require('config')
 module.exports = function () {
   const app = this;
   const Model = createModel(app);
-  const paginate = app.get('paginate');
+  const paginate = config.paginate
 
   const options = {
     name: 'customers',

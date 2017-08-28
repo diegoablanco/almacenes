@@ -64,6 +64,10 @@ module.exports = {
       allowedToChangeRoles: ['superAdmin', 'admin'],
     },
   },
+  paginate: {
+      default: 10,
+      max: 100
+  },
   // for transactional emails sent. here for convenience.
   authEmails: {
     expires: {

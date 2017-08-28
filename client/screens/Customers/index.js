@@ -4,10 +4,11 @@ import { feathersServices } from '../../feathers';
 import ToolbarContainer from './ToolbarContainer.js';
 import MessageBar from '../../common/MessageBar/MessageBar'
 import ConfirmModal from '../../common/ConfirmModal'
-import CustomerList from './CustomerList'
+import GridContainer from './GridContainer'
 import CustomerFormModal from './CustomerFormModal'
-import { hideModal, showModal, setSortingColumns } from '../../actions/customers'
+import { hideModal, showModal, reloadGrid, itemDeleted } from '../../actions/customers'
 import { entityDeleted } from '../../actions/messageBar'
+
 
 import CustomerForm, {formName} from './CustomerFormContainer'
 
@@ -18,27 +19,7 @@ class Screen extends Component{
       onCancel: () => this.setState({ confirmModalOptions: {...this.state.confirmModalOptions, show: false }})
     }
   }
-
-  componentDidMount(){
-      this.find()
-  }
-  buildSortFromSortingColumns(sortingColumns){
-    var sort = {}
-    Object.keys(sortingColumns).forEach(
-      column => sort[column] = sortingColumns[column].direction === "asc" ? 1 : -1
-    )
-    return sort
-  }
-  find = () => {
-    const {filter, sortingColumns, find} = this.props
-    const query = {
-      $sort: this.buildSortFromSortingColumns(sortingColumns),
-      $limit: 3,
-      // $select: ['_id', 'name', 'email', 'phone'],
-    };
-
-    find(Object.assign(query, filter))
-  }
+  columns = [['name', 'Nombre'], ['email', 'E-mail'], ['phone', 'Teléfono']]
 
   onEdit = (id) => {
     const {showEditModal} = this.props
@@ -55,7 +36,7 @@ class Screen extends Component{
 
   handleDeleted = () => {
       this.hideConfirmModal()
-      this.find()
+      this.props.reloadGrid()
   }
 
   hideConfirmModal = () => this.setState({ confirmModalOptions: { ...this.state.confirmModalOptions, show: false }})
@@ -63,25 +44,35 @@ class Screen extends Component{
   handleCreatedOrUpdated = (entity) => {
       const { closeModal } = this.props
       closeModal()
-      this.find()
+      this.props.reloadGrid()
   }
-  handleSort = (sortingColumns) => {
-    const { setSortingColumns } = this.props
-    setSortingColumns(sortingColumns)
-    this.find()
+
+  customerGridStateSelector(state){
+    const { customers: {queryResult}, ui: {customers: {sortingColumns, filter, reloadGrid }} } = state
+    return {
+      queryResult,
+      sortingColumns,
+      reloadGrid,
+      filter
+    }
   }
+
   render(){    
-    const { queryResult, closeModal, showModal, id, sortingColumns, setSortingColumns } = this.props
+    const { 
+      closeModal, 
+      showModal, 
+      id, 
+      setSortingColumns } = this.props
+
     return (
       <div>
         <MessageBar />
-        <CustomerList 
-          queryResult={queryResult} 
+        <GridContainer
+          columns={this.columns} 
           editHandler={this.onEdit}
           deleteHandler={this.onDelete}  
-          handleFilter={this.find}
-          handleSort={this.handleSort}
-          sortingColumns={sortingColumns}        
+          service={feathersServices.customers}  
+          stateSelector={this.customerGridStateSelector}     
           />
         <CustomerFormModal 
           showModal={showModal}
@@ -96,23 +87,22 @@ class Screen extends Component{
           message="¿Confirma eliminar el cliente?"/>
       </div>
     )
-  }  
+  } 
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { customers: {queryResult, data } } = state
+  const { customers: { data }, ui: {customers: {showModal, closeModal, id}} } = state
   const props = {
-    queryResult,
     data, 
-    ...state.ui.customers
+    showModal,
+    closeModal,
+    id
   }
   return props
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  find: (query) => {
-    dispatch(feathersServices.customers.find({query}))
-  },
+  reloadGrid: () => dispatch(reloadGrid()),
   closeModal: () => dispatch(hideModal()),
   showEditModal: (id) => dispatch(showModal(id)),
   deleteEntity: (id, onComplete) => {
@@ -122,8 +112,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       onComplete()      
     })
   },
-  get: (id) => dispatch(feathersServices.customers.get(id)),
-  setSortingColumns: sortingColumns => dispatch(setSortingColumns(sortingColumns))
+  get: (id) => dispatch(feathersServices.customers.get(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Screen);
