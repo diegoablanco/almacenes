@@ -9,6 +9,30 @@ export const INCREASE_PAGE_NUMBER = 'INCREASE_PAGE_NUMBER'
 export const RELOAD_GRID = 'RELOAD_GRID'
 export const GRID_RELOADED = 'GRID_RELOADED'
 export const ITEM_DELETED = 'ITEM_DELETED'
+export const ITEM_EDITED = 'ITEM_EDITED'
+export const ITEM_ADDED = 'ITEM_ADDED'
+export const BUILD_ROWS = 'BUILD_ROWS'
+
+export function buildRows(result, concat = false){
+    return {
+        type: BUILD_ROWS,
+        concat,
+        result
+    }
+}
+
+export function itemAdded(addedItem){
+    return (dispatch) => {
+        dispatch(reloadGrid())
+    }
+}
+
+export function itemEdited(editedItem){
+    return {
+        type: ITEM_EDITED,
+        editedItem
+    }
+}
 
 export function itemDeleted(deletedItem){
     return {

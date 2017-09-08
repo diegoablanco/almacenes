@@ -60,9 +60,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       }) 
     },
     update: (values) => {
-      dispatch(service.update(values._id, values)).then(() => {
+      dispatch(service.update(values._id, values)).then((result) => {
         dispatch(entityUpdated())
-        onUpdated()
+        onUpdated(result.value)
       })
     },
     get: (id) => dispatch(service.get(id)),

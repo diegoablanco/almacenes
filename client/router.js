@@ -22,7 +22,9 @@ import UserProfile from './screens/Users/UserProfile';
 import UserSignInPending from './screens/Users/UserSignInPending';
 import App from './screens/App';
 
-import Customers from './screens/Customers';
+import Customers from './screens/Customers'
+import Warehouses from './screens/Warehouses'
+
 const authenticatedSelector = state => {
   return state.auth.user && state.auth.user.isVerified
 }
@@ -85,6 +87,7 @@ export default class AppRouter extends Component {
                     />
                     <Route path="/user/profile" component={UserIsAuthenticated(UserProfile)} />
                     <Route path="/customers" component={UserIsAuthenticated(Customers)} />
+                    <Route path="/warehouses" component={UserIsAuthenticated(Warehouses)} />
                   </Switch>
                 </App>
       </AppContainer>

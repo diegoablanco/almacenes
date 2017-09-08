@@ -10,8 +10,9 @@ import {
     INCREASE_PAGE_NUMBER,
     RELOAD_GRID,
     GRID_RELOADED,
-    LOAD_ITEMS,
-    ITEM_DELETED } from '../actions/customers'
+    BUILD_ROWS,
+    ITEM_DELETED,
+    ITEM_EDITED } from '../actions/customers'
 
 const initialState = {
     reloadGrid: false,
@@ -56,32 +57,23 @@ export default function customersPage(state = initialState, action){
             return { ...state, reloadGrid: true }
         case GRID_RELOADED:
             return { ...state, reloadGrid: false }
-        case LOAD_ITEMS:
-            const { serviceActions } = action
-            serviceActions.find(getQuery(state)).then(result => {
-                const {queryResult} = result
-                return { ...state, rows: queryResult ? queryResult.data : []}
-            })
-        // case ITEM_ADDED:
-        //     {
-        //         let { rows } = state
-        //         const { addedItem } = action            
-        //         return { ...state, rows: filter(rows, item => item._id === deletedItem._id) }
-        //     }
+        case BUILD_ROWS:
+            const { concat, result: {data} } = action
+            return { ...state, rows: concat ? state.rows.concat(data) : data }
         case ITEM_DELETED:
             {
                 let { rows } = state
                 const { deletedItem } = action            
-                return { ...state, rows: filter(rows, item => item._id === deletedItem._id) }                
+                return { ...state, rows: filter(rows, item => item._id !== deletedItem._id) }                
             }
-        // case ITEM_EDITED:
-        //     {            
-        //         let { rows } = state
-        //         const { editedItem } = action
-        //         const itemIndex = findIndex(rows, item => item._id === editedItem._id)
-        //         rows[itemIndex] = editedItem
-        //         return { ...state, rows: rows }
-        //     }
+        case ITEM_EDITED:
+            {            
+                let { rows } = state
+                const { editedItem } = action
+                const itemIndex = findIndex(rows, item => item._id === editedItem._id)
+                const editedRows = rows.map((row, index) => index === itemIndex ? editedItem : row)
+                return { ...state, rows: editedRows }
+            }
         default:
             return state
     }

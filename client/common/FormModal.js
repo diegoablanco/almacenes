@@ -6,7 +6,7 @@ import { submit, isPristine, isSubmitting, hasSubmitSucceeded } from 'redux-form
 class FormModal extends Component {   
     static defaultProps = {
         onCreated: () => {},
-        onUpdated: () => {}
+        onEdited: () => {}
     }
 
     render(){
@@ -20,7 +20,7 @@ class FormModal extends Component {
             title,
             formName,
             onCreated,
-            onUpdated } = this.props
+            onEdited } = this.props
         
         return(
                 <Modal
@@ -28,7 +28,7 @@ class FormModal extends Component {
                     size='small'>
                     <Modal.Header content={title} />
                     <Modal.Content>
-                        <this.props.form id={id} onCreated={onCreated} onUpdated={onUpdated}/>
+                        <this.props.form id={id} onCreated={onCreated} onUpdated={onEdited}/>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button onClick={handleClose}>

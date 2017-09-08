@@ -1,17 +1,18 @@
 
 /* eslint no-console: 0, no-param-reassign: 0 */
 
-const debug = require('debug')('service:index');
-const config = require('config');
-const auth = require('feathers-authentication').hooks;
+const debug = require('debug')('service:index')
+const config = require('config')
+const auth = require('feathers-authentication').hooks
 
-const authentication = require('./authentication');
-const user = require('./user');
-const message = require('./message');
-const customers = require('./customers/customers.service.js');
+const authentication = require('./authentication')
+const user = require('./user')
+const message = require('./message')
+const customers = require('./customers/customers.service.js')
+const warehouses = require('./warehouses/warehouses.service.js')
 
-const tryHook = require('./hooks/tryHook');
-const logger = require('../utils/loggerProduction');
+const tryHook = require('./hooks/tryHook')
+const logger = require('../utils/loggerProduction')
 
 debug('Required');
 
@@ -23,6 +24,7 @@ module.exports = function () {
   app.configure(user);
   app.configure(message);
   app.configure(customers);
+  app.configure(warehouses);
 
   // get client config file
   app.use(`${config.apiPath}/config`, {

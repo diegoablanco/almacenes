@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators  } from 'redux'
 import { feathersServices } from '../../feathers';
 import ToolbarContainer from './ToolbarContainer.js';
 import MessageBar from '../../common/MessageBar/MessageBar'
 import ConfirmModal from '../../common/ConfirmModal'
 import GridContainer from './GridContainer'
 import CustomerFormModal from './CustomerFormModal'
-import { hideModal, showModal, reloadGrid, itemDeleted } from '../../actions/customers'
+import { hideModal, showModal, reloadGrid, itemDeleted, itemEdited } from '../../actions/customers'
 import { entityDeleted } from '../../actions/messageBar'
 
 
@@ -36,24 +37,30 @@ class Screen extends Component{
 
   handleDeleted = () => {
       this.hideConfirmModal()
-      this.props.reloadGrid()
   }
 
   hideConfirmModal = () => this.setState({ confirmModalOptions: { ...this.state.confirmModalOptions, show: false }})
 
-  handleCreatedOrUpdated = (entity) => {
+  handleCreated = (entity) => {
       const { closeModal } = this.props
       closeModal()
       this.props.reloadGrid()
   }
 
+  handleEdited = (editedItem) => {
+      const { closeModal, itemEdited } = this.props
+      closeModal()
+      itemEdited(editedItem)
+  }
+
   customerGridStateSelector(state){
-    const { customers: {queryResult}, ui: {customers: {sortingColumns, filter, reloadGrid }} } = state
+    const { customers: {queryResult}, ui: {customers: {sortingColumns, filter, reloadGrid, rows }} } = state
     return {
       queryResult,
       sortingColumns,
       reloadGrid,
-      filter
+      filter,
+      rows
     }
   }
 
@@ -67,7 +74,7 @@ class Screen extends Component{
     return (
       <div>
         <MessageBar />
-        <GridContainer
+        {/* <GridContainer
           columns={this.columns} 
           editHandler={this.onEdit}
           deleteHandler={this.onDelete}  
@@ -77,14 +84,14 @@ class Screen extends Component{
         <CustomerFormModal 
           showModal={showModal}
           id={id} 
-          onCreated={this.handleCreatedOrUpdated} 
-          onUpdated={this.handleCreatedOrUpdated} 
+          onCreated={this.handleCreated} 
+          onEdited={this.handleEdited} 
           handleClose={closeModal} 
           />
         <ConfirmModal 
           {...this.state.confirmModalOptions}
           title="Eliminar Cliente"
-          message="¿Confirma eliminar el cliente?"/>
+          message="¿Confirma eliminar el cliente?"/> */}
       </div>
     )
   } 
@@ -101,18 +108,25 @@ const mapStateToProps = (state, ownProps) => {
   return props
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  reloadGrid: () => dispatch(reloadGrid()),
-  closeModal: () => dispatch(hideModal()),
-  showEditModal: (id) => dispatch(showModal(id)),
-  deleteEntity: (id, onComplete) => {
-    dispatch(feathersServices.customers.remove(id))
-    .then(() => {
-      dispatch(entityDeleted())
-      onComplete()      
-    })
-  },
-  get: (id) => dispatch(feathersServices.customers.get(id))
-})
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const dispatches = {
+      ...bindActionCreators({
+        reloadGrid: reloadGrid, 
+        hideModal: hideModal, 
+        showEditModal: showModal,
+        itemEdited: itemEdited
+      }, dispatch),  
+      deleteEntity: (id, onComplete) => {
+        dispatch(feathersServices.customers.remove(id))
+        .then(result => {
+          dispatch(entityDeleted())
+          dispatch(itemDeleted(result.value)) 
+          onComplete()     
+        })
+      },
+      get: (id) => dispatch(feathersServices.customers.get(id))
+    }
+  return dispatches
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Screen);

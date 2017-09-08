@@ -49,6 +49,7 @@ const app = feathers()
   .use(config.client.defaultRoute, serveHtmlForEnvironment) // default is '/app ...'
   .use('/user', serveHtmlForEnvironment) // for '/user ...'
   .use('/customers', serveHtmlForEnvironment) // for '/user ...'
+  .use('/warehouses', serveHtmlForEnvironment) // for '/user ...'
 
   // Utilities
   .use(compress())

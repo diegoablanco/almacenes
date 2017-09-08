@@ -11,6 +11,9 @@ class AppNavBar extends Component{
       <Menu.Item key="customers">
         <Link to="customers">Clientes</Link>
       </Menu.Item>,
+      <Menu.Item key="warehouses">
+        <Link to="warehouses">Almacenes</Link>
+      </Menu.Item>,
       <Menu.Item as='a' key="page1">Page 11</Menu.Item>,
       <Menu.Menu position='right' key="profile">
         <Dropdown item text={user.username} >

@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import Grid from './Grid.js'
-import { setSortingColumns, increasePageNumber, resetPageNumber, gridReloaded, buildRows } from '../../actions/crudPage'
 
 class GridContainer extends Component {
     buildSortFromSortingColumns(sortingColumns){
@@ -72,17 +71,24 @@ class GridContainer extends Component {
         })
     }
     render(){
-        return(<Grid 
-            {...this.props} 
-            handleLoadMore={this.handleLoadMore}
-            handleSort={this.handleSort}
-            handleFilter={this.handleFilter}
-        />)
+        const {crudActions} = this.props
+        return(
+            <div>
+                <this.props.toolbar handleFilter={this.handleFilter} crudActions={crudActions}/>
+                <Grid 
+                    {...this.props} 
+                    handleLoadMore={this.handleLoadMore}
+                    handleSort={this.handleSort}
+                    handleFilter={this.handleFilter}
+                />
+            </div>
+        )
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { queryResult, sortingColumns, filter, reloadGrid, rows } = ownProps.stateSelector(state)
+  const { sortingColumns, filter, reloadGrid, rows } = ownProps.uiStateSelector(state)
+  const { queryResult } = ownProps.serviceStateSelector(state)
   const props = {
     queryResult: queryResult ? queryResult.data : [],
     hasMore: queryResult && queryResult.total > queryResult.limit + queryResult.skip,
@@ -96,18 +102,19 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    const { service } = ownProps
+    const { service, crudActions } = ownProps
+    
     return {
         find: query => dispatch(service.find({query})), 
-        setSortingColumns: sortingColumns => dispatch(setSortingColumns(sortingColumns)),
+        setSortingColumns: sortingColumns => dispatch(crudActions.setSortingColumns(sortingColumns)),
         increasePageNumber: () => {
-            dispatch(increasePageNumber())
+            dispatch(crudActions.increasePageNumber())
         },
         resetPageNumber: () => {
-            dispatch(resetPageNumber())
+            dispatch(crudActions.resetPageNumber())
         },
-        gridReloaded: () => dispatch(gridReloaded()),
-        buildRows: (result, concat) => dispatch(buildRows(result, concat))
+        gridReloaded: () => dispatch(crudActions.gridReloaded()),
+        buildRows: (result, concat) => dispatch(crudActions.buildRows(result, concat))
     }
 }
 

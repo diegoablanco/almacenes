@@ -4,9 +4,6 @@ import AppNavBar from './components/AppNavBar';
 import { Container } from 'semantic-ui-react'
 
 export default class App extends Component{
-  componentWillMount(){
-    var a
-  }
   render (){
     const {
       children

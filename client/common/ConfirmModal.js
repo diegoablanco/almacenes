@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import { Button, Modal, Header, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux';
+import { bindActionCreators  } from 'redux'
 
-export default class ConfirmModal extends Component {
+class ConfirmModal extends Component {
     render(){
         const { 
             show, 
@@ -24,3 +25,8 @@ export default class ConfirmModal extends Component {
         )
     }
 }
+const mapStateToProps = (state, ownProps) => {  
+  const showDialog = ownProps.showDialogStateSelector(state)
+  return { show: showDialog }
+}
+export default connect(mapStateToProps)(ConfirmModal)
