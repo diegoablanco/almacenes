@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { feathersServices } from '../../feathers'
-import WarehouseFormModal from './WarehouseFormModal'
+import CustomerFormModal from './CustomerFormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
 import { crudPages } from '../../common/CrudPages'
 import { getCrudPageActions } from '../../actions/crudPage'
-import * as selectors from '../../selectors/warehouses'
+import * as selectors from '../../selectors/customers'
 
-export default class WarehouseCrud extends Component {
+export default class CustomerCrud extends Component {
     shouldComponentUpdate(){
         return false
     }
@@ -16,19 +16,19 @@ export default class WarehouseCrud extends Component {
     gridColumns = [['name', 'Nombre'], ['email', 'E-mail'], ['phone', 'Teléfono']]
 
     confirmModalOptions = {        
-        title:"Eliminar Almacén",
-        message:"¿Confirma eliminar el almacén?"
+        title:"Eliminar Cliente",
+        message:"¿Confirma eliminar el cliente?"
     }
 
     render(){
-        const crudActions = getCrudPageActions(crudPages.WAREHOUSES, feathersServices.warehouses, selectors)
+        const crudActions = getCrudPageActions(crudPages.CUSTOMERS, feathersServices.customers, selectors)
         return(       
             <div> 
                 <CrudContainer
                     gridColumns={this.gridColumns} 
                     confirmModalOptions={this.confirmModalOptions}
                     selectors={selectors}       
-                    formModal={WarehouseFormModal} 
+                    formModal={CustomerFormModal} 
                     toolbar={ToolbarContainer} 
                     crudActions={crudActions}
                 />

@@ -4,45 +4,24 @@ import { connect } from 'react-redux'
 import { feathersServices } from '../feathers'
 import ConfirmModal from './ConfirmModal'
 import GridContainer from './GridContainer'
-import { entityDeleted } from '../actions/messageBar'
 
-class CrudContainer extends Component {
-    onEdit = (id) => {
-        const {showEditModal} = this.props
-        showEditModal(id)
-    }
-
-    handleCreated = (entity) => {
-        const { hideModal, reloadGrid } = this.props
-        hideModal()
-        reloadGrid()
-    }
-
-    handleEdited = (editedItem) => {
-        const { hideModal, itemEdited } = this.props
-        hideModal()
-        itemEdited(editedItem)
-    }
-    
-    handleDeleted = () => {
-        this.hideConfirmModal()
-    }
+class CrudContainer extends Component {    
     deleteDialogStateSelector = (state) => {
-        const { uiStateSelector } = this.props
-        return uiStateSelector(state).confirmDialog.show
+        const { selectors } = this.props
+        return selectors.getUiState(state).confirmDialog.show
     }
     render(){
         const {
             gridColumns, 
-            service,
-            uiStateSelector,
-            serviceStateSelector,
+            selectors,
+            itemCreated,
+            itemEdited,
             showModal,
+            showFormModal,
             hideModal,
             crudActions,
             toolbar,
             confirmModalOptions,
-            deleteEntity,
             id,
             showConfirmModal,
             hideConfirmModal,
@@ -52,19 +31,17 @@ class CrudContainer extends Component {
             <div>
                 <GridContainer
                     columns={gridColumns} 
-                    editHandler={this.onEdit}
+                    editHandler={showFormModal}
                     deleteHandler={showConfirmModal}  
-                    service={service}  
-                    uiStateSelector={uiStateSelector}     
-                    serviceStateSelector={serviceStateSelector}  
+                    selectors={selectors}     
                     crudActions={crudActions}
                     toolbar={toolbar}   
                 />
                 <this.props.formModal 
                     showModal={showModal}
                     id={id} 
-                    onCreated={this.handleCreated} 
-                    onEdited={this.handleEdited} 
+                    onCreated={itemCreated} 
+                    onEdited={itemEdited} 
                     handleClose={hideModal} 
                 />
                 <ConfirmModal 
@@ -79,8 +56,8 @@ class CrudContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {  
-  const {showModal, closeModal, id} = ownProps.uiStateSelector(state)
-  const {data} = ownProps.serviceStateSelector(state)
+  const {showModal, closeModal, id} = ownProps.selectors.getUiState(state)
+  const {data} = ownProps.selectors.getServiceState(state)
   const props = {
     data, 
     showModal,
@@ -91,27 +68,8 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    const { service, crudPage, crudActions } = ownProps
-    const dispatches = {
-        ...bindActionCreators({
-            reloadGrid: crudActions.reloadGrid, 
-            hideModal: crudActions.hideModal, 
-            showEditModal: crudActions.showModal,
-            itemEdited: crudActions.itemEdited,
-            showConfirmModal: crudActions.showConfirmModal,
-            hideConfirmModal: crudActions.hideConfirmModal,
-            confirmDeleteItem: crudActions.confirmDeleteItem
-        }, dispatch),  
-        deleteEntity: (id) => {
-            dispatch(service.remove(id))
-            .then(result => {
-                dispatch(crudActions.entityDeleted())
-                dispatch(crudActions.itemDeleted(result.value)) 
-            })
-        },
-        get: (id) => dispatch(service.get(id))
-        }
-    return dispatches
+    const { crudActions } = ownProps
+    return bindActionCreators(crudActions, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CrudContainer)

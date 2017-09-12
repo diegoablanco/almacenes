@@ -18,11 +18,13 @@ export default class Grid extends Component {
             {
                 property: "_id",
                 cell:{
-                    props: { style: {collapsing: true} },
                     formatters: [(id) => (<Button.Group>
                         <Button icon="write" onClick={() => editHandler(id)} />
                         <Button icon="delete" onClick={() => deleteHandler(id)} />
                     </Button.Group>)]
+                },
+                header:{
+                    props: {className: "collapsing"}
                 }
             }
         ]
@@ -43,8 +45,7 @@ export default class Grid extends Component {
             rows, 
             sortingColumns,
             handleLoadMore, 
-            hasMore,
-            crudActions
+            hasMore
         } = this.props
 
         const sortable = sort.sort({

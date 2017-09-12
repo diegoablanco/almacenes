@@ -67,8 +67,8 @@ export default class AppRouter extends Component {
   render(){
     return (
       <AppContainer>
-                <App>
                   <Switch>
+                <App>
                     <Redirect exact path="/" to={config.client.defaultRoute} />
                     <Route path={config.client.defaultRoute} component={UserIsAuthenticated(App)} />
                     <Route path="/user/signin" component={UserSignIn} />
@@ -88,8 +88,8 @@ export default class AppRouter extends Component {
                     <Route path="/user/profile" component={UserIsAuthenticated(UserProfile)} />
                     <Route path="/customers" component={UserIsAuthenticated(Customers)} />
                     <Route path="/warehouses" component={UserIsAuthenticated(Warehouses)} />
-                  </Switch>
                 </App>
+                  </Switch>
       </AppContainer>
       )
     }

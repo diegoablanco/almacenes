@@ -10,7 +10,7 @@ export default class App extends Component{
     } = this.props
     return (
       <Container>
-        <AppNavBar label="App" screen="app/main" history={this.props.history} />
+        <AppNavBar label="App" screen="app/main" location={this.props.location} />
         <Container className="main-container">
           {children}
         </Container>

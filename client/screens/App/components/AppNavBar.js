@@ -5,16 +5,15 @@ import { Link } from 'react-router-dom'
 
 
 class AppNavBar extends Component{
-  LoggedInMenuItems = () => {
-    const {user} = this.props
+  LoggedInMenuItems = (props) => {
+    const {user, location: {pathname}} = props
     return([       
-      <Menu.Item key="customers">
+      <Menu.Item key="customers" active={ pathname === '/customers' }>
         <Link to="customers">Clientes</Link>
       </Menu.Item>,
-      <Menu.Item key="warehouses">
+      <Menu.Item key="warehouses" active={ pathname === '/warehouses' }>
         <Link to="warehouses">Almacenes</Link>
       </Menu.Item>,
-      <Menu.Item as='a' key="page1">Page 11</Menu.Item>,
       <Menu.Menu position='right' key="profile">
         <Dropdown item text={user.username} >
           <Dropdown.Menu>
@@ -31,12 +30,12 @@ class AppNavBar extends Component{
     const {user} = this.props
     const userAuthenticated = user && user.isVerified
     return(    
-      <Menu fixed='top' inverted>
+      <Menu fixed='top' pointing>
         <Container>
           <Menu.Item header>
             Project Name
           </Menu.Item>
-          {userAuthenticated && this.LoggedInMenuItems()}   
+          {userAuthenticated && this.LoggedInMenuItems(this.props)}   
         </Container>
       </Menu>
     )

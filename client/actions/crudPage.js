@@ -1,5 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { entityDeleted } from './messageBar'
+import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
+
 export function getActionTypes(crudPage = ''){
     return {
         SHOW_MODAL: `${crudPage}/SHOW_MODAL`,
@@ -20,27 +22,100 @@ export function getActionTypes(crudPage = ''){
         BUILD_ROWS: `${crudPage}/BUILD_ROWS`
     }
 }
+function getQuery(state) {
+    const { filter, sortingColumns } = state
+    const query = {
+        $sort: buildSortFromSortingColumns(sortingColumns),
+        // $limit: 3,
+        // $select: ['_id', 'name', 'email', 'phone'],
+    };
+
+    return Object.assign(query, filter)
+}
 export function getCrudPageActions(crudPage, serviceActions, selectors){
     const actionTypes = getActionTypes(crudPage)
+    function hideModal(){
+        return{
+            type: actionTypes.HIDE_MODAL
+        }
+    }
+    function hideConfirmModal(){
+        return{
+            type: actionTypes.HIDE_CONFIRM_MODAL
+        }
+    }
+    function buildRows(result, concat = false){
+        return {
+            type: actionTypes.BUILD_ROWS,
+            concat,
+            result
+        }
+    }
+    function resetPageNumber(){
+        return {
+            type: actionTypes.RESET_PAGE_NUMBER
+        }
+    }
     return {
-        buildRows(result, concat = false){
-            return {
-                type: actionTypes.BUILD_ROWS,
-                concat,
-                result
-            }
-        },
+        buildRows,
         itemAdded(addedItem){
             return (dispatch) => {
                 dispatch(this.reloadGrid())
             }
         },
-        itemEdited(editedItem){
-            return {
-                type: actionTypes.ITEM_EDITED,
-                editedItem
+        itemCreated(addedItem){
+            return (dispatch, getState) => {
+                dispatch(hideModal())
+                dispatch(resetPageNumber())
+                const query = getQuery(selectors.getUiState(getState()))
+                dispatch(serviceActions.find({query})).then(result => {
+                    dispatch(buildRows(result.value))
+                })
             }
         },
+        itemEdited(editedItem){
+            return (dispatch) => {
+                dispatch(hideModal())
+                dispatch({type: actionTypes.ITEM_EDITED, editedItem})
+            }
+        },
+        loadGrid(){
+            return (dispatch, getState) => {
+                const query = getQuery(selectors.getUiState(getState()))
+                dispatch(serviceActions.find({query})).then(result => {
+                    dispatch(buildRows(result.value))
+                })
+            }
+        },        
+        filterGrid(filter){
+            return (dispatch, getState) => {
+                dispatch(resetPageNumber())
+                dispatch({type: actionTypes.SET_FILTER, filter})
+                const query = getQuery(selectors.getUiState(getState()))
+                dispatch(serviceActions.find({query})).then(result => {
+                    dispatch(buildRows(result.value))
+                })
+            }
+        },        
+        loadMore(){
+            return (dispatch, getState) => {
+                dispatch({type: actionTypes.INCREASE_PAGE_NUMBER})
+                const query = getQuery(selectors.getUiState(getState()))
+                dispatch(serviceActions.find({query})).then(result => {
+                    dispatch(buildRows(result.value, true))
+                })
+            }
+        },        
+        sortGrid(sortingColumns){
+            return (dispatch, getState) => {
+                    dispatch({type: actionTypes.SET_SORTING_COLUMNS, sortingColumns})
+                    dispatch(resetPageNumber())
+                    const query = getQuery(selectors.getUiState(getState()))
+                    dispatch(serviceActions.find({query})).then(result => {
+                        dispatch(buildRows(result.value))
+                    })
+            }
+        },        
         reloadGrid(){
             return {
                 type: actionTypes.RELOAD_GRID
@@ -51,7 +126,7 @@ export function getCrudPageActions(crudPage, serviceActions, selectors){
                 const {confirmDialog: {id}} = selectors.getUiState(getState())
                 dispatch(serviceActions.remove(id))
                 .then(result => {
-                    dispatch({ type: actionTypes.HIDE_CONFIRM_MODAL })
+                    dispatch(hideConfirmModal())
                     dispatch({ type: actionTypes.ITEM_DELETED, deletedItem: result.value }) 
                     dispatch(entityDeleted()) 
                 })
@@ -68,34 +143,20 @@ export function getCrudPageActions(crudPage, serviceActions, selectors){
                 type: actionTypes.GRID_RELOADED
             }
         },
-        showModal(id){
+        showFormModal(id){
             return{
                 type: actionTypes.SHOW_MODAL,
                 id
             }
         },
-        hideModal(){
-            return{
-                type: actionTypes.HIDE_MODAL
-            }
-        },
+        hideModal,
         showConfirmModal(id){
             return{
                 type: actionTypes.SHOW_CONFIRM_MODAL,
                 id
             }
         },
-        hideConfirmModal(){
-            return{
-                type: actionTypes.HIDE_CONFIRM_MODAL
-            }
-        },
-        setFilter(filter){
-            return {
-                type: actionTypes.SET_FILTER,
-                filter
-            }
-        },
+        hideConfirmModal,
         setSortingColumns(sortingColumns){
             return {
                 type: actionTypes.SET_SORTING_COLUMNS,
@@ -108,11 +169,7 @@ export function getCrudPageActions(crudPage, serviceActions, selectors){
                 pageNumber
             }
         },
-        resetPageNumber(){
-            return {
-                type: actionTypes.RESET_PAGE_NUMBER
-            }
-        },
+        resetPageNumber,
         increasePageNumber(){
             return {
                 type: actionTypes.INCREASE_PAGE_NUMBER

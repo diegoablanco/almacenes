@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import { Input, Button, Menu } from 'semantic-ui-react'
 import { connect } from 'react-redux'
+import { bindActionCreators  } from 'redux'
 import { reduxForm, Field } from 'redux-form'
-import { showModal, hideModal, setFilter } from '../../actions/customers'
 import { renderField } from '../../utils/formHelpers'
 
 class Toolbar extends Component {
@@ -30,10 +30,10 @@ class Toolbar extends Component {
   }
 
   render(){
-    const { handleOpenModal} = this.props  
+    const { filterGrid, showFormModal } = this.props
     const ReduxForm = reduxForm({
       form: "filterCustomers",
-      onSubmit: this.handleSearch,
+      onSubmit: filterGrid,
     })(this.filterForm)
 
     return (
@@ -43,7 +43,7 @@ class Toolbar extends Component {
         </Menu.Item>
         <Menu.Item position='right'>
           <Button.Group labeled>
-              <Button icon='add' content='Agregar' onClick={handleOpenModal}  />
+              <Button icon='add' content='Agregar' onClick={showFormModal}  />
           </Button.Group>
         </Menu.Item>
       </Menu>
@@ -52,14 +52,11 @@ class Toolbar extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    return state.ui.customers
+    return state.ui.warehouses
 }
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  setFilter: (filter) => {
-    dispatch(setFilter(filter))
-    ownProps.handleFilter()
-  },
-  handleOpenModal: () => dispatch(showModal()),
-})
+const mapDispatchToProps = (dispatch, ownProps) => {
+    const {crudActions} = ownProps
+    return bindActionCreators(crudActions, dispatch)
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar)
