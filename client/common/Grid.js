@@ -16,7 +16,7 @@ export default class Grid extends Component {
         const {editHandler, deleteHandler} = this.props
         return [
             {
-                property: "_id",
+                property: "id",
                 cell:{
                     formatters: [(id) => (<Button.Group>
                         <Button icon="write" onClick={() => editHandler(id)} />
@@ -31,7 +31,12 @@ export default class Grid extends Component {
     }
     sort = (selectedColumn) => {
         const { sortingColumns, handleSort } = this.props
-        const newSortingColumns = sort.byColumn({sortingColumns, selectedColumn})
+        const sortingOrder = {
+            FIRST: 'asc',
+            asc: 'desc',
+            desc: 'asc'
+        }
+        const newSortingColumns = sort.byColumn({sortingColumns, selectedColumn, sortingOrder})
         handleSort(newSortingColumns)
     }
     transformSortClasses(props){
@@ -69,7 +74,7 @@ export default class Grid extends Component {
                         className="ui striped table sortable"
                         columns={gridColumns} >
                         <Table.Header />
-                        <Table.Body rows={rows || []} rowKey="_id" />
+                        <Table.Body rows={rows || []} rowKey="id" />
                     </Table.Provider>
                 </InfiniteScroll>    
             </div>

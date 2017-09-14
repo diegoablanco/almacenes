@@ -61,13 +61,13 @@ export function getCrudReducer(crudPage) {
                 {
                     let { rows } = state
                     const { deletedItem } = action            
-                    return { ...state, rows: filter(rows, item => item._id !== deletedItem._id) }                
+                    return { ...state, rows: filter(rows, item => item.id !== deletedItem.id) }                
                 }
             case actionTypes.ITEM_EDITED:
                 {            
                     let { rows } = state
                     const { editedItem } = action
-                    const itemIndex = findIndex(rows, item => item._id === editedItem._id)
+                    const itemIndex = findIndex(rows, item => item.id === editedItem.id)
                     const editedRows = rows.map((row, index) => index === itemIndex ? editedItem : row)
                     return { ...state, rows: editedRows }
                 }

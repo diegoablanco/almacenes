@@ -11,5 +11,9 @@ module.exports = {
   },
   database: {
     path: path.join(root, 'data-dev'),
+    host: '127.0.0.1',
+    name: 'warehouses',
+    user: 'sa',
+    password: '%5H4g,sJ8>.FA$Lg'
   },
 };

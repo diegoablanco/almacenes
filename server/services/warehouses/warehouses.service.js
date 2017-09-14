@@ -1,5 +1,5 @@
-// Initializes the `warehouses` service on path `/warehouses`
-const createService = require('feathers-nedb');
+
+const createService = require('feathers-sequelize');
 const createModel = require('../../models/warehouses.model');
 const hooks = require('./warehouses.hooks');
 const filters = require('./warehouses.filters');
@@ -7,7 +7,7 @@ const config = require('config')
 
 module.exports = function () {
   const app = this;
-  const Model = createModel(app);
+  const Model = createModel(app.get('database'));
   const paginate = config.paginate
 
   const options = {

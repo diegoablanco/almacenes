@@ -3,6 +3,7 @@
   "version": "0.3.1",
   "description": "React+Redux+Feathersjs boilerplate with a functional local login supporting email verification and password reset.",
   "scripts": {
+    "sync": "node ./scripts/syncDatabase",
     "test": "npm run eslint && npm run mocha",
     "mocha": "mocha test/ --recursive",
     "eslint": "eslint client/. common/. config/. server/. test/. --ext .js,.jsx",
@@ -79,6 +80,7 @@
     "feathers-reduxify-authentication": "^0.1.1",
     "feathers-reduxify-services": "^1.1.0",
     "feathers-rest": "^1.8.0",
+    "feathers-sequelize": "^2.3.1",
     "feathers-socketio": "^2.0.0",
     "file-loader": "^0.11.2",
     "history": "^4.6.3",
@@ -113,6 +115,7 @@
     "semantic-ui-react": "^0.71.2",
     "serve-favicon": "^2.3.0",
     "sortabular": "^1.4.1",
+    "tedious": "^2.0.0",
     "url-loader": "^0.5.9",
     "webpack": "^3.4.1",
     "webpack-dev-server": "^2.6.1",

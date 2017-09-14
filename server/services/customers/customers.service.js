@@ -1,5 +1,4 @@
-// Initializes the `customers` service on path `/customers`
-const createService = require('feathers-nedb');
+const createService = require('feathers-sequelize');
 const createModel = require('../../models/customers.model');
 const hooks = require('./customers.hooks');
 const filters = require('./customers.filters');
@@ -7,7 +6,7 @@ const config = require('config')
 
 module.exports = function () {
   const app = this;
-  const Model = createModel(app);
+  const Model = createModel(app.get('database'));
   const paginate = config.paginate
 
   const options = {

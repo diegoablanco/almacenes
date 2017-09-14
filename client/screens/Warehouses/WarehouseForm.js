@@ -30,7 +30,13 @@ class WarehouseForm extends Component {
                 label="E-mail"
                 icon='mail'
                 iconPosition='left' 
-                component={renderField}/>       
+                component={renderField}/>      
+            <Field name="phone" 
+                type="text" 
+                label="Teléfono"
+                icon='phone'
+                iconPosition='left' 
+                component={renderField}/>     
           </Form>
         </Grid.Column>
       </Grid>

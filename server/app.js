@@ -1,22 +1,23 @@
 
-const debug = require('debug')('server:app');
-const path = require('path');
-const cors = require('cors');
-const favicon = require('serve-favicon');
+const debug = require('debug')('server:app')
+const path = require('path')
+const cors = require('cors')
+const favicon = require('serve-favicon')
 // const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const compress = require('compression');
+const bodyParser = require('body-parser')
+const compress = require('compression')
 const config = require('config');
 
-const feathers = require('feathers');
-const authentication = require('feathers-authentication');
-const hooks = require('feathers-hooks');
-const rest = require('feathers-rest');
-const socketio = require('feathers-socketio');
+const feathers = require('feathers')
+const authentication = require('feathers-authentication')
+const hooks = require('feathers-hooks')
+const rest = require('feathers-rest')
+const socketio = require('feathers-socketio')
 
-const logger = require('./utils/loggerProduction');
-const middleware = require('./middleware');
-const services = require('./services');
+const logger = require('./utils/loggerProduction')
+const middleware = require('./middleware')
+const services = require('./services')
+const getDatabase = require('./database')
 
 debug('Required');
 
@@ -58,6 +59,7 @@ const app = feathers()
   .configure(hooks())
   .configure(rest())
   .configure(socketio())
+  .set('database', getDatabase())
   .configure(services)
   .configure(middleware)
   .configure(authentication);

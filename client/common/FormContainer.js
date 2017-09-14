@@ -30,7 +30,7 @@ class FormContainer extends Component {
   
   handleSubmit = (values) => {
     const {update, create} = this.props
-    values._id ? update(values) : create(values)
+    values.id ? update(values) : create(values)
   }
 
   render() {
@@ -60,7 +60,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       }) 
     },
     update: (values) => {
-      dispatch(service.update(values._id, values)).then((result) => {
+      dispatch(service.update(values.id, values)).then((result) => {
         dispatch(entityUpdated())
         onUpdated(result.value)
       })
