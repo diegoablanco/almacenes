@@ -2,8 +2,8 @@ import { findIndex, filter } from 'lodash'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
 import { getActionTypes } from '../actions/crudPage'
 
-export function getCrudReducer(crudPage) {
-    const initialState = {
+export function getCrudReducer(crudPage, defaultInitialState = {}) {
+    const initialState = {...{
         reloadGrid: false,
         showModal: false,
         filter: {},
@@ -17,7 +17,7 @@ export function getCrudReducer(crudPage) {
         confirmDialog: {
             show: false
         }
-    }
+    }, ...defaultInitialState}
 
     function getQuery(state) {
         const { filter, sortingColumns } = state
@@ -33,9 +33,11 @@ export function getCrudReducer(crudPage) {
     return (state = initialState, action) => {
         switch(action.type){
             case actionTypes.SHOW_MODAL:
-                return { ...state, showModal: true, id: action.id }
+                return { ...state, showModal: true, id: action.id, showModalLoadingIndicator: true }
             case actionTypes.HIDE_MODAL:
                 return { ...state, showModal: false }
+            case actionTypes.HIDE_MODAL_LOADING_INDICATOR:
+                return { ...state, showModalLoadingIndicator: false }
             case actionTypes.SHOW_CONFIRM_MODAL:
                 return { ...state, confirmDialog: {show: true, id: action.id} }
             case actionTypes.HIDE_CONFIRM_MODAL:

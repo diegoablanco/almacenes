@@ -4,9 +4,6 @@ import FormModal from '../../common/FormModal'
 import CustomerForm, {formName} from './CustomerFormContainer'
 
 export default class CustomerFormModal extends Component{
-    static propTypes = {
-        showModal: PropTypes.bool.isRequired
-    }
     render(){
         const {id, ...rest} = this.props
         return(

@@ -6,6 +6,7 @@ import {crudPage, getCrudReducer} from './crudPage'
 import {crudPages} from '../common/CrudPages'
 import customersPage from './customers'
 import messageBar from './messageBar'
+import customersReducer from './customers'
 
 export default {
   routing: routerReducer,
@@ -16,8 +17,9 @@ export default {
   form: reduxFormReducer, // reducers required by redux-form
   customers: feathersServices.customers.reducer,
   warehouses: feathersServices.warehouses.reducer,
+  phoneTypes: feathersServices.phoneTypes.reducer,
   ui: combineReducers({
-    customers: getCrudReducer(crudPages.CUSTOMERS),
+    customers: customersReducer,
     warehouses: getCrudReducer(crudPages.WAREHOUSES),
     messageBar
   })

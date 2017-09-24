@@ -8,6 +8,7 @@ import {
   SubmissionError,
   initialize
 } from 'redux-form'
+import { Form } from 'semantic-ui-react'
 import { entityCreated, entityUpdated } from '../actions/messageBar'
 
 class FormContainer extends Component {
@@ -20,12 +21,18 @@ class FormContainer extends Component {
     onCreated: () => {},
     onUpdated: () => {}
   }
+  shouldComponentUpdate(){
+      return false
+  }
+  innerForm = ({handleSubmit, loading, formContent}) => {
+    return(   
+      <Form onSubmit={handleSubmit} loading={loading}>
+        <this.props.form />
+      </Form>)
+  }
   componentDidMount(){
-    const { id } = this.props
-    if(id){
-      const { id, get, initializeFromData } = this.props
-      get(id).then((response) => initializeFromData(response.value))
-    }
+    const { initializeForm, formName, id , defaultData = {}} = this.props
+    initializeForm(formName, id, defaultData)
   }
   
   handleSubmit = (values) => {
@@ -34,19 +41,20 @@ class FormContainer extends Component {
   }
 
   render() {
-    const { formName, validate } = this.props
+    const { formName, validate, selectors } = this.props
     const ReduxForm = reduxForm({
       form: formName,
       validate: validate,
       // asyncBlurFields: ['email', 'password'],
       // asyncValidate: (values, dispatch, props) => new Promise(...),
-      onSubmit: this.handleSubmit,
-    })(this.props.form)
+      onSubmit: this.handleSubmit
+    })(connect(state => ({loading: selectors.getUiState(state).showModalLoadingIndicator}))(this.innerForm))
     return ( <ReduxForm /> )
   }
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  id: ownProps.selectors.getUiState(state).id
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -64,11 +72,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         dispatch(entityUpdated())
         onUpdated(result.value)
       })
-    },
-    get: (id) => dispatch(service.get(id)),
-    initializeFromData: (data) => {
-      const {formName} = ownProps
-      dispatch(initialize(formName, data))
     }    
   }
 }

@@ -10,8 +10,24 @@ module.exports = {
     all: [
       auth.authenticate(['jwt', 'local'])
     ],
-    find: [],
-    get: [],
+    find: [
+      function(hook){
+        const { models: { address}} = hook.app.get('database')
+        hook.params.sequelize = {
+           raw: false,
+           include: [ address ]
+        }
+      }
+    ],
+    get: [
+      function(hook){
+        const { models: { address}} = hook.app.get('database')
+        hook.params.sequelize = {
+           raw: false,
+           include: [ address ]
+        }
+      }
+    ],
     create: [validateSchema(schema, Ajv, {addNewError: errorReducer}), setCreatedAt()],
     update: [],
     patch: [],
@@ -20,7 +36,9 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
+    find: [function(hook){
+      var a
+    }],
     get: [],
     create: [],
     update: [],

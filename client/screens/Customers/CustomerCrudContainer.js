@@ -4,8 +4,7 @@ import { feathersServices } from '../../feathers'
 import CustomerFormModal from './CustomerFormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
-import { crudPages } from '../../common/CrudPages'
-import { getCrudPageActions } from '../../actions/crudPage'
+import { getCrudPageActions } from '../../actions/customers'
 import * as selectors from '../../selectors/customers'
 
 export default class CustomerCrud extends Component {
@@ -13,7 +12,7 @@ export default class CustomerCrud extends Component {
         return false
     }
 
-    gridColumns = [['name', 'Nombre'], ['email', 'E-mail'], ['phone', 'Teléfono']]
+    gridColumns = [['companyName', 'Nombre'], ['email', 'E-mail'], ['phone', 'Teléfono']]
 
     confirmModalOptions = {        
         title:"Eliminar Cliente",
@@ -21,7 +20,7 @@ export default class CustomerCrud extends Component {
     }
 
     render(){
-        const crudActions = getCrudPageActions(crudPages.CUSTOMERS, feathersServices.customers, selectors)
+        const crudActions = getCrudPageActions()
         return(       
             <div> 
                 <CrudContainer

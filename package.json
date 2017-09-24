@@ -3,7 +3,7 @@
   "version": "0.3.1",
   "description": "React+Redux+Feathersjs boilerplate with a functional local login supporting email verification and password reset.",
   "scripts": {
-    "sync": "node ./scripts/syncDatabase",
+    "syncdb": "node ./scripts/syncDatabase",
     "test": "npm run eslint && npm run mocha",
     "mocha": "mocha test/ --recursive",
     "eslint": "eslint client/. common/. config/. server/. test/. --ext .js,.jsx",

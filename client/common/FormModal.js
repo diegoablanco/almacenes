@@ -20,7 +20,10 @@ class FormModal extends Component {
             title,
             formName,
             onCreated,
-            onEdited } = this.props
+            onEdited,
+            initializeForm,
+            selectors
+         } = this.props
         
         return(
                 <Modal
@@ -28,7 +31,7 @@ class FormModal extends Component {
                     size='small'>
                     <Modal.Header content={title} />
                     <Modal.Content>
-                        <this.props.form id={id} onCreated={onCreated} onUpdated={onEdited}/>
+                        <this.props.form onCreated={onCreated} onUpdated={onEdited} initializeForm={initializeForm} selectors={selectors}/>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button onClick={handleClose}>
@@ -43,11 +46,12 @@ class FormModal extends Component {
     }
 }
 const mapStateToProps = (state, ownProps) => {      
-    const {formName} = ownProps
+    const {formName, selectors} = ownProps
     return {    
         pristine: isPristine(formName)(state),
         submitting: isSubmitting(formName)(state),
-        submitSucceeded: hasSubmitSucceeded(formName)(state)
+        submitSucceeded: hasSubmitSucceeded(formName)(state),
+        showModal: selectors.getUiState(state).showModal
     }
 };
 

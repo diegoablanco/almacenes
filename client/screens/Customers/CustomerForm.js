@@ -1,45 +1,112 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Field } from 'redux-form'
-import { Button, Form, Grid } from 'semantic-ui-react'
+import { Field, FieldArray } from 'redux-form'
+import { Button, Form, Grid, Divider, Tab, Segment } from 'semantic-ui-react'
 import classnames from 'classnames'
 import { renderField } from '../../utils/formHelpers'
+import renderContactFields from '../../common/ContactFields'
 
-class CustomerForm extends Component {
-  static propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    pristine: PropTypes.bool.isRequired,
-    invalid: PropTypes.bool.isRequired,
-    reset: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-  }
-    
+class CustomerForm extends Component {  
   render() {
-    const { handleSubmit, pristine, reset, submitting, invalid } = this.props;
+    const panes = [
+      { menuItem: 'Información de Contacto', render: () => <Tab.Pane>              
+        <Form.Group>
+          <Field name="companyName" width={12}
+              type="text" 
+              label="Nombre de la Compañía"
+              component={renderField}/>
+          <Field name="vat" width={4}
+              type="text" 
+              label="VAT"
+              component={renderField}/>
+        </Form.Group>      
+        <Field name="address.line1" 
+            type="text" 
+            label="Dirección"
+            iconPosition='left' 
+            component={renderField}/>      
+        <Form.Group widths="equal">
+          <Field name="address.zipCode" 
+              type="text" 
+              label="Código Postal"
+              iconPosition='left' 
+              component={renderField}/>      
+          <Field name="address.city" 
+              type="text" 
+              label="Ciudad"
+              component={renderField}/>      
+          <Field name="address.country" 
+              type="text" 
+              label="Pais"
+              iconPosition='left' 
+              component={renderField}/>    
+        </Form.Group>
+        <Divider horizontal>Firmante Autorizado</Divider>
+        <Field name="authorizedSignatory.name" 
+            label="Nombre"
+            iconPosition='left' 
+            component={renderField}/>      
+        <Form.Group widths="equal">
+          <Field name="authorizedSignatory.position" 
+              label="Posición"
+              iconPosition='left' 
+              component={renderField}/>      
+          <Field name="authorizedSignatory.email" 
+              label="Email"
+              iconPosition='left' 
+              component={renderField}/>
+        </Form.Group>
+      </Tab.Pane> },
+      { menuItem: 'Información de la Cuenta', render: () => <Tab.Pane>
+        <Field name="account.bankName" 
+            type="text" 
+            label="Nombre del Banco"
+            component={renderField}/>      
+        <Field name="account.number" 
+            type="text" 
+            label="Número de Cuenta"
+            iconPosition='left' 
+            component={renderField}/>      
+        <Form.Group widths="equal">
+          <Field name="account.iban" 
+              type="text" 
+              label="IBAN"
+              component={renderField}/>      
+          <Field name="account.swiftBic" 
+              type="text" 
+              label="SWIFT/BIC"
+              iconPosition='left' 
+              component={renderField}/>      
+        </Form.Group>
+          <Field name="account.address.line1" 
+              type="text" 
+              label="Dirección"
+              iconPosition='left' 
+              component={renderField}/>      
+        <Form.Group widths="equal">  
+          <Field name="account.address.zip" 
+              type="text" 
+              label="Código Postal"
+              iconPosition='left' 
+              component={renderField}/>    
+          <Field name="account.address.city" 
+              type="text" 
+              label="Ciudad"
+              iconPosition='left' 
+              component={renderField}/>      
+          <Field name="account.address.country" 
+              type="text" 
+              label="País"
+              iconPosition='left' 
+              component={renderField}/>     
+        </Form.Group>  
+        <Divider horizontal>Personas Autorizadas</Divider>
+        <FieldArray name="authorizedPersons" component={renderContactFields("Persona Autorizada")} />
+      </Tab.Pane> },
+    ]
+    return (     
+        <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false}/>
 
-    return (
-      <Grid verticalAlign="middle" centered textAlign="center">
-        <Grid.Column tablet={10} mobile={16} computer={6}>
-          <Form onSubmit={handleSubmit} size='large'>
-            <Field name="name" 
-                type="text" 
-                label="Nombre"
-                component={renderField}/>      
-            <Field name="email" 
-                type="text" 
-                label="E-mail"
-                icon='mail'
-                iconPosition='left' 
-                component={renderField}/>      
-            <Field name="phone" 
-                type="text" 
-                label="Teléfono"
-                icon='phone'
-                iconPosition='left' 
-                component={renderField}/>      
-          </Form>
-        </Grid.Column>
-      </Grid>
     )
   }
 }

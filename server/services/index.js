@@ -10,6 +10,7 @@ const user = require('./user')
 const message = require('./message')
 const customers = require('./customers/customers.service.js')
 const warehouses = require('./warehouses/warehouses.service.js')
+const phoneTypes = require('./phoneTypes/phoneTypes.service.js')
 
 const tryHook = require('./hooks/tryHook')
 const logger = require('../utils/loggerProduction')
@@ -25,6 +26,7 @@ module.exports = function () {
   app.configure(message);
   app.configure(customers);
   app.configure(warehouses);
+  app.configure(phoneTypes);
 
   // get client config file
   app.use(`${config.apiPath}/config`, {

@@ -25,7 +25,8 @@ class CrudContainer extends Component {
             id,
             showConfirmModal,
             hideConfirmModal,
-            confirmDeleteItem
+            confirmDeleteItem,
+            initializeForm
         } = this.props
         return(        
             <div>
@@ -38,11 +39,12 @@ class CrudContainer extends Component {
                     toolbar={toolbar}   
                 />
                 <this.props.formModal 
-                    showModal={showModal}
+                    selectors={selectors}   
                     id={id} 
                     onCreated={itemCreated} 
                     onEdited={itemEdited} 
                     handleClose={hideModal} 
+                    initializeForm={initializeForm}
                 />
                 <ConfirmModal 
                     {...confirmModalOptions}

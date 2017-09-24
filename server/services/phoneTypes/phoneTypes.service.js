@@ -1,21 +1,19 @@
 
 const createService = require('feathers-sequelize')
-const createModel = require('../../models/warehouse')
-const hooks = require('./warehouses.hooks')
-const filters = require('./warehouses.filters')
+const createModel = require('../../models/phoneType')
+const hooks = require('./phoneTypes.hooks')
+const filters = require('./phoneTypes.filters')
 const config = require('config')
 
 module.exports = function () {
   const app = this;
   const Model = createModel(app.get('database'))
-  const paginate = config.paginate
 
   const options = {
-    name: 'warehouses',
-    Model,
-    paginate
+    name: 'phoneTypes',
+    Model
   };
-  const servicePath = `${config.apiPath}/warehouses`
+  const servicePath = `${config.apiPath}/phoneTypes`
   // Initialize our service with any options it requires
   app.use(servicePath, createService(options))
 

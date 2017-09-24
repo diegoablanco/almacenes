@@ -1,26 +1,27 @@
-const path = require('path')
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {  
-  return sequelize.define('customers', {
+  const Contact = sequelize.define('contact', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true,
-      
+      primaryKey: true      
     },
     name: {
       type: Sequelize.STRING,
       allowNull: false
     }, 
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false
+    position: {
+      type: Sequelize.STRING
     }, 
-    phone: {
+    email: {
       type: Sequelize.STRING,
       allowNull: false
     } 
   })
-};
+  Contact.associate = function(models){
+    Contact.hasMany(models['phone'])
+  }
+  return Contact
+}

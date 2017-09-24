@@ -2,7 +2,7 @@ const path = require('path')
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {  
-  return sequelize.define('warehouses', {
+  return sequelize.define('warehouse', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,

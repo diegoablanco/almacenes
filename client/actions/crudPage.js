@@ -5,7 +5,9 @@ import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
 export function getActionTypes(crudPage = ''){
     return {
         SHOW_MODAL: `${crudPage}/SHOW_MODAL`,
+        SHOW_MODAL_LOADING_INDICATOR: `${crudPage}/SHOW_MODAL_LOADING_INDICATOR`,
         HIDE_MODAL: `${crudPage}/HIDE_MODAL`,
+        HIDE_MODAL_LOADING_INDICATOR: `${crudPage}/HIDE_MODAL_LOADING_INDICATOR`,
         SHOW_CONFIRM_MODAL: `${crudPage}/SHOW_CONFIRM_MODAL`,
         HIDE_CONFIRM_MODAL: `${crudPage}/HIDE_CONFIRM_MODAL`,
         SET_FILTER: `${crudPage}/SET_FILTER`,

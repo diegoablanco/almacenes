@@ -15,6 +15,12 @@ class CustomerFormContainer extends Component{
     validate(values){
         return makeValidator(schema)(values)
     }
+    defaultData = {
+        authorizedPersons: [{
+            name: "das",
+            phones: [{ number: "12345"}]
+        }]
+    }
     render(){
         const {id, ...rest} = this.props
         const validate = this.validate
@@ -26,11 +32,13 @@ class CustomerFormContainer extends Component{
             form={CustomerForm}
             formName={formName} 
             validate={validate}  
+            defaultData={this.defaultData}
         />)
     }
 }
 
 const mapStateToProps = (state) => ({
-    data: state.customers.data
-});
-export default CustomerFormContainer
+    data: state.customers.data,
+    ui: state.ui.customers
+})
+export default connect(mapStateToProps)(CustomerFormContainer)
