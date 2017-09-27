@@ -9,10 +9,12 @@ module.exports = function (sequelize) {
       primaryKey: true      
     }, 
     bankName: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false,
     },
     number: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
     },
     iban: {
       type: Sequelize.STRING

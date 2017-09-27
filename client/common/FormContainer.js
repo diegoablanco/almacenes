@@ -24,38 +24,55 @@ class FormContainer extends Component {
   shouldComponentUpdate(){
       return false
   }
-  innerForm = ({handleSubmit, loading, formContent}) => {
+  innerForm = (F) => ({handleSubmit, loading, formContent}) => {
     return(   
       <Form onSubmit={handleSubmit} loading={loading}>
-        <this.props.form />
+        <F/>
       </Form>)
   }
   componentDidMount(){
     const { initializeForm, formName, id , defaultData = {}} = this.props
     initializeForm(formName, id, defaultData)
   }
-  
-  handleSubmit = (values) => {
+  componentWillUnmount(){
+
+  }
+  handleSubmit = (values, isLastForm) => {
     const {update, create} = this.props
     values.id ? update(values) : create(values)
   }
 
   render() {
     const { formName, validate, selectors } = this.props
-    const ReduxForm = reduxForm({
+    
+    const rf = reduxForm({
       form: formName,
       validate: validate,
       // asyncBlurFields: ['email', 'password'],
       // asyncValidate: (values, dispatch, props) => new Promise(...),
-      onSubmit: this.handleSubmit
-    })(connect(state => ({loading: selectors.getUiState(state).showModalLoadingIndicator}))(this.innerForm))
-    return ( <ReduxForm /> )
+      destroyOnUnmount: false      
+    })
+    const forms = [].concat(this.props.form)
+    //const ReduxForm = rf(connect(state => ({loading: selectors.getUiState(state).showModalLoadingIndicator}))(this.innerForm(this.props.form)))
+    return ( 
+      <div>
+        {forms.map((f, index) => {
+        let ReduxForm = rf(connect(state => ({loading: selectors.getUiState(state).showModalLoadingIndicator}))(this.innerForm(f)))
+        return <ReduxForm key={formName + index} onSubmit={(values) => this.handleSubmit(values, index === forms.length -1)} />
+      }) }
+    </div>
+  )
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  id: ownProps.selectors.getUiState(state).id
-});
+const mapStateToProps = (state, ownProps) => 
+  {
+    const {id, showModalLoadingIndicator} = ownProps.selectors.getUiState(state)
+    return {
+      id,
+      loading: showModalLoadingIndicator
+    }
+}
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { service, onCreated, onUpdated } = ownProps

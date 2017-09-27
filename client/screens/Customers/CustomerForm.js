@@ -104,9 +104,9 @@ class CustomerForm extends Component {
         <FieldArray name="authorizedPersons" component={renderContactFields("Persona Autorizada")} />
       </Tab.Pane> },
     ]
+    const {handleSubmit, loading} = this.props
     return (     
         <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false}/>
-
     )
   }
 }

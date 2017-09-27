@@ -4,17 +4,14 @@ import { connect } from 'react-redux'
 import {feathersServices} from '../../feathers'
 import FormContainer from '../../common/FormContainer'
 import CustomerForm from './CustomerForm'
-import Ajv from 'ajv'
-import makeValidator from '../../utils/makeValidator'
-import schema from '../../../common/validation/customer.json'
+import getCustomerSchema from '../../../common/validation/customer'
+import validate from 'redux-form-with-ajv'
 
 export const formName = "Customer"
 class CustomerFormContainer extends Component{
     static propTypes = {
     }
-    validate(values){
-        return makeValidator(schema)(values)
-    }
+    
     defaultData = {
         authorizedPersons: [{
             name: "das",
@@ -23,7 +20,6 @@ class CustomerFormContainer extends Component{
     }
     render(){
         const {id, ...rest} = this.props
-        const validate = this.validate
         
         return(<FormContainer
             {...rest}
@@ -31,7 +27,7 @@ class CustomerFormContainer extends Component{
             id={id}
             form={CustomerForm}
             formName={formName} 
-            validate={validate}  
+            validate={validate(getCustomerSchema())}  
             defaultData={this.defaultData}
         />)
     }
