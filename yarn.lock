@@ -114,6 +114,14 @@ after@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
 
+ajv-errors@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.0.tgz#ecf021fa108fd17dfb5e6b383f2dd233e31ffc59"
+
+ajv-i18n@^2.1.1:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/ajv-i18n/-/ajv-i18n-2.2.0.tgz#705f5c548b60647f40e7616b341908f60b7365d2"
+
 ajv-keywords@^1.0.0:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-1.5.1.tgz#314dd0a4b3368fad3dfcdc54ede6171b886daf3c"
@@ -6625,6 +6633,10 @@ object-keys@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-0.4.0.tgz#28a6aae7428dd2c3a92f3d95f21335dd204e0336"
 
+object-path@^0.11.4:
+  version "0.11.4"
+  resolved "https://registry.yarnpkg.com/object-path/-/object-path-0.11.4.tgz#370ae752fbf37de3ea70a861c23bba8915691949"
+
 object.assign@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/object.assign/-/object.assign-4.0.4.tgz#b1c9cc044ef1b9fe63606fc141abbb32e14730cc"
@@ -7904,6 +7916,14 @@ redux-auth-wrapper@^2.0.1:
     prop-types "15.5.8"
     query-string "4.3.4"
 
+redux-form-with-ajv@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/redux-form-with-ajv/-/redux-form-with-ajv-0.0.3.tgz#3d6628aa5a1dc9732a6e5dcc6bc9c435ca2d9e26"
+  dependencies:
+    ajv "^5.2.2"
+    ajv-errors "^1.0.0"
+    object-path "^0.11.4"
+
 redux-form@^6.0.2:
   version "6.8.0"
   resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-6.8.0.tgz#ff1b590b59f987d7e3ff080d752f7120bfe42af3"
@@ -8360,6 +8380,7 @@ semantic-ui@^2.2.11:
     gulp-watch "^4.3.11"
     jquery "^3.2.1"
     map-stream "^0.1.0"
+    merge-stream "^1.0.0"
     mkdirp "^0.5.1"
     require-dot-file "^0.4.0"
     run-sequence "^2.0.0"

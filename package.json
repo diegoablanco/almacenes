@@ -20,7 +20,7 @@
     "start:devserver": "NODE_ENV=devserver node server/index.js",
     "win:build": "set NODE_ENV=production&& webpack --config webpack.production.config.js --history-api-fallback --progress --colors",
     "win:build:dev": "set NODE_ENV=development&& webpack --config webpack.production.config.js --history-api-fallback --progress --colors",
-    "win:build:devserver": "set NODE_ENV=devserver&& webpack-dev-server --config webpack.devserver.config.js --content-base public/dist/",
+    "win:build:devserver": "set NODE_ENV=devserver && webpack-dev-server --config webpack.devserver.config.js --content-base public/dist/",
     "win:build:devserver:size-analizer": "webpack --json --config webpack.devserver.config.js --content-base  | webpack-bundle-size-analyzer ",
     "win:start": "set NODE_ENV=production&& node server/index.js",
     "win:start:dev": "set NODE_ENV=development&& node server/index.js",
@@ -53,6 +53,7 @@
   "homepage": "https://github.com/eddyystop/feathers-starter-react-redux-login-roles#readme",
   "dependencies": {
     "ajv": "^5.2.2",
+    "ajv-i18n": "^2.1.1",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
     "classnames": "^2.2.5",
