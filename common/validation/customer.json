@@ -1,0 +1,15 @@
+{
+    "id": "http://xarxa.com/schemas/customer.json#",
+    "title": "Warehouse customer",
+    "description": "A warehouse customer",
+    "type": "object",
+    "properties": {
+      "companyName": {
+        "type": "string"
+      },
+      "authorizedSignatory": {"type": ["object", "null"], "$ref": "contact.json#"},
+      "address": {"type": ["object", "null"], "oneOf": [{"$ref": "address.json#"}, {"type": "null"}]},
+      "account": {"type": ["object", "null"], "$ref": "account.json#"}
+    },
+    "required": ["companyName"]
+}

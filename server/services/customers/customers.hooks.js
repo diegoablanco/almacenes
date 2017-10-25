@@ -6,8 +6,11 @@ const {
   setCreatedAt,
   setUpdatedAt
 } = commonHooks;
-const schema = require('../../../common/validation/customer')()
-const constactSchema = require('../../../common/validation/contact')()
+const customerSchema = require('../../../common/validation/customer.json')
+const contactSchema = require('../../../common/validation/contact.json')
+const phoneSchema = require('../../../common/validation/phone.json')
+const addressSchema = require('../../../common/validation/address.json')
+const accountSchema = require('../../../common/validation/account.json')
 const errorReducer = require('../../helpers/errorReducer')
 
 function addIncludes(hook) {
@@ -29,7 +32,7 @@ function addIncludes(hook) {
       }, {
         model: contact,
         as: 'authorizedSignatory',
-        include: [phone]
+        include: [phone, address]
       }, {
         model: contact,
         as: 'authorizedPerson',
@@ -38,7 +41,18 @@ function addIncludes(hook) {
     ]
   }
 }
-
+function validate(){
+  var ajv = Ajv({allErrors: true})
+  ajv.addSchema(customerSchema)
+  ajv.addSchema(contactSchema)
+  ajv.addSchema(phoneSchema)
+  ajv.addSchema(addressSchema)
+  ajv.addSchema(accountSchema)
+  
+  return validateSchema(customerSchema, ajv, {
+    addNewError: errorReducer
+  })
+} 
 module.exports = {
   before: {
     all: [
@@ -80,16 +94,12 @@ module.exports = {
       }
     ],
     create: [
-      validateSchema(schema, Ajv, {
-        addNewError: errorReducer
-      }),
+      validate(),
       setCreatedAt(),
       addIncludes
     ],
     update: [
-      validateSchema(schema, Ajv, {
-        addNewError: errorReducer
-      }),
+      validate(),
       function (hook) {
         const {
           models: {
@@ -121,18 +131,37 @@ module.exports = {
             }
         ]
         }
-        customer.findOne(filter).then(function (c) {
-          if(c.address)
-            c.address.updateAttributes(hook.data.address)
-          if (c.authorizedSignatory)
-            c.authorizedSignatory.updateAttributes(hook.data.authorizedSignatory)
-          else {
-            const ajv = Ajv({
-              allErrors: true
-            })
-            const validate = ajv.compile(constactSchema)
-            if (validate(hook.data.authorizedSignatory))
+        customer.findOne(filter).then(function (c) {          
+          if(hook.data.address){
+            if(c.address)
+              c.address.update(hook.data.address)
+            else{
+              address.create(hook.data.address).then(address => c.setAddress(address))
+            }
+          }
+
+          if(hook.data.authorizedSignatory){
+            if (c.authorizedSignatory)
+              c.authorizedSignatory.updateAttributes(hook.data.authorizedSignatory)
+            else {
               contact.create(hook.data.authorizedSignatory).then(authorizedSignatory => c.setAuthorizedSignatory(authorizedSignatory))
+            }
+          }
+          
+
+          if(hook.data.account){
+            if(c.account){
+              c.account.update({ values: hook.data.account, options: { fields: Object.keys(hook.data.account).filter(key => ["address", "createdAt", "updatedAt"].indexOf(key) == -1)}})
+              
+              if(hook.data.account.address){
+                if(c.account.address)
+                  c.account.address.update(hook.data.account.address)
+                else
+                  address.create(hook.data.account.address).then(address => c.account.setAddress(address))
+              }
+            }
+            else
+              account.create(hook.data.account, {include: [address]}).then(account => c.setAccount(account))
           }
         })
       }
@@ -146,7 +175,13 @@ module.exports = {
     find: [function (hook) {
       var a
     }],
-    get: [],
+    get: [
+      function (context) {
+          if(context.result.addressId === null)
+           delete context.result.addressId
+           context.result.sarasa = 1
+           return context 
+      }],
     create: [],
     update: [],
     patch: [],

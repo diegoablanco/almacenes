@@ -1,6 +1,9 @@
 const contactSchema = require('./contact')()
 module.exports = function () {
   return ({
+    id: "http://xarxa.com/schemas/account#",
+    title: "Customer account",
+    description: "A customer account",
     type: ["object"],
     properties: {
       bankName: {
@@ -9,7 +12,7 @@ module.exports = function () {
       number: {
         type: "string"
       },
-      authorizedPerson: Object.assign(contactSchema, {type: ["object", "null"]})
+      authorizedPerson: {type: ["object", "null"], "$ref": "contact#"}
     },
     required: ["bankName", "number"]
   })

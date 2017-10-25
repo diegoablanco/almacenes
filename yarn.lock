@@ -7916,12 +7916,13 @@ redux-auth-wrapper@^2.0.1:
     prop-types "15.5.8"
     query-string "4.3.4"
 
-redux-form-with-ajv@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/redux-form-with-ajv/-/redux-form-with-ajv-0.0.3.tgz#3d6628aa5a1dc9732a6e5dcc6bc9c435ca2d9e26"
+redux-form-with-ajv@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/redux-form-with-ajv/-/redux-form-with-ajv-0.3.0.tgz#497c38e20ff2f2970b2a0bf0284a20c752b9a8f3"
   dependencies:
     ajv "^5.2.2"
     ajv-errors "^1.0.0"
+    object-assign "^4.1.1"
     object-path "^0.11.4"
 
 redux-form@^6.0.2:

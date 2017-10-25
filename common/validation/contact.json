@@ -1,0 +1,20 @@
+{
+  "id": "http://xarxa.com/schemas/contact.json#",
+  "title": "Customer",
+  "description": "A contact",
+    "type": ["object"],
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string",
+        "format": "email"
+      },
+      "phones": {
+        "type": ["array", "null"],
+        "items": { "type": ["object", "null"], "$ref": "phone.json#"}
+      }
+    },
+    "required": ["name", "email"]
+  }

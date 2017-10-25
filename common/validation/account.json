@@ -1,0 +1,28 @@
+{
+  "id": "http://xarxa.com/schemas/account.json#",
+  "title": "Customer account",
+  "description": "A customer account",
+  "type": [
+    "object"
+  ],
+  "properties": {
+    "bankName": {
+      "type": "string"
+    },
+    "number": {
+      "type": "string"
+    },
+    "authorizedPerson": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "$ref": "contact.json#"
+    },
+    "address": {"type": ["object", "null"], "oneOf": [{"$ref": "address.json#"}, {"type": "null"}]}
+  },
+  "required": [
+    "bankName",
+    "number"
+  ]
+}

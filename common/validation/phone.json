@@ -1,0 +1,15 @@
+{
+  "id": "http://xarxa.com/schemas/phone.json#",
+  "title": "Phone",
+  "description": "A phone number",
+  "type": ["object"],
+  "properties": {
+      "number": {
+          "type": "string"
+      },
+      "type": {
+          "type": "object"
+      }
+  },
+  "required": ["number", "type"]
+}

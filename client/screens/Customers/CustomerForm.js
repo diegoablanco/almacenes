@@ -84,7 +84,7 @@ class CustomerForm extends Component {
               iconPosition='left' 
               component={renderField}/>      
         <Form.Group widths="equal">  
-          <Field name="account.address.zip" 
+          <Field name="account.address.zipCode" 
               type="text" 
               label="Código Postal"
               iconPosition='left' 
@@ -106,7 +106,7 @@ class CustomerForm extends Component {
     ]
     const {handleSubmit, loading} = this.props
     return (     
-        <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false}/>
+        <Tab panes={panes} menu={{ secondary: true, pointing: true }}/>
     )
   }
 }

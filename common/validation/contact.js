@@ -15,6 +15,6 @@ module.exports = function () {
         items: Object.assign(phoneSchema, {type: ["object", "null"]})
       }
     },
-    required: ["name"]
+    required: ["name", "email"]
   })
 }
