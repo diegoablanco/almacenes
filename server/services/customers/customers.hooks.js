@@ -29,15 +29,19 @@ function addIncludes(hook) {
       },
       {
         model: address
-      }, {
+      }, 
+      {
         model: contact,
         as: 'authorizedSignatory',
-        include: [phone, address]
-      }, {
+        include: [phone],
+        scope: { contactType: 'customerAuthorizedSignatory' }
+      }, 
+      {
         model: contact,
-        as: 'authorizedPerson',
-        include: [phone]
-      },
+        as: 'authorizedPersons',
+        include: [phone],
+        scope: { contactType: 'customerAuthorizedPerson' }
+      }
     ]
   }
 }
@@ -77,7 +81,8 @@ module.exports = {
           models: {
             address,
             contact,
-            account
+            account,
+            phone
           }
         } = hook.app.get('database')
         hook.params.sequelize = {
@@ -88,7 +93,8 @@ module.exports = {
           }, 
           {
             model: contact,
-            as: 'authorizedSignatory'
+            as: 'authorizedSignatory',
+            scope: { contactType: 'customerAuthorizedSignatory' }
           }]
         }
       }
@@ -122,12 +128,14 @@ module.exports = {
             {
               model: contact,
               as: 'authorizedSignatory',
-              include: [phone]
+              include: [phone],
+              scope: { contactType: 'customerAuthorizedSignatory' }
             }, 
             {
               model: contact,
-              as: 'authorizedPerson',
-              include: [phone]
+              as: 'authorizedPersons',
+              include: [phone],
+              scope: { contactType: 'customerAuthorizedPerson' }
             }
         ]
         }
@@ -151,7 +159,7 @@ module.exports = {
 
           if(hook.data.account){
             if(c.account){
-              c.account.update({ values: hook.data.account, options: { fields: Object.keys(hook.data.account).filter(key => ["address", "createdAt", "updatedAt"].indexOf(key) == -1)}})
+              c.account.update(hook.data.account)
               
               if(hook.data.account.address){
                 if(c.account.address)
@@ -162,6 +170,16 @@ module.exports = {
             }
             else
               account.create(hook.data.account, {include: [address]}).then(account => c.setAccount(account))
+          }
+
+          if(hook.data.authorizedPersons){
+            hook.data.authorizedPersons.filter(authorizedPerson => authorizedPerson.id).forEach(authorizedPerson => 
+              contact.update(authorizedPerson))
+            hook.data.authorizedPersons.filter(authorizedPerson => !authorizedPerson.id)
+            .forEach(authorizedPerson => 
+              contact.create(authorizedPerson).then(authorizedPerson => 
+                c.addAuthorizedPerson(authorizedPerson))
+            )
           }
         })
       }
@@ -177,10 +195,12 @@ module.exports = {
     }],
     get: [
       function (context) {
-          if(context.result.addressId === null)
-           delete context.result.addressId
-           context.result.sarasa = 1
-           return context 
+          if(context.result.dataValues.address === null)
+            delete context.result.dataValues.address
+          if(context.result.dataValues.authorizedSignatory === null)
+            delete context.result.dataValues.authorizedSignatory
+          if(context.result.dataValues.account === null)
+            delete context.result.dataValues.account
       }],
     create: [],
     update: [],

@@ -8,7 +8,7 @@
         "type": "string"
       },
       "authorizedSignatory": {"type": ["object", "null"], "$ref": "contact.json#"},
-      "address": {"type": ["object", "null"], "oneOf": [{"$ref": "address.json#"}, {"type": "null"}]},
+      "address": {"type": ["object", "null"], "$ref": "address.json#"},
       "account": {"type": ["object", "null"], "$ref": "account.json#"}
     },
     "required": ["companyName"]

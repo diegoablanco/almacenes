@@ -19,7 +19,7 @@
       ],
       "$ref": "contact.json#"
     },
-    "address": {"type": ["object", "null"], "oneOf": [{"$ref": "address.json#"}, {"type": "null"}]}
+    "address": {"type": ["object", "null"], "$ref": "address.json#"}
   },
   "required": [
     "bankName",

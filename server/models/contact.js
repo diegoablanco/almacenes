@@ -18,7 +18,10 @@ module.exports = function (sequelize) {
     email: {
       type: Sequelize.STRING,
       allowNull: false
-    } 
+    }, 
+    contactType: {
+      type: Sequelize.STRING
+    }     
   })
   Contact.associate = function(models){
     Contact.hasMany(models['phone'])

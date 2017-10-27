@@ -32,8 +32,8 @@ module.exports = function (sequelize) {
   Customer.associate = function(models){
     Customer.belongsTo(models['account'])
     Customer.belongsTo(models['address'])  
-    Customer.hasOne(models['contact'], { as: 'authorizedSignatory'})
-    Customer.hasMany(models['contact'], { as: 'authorizedPerson'})
+    Customer.hasOne(models['contact'], { as: 'authorizedSignatory', scope: { contactType: 'customerAuthorizedSignatory' }})
+    Customer.hasMany(models['contact'], { as: 'authorizedPerson', scope: { contactType: 'customerAuthorizedPerson' }})
   }
   return Customer
 }
