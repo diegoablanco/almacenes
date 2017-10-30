@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {  
-  return sequelize.define('address', {
+  const Address = sequelize.define('address', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
@@ -24,4 +24,8 @@ module.exports = function (sequelize) {
       type: Sequelize.STRING
     }
   })
+  Address.associate = function(models){
+    //Address.belongsTo(models['customer'])
+  }
+  return Address
 };

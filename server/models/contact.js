@@ -24,7 +24,7 @@ module.exports = function (sequelize) {
     }     
   })
   Contact.associate = function(models){
-    Contact.hasMany(models['phone'])
+    Contact.belongsToMany(models['phone'], {as: 'phones', through: 'contact_phones'})
   }
   return Contact
 }

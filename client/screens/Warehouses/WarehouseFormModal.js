@@ -4,9 +4,6 @@ import FormModal from '../../common/FormModal'
 import WarehouseForm, {formName} from './WarehouseFormContainer'
 
 export default class WarehouseFormModal extends Component{
-    static propTypes = {
-        showModal: PropTypes.bool.isRequired
-    }
     render(){
         const {id, ...rest} = this.props
         return(

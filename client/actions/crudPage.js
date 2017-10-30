@@ -1,4 +1,5 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions'
+import { initialize as initializeReduxForm} from 'redux-form'
 import { entityDeleted } from './messageBar'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
 
@@ -58,7 +59,24 @@ export function getCrudPageActions(crudPage, serviceActions, selectors){
             type: actionTypes.RESET_PAGE_NUMBER
         }
     }
+    
     return {
+        initializeForm(formName, id, defaultData){
+            return (dispatch, getState) => {
+                dispatch({ type: actionTypes.SHOW_MODAL })
+                
+                if(id)
+                    dispatch(serviceActions.get(id))
+                        .then((response) => {
+                            dispatch(initializeReduxForm(formName, response.value))
+                            dispatch({ type: actionTypes.HIDE_MODAL_LOADING_INDICATOR })
+                        })                  
+                else{
+                    dispatch(initializeReduxForm(formName, defaultData))
+                    dispatch({ type: actionTypes.HIDE_MODAL_LOADING_INDICATOR })
+                }
+            }
+        },
         buildRows,
         itemAdded(addedItem){
             return (dispatch) => {

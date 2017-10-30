@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import {feathersServices} from '../../feathers'
 import FormContainer from '../../common/FormContainer'
 import WarehouseForm from './WarehouseForm'
-import Ajv from 'ajv'
-import makeValidator from '../../utils/makeValidator'
+import getValidator from '../../common/Validation'
 import schema from '../../../common/validation/warehouse.json'
 
 export const formName = "Warehouse"
@@ -23,7 +22,7 @@ class WarehouseFormContainer extends Component{
             id={id}
             form={WarehouseForm}
             formName={formName} 
-            validate={validate}  
+            validate={getValidator(schema)}  
         />)
     }
 }

@@ -14,7 +14,6 @@ module.exports = function (sequelize) {
   })
   Phone.associate = function(models){
     Phone.belongsTo(models['phoneType'], {as: 'type'})
-    Phone.belongsTo(models['customer'])
   }
   return Phone
 };

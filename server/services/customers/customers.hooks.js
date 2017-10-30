@@ -12,6 +12,7 @@ const phoneSchema = require('../../../common/validation/phone.json')
 const addressSchema = require('../../../common/validation/address.json')
 const accountSchema = require('../../../common/validation/account.json')
 const errorReducer = require('../../helpers/errorReducer')
+const {differenceBy} = require('lodash')
 
 function addIncludes(hook) {
   const {
@@ -22,8 +23,9 @@ function addIncludes(hook) {
       account
     }
   } = hook.app.get('database')
-  hook.params.sequelize = {
-    include: [{
+  hook.params.sequelize = hook.params.sequelize || {}
+  hook.params.sequelize.
+    include = [{
         model: account,
         include: [address]
       },
@@ -33,17 +35,15 @@ function addIncludes(hook) {
       {
         model: contact,
         as: 'authorizedSignatory',
-        include: [phone],
-        scope: { contactType: 'customerAuthorizedSignatory' }
+        include: [{model: phone, as: 'phones'}]
       }, 
       {
         model: contact,
         as: 'authorizedPersons',
-        include: [phone],
-        scope: { contactType: 'customerAuthorizedPerson' }
+        through: 'customer_contacts',
+        include: [{model: phone, as: 'phones'}]
       }
     ]
-  }
 }
 function validate(){
   var ajv = Ajv({allErrors: true})
@@ -86,18 +86,10 @@ module.exports = {
           }
         } = hook.app.get('database')
         hook.params.sequelize = {
-          raw: false,
-          include: [address, {
-            model: account,
-            include: [address]
-          }, 
-          {
-            model: contact,
-            as: 'authorizedSignatory',
-            scope: { contactType: 'customerAuthorizedSignatory' }
-          }]
+          raw: false
         }
-      }
+      },
+      addIncludes
     ],
     create: [
       validate(),
@@ -109,11 +101,11 @@ module.exports = {
       function (hook) {
         const {
           models: {
-            customer,
-            address,
-            contact,
-            phone,
-            account
+            customer: customerModel,
+            address: addressModel,
+            contact: contactModel,
+            phone: phoneModel,
+            account: accountModel
           }
         } = hook.app.get('database')
         const filter = {
@@ -121,66 +113,56 @@ module.exports = {
             id: hook.data.id
           },
           include: [{
-              model: account,
-              include: [address]
+              model: accountModel,
+              include: [addressModel]
             },
-            address, 
+            addressModel, 
             {
-              model: contact,
+              model: contactModel,
               as: 'authorizedSignatory',
-              include: [phone],
-              scope: { contactType: 'customerAuthorizedSignatory' }
+              include: [{model: phoneModel, as: 'phones', through: 'contact_phones'}],
             }, 
             {
-              model: contact,
+              model: contactModel,
               as: 'authorizedPersons',
-              include: [phone],
-              scope: { contactType: 'customerAuthorizedPerson' }
+              through: 'customer_contacts',
+              include: [{model: phoneModel, as: 'phones', through: 'contact_phones'}],
             }
         ]
         }
-        customer.findOne(filter).then(function (c) {          
-          if(hook.data.address){
-            if(c.address)
-              c.address.update(hook.data.address)
-            else{
-              address.create(hook.data.address).then(address => c.setAddress(address))
-            }
-          }
+        customerModel.findOne(filter).then(function (c) {          
+          const { address, authorizedSignatory, account, authorizedPersons } = hook.data
 
-          if(hook.data.authorizedSignatory){
-            if (c.authorizedSignatory)
-              c.authorizedSignatory.updateAttributes(hook.data.authorizedSignatory)
-            else {
-              contact.create(hook.data.authorizedSignatory).then(authorizedSignatory => c.setAuthorizedSignatory(authorizedSignatory))
-            }
-          }
-          
-
-          if(hook.data.account){
-            if(c.account){
-              c.account.update(hook.data.account)
-              
-              if(hook.data.account.address){
-                if(c.account.address)
-                  c.account.address.update(hook.data.account.address)
-                else
-                  address.create(hook.data.account.address).then(address => c.account.setAddress(address))
+          function createOrUpdateAssociation(modelAssociationProperty, modelAssociationPropertyCreate, data){
+            if(data){
+              if(modelAssociationProperty)
+                modelAssociationProperty.update(data)
+              else{
+                modelAssociationPropertyCreate(data)
               }
             }
-            else
-              account.create(hook.data.account, {include: [address]}).then(account => c.setAccount(account))
           }
+          createOrUpdateAssociation(c.address, c.createAddress, address)
+          createOrUpdateAssociation(c.authorizedSignatory, c.createAuthorizedSignatory, authorizedSignatory)        
+          createOrUpdateAssociation(c.account, c.createAccount, account)        
+          createOrUpdateAssociation(c.account.address, c.account.createAddress, account.address)        
 
-          if(hook.data.authorizedPersons){
-            hook.data.authorizedPersons.filter(authorizedPerson => authorizedPerson.id).forEach(authorizedPerson => 
-              contact.update(authorizedPerson))
-            hook.data.authorizedPersons.filter(authorizedPerson => !authorizedPerson.id)
-            .forEach(authorizedPerson => 
-              contact.create(authorizedPerson).then(authorizedPerson => 
-                c.addAuthorizedPerson(authorizedPerson))
-            )
+          const newAuthorizedPersons = authorizedPersons || []
+          
+          newAuthorizedPersons.filter(authorizedPerson => authorizedPerson.id).forEach(authorizedPerson => 
+            contactModel.upsert(authorizedPerson, {include: [{model: phoneModel, as: 'phones'}]}))
+          
+          newAuthorizedPersons.filter(authorizedPerson => !authorizedPerson.id).forEach(authorizedPerson => {
+            contactModel.create(authorizedPerson, {include: [{model: phoneModel, as: 'phones'}]}).then(authorizedPerson =>
+            c.addAuthorizedPerson(authorizedPerson))
           }
+          )
+          
+          differenceBy(c.authorizedPersons, newAuthorizedPersons, 'id').forEach(toRemove => {
+            c.removeAuthorizedPerson(toRemove)
+            toRemove.destroy()
+          })
+
         })
       }
     ],

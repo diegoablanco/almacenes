@@ -30,10 +30,10 @@ module.exports = function (sequelize) {
   }
 )
   Customer.associate = function(models){
+    Customer.belongsTo(models['address'])
     Customer.belongsTo(models['account'])
-    Customer.belongsTo(models['address'])  
-    Customer.hasOne(models['contact'], { as: 'authorizedSignatory', scope: { contactType: 'customerAuthorizedSignatory' }})
-    Customer.hasMany(models['contact'], { as: 'authorizedPerson', scope: { contactType: 'customerAuthorizedPerson' }})
+    Customer.belongsTo(models['contact'], { as: 'authorizedSignatory'})
+    Customer.belongsToMany(models['contact'], { as: 'authorizedPersons', through: 'customer_contacts', onDelete: 'CASCADE'})
   }
   return Customer
 }
