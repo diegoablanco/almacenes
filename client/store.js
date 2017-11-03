@@ -3,8 +3,10 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 
 import middleware from './middleware';
 import reducers from './reducers/index';
+import { routerMiddleware } from 'react-router-redux'
 
-export default function configureStore(initialState) {
+export default function configureStore(history, initialState) {
+  middleware.push(routerMiddleware(history))
   return createStore(
     combineReducers(reducers),
     initialState,

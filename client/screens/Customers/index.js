@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import MessageBar from '../../common/MessageBar/MessageBar'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import CustomerCrud from './CustomerCrudContainer'
 
 class Screen extends Component{
   render(){    
     return (
       <div>
-        <MessageBar />
         <CustomerCrud />
       </div>
     )

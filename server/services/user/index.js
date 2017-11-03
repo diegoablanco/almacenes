@@ -1,37 +1,26 @@
+const createService = require('feathers-sequelize')
+const config = require('config')
 
-const debug = require('debug')('service:user');
-const path = require('path');
-const NeDB = require('nedb');
-const service = require('feathers-nedb');
-const config = require('config');
-
-const hooks = require('./hooks');
-
-debug('Required');
+const debug = require('debug')('service:user')
+const hooks = require('./hooks')
+const createModel = require('../../models/user')
 
 module.exports = function () { // 'function' needed as we use 'this'
-  const app = this;
-  const fileName = path.join(config.database.path, 'users.db');
-  debug(`Config for ${fileName}`);
-
-  const db = new NeDB({
-    filename: fileName,
-    autoload: true,
-  });
-
+  const app = this
+  
+  const Model = createModel(app.get('database'))
   const options = {
-    Model: db,
-    paginate: {
-      default: 5,
-      max: 25,
-    },
-  };
+    name: 'users',
+    Model,
+    paginate: config.paginate
+  }
 
   // Initialize our service with any options it requires
-  app.use('/users', service(options));
+  const servicePath = `${config.apiPath}/users`
+  app.use(servicePath, createService(options));
 
   // Get our initialize service to that we can bind hooks
-  const userService = app.service('/users');
+  const userService = app.service(servicePath);
 
   // Set up our before hooks
   userService.before(hooks.before(app));
@@ -39,5 +28,4 @@ module.exports = function () { // 'function' needed as we use 'this'
   // Set up our after hooks
   userService.after(hooks.after);
 
-  debug('Config complete');
-};
+}

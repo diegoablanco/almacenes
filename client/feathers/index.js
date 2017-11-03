@@ -19,10 +19,7 @@ export default app;
 // Reduxify feathers-authentication
 export const feathersAuthentication = reduxifyAuthentication(app,
   { isUserAuthorized: (user) => user.isVerified } // user must be verified to authenticate
-);
-
-// Configure services
-const verifyReset = app.service('/verifyReset'); // eslint-disable-line no-unused-vars
+)
 
 // Reduxify feathers services
 export const feathersServices = reduxifyServices(app, mapServicePathsToNames);

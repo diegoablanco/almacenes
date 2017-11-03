@@ -1,7 +1,9 @@
 
-import React, { PropTypes } from 'react';
-import { parse } from 'query-string';
-import FormContainer from './FormContainer.js';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { parse } from 'query-string'
+import FormContainer from './FormContainer.js'
+
 const Screen = (props) => {  
   const query = parse(location.search)
   return (

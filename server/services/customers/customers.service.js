@@ -1,5 +1,4 @@
 const createService = require('feathers-sequelize');
-const createModel = require('../../models/customer');
 const hooks = require('./customers.hooks');
 const filters = require('./customers.filters');
 const config = require('config')

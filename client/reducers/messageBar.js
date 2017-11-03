@@ -5,15 +5,15 @@ export default function customersPage(state, action){
     }
     switch(action.type){
         case SHOW_MESSAGE:
-            return {...state, ...{show: true, text: action.text}}
+            return {...state, ...{show: true, text: action.text, messageType: action.messageType}}
         case HIDE_MESSAGE:
             return {...state, ...{show: false}}
         case ENTITY_CREATED:
-            return {...state, ...{show: true, text: "Se creó satisfactoriamente"} }
+            return {...state, ...{show: true, text: "Se creó correctamente"} }
         case ENTITY_UPDATED:
-            return {...state, ...{show: true, text: "Se actualizó satisfactoriamente"} }
+            return {...state, ...{show: true, text: "Se actualizó correctamente"} }
         case ENTITY_DELETED:
-            return { ...state, ...{show: true, text: "Se eliminó satisfactoriamente"} }
+            return { ...state, ...{show: true, text: "Se eliminó correctamente"} }
         default:
             return state || defaultState
     }

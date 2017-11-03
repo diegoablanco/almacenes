@@ -39,6 +39,7 @@ module.exports = {
   auth: {
     secret: undefined,
     local: {},
+    users: 'api/users'
   },
   client: {
     // Name of app
@@ -99,24 +100,24 @@ module.exports = {
   validation: { // you need to make Joi changes in server/validations/schemas also.
     auth: {
       name: {
-        re: "^[\\sa-zA-Z]{8,30}$", // regex cannot be encoded in JSON
-        err: 'Name must be 8 or more letters or spaces.',
+        re: "^[\\sa-zA-Z]{5,30}$", // regex cannot be encoded in JSON
+        err: 'El nombre debe tener entre 5 y 30 caracteres.',
       },
       username: {
         re: "^[a-zA-Z0-9]{5,30}$",
-        err: 'Username must be 5 or more letters and numbers.',
+        err: 'El nombre de usuario debe tener entre 5 y 30 caracteres.',
       },
       password: {
         re: "^[\\sa-zA-Z0-9]{8,30}$",
-        err: 'Password must be 8 or more letters, numbers and embedded blanks.',
+        err: 'Debe tener entre 8 y 30 caracteres.',
       },
       email: {
         // http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
         re: "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", // eslint-disable-line max-len
-        err: 'Email is invalid.',
+        err: 'Email inválido.',
         minLen: 8,
         maxLen: 30,
-        errLen: 'Email must be 8 or more characters.',
+        errLen: 'Debe tener entre 8 y 30 caracteres.',
       },
     },
   },

@@ -7,7 +7,6 @@ class Screen extends Component{
   render(){    
     return (
       <div>
-        <MessageBar />
         <WarehouseCrud />
       </div>
     )

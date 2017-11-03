@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { ConnectedRouter as Router } from 'react-router-redux'
 import makeDebug from 'debug';
 import createHistory from 'history/createBrowserHistory'
 import { Provider } from 'react-redux';
@@ -21,6 +21,7 @@ import {
 } from './utils/loggerRedux';
 import './utils/react-tap-event';
 import 'semantic-ui-less/semantic.less';
+import AppRouter from './router'
 
 // __processEnvNODE_ENV__ is replaced during the webpack build process
 const nodeEnv = __processEnvNODE_ENV__; // eslint-disable-line no-undef, camelcase
@@ -31,7 +32,7 @@ console.log(`..This bundle was built for the ${nodeEnv} env.`); // eslint-disabl
 
 // Initialize Redux
 const history = createHistory()
-const store = configureStore();
+const store = configureStore(history);
 
 // Handle uncaught exceptions.
 if (nodeEnv === 'production') {
@@ -61,7 +62,7 @@ configLoad(store, feathersServices)
 
     // Setup React Router which starts up the rest of the app.
     // A hack. Lemme know if you have a better idea.
-    const AppRouter = require('./router').default; // eslint-disable-line global-require
+    //const AppRouter = require('./router').default; // eslint-disable-line global-require
 
     
     const render = Component => {

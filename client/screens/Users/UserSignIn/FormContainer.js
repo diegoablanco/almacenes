@@ -12,56 +12,33 @@ import errors from 'feathers-errors';
 import {
   config
 } from '../../../utils/config';
-import {
-  feathersAuthentication
-}
-from '../../../feathers';
 import usersClientValidations from '../../../../common/helpers/usersClientValidations';
 import Form from './Form';
-
-const handleSubmit = (values, dispatch) => {
-  return new Promise((resolve, reject) => {
-    dispatch(feathersAuthentication.authenticate({
-        strategy: 'local',
-        type: 'local',
-        email: values.email,
-        password: values.password
-      }))
-      .then(() => resolve())
-      .catch(err => reject(err instanceof errors.BadRequest ?
-        new SubmissionError(Object.assign({}, err.errors, {
-          _error: err.message || ''
-        })) :
-        err
-      ));
-  })
-};
+import { bindActionCreators  } from 'redux'
+import { login, logout } from '../../../actions/authentication'
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isSignedIn,
-});
+})
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  handleLogout: () => {
-    dispatch(feathersAuthentication.logout());
-  },
-  handleRedirect: () => {
-    ownProps.history.replace(ownProps.redirectTo || config.client.defaultRoute);
-  },
-});
+const mapDispatchToProps = (dispatch, ownProps) => (
+    {...bindActionCreators({ 
+      onSubmit: login, 
+      handleLogout: logout
+    },
+    dispatch),
+    handleRedirect: () => {
+      ownProps.history.replace(ownProps.redirectTo || config.client.defaultRoute);
+    },
+})
 
 // decorate with redux
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
-  // decorate react component with redux-form
   reduxForm({
     form: 'UserSignIn',
-    // initialValues: { email: 'a@a.com' }, // set initialValues in mapStateToProps for dynamic data
-    validate: usersClientValidations.signin,
-    // asyncBlurFields: ['email', 'password'],
-    // asyncValidate: (values, dispatch, props) => new Promise(...),
-    onSubmit: handleSubmit,
+    validate: usersClientValidations.signin
   })(Form)
 );

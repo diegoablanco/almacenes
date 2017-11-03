@@ -1,17 +1,12 @@
 
-import React, { PropTypes } from 'react';
-import UsersNavBar from '../components/UsersNavBar';
-import Container from './Container';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Container from './Container'
 
 const Page = (props) => (
   <div>
-    <UsersNavBar label="Validate Sign Up Email" screen="user/signupvalidateemail" />
-    <Container emailToken={props.params.token} />
+    <Container emailToken={props.match.params.token} />
   </div>
-);
+)
 
-Page.propTypes = {
-  params: PropTypes.object.isRequired,
-};
-
-export default Page;
+export default Page

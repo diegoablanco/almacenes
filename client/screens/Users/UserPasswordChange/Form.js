@@ -1,5 +1,6 @@
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types'
 import { Field } from 'redux-form';
 
 import style from '../components/button.css';

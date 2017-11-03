@@ -15,8 +15,8 @@ module.exports = function () { // 'function' needed as we use 'this'
   app.configure(authentication(authConfig))
     .configure(jwt())
     .configure(local(authConfig.local))
-    .configure(authManagement({}))
-
+    .configure(authManagement({path: `${config.apiPath}/authManagement`, service: 'api/users'}))
+    
   app.service(`${config.apiPath}/auth/local`).hooks({
     before: {
       all: debugHook(),
@@ -36,5 +36,15 @@ module.exports = function () { // 'function' needed as we use 'this'
       ]
     }
   })
+    
+  app.service(`${config.apiPath}/authManagement`).hooks({
+    after: {
+      all: debugHook("========================= authManagement ============================="),
+      create:  function(hook) {
+        var a
+      }
+    }
+  })
+
   debug('Config complete');
 };

@@ -13,7 +13,7 @@ export default [
   reduxThunk, // Thunk middleware for Redux
   reduxMulti, // Dispatch multiple actions
   reduxPromiseMiddleware(), // Resolve, reject promises with conditional optimistic updates
-  routerMiddleware(createHistory()), // !! IMPORTANT for location.href changes
+  //routerMiddleware(createHistory()), // !! IMPORTANT for location.href changes
   //loggerBasic, // A basic middleware logger,
   exceptionsMiddleWare
 ];

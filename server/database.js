@@ -8,6 +8,7 @@ module.exports = function() {
     host: host
   })
   
+  sequelize.import('../server/models/user')
   sequelize.import('../server/models/phoneType')
   sequelize.import('../server/models/phone')
   sequelize.import('../server/models/address')

@@ -19,18 +19,31 @@ const actionCreator = {
     entityDeleted: () => ({ type: ENTITY_DELETED })
 }
 
-export function showTimedMessage(text){
+export function showTimedMessage(text, messageType = "success"){
     return (dispatch) => {
-        dispatch(showMessage(text))
-        dispatchTimeout(hideMessage())
+        dispatch(showMessage(text, messageType))
+        setTimeout(() => dispatch(hideMessage()), messageDuration)
     }
 }
 
-export function showMessage(text){
-    return{
+export function showMessage(text, messageType){
+    return {
         type: SHOW_MESSAGE,
-        text: text
+        text,
+        messageType
     }
+}
+
+export function showLoadingMessage(text){
+    return showMessage(text, "loading")
+}
+
+export function showErrorMessage(text){
+    return showMessage(text, "error")
+}
+
+export function showSuccessMessage(text){
+    return showMessage(text, "success")
 }
 
 export function hideMessage(){

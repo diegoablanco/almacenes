@@ -15,7 +15,7 @@ const email = Joi.string().trim().email().required();
 module.exports = {
   options: { abortEarly: false, convert: true, allowUnknown: false, stripUnknown: true },
   signup: Joi.object().keys({
-    name: Joi.string().trim().min(8).max(30).required(),
+    name: Joi.string().trim().min(5).max(30).required(),
     username,
     password,
     confirmPassword: password.label('Confirm password'),

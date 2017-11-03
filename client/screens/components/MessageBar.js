@@ -1,5 +1,6 @@
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import { getFeathersStatus } from '../../feathers';
 import { Message } from 'semantic-ui-react'

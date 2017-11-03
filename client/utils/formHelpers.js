@@ -4,7 +4,7 @@ import { Button, Form, Divider, Segment } from 'semantic-ui-react'
 import classnames from 'classnames'
 
 export function renderField (props) {
-    const { input, label, type, width, meta: { touched, error }, ...rest } = props;
+    const { input, label, type="text", width, meta: { touched, error }, ...rest } = props;
     return (
         <Form.Field className={classnames({ error: touched && error })} width={width} style={{ marginBottom: '1em' }}>
             <label>{label}</label>

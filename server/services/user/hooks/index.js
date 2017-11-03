@@ -11,6 +11,7 @@ const populate = require('feathers-populate-hook');
 const verifyHooks = require('feathers-authentication-management').hooks;
 const validateSchema = require('feathers-hooks-validate-joi');
 const config = require('config');
+const debugHook = require('../../hooks/debugHook')
 
 const emailer = require('../../../helpers/emails');
 const client = require('../../../../common/helpers/usersClientValidations');
@@ -21,13 +22,16 @@ const idName = config.database.idName;
 const app = this;
 
 exports.before = (app) => {
-  const verifyReset = app.service('/verifyreset');
-  const users = app.service('/users'); // eslint-disable-line no-unused-vars
+  const users = app.service(`${config.apiPath}/users`); // eslint-disable-line no-unused-vars
 
   return {
-    all: [],
+    
+    all: debugHook(),
     find: [
       auth.authenticate(['jwt', 'local']),
+      function(hook) {
+        hook.params.query.$sort = hook.params.query.$sort || {createdAt: -1}
+      }
     ],
     get: [
       auth.authenticate(['jwt', 'local']),
@@ -36,12 +40,13 @@ exports.before = (app) => {
     create: [
       validateSchema.form(schemas.signup, schemas.options), // schema validation
       validate(client.signup),  // redo redux-form client validation
-      hooks.validate(values => app.services.authManagement.create(
+      hooks.validate(values => 
+        app.services["api/authManagement"].create(
         { action: 'checkUnique', value: { username: values.username, email: values.email } }
       )),
       hooks.validate(callbackToPromise(server.signup, { app })), // server validation
       hooks.remove('confirmPassword'),
-      verifyHooks.addVerification(), // set email addr verification info
+      verifyHooks.addVerification('api/authManagement'), // set email addr verification info
       local.hooks.hashPassword()
     ],
     update: [
@@ -59,6 +64,7 @@ exports.before = (app) => {
 };
 
 exports.after = {
+  all: debugHook(),
   find: [
     hooks.remove('password'),
     verifyHooks.removeVerification(),

@@ -1,12 +1,12 @@
 
-import React, { PropTypes } from 'react';
-import UsersNavBar from '../components/UsersNavBar';
-import FormContainer from './FormContainer.js';
+import React from 'react'
+import PropTypes from 'prop-types'
+import UsersNavBar from '../components/UsersNavBar'
+import FormContainer from './FormContainer.js'
 
 const Page = (props) => (
   <div>
-    <UsersNavBar label="Reset Password" screen="user/forgotpwdreset" />
-    <FormContainer resetToken={props.params.token} />
+    <FormContainer resetToken={props.match.params.token} />
   </div>
 );
 

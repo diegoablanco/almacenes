@@ -7,7 +7,7 @@ debug('Required');
 module.exports = {
   signup: (data, { app }, cb) => {
     debug('signup');
-    const users = app.service('/users');
+    const users = app.service('api/users');
     const formErrors = {};
     const sanitized = {};
 
