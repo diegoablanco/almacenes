@@ -3,7 +3,9 @@ import React, {Component} from 'react';
 import AppNavBar from './components/AppNavBar';
 import { Container } from 'semantic-ui-react'
 import MessageBar from '../../common/MessageBar/MessageBar'
+import { withRouter } from 'react-router'
 
+const AppNavBarWithRouter = withRouter(AppNavBar)
 export default class App extends Component{
   render (){
     const {
@@ -11,7 +13,7 @@ export default class App extends Component{
     } = this.props
     return (
       <Container>
-        <AppNavBar label="App" screen="app/main" location={this.props.location} />
+        <AppNavBarWithRouter label="App" screen="app/main" />
         <Container className="main-container">
           <MessageBar />
           {children}

@@ -13,11 +13,6 @@ function showMessageTimeout(messageActionCreator){
     }
 }
 
-const actionCreator = {
-    entityCreated: () => ({ type: ENTITY_CREATED }),
-    entityUpdated: () => ({ type: ENTITY_UPDATED }),
-    entityDeleted: () => ({ type: ENTITY_DELETED })
-}
 
 export function showTimedMessage(text, messageType = "success"){
     return (dispatch) => {
@@ -53,13 +48,13 @@ export function hideMessage(){
 }
 
 export function entityCreated(){    
-    return showMessageTimeout(actionCreator.entityCreated)  
+    return showTimedMessage("Se creó correctamente")  
 }
 
 export function entityUpdated(){
-    return showMessageTimeout(actionCreator.entityUpdated)  
+    return showTimedMessage("Se actualizó correctamente")  
 }
 
 export function entityDeleted(){
-    return showMessageTimeout(actionCreator.entityDeleted)  
+    return showTimedMessage("Se eliminó correctamente")
 }

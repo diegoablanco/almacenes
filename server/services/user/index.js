@@ -26,6 +26,6 @@ module.exports = function () { // 'function' needed as we use 'this'
   userService.before(hooks.before(app));
 
   // Set up our after hooks
-  userService.after(hooks.after);
+  userService.after(hooks.after(app));
 
 }

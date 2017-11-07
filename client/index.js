@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import { ConnectedRouter as Router } from 'react-router-redux'
 import makeDebug from 'debug';
 import createHistory from 'history/createBrowserHistory'
+import { push } from 'react-router-redux'
 import { Provider } from 'react-redux';
 import configureStore from './store';
+import errors from 'feathers-errors'
 import {
   feathersServices,
   feathersAuthentication
@@ -46,6 +48,8 @@ if (token) {
         type: 'local', accessToken: token }))
     .catch(err => {
       console.log('authenticate catch', err); // eslint-disable-line no-console
+      if(err instanceof errors.NotAuthenticated)        
+        store.dispatch(push('/user/signin'))
       return err;
     });
 }

@@ -24,6 +24,8 @@ module.exports = {
     port: undefined,
     // root folder with assets. Webpack bundles are written to ./dist
     publicPath: path.join(root, 'public'), // also some hard coding in server/app, webpack
+    serverPath: path.join(root, 'server'), // also some hard coding in server/app, webpack
+    protocal: "http",
   },
   logs: {
     // log level for the file. from highest: 'error', 'warn', 'info', 'verbose', 'debug', 'silly'
@@ -43,10 +45,10 @@ module.exports = {
   },
   client: {
     // Name of app
-    appName: 'Feathers-starter-react-redux-login-roles',
+    appName: 'Xarxa Almacenes',
     // Route for app's root.
     // Used by Express middleware, React-Router config, and app when redirecting.
-    defaultRoute: '/app',
+    defaultRoute: '/customers',
   },
   database: {
     // folder for NeDn database
@@ -130,6 +132,7 @@ module.exports = {
   // This is the subset of the config sent to the client
   clientConfig: defer(finalConfig => ({
     client: {
+      appName: finalConfig.client.appName,
       defaultRoute: finalConfig.client.defaultRoute,
     },
     users: {

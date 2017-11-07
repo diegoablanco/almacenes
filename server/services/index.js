@@ -7,7 +7,7 @@ const auth = require('feathers-authentication').hooks
 
 const authentication = require('./authentication')
 const user = require('./user')
-const message = require('./message')
+const messages = require('./messages')
 const customers = require('./customers/customers.service.js')
 const warehouses = require('./warehouses/warehouses.service.js')
 const phoneTypes = require('./phoneTypes/phoneTypes.service.js')
@@ -23,7 +23,7 @@ module.exports = function () {
 
   app.configure(authentication);
   app.configure(user);
-  app.configure(message);
+  app.configure(messages);
   app.configure(customers);
   app.configure(warehouses);
   app.configure(phoneTypes);

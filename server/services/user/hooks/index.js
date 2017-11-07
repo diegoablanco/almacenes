@@ -17,6 +17,7 @@ const emailer = require('../../../helpers/emails');
 const client = require('../../../../common/helpers/usersClientValidations');
 const schemas = require('../../../validations/schemas');
 const server = require('../../../validations/usersServerValidations');
+const notifier = require('../../authentication/notifier')
 
 const idName = config.database.idName;
 const app = this;
@@ -63,34 +64,36 @@ exports.before = (app) => {
   };
 };
 
-exports.after = {
-  all: debugHook(),
-  find: [
-    hooks.remove('password'),
-    verifyHooks.removeVerification(),
-  ],
-  get: [
-    hooks.remove('password'),
-    verifyHooks.removeVerification(),
-  ],
-  create: [
-    hooks.remove('password'),
-    emailVerification, // send email to verify the email addr
-    verifyHooks.removeVerification(),
-  ],
-  update: [
-    hooks.remove('password'),
-    verifyHooks.removeVerification(),
-  ],
-  patch: [
-    hooks.remove('password'),
-    verifyHooks.removeVerification(),
-  ],
-  remove: [
-    hooks.remove('password'),
-    verifyHooks.removeVerification(),
-  ],
-};
+exports.after = (app) =>{
+  return  {
+    all: debugHook(),
+    find: [
+      hooks.remove('password'),
+      verifyHooks.removeVerification(),
+    ],
+    get: [
+      hooks.remove('password'),
+      verifyHooks.removeVerification(),
+    ],
+    create: [
+      hooks.remove('password'),
+      sendVerificationEmail(), // send email to verify the email addr
+      verifyHooks.removeVerification(),
+    ],
+    update: [
+      hooks.remove('password'),
+      verifyHooks.removeVerification(),
+    ],
+    patch: [
+      hooks.remove('password'),
+      verifyHooks.removeVerification(),
+    ],
+    remove: [
+      hooks.remove('password'),
+      verifyHooks.removeVerification(),
+    ],
+  }
+}
 
 function emailVerification(hook, next) {
   const user = clone(hook.result);
@@ -101,6 +104,15 @@ function emailVerification(hook, next) {
   });
 }
 
+const sendVerificationEmail = options => hook => {
+  if (!hook.params.provider) { return hook; }
+  const user = hook.result
+  if(hook.data && hook.data.email && user) {
+    notifier(hook.app)('resendVerifySignup', user)
+    return hook
+  }
+  return hook
+}
 // Helpers
 
 function clone(obj) {

@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux';
 import { Container, Menu, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-
+import { withRouter } from 'react-router'
+import { config } from '../../../utils/config';
 
 class AppNavBar extends Component{
   LoggedInMenuItems = (props) => {
@@ -27,13 +28,14 @@ class AppNavBar extends Component{
   }
 
   render(){
+    const { client: { appName }} = config
     const {user} = this.props
     const userAuthenticated = user && user.isVerified
     return(    
       <Menu fixed='top' pointing>
         <Container>
           <Menu.Item header>
-            Project Name
+            {appName}
           </Menu.Item>
           {userAuthenticated && this.LoggedInMenuItems(this.props)}   
         </Container>

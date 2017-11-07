@@ -50,6 +50,7 @@ const app = feathers()
   .use('/user', serveHtmlForEnvironment) // for '/user ...'
   .use('/customers', serveHtmlForEnvironment) // for '/user ...'
   .use('/warehouses', serveHtmlForEnvironment) // for '/user ...'
+  .use('/user/signup', serveHtmlForEnvironment) // for '/user ...'
   .use(config.client.defaultRoute, serveHtmlForEnvironment) // default is '/app ...'
 
   // Utilities

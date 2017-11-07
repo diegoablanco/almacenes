@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Button, Form, Grid, Message } from 'semantic-ui-react'
+import { Button, Form, Grid, Message, Divider } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import { renderField } from '../../../utils/formHelpers'
@@ -52,7 +52,10 @@ class SignInForm extends Component {
                 iconPosition='left' 
                 component={renderField}/>
             <Button primary type='submit' size='large' disabled={pristine || submitting} loading={submitting}>Ingresar</Button>
-            <Link to="forgotpwdsendemail">Olvidé la contraseña</Link>
+            <Divider section />
+            <Link to="forgotpwdsendemail">Blanquear contraseña</Link>
+            <br/>
+            <Link to="signup">Registrar Usuario</Link>
           </Form>
         </Grid.Column>
       </Grid>

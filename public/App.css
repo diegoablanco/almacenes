@@ -16,9 +16,9 @@
     left: 50%;
     margin-left: -48%;
     position: fixed;
-    top: 54px;
+    top: 10px;
     width: 96%;
-    z-index: 100;
+    z-index: 10000;
   }
   
   

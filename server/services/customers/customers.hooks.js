@@ -3,8 +3,7 @@ const Ajv = require('ajv')
 const commonHooks = require('feathers-hooks-common');
 const {
   validateSchema,
-  setCreatedAt,
-  setUpdatedAt
+  setNow
 } = commonHooks;
 const customerSchema = require('../../../common/validation/customer.json')
 const contactSchema = require('../../../common/validation/contact.json')
@@ -93,11 +92,12 @@ module.exports = {
     ],
     create: [
       validate(),
-      setCreatedAt(),
+      setNow('createdAt'),
       addIncludes
     ],
     update: [
       validate(),
+      setNow('updatedAt'),
       function (hook) {
         const {
           models: {
@@ -144,8 +144,11 @@ module.exports = {
           }
           createOrUpdateAssociation(c.address, c.createAddress, address)
           createOrUpdateAssociation(c.authorizedSignatory, c.createAuthorizedSignatory, authorizedSignatory)        
-          createOrUpdateAssociation(c.account, c.createAccount, account)        
-          createOrUpdateAssociation(c.account.address, c.account.createAddress, account.address)        
+          if(account){            
+            createOrUpdateAssociation(c.account, c.createAccount, account)   
+            if(account.address)     
+              createOrUpdateAssociation(c.account.address, c.account.createAddress, account.address)        
+          }
 
           const newAuthorizedPersons = authorizedPersons || []
           

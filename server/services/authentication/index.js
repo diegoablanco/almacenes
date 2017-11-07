@@ -5,6 +5,7 @@ const local = require('feathers-authentication-local')
 const config = require('config')
 const debugHook = require('../hooks/debugHook')
 const authManagement = require('feathers-authentication-management')
+const notifier = require('./notifier')
 debug('Required');
 
 module.exports = function () { // 'function' needed as we use 'this'
@@ -15,7 +16,11 @@ module.exports = function () { // 'function' needed as we use 'this'
   app.configure(authentication(authConfig))
     .configure(jwt())
     .configure(local(authConfig.local))
-    .configure(authManagement({path: `${config.apiPath}/authManagement`, service: 'api/users'}))
+    .configure(authManagement({
+      path: `${config.apiPath}/authManagement`, 
+      service: 'api/users', 
+      notifier: notifier(app)
+    }))
     
   app.service(`${config.apiPath}/auth/local`).hooks({
     before: {
