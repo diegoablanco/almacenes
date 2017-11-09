@@ -2,13 +2,12 @@ const path = require('path')
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {  
-  return sequelize.define('warehouse', {
+  const Warehouse = sequelize.define('warehouse', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true,
-      
+      primaryKey: true,      
     },
     name: {
       type: Sequelize.STRING,
@@ -23,4 +22,8 @@ module.exports = function (sequelize) {
       allowNull: false
     } 
   })
+  Warehouse.associate = function(models){
+    Warehouse.belongsToMany(models['warehouseService'], {as: 'services', through: 'warehouse_warehouseServices'})
+  }
+  return Warehouse
 };

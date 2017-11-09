@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Field } from 'redux-form'
-import { Button, Form, Grid } from 'semantic-ui-react'
+import { Button, Form, Grid, Tab } from 'semantic-ui-react'
 import classnames from 'classnames'
 import { renderField } from '../../utils/formHelpers'
 
@@ -9,9 +9,8 @@ class WarehouseForm extends Component {
   render() {
     const { handleSubmit, pristine, reset, submitting, invalid } = this.props;
 
-    return (
-      <Grid verticalAlign="middle" centered textAlign="center">
-        <Grid.Column tablet={10} mobile={16} computer={6}>
+    const panes = [
+      { menuItem: 'Información de Contacto', render: () => <Tab.Pane> 
             <Field name="name" 
                 type="text" 
                 label="Nombre"
@@ -28,8 +27,12 @@ class WarehouseForm extends Component {
                 icon='phone'
                 iconPosition='left' 
                 component={renderField}/>  
-        </Grid.Column>
-      </Grid>
+      </Tab.Pane> }, 
+      { menuItem: 'Servicios', render: () => <Tab.Pane> 
+      </Tab.Pane> } 
+      ]
+    return (
+      <Tab panes={panes} menu={{ secondary: true, pointing: true }}/>
     )
   }
 }

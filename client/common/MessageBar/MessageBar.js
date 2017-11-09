@@ -18,7 +18,8 @@ class MessageBar extends Component {
                 <Message
                     {...messageConfig.message}
                     floating
-                    icon>
+                    icon
+                    size="mini">
                     <Icon {...messageConfig.icon} />
                     <Message.Header>
                         {text}

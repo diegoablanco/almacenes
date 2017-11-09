@@ -18,8 +18,8 @@ class Toolbar extends Component {
             type="text"
             className='icon'
             icon='search' 
-            label="Nombre"
-            placeholder='Nombre'
+            label="Descripción"
+            placeholder='Descripción'
             component={renderField}/>
         <Button primary type='submit' size='small' disabled={submitting} loading={submitting}>Filtrar</Button> 
       </form>
@@ -32,7 +32,7 @@ class Toolbar extends Component {
   render(){
     const { filterGrid, showFormModal } = this.props
     const ReduxForm = reduxForm({
-      form: "filterWarehouses",
+      form: "filterServices",
       onSubmit: filterGrid,
     })(this.filterForm)
 
@@ -43,7 +43,7 @@ class Toolbar extends Component {
         </Menu.Item>
         <Menu.Item position='right'>
           <Button.Group labeled>
-              <Button icon='add' positive content='Agregar' onClick={() => showFormModal()}  />
+              <Button icon='add' content='Agregar' onClick={() => showFormModal()}  />
           </Button.Group>
         </Menu.Item>
       </Menu>

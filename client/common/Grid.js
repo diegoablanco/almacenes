@@ -7,6 +7,9 @@ import {createColumns, addHeaderTransforms} from '../utils/reactabularHelpers'
 import { connect } from 'react-redux'
 
 export default class Grid extends Component {
+    static defaultProps = {
+        infiniteScroll: false
+    }
     constructor(props){
         super(props)
         const {columns} = props
@@ -20,7 +23,7 @@ export default class Grid extends Component {
                 cell:{
                     formatters: [(id) => (<Button.Group>
                         <Button icon="write" onClick={() => editHandler(id)} />
-                        <Button icon="delete" onClick={() => deleteHandler(id)} />
+                        <Button negative icon="delete" onClick={() => deleteHandler(id)} />
                     </Button.Group>)]
                 },
                 header:{
@@ -45,12 +48,26 @@ export default class Grid extends Component {
             className = `${props.className.includes("-asc") ? "ascending" : "descending" } sorted`
         return {...props, className}
     }
-    render(){
+    wrapWithInfiniteScroll(table){
         const { 
-            rows, 
-            sortingColumns,
             handleLoadMore, 
             hasMore
+        } = this.props
+
+        return (<InfiniteScroll
+            loadMore={handleLoadMore}
+            hasMore={hasMore}
+            useWindow={true}
+            initialLoad={false}
+            loader={<div className="loader">Loading ...</div>}
+        >
+            {table}
+        </InfiniteScroll> )
+    }
+    getTable(){
+        const { 
+            rows, 
+            sortingColumns
         } = this.props
 
         const sortable = sort.sort({
@@ -60,23 +77,22 @@ export default class Grid extends Component {
         })
         const customSortableTransform = (value, extra) => this.transformSortClasses(sortable(value, extra))
         const sortableColumns = addHeaderTransforms(this.columns, [sortable, customSortableTransform])
-        const gridColumns = [...this.getActionColumns(), ...sortableColumns]
+        const gridColumns = [...sortableColumns, ...this.getActionColumns()]
+        return (<Table.Provider
+            className="ui striped table sortable"
+            columns={gridColumns} >
+            <Table.Header />
+            <Table.Body rows={rows || []} rowKey="id" />
+        </Table.Provider>)
+    }
+    render(){
+        const { infiniteScroll } = this.props
         return(
             <div>
-                <InfiniteScroll
-                    loadMore={handleLoadMore}
-                    hasMore={hasMore}
-                    useWindow={true}
-                    initialLoad={false}
-                    loader={<div className="loader">Loading ...</div>}
-                >
-                    <Table.Provider
-                        className="ui striped table sortable"
-                        columns={gridColumns} >
-                        <Table.Header />
-                        <Table.Body rows={rows || []} rowKey="id" />
-                    </Table.Provider>
-                </InfiniteScroll>    
+                { infiniteScroll 
+                    ? this.wrapWithInfiniteScroll(this.getTable())
+                    : this.getTable()
+                }    
             </div>
         )
     }

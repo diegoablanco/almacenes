@@ -9,7 +9,7 @@ module.exports = {
     ],
     find: [function(hook){
       hook.params.sequelize = {
-        attributes: [ 'id', 'description' ]
+        attributes: [ 'id', 'description', 'rate' ]
       }
     }],
     get: [],

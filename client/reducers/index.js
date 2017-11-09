@@ -13,13 +13,20 @@ export default {
   auth: feathersAuthentication.reducer,
   users: feathersServices.users.reducer,
   authManagement: feathersServices.authManagement.reducer,
-  form: reduxFormReducer, // reducers required by redux-form
+  form: reduxFormReducer,
   customers: feathersServices.customers.reducer,
   warehouses: feathersServices.warehouses.reducer,
+  services: feathersServices.services.reducer,
   phoneTypes: feathersServices.phoneTypes.reducer,
   ui: combineReducers({
     customers: customersReducer,
     warehouses: getCrudReducer(crudPages.WAREHOUSES),
+    services: getCrudReducer(crudPages.SERVICES, {sortingColumns: {
+        'description': {
+            direction: 'asc',
+            position: 0
+        }
+    }}),
     messageBar
   })
 };

@@ -15,6 +15,7 @@ module.exports = function() {
   sequelize.import('../server/models/contact')
   sequelize.import('../server/models/account')
   sequelize.import('../server/models/customer')
+  sequelize.import('../server/models/warehouseService')
   sequelize.import('../server/models/warehouse')
   sequelize.import('../server/models/stock')
 

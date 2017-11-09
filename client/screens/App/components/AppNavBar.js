@@ -15,6 +15,9 @@ class AppNavBar extends Component{
       <Menu.Item key="warehouses" active={ pathname === '/warehouses' }>
         <Link to="warehouses">Almacenes</Link>
       </Menu.Item>,
+      <Menu.Item key="warehouseServicess" active={ pathname === '/services' }>
+        <Link to="services">Servicios de Almacén</Link>
+      </Menu.Item>,
       <Menu.Menu position='right' key="profile">
         <Dropdown item text={user.username} >
           <Dropdown.Menu>

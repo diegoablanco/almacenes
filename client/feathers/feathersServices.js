@@ -10,6 +10,7 @@ export const mapServicePathsToNames = {
   authManagement: 'authManagement',
   customers: 'customers',
   warehouses: 'warehouses',
+  warehouseServices: 'services',
   phoneTypes: 'phoneTypes'
 };
 
@@ -19,6 +20,7 @@ export const prioritizedListServices = [
   'users', 
   'customers', 
   'warehouses', 
+  'services', 
   'phoneTypes', 
   'verifyReset', 
   'messages', 

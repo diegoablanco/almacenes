@@ -24,6 +24,7 @@ import App from './screens/App';
 
 import Customers from './screens/Customers'
 import Warehouses from './screens/Warehouses'
+import Services from './screens/Services'
 
 const authenticatedSelector = state => {
   return state.auth.user && state.auth.user.isVerified
@@ -86,6 +87,7 @@ export default class AppRouter extends Component {
             <Route path="/user/profile" component={UserIsAuthenticated(UserProfile)} />
             <Route path="/customers" component={UserIsAuthenticated(Customers)} />
             <Route path="/warehouses" component={UserIsAuthenticated(Warehouses)} />
+            <Route path="/services" component={UserIsAuthenticated(Services)} />
             <Route component={UserSignIn} />
           </Switch>
         </App>
