@@ -4,6 +4,7 @@ import { Field } from 'redux-form'
 import { Button, Form, Grid, Tab } from 'semantic-ui-react'
 import classnames from 'classnames'
 import { renderField } from '../../utils/formHelpers'
+import WarehouseServiceCrud from './WarehouseServiceCrud'
 
 class WarehouseForm extends Component {    
   render() {
@@ -29,6 +30,7 @@ class WarehouseForm extends Component {
                 component={renderField}/>  
       </Tab.Pane> }, 
       { menuItem: 'Servicios', render: () => <Tab.Pane> 
+        <WarehouseServiceCrud/>
       </Tab.Pane> } 
       ]
     return (
