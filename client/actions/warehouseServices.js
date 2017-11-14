@@ -71,14 +71,20 @@ export function getCrudPageActions(){
             }
         },
         createOrUpdate(values){
-            return (dispatch, getState) => {
-                dispatch(baseCrudPageActions.createOrUpdate(values)).then(() => setCanAdd(dispatch, getState))
-            }
+            return (dispatch, getState) => new Promise((resolve, reject) => {
+                dispatch(baseCrudPageActions.createOrUpdate(values)).then(() => {
+                    setCanAdd(dispatch, getState)
+                    resolve()
+                })
+            })
         },
         confirmDeleteItem(){
-            return (dispatch, getState) => {
-                dispatch(baseCrudPageActions.confirmDeleteItem()).then(() => setCanAdd(dispatch, getState))
-            }
+            return (dispatch, getState) => new Promise((resolve, reject) => {
+                dispatch(baseCrudPageActions.confirmDeleteItem()).then(() => {
+                    setCanAdd(dispatch, getState)
+                    resolve()
+                })
+            })
         }
     }
 }

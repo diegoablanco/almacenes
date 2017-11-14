@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Input, Menu, Button, Modal, Header, Icon } from 'semantic-ui-react'
+import { Input, Menu, Button, Modal, Header, Icon, Loader } from 'semantic-ui-react'
 import * as Table from 'reactabular-table';
 import * as sort from 'sortabular';
 import InfiniteScroll from 'react-infinite-scroller'
@@ -109,12 +109,15 @@ export default class Grid extends Component {
         </Table.Provider>)
     }
     render(){
-        const { enableInfiniteScroll } = this.props
+        const { enableInfiniteScroll, isLoading } = this.props
         return(
             <div>
-                { enableInfiniteScroll 
-                    ? this.wrapWithInfiniteScroll(this.getTable())
-                    : this.getTable()
+                {
+                    !isLoading 
+                    ?   enableInfiniteScroll 
+                            ? this.wrapWithInfiniteScroll(this.getTable())
+                            : this.getTable()
+                    : (<Loader active inline='centered' />)
                 }    
             </div>
         )

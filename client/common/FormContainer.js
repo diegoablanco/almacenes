@@ -25,9 +25,8 @@ class FormContainer extends Component {
   }
   innerForm = (F) => ({handleSubmit, loading, formContent, id}) => {
     return(   
-      <Form onSubmit={handleSubmit} loading={loading}>
-        <F id={id}/>
-      </Form>)
+      <F id={id} onSubmit={handleSubmit} loading={loading} />
+    )
   }
   componentDidMount(){
     const { initializeForm, formName, id , defaultData = {}} = this.props
@@ -47,12 +46,10 @@ class FormContainer extends Component {
     const rf = reduxForm({
       form: formName,
       validate: validate,
-      // asyncBlurFields: ['email', 'password'],
-      // asyncValidate: (values, dispatch, props) => new Promise(...),
       destroyOnUnmount: false      
     })
     const forms = [].concat(this.props.form)
-    //const ReduxForm = rf(connect(state => ({loading: selectors.getUiState(state).showModalLoadingIndicator}))(this.innerForm(this.props.form)))
+    
     return ( 
       <div>
         {forms.map((f, index) => {

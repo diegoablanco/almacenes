@@ -34,9 +34,10 @@ class GridContainer extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { sortingColumns, filter, reloadGrid, rows, canAdd } = ownProps.selectors.getUiState(state)
-  const { queryResult } = ownProps.selectors.getServiceState(state)
+  const { queryResult, isLoading } = ownProps.selectors.getServiceState(state)
   const props = {
     queryResult: queryResult ? queryResult.data : [],
+    isLoading,
     hasMore: queryResult && queryResult.total > queryResult.limit + queryResult.skip,
     sortingColumns,
     filter,
