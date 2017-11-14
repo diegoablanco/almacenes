@@ -9,14 +9,15 @@ export function getCrudReducer(crudPage, defaultInitialState = {}) {
         filter: {},
         rows: [],
         sortingColumns: {
-            'name': {
+            'createdAt': {
                 direction: 'asc',
                 position: 0
             }
         },
         confirmDialog: {
             show: false
-        }
+        },
+        canAdd: true
     }, ...defaultInitialState}
 
     function getQuery(state) {
@@ -73,6 +74,8 @@ export function getCrudReducer(crudPage, defaultInitialState = {}) {
                     const editedRows = rows.map((row, index) => index === itemIndex ? editedItem : row)
                     return { ...state, rows: editedRows }
                 }
+            case actionTypes.TOGGLE_CAN_ADD:
+                return { ...state, canAdd: action.canAdd}
             default:
                 return state
             }

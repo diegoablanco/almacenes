@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions'
 import { initialize as initializeReduxForm} from 'redux-form'
-import { entityDeleted } from './messageBar'
+import { entityDeletedMessage, entityCreatedMessage, entityUpdatedMessage } from './messageBar'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
 
 export function getActionTypes(crudPage = ''){
@@ -22,20 +22,21 @@ export function getActionTypes(crudPage = ''){
         ITEM_DELETED: `${crudPage}/ITEM_DELETED`,
         ITEM_EDITED: `${crudPage}/ITEM_EDITED`,
         ITEM_ADDED: `${crudPage}/ITEM_ADDED`,
-        BUILD_ROWS: `${crudPage}/BUILD_ROWS`
+        BUILD_ROWS: `${crudPage}/BUILD_ROWS`,
+        TOGGLE_CAN_ADD: `${crudPage}/TOGGLE_CAN_ADD`,
+
     }
 }
-function getQuery(state) {
-    const { filter, sortingColumns } = state
+export function defaultGetQuery(state, selectors) {
+    const { filter, sortingColumns } = selectors.getUiState(state)
     const query = {
-        $sort: buildSortFromSortingColumns(sortingColumns),
-        // $limit: 3,
-        // $select: ['_id', 'name', 'email', 'phone'],
+        $sort: buildSortFromSortingColumns(sortingColumns)
     };
 
     return Object.assign(query, filter)
 }
-export function getCrudPageActions(crudPage, serviceActions, selectors){
+export function getCrudPageActions(crudPage, serviceActions, selectors, getQueryFunction){
+    const getQuery = getQueryFunction || defaultGetQuery
     const actionTypes = getActionTypes(crudPage)
     function hideModal(){
         return{
@@ -59,12 +60,19 @@ export function getCrudPageActions(crudPage, serviceActions, selectors){
             type: actionTypes.RESET_PAGE_NUMBER
         }
     }
-    
+    function reloadGrid(){
+        return (dispatch, getState) => new Promise((resolve, reject) => {
+            dispatch(resetPageNumber())
+            const query = getQuery(getState(), selectors)
+            dispatch(serviceActions.find({query})).then(result => {
+                dispatch(buildRows(result.value))
+                resolve()
+            })
+        })
+    }
     return {
         initializeForm(formName, id, defaultData){
-            return (dispatch, getState) => {
-                dispatch({ type: actionTypes.SHOW_MODAL })
-                
+            return (dispatch, getState) => {                
                 if(id)
                     dispatch(serviceActions.get(id))
                         .then((response) => {
@@ -78,30 +86,34 @@ export function getCrudPageActions(crudPage, serviceActions, selectors){
             }
         },
         buildRows,
-        itemAdded(addedItem){
-            return (dispatch) => {
-                dispatch(this.reloadGrid())
-            }
-        },
-        itemCreated(addedItem){
-            return (dispatch, getState) => {
-                dispatch(hideModal())
-                dispatch(resetPageNumber())
-                const query = getQuery(selectors.getUiState(getState()))
-                dispatch(serviceActions.find({query})).then(result => {
-                    dispatch(buildRows(result.value))
-                })
-            }
-        },
         itemEdited(editedItem){
             return (dispatch) => {
                 dispatch(hideModal())
                 dispatch({type: actionTypes.ITEM_EDITED, editedItem})
             }
         },
+        createOrUpdate(values){
+            return dispatch => new Promise((resolve, reject) => {
+                if(values.id){
+                    dispatch(serviceActions.update(values.id, values)).then(result => {                        
+                        dispatch(hideModal())
+                        dispatch(entityUpdatedMessage())
+                        dispatch(reloadGrid()).then(resolve)
+                    })
+                }
+                else{
+                    dispatch(serviceActions.create(values)).then(result => {                        
+                        dispatch(hideModal())
+                        dispatch(entityCreatedMessage())
+                        dispatch(reloadGrid()).then(resolve)
+                    })
+                }
+            })
+        },
+
         loadGrid(){
             return (dispatch, getState) => {
-                const query = getQuery(selectors.getUiState(getState()))
+                const query = getQuery(getState(), selectors)
                 dispatch(serviceActions.find({query})).then(result => {
                     dispatch(buildRows(result.value))
                 })
@@ -111,7 +123,7 @@ export function getCrudPageActions(crudPage, serviceActions, selectors){
             return (dispatch, getState) => {
                 dispatch(resetPageNumber())
                 dispatch({type: actionTypes.SET_FILTER, filter})
-                const query = getQuery(selectors.getUiState(getState()))
+                const query = getQuery(getState(), selectors)
                 dispatch(serviceActions.find({query})).then(result => {
                     dispatch(buildRows(result.value))
                 })
@@ -120,7 +132,7 @@ export function getCrudPageActions(crudPage, serviceActions, selectors){
         loadMore(){
             return (dispatch, getState) => {
                 dispatch({type: actionTypes.INCREASE_PAGE_NUMBER})
-                const query = getQuery(selectors.getUiState(getState()))
+                const query = getQuery(getState(), selectors)
                 dispatch(serviceActions.find({query})).then(result => {
                     dispatch(buildRows(result.value, true))
                 })
@@ -130,27 +142,23 @@ export function getCrudPageActions(crudPage, serviceActions, selectors){
             return (dispatch, getState) => {
                     dispatch({type: actionTypes.SET_SORTING_COLUMNS, sortingColumns})
                     dispatch(resetPageNumber())
-                    const query = getQuery(selectors.getUiState(getState()))
+                    const query = getQuery(getState(), selectors)
                     dispatch(serviceActions.find({query})).then(result => {
                         dispatch(buildRows(result.value))
                     })
             }
-        },        
-        reloadGrid(){
-            return {
-                type: actionTypes.RELOAD_GRID
-            }
-        },        
+        },           
         confirmDeleteItem(){
-            return (dispatch, getState) => {
+            return (dispatch, getState) => new Promise((resolve, reject) => {
                 const {confirmDialog: {id}} = selectors.getUiState(getState())
                 dispatch(serviceActions.remove(id))
                 .then(result => {
                     dispatch(hideConfirmModal())
                     dispatch({ type: actionTypes.ITEM_DELETED, deletedItem: result.value }) 
-                    dispatch(entityDeleted()) 
+                    dispatch(entityDeletedMessage()) 
+                    resolve()
                 })
-            }
+            })
         },
         itemDeleted(deletedItem){
             return {

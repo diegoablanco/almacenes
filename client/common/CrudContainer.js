@@ -14,8 +14,7 @@ class CrudContainer extends Component {
         const {
             gridColumns, 
             selectors,
-            itemCreated,
-            itemEdited,
+            createOrUpdate,
             showModal,
             showFormModal,
             hideModal,
@@ -26,7 +25,8 @@ class CrudContainer extends Component {
             showConfirmModal,
             hideConfirmModal,
             confirmDeleteItem,
-            initializeForm
+            initializeForm,
+            enableAdd
         } = this.props
         return(        
             <div>
@@ -36,13 +36,14 @@ class CrudContainer extends Component {
                     deleteHandler={showConfirmModal}  
                     selectors={selectors}     
                     crudActions={crudActions}
-                    toolbar={toolbar}   
+                    toolbar={toolbar}
+                    enableAdd={enableAdd}
+                    addHandler={showFormModal}   
                 />
                 <this.props.formModal 
                     selectors={selectors}   
                     id={id} 
-                    onCreated={itemCreated} 
-                    onEdited={itemEdited} 
+                    onCreatedOrUpdated={createOrUpdate} 
                     handleClose={hideModal} 
                     initializeForm={initializeForm}
                 />

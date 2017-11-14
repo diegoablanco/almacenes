@@ -1,5 +1,6 @@
 import { GENERAL_SERVICE_ERROR, NOT_AUTHENTICATED } from '../actions/common' 
 import { showTimedMessage } from '../actions/messageBar' 
+import errors from 'feathers-errors'
 import { push } from 'react-router-redux'
 
 export const exceptionsMiddleWare = store => next => action => {
@@ -8,7 +9,7 @@ export const exceptionsMiddleWare = store => next => action => {
       if(action.payload.code === 401){
 
           store.dispatch({type: NOT_AUTHENTICATED, payload: action.payload})    
-          push('user/signin')
+          store.dispatch(push('user/signin'))
       }
       // else{
       //   store.dispatch(showTimedMessage('Ocurrió un error general en el servicio. Por favor intente nuevamente más tarde'))

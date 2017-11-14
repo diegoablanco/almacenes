@@ -13,6 +13,7 @@ import { entityCreated, entityUpdated } from '../actions/messageBar'
 
 class FormContainer extends Component {
   static propTypes = {
+    service: PropTypes.object.isRequired,
     form: PropTypes.func.isRequired,
     formName: PropTypes.string.isRequired
   }
@@ -23,10 +24,10 @@ class FormContainer extends Component {
   shouldComponentUpdate(){
       return false
   }
-  innerForm = (F) => ({handleSubmit, loading, formContent, id}) => {
+  innerForm = (F) => ({handleSubmit, loading, formContent}) => {
     return(   
       <Form onSubmit={handleSubmit} loading={loading}>
-        <F id={id}/>
+        <F/>
       </Form>)
   }
   componentDidMount(){
@@ -42,7 +43,7 @@ class FormContainer extends Component {
   }
 
   render() {
-    const { formName, validate, selectors, onCreatedOrUpdated } = this.props
+    const { formName, validate, selectors, handleSubmit } = this.props
     
     const rf = reduxForm({
       form: formName,
@@ -57,7 +58,7 @@ class FormContainer extends Component {
       <div>
         {forms.map((f, index) => {
         let ReduxForm = rf(connect(state => ({loading: selectors.getUiState(state).showModalLoadingIndicator}))(this.innerForm(f)))
-        return <ReduxForm key={formName + index} onSubmit={(values) => onCreatedOrUpdated(values, index === forms.length -1)} />
+        return <ReduxForm key={formName + index} onSubmit={(values) => this.handleSubmit(values, index === forms.length -1)} />
       }) }
     </div>
   )
@@ -73,6 +74,27 @@ const mapStateToProps = (state, ownProps) =>
     }
 }
 
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const { service, onCreated, onUpdated } = ownProps
+
+  return {
+    create: (values) => {
+      dispatch(service.create(values)).then(() => {
+        dispatch(entityCreated())
+        onCreated()
+      }) 
+    },
+    update: (values) => {
+      dispatch(service.update(values.id, values)).then((result) => {
+        dispatch(entityUpdated())
+        onUpdated(result.value)
+      })
+    }    
+  }
+}
+
 export default connect(
-  mapStateToProps
-)(FormContainer)
+    mapStateToProps,
+    mapDispatchToProps
+  )
+  (FormContainer);

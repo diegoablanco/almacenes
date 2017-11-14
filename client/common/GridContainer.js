@@ -20,10 +20,11 @@ class GridContainer extends Component {
         const {crudActions, sortGrid, loadMore, filterGrid} = this.props
         return(
             <div>
-                <this.props.toolbar handleFilter={filterGrid} crudActions={crudActions}/>
+                {this.props.toolbar && <this.props.toolbar handleFilter={filterGrid} crudActions={crudActions}/>}
                 <Grid 
                     {...this.props} 
                     handleLoadMore={loadMore}
+                    enableSort
                     handleSort={sortGrid}
                 />
             </div>
@@ -32,7 +33,7 @@ class GridContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { sortingColumns, filter, reloadGrid, rows } = ownProps.selectors.getUiState(state)
+  const { sortingColumns, filter, reloadGrid, rows, canAdd } = ownProps.selectors.getUiState(state)
   const { queryResult } = ownProps.selectors.getServiceState(state)
   const props = {
     queryResult: queryResult ? queryResult.data : [],
@@ -41,6 +42,7 @@ const mapStateToProps = (state, ownProps) => {
     filter,
     reloadGrid,
     rows,
+    canAdd,
     ...ownProps
   }
   return props

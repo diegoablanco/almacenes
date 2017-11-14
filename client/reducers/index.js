@@ -7,6 +7,7 @@ import {crudPages} from '../common/CrudPages'
 import customersPage from './customers'
 import messageBar from './messageBar'
 import customersReducer from './customers'
+import warehousesReducer from './warehouses'
 
 export default {
   routing: routerReducer,
@@ -17,16 +18,19 @@ export default {
   customers: feathersServices.customers.reducer,
   warehouses: feathersServices.warehouses.reducer,
   services: feathersServices.services.reducer,
+  warehouseServices: feathersServices.warehouseServices.reducer,
   phoneTypes: feathersServices.phoneTypes.reducer,
   ui: combineReducers({
     customers: customersReducer,
-    warehouses: getCrudReducer(crudPages.WAREHOUSES),
+    warehouses: warehousesReducer,
     services: getCrudReducer(crudPages.SERVICES, {sortingColumns: {
         'description': {
             direction: 'asc',
             position: 0
         }
-    }}),
+    }}),    
+    warehouses: warehousesReducer,
+    warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),    
     messageBar
   })
 };

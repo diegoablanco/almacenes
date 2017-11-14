@@ -19,8 +19,7 @@ class FormModal extends Component {
             handleSubmit, 
             title,
             formName,
-            onCreated,
-            onEdited,
+            onCreatedOrUpdated,
             initializeForm,
             selectors
          } = this.props
@@ -31,7 +30,7 @@ class FormModal extends Component {
                     size='small'>
                     <Modal.Header content={title} />
                     <Modal.Content>
-                        <this.props.form onCreated={onCreated} onUpdated={onEdited} initializeForm={initializeForm} selectors={selectors}/>
+                        <this.props.form {...{id, onCreatedOrUpdated, initializeForm, selectors}}/>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button onClick={handleClose}>

@@ -8,7 +8,9 @@ import { connect } from 'react-redux'
 
 export default class Grid extends Component {
     static defaultProps = {
-        infiniteScroll: false
+        enableInfiniteScroll: false,
+        enableSort: false,
+        enableAdd: false
     }
     constructor(props){
         super(props)
@@ -16,18 +18,30 @@ export default class Grid extends Component {
         this.columns = createColumns(...columns)
     }    
     getActionColumns (){
-        const {editHandler, deleteHandler} = this.props
+        const {editHandler, deleteHandler, addHandler, enableAdd, canAdd} = this.props
         return [
             {
                 property: "id",
                 cell:{
                     formatters: [(id) => (<Button.Group>
-                        <Button icon="write" onClick={() => editHandler(id)} />
-                        <Button negative icon="delete" onClick={() => deleteHandler(id)} />
+                        <Button icon="write" onClick={(e) => {
+                            e.preventDefault()
+                            editHandler(id)
+                        }} />
+                        <Button negative icon="delete" onClick={(e) => {
+                            e.preventDefault()
+                            deleteHandler(id)
+                        }} />
                     </Button.Group>)]
                 },
                 header:{
-                    props: {className: "collapsing"}
+                    props: {className: "collapsing"},
+                    formatters: [() => (enableAdd && canAdd &&
+                        <Button icon='add' size='tiny' floated='right' positive onClick={(e) => {
+                            e.preventDefault()
+                            addHandler()
+                        }} />
+                    )]
                 }
             }
         ]
@@ -64,9 +78,8 @@ export default class Grid extends Component {
             {table}
         </InfiniteScroll> )
     }
-    getTable(){
+    getSortableColumns(){        
         const { 
-            rows, 
             sortingColumns
         } = this.props
 
@@ -75,9 +88,19 @@ export default class Grid extends Component {
             onSort: this.sort,
             strategy: sort.strategies.byProperty
         })
+
         const customSortableTransform = (value, extra) => this.transformSortClasses(sortable(value, extra))
-        const sortableColumns = addHeaderTransforms(this.columns, [sortable, customSortableTransform])
-        const gridColumns = [...sortableColumns, ...this.getActionColumns()]
+        
+        return addHeaderTransforms(this.columns, [sortable, customSortableTransform])
+    }
+    getTable(){
+        const { 
+            rows, 
+            enableSort
+        } = this.props
+
+        const columns = enableSort ? this.getSortableColumns(this.columns) : this.columns
+        const gridColumns = [...columns, ...this.getActionColumns()]
         return (<Table.Provider
             className="ui striped table sortable"
             columns={gridColumns} >
@@ -86,10 +109,10 @@ export default class Grid extends Component {
         </Table.Provider>)
     }
     render(){
-        const { infiniteScroll } = this.props
+        const { enableInfiniteScroll } = this.props
         return(
             <div>
-                { infiniteScroll 
+                { enableInfiniteScroll 
                     ? this.wrapWithInfiniteScroll(this.getTable())
                     : this.getTable()
                 }    

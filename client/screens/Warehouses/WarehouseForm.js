@@ -4,14 +4,16 @@ import { Field } from 'redux-form'
 import { Button, Form, Grid, Tab } from 'semantic-ui-react'
 import classnames from 'classnames'
 import { renderField } from '../../utils/formHelpers'
-import WarehouseServiceCrud from './WarehouseServiceCrud'
+import WarehouseServiceCrud from '../WarehouseService/WarehouseServiceCrud'
 
 class WarehouseForm extends Component {    
   render() {
-    const { handleSubmit, pristine, reset, submitting, invalid } = this.props;
+    const { handleSubmit, pristine, reset, submitting, invalid, isEdit } = this.props;
 
     const panes = [
       { menuItem: 'Información de Contacto', render: () => <Tab.Pane> 
+      <Grid verticalAlign="middle" centered textAlign="center">
+        <Grid.Column tablet={10} mobile={16} computer={6}>
             <Field name="name" 
                 type="text" 
                 label="Nombre"
@@ -28,11 +30,14 @@ class WarehouseForm extends Component {
                 icon='phone'
                 iconPosition='left' 
                 component={renderField}/>  
-      </Tab.Pane> }, 
-      { menuItem: 'Servicios', render: () => <Tab.Pane> 
-        <WarehouseServiceCrud/>
-      </Tab.Pane> } 
-      ]
+          </Grid.Column>
+        </Grid>
+      </Tab.Pane> }]
+      if(isEdit)
+        panes.push( 
+          { menuItem: 'Servicios', render: () => <Tab.Pane> 
+            <WarehouseServiceCrud />
+        </Tab.Pane> })
     return (
       <Tab panes={panes} menu={{ secondary: true, pointing: true }}/>
     )

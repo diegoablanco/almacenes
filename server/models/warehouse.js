@@ -23,7 +23,7 @@ module.exports = function (sequelize) {
     } 
   })
   Warehouse.associate = function(models){
-    Warehouse.belongsToMany(models['warehouseService'], {as: 'services', through: 'warehouse_warehouseServices'})
+    Warehouse.hasMany(models['warehouseService'], {as: 'services'})
   }
   return Warehouse
 };

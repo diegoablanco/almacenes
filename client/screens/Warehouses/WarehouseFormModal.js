@@ -8,7 +8,7 @@ export default class WarehouseFormModal extends Component{
         const {id, ...rest} = this.props
         return(
             <FormModal 
-                title={id ? "Editar Almacén" : "Agregar Almacén"}
+                title={id ? "Editar Servicio de Almacén" : "Agregar Servicio de Almacén"}
                 form={WarehouseForm}
                 formName={formName}
                 id={id}

@@ -11,6 +11,7 @@ const messages = require('./messages')
 const customers = require('./customers/customers.service.js')
 const warehouses = require('./warehouses/warehouses.service.js')
 const warehouseServices = require('./warehouseServices/warehouseServices.service.js')
+const services = require('./services/services.service.js')
 const phoneTypes = require('./phoneTypes/phoneTypes.service.js')
 
 const tryHook = require('./hooks/tryHook')
@@ -28,6 +29,7 @@ module.exports = function () {
   app.configure(customers);
   app.configure(warehouses);
   app.configure(warehouseServices);
+  app.configure(services);
   app.configure(phoneTypes);
 
   // get client config file

@@ -12,6 +12,10 @@ class WarehouseFormContainer extends Component{
     validate(values){
         return makeValidator(schema)(values)
     }
+    warehouseForm = () =>{
+        const {id} = this.props
+        return (<WarehouseForm isEdit={id != undefined}/>)
+    }
     render(){
         const {id, ...rest} = this.props
         const validate = this.validate
@@ -20,7 +24,7 @@ class WarehouseFormContainer extends Component{
             {...rest}
             service={feathersServices.warehouses}
             id={id}
-            form={WarehouseForm}
+            form={this.warehouseForm}
             formName={formName} 
             validate={getValidator(schema)}  
         />)
