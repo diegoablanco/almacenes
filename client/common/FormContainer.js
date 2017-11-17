@@ -25,8 +25,9 @@ class FormContainer extends Component {
   }
   innerForm = (F) => ({handleSubmit, loading, formContent, id}) => {
     return(   
-      <F id={id} onSubmit={handleSubmit} loading={loading} />
-    )
+      <Form onSubmit={handleSubmit} loading={loading}>
+        <F id={id}/>
+      </Form>)
   }
   componentDidMount(){
     const { initializeForm, formName, id , defaultData = {}} = this.props

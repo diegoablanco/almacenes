@@ -1,10 +1,8 @@
 const auth = require('feathers-authentication').hooks;
 const Ajv = require('ajv')
 const commonHooks = require('feathers-hooks-common');
-const {
-  validateSchema,
-  setNow
-} = commonHooks;
+const { validateSchema, setNow } = commonHooks;
+const sequelize = require('sequelize')
 const customerSchema = require('../../../common/validation/customer.json')
 const contactSchema = require('../../../common/validation/contact.json')
 const phoneSchema = require('../../../common/validation/phone.json')
@@ -130,45 +128,57 @@ module.exports = {
             }
         ]
         }
+        
         customerModel.findOne(filter).then(function (c) {          
           const { address, authorizedSignatory, account, authorizedPersons } = hook.data
 
-          function createOrUpdateAssociation(modelAssociationProperty, modelAssociationPropertyCreate, data){
-            if(data){
-              if(modelAssociationProperty)
-                modelAssociationProperty.update(data)
-              else{
-                modelAssociationPropertyCreate(data)
+          function createOrUpdateAssociations(model, values, includes, previous){
+            includes.forEach(includeOption => {
+              const {association: {associationAccessor, accessors, associationType, target}, include} = includeOption
+              let associationValues = values[associationAccessor]
+              
+              if(!associationValues)
+                return
+
+              if(associationType == "BelongsTo"){
+                if(model[associationAccessor].id)
+                  model[associationAccessor].update(associationValues)
+                else{
+                  model[accessors.create](associationValues)     
+                }
+                if(include)
+                  createOrUpdateAssociations(model.get(associationAccessor), associationValues, include, model.previous(associationAccessor))      
               }
-            }
-          }
-          createOrUpdateAssociation(c.address, c.createAddress, address)
-          createOrUpdateAssociation(c.authorizedSignatory, c.createAuthorizedSignatory, authorizedSignatory)        
-          if(account){            
-            createOrUpdateAssociation(c.account, c.createAccount, account)   
-            if(account.address)     
-              createOrUpdateAssociation(c.account.address, c.account.createAddress, account.address)        
-          }
 
-          const newAuthorizedPersons = authorizedPersons || []
-          
-          newAuthorizedPersons.filter(authorizedPerson => authorizedPerson.id).forEach(authorizedPerson => 
-            contactModel.upsert(authorizedPerson, {include: [{model: phoneModel, as: 'phones'}]}))
-          
-          newAuthorizedPersons.filter(authorizedPerson => !authorizedPerson.id).forEach(authorizedPerson => {
-            contactModel.create(authorizedPerson, {include: [{model: phoneModel, as: 'phones'}]}).then(authorizedPerson =>
-            c.addAuthorizedPerson(authorizedPerson))
+              if(associationType == "BelongsToMany"){                
+                const {association: through} = includeOption
+                
+                  associationValues.filter(value => !value.id).forEach(value => 
+                    model[accessors.create](value, {through}).then(item => {
+                      if(include)
+                        createOrUpdateAssociations(item, value, include, model.previous(associationAccessor).find(x => x.id == item.id))  
+                    })
+                  )                
+                  differenceBy(((previous && previous.get(associationAccessor)) || model.previous(associationAccessor)), associationValues, 'id').forEach(toRemove => {
+                    model[accessors.remove](toRemove)
+                    toRemove.destroy()
+                  })              
+                  model.get(associationAccessor).forEach((item, index) => {
+                    const itemValues = associationValues.find(x => x.id == item.id)
+                    if(itemValues){
+                      target.upsert(itemValues).then(() => {
+                        if(include)
+                          createOrUpdateAssociations(item, itemValues, include, model.previous(associationAccessor).find(x => x.id == item.id))  
+                      })
+                    }
+                  })
+                }
+            })
           }
-          )
-          
-          differenceBy(c.authorizedPersons, newAuthorizedPersons, 'id').forEach(toRemove => {
-            c.removeAuthorizedPerson(toRemove)
-            toRemove.destroy()
-          })
-
-        })
-      }
-    ],
+          c.set(hook.data)
+          createOrUpdateAssociations(c, hook.data, c.$options.include)
+      })
+      }],
     patch: [],
     remove: []
   },

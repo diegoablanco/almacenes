@@ -5,6 +5,7 @@ import { Button, Form, Grid, Divider, Tab, Segment } from 'semantic-ui-react'
 import classnames from 'classnames'
 import { renderField } from '../../utils/formHelpers'
 import renderContactFields from '../../common/ContactFields'
+import PhoneFields from '../../common/PhoneFields'
 
 class CustomerForm extends Component {  
   render() {
@@ -23,13 +24,11 @@ class CustomerForm extends Component {
         <Field name="address.line1" 
             type="text" 
             label="Dirección"
-            iconPosition='left' 
             component={renderField}/>      
         <Form.Group widths="equal">
           <Field name="address.zipCode" 
               type="text" 
               label="Código Postal"
-              iconPosition='left' 
               component={renderField}/>      
           <Field name="address.city" 
               type="text" 
@@ -37,25 +36,23 @@ class CustomerForm extends Component {
               component={renderField}/>      
           <Field name="address.country" 
               type="text" 
-              label="Pais"
-              iconPosition='left' 
+              label="País"
               component={renderField}/>    
         </Form.Group>
         <Divider horizontal>Firmante Autorizado</Divider>
         <Field name="authorizedSignatory.name" 
             label="Nombre"
-            iconPosition='left' 
             component={renderField}/>      
         <Form.Group widths="equal">
           <Field name="authorizedSignatory.position" 
               label="Posición"
-              iconPosition='left' 
               component={renderField}/>      
           <Field name="authorizedSignatory.email" 
               label="Email"
-              iconPosition='left' 
               component={renderField}/>
         </Form.Group>
+        <Divider horizontal>Teléfonos</Divider>
+        <FieldArray name={`authorizedSignatory.phones`} component={PhoneFields} />
       </Tab.Pane> },
       { menuItem: 'Información de la Cuenta', render: () => <Tab.Pane>
         <Field name="account.bankName" 
@@ -65,7 +62,6 @@ class CustomerForm extends Component {
         <Field name="account.number" 
             type="text" 
             label="Número de Cuenta"
-            iconPosition='left' 
             component={renderField}/>      
         <Form.Group widths="equal">
           <Field name="account.iban" 
@@ -75,29 +71,24 @@ class CustomerForm extends Component {
           <Field name="account.swiftBic" 
               type="text" 
               label="SWIFT/BIC"
-              iconPosition='left' 
               component={renderField}/>      
         </Form.Group>
           <Field name="account.address.line1" 
               type="text" 
               label="Dirección"
-              iconPosition='left' 
               component={renderField}/>      
         <Form.Group widths="equal">  
           <Field name="account.address.zipCode" 
               type="text" 
               label="Código Postal"
-              iconPosition='left' 
               component={renderField}/>    
           <Field name="account.address.city" 
               type="text" 
               label="Ciudad"
-              iconPosition='left' 
               component={renderField}/>      
           <Field name="account.address.country" 
               type="text" 
               label="País"
-              iconPosition='left' 
               component={renderField}/>     
         </Form.Group>  
         <Divider horizontal>Personas Autorizadas</Divider>

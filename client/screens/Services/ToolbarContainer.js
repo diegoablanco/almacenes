@@ -3,37 +3,40 @@ import { Input, Button, Menu } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { bindActionCreators  } from 'redux'
 import { reduxForm, Field } from 'redux-form'
-import { renderField } from '../../utils/formHelpers'
+import { renderSearchField } from '../../utils/formHelpers'
 
 class Toolbar extends Component {
   shouldComponentUpdate(){
     return false
   }
 
+
   filterForm = (props) => {
-    const { handleSubmit, reset, submitting, invalid } = props;
+    const { handleSubmit, reset } = props;
     return (
       <form onSubmit={handleSubmit}>
-        <Field name="name" 
+        <Field name="search" 
             type="text"
-            className='icon'
-            icon='search' 
-            label="Descripción"
-            placeholder='Descripción'
-            component={renderField}/>
-        <Button primary type='submit' size='small' disabled={submitting} loading={submitting}>Filtrar</Button> 
+            placeholder='Nombre'
+            component={renderSearchField}
+            reset={reset}/>
       </form>
   )}
 
-  handleSearch = (values) => {
-    this.props.setFilter(values)
+
+  buildFilter({search}){
+    return search && {
+      description: {
+        $like: `%${search}%`
+      }
+    }
   }
 
   render(){
     const { filterGrid, showFormModal } = this.props
     const ReduxForm = reduxForm({
       form: "filterServices",
-      onSubmit: filterGrid,
+      onSubmit: values => filterGrid(this.buildFilter(values)),
     })(this.filterForm)
 
     return (

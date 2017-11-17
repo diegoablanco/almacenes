@@ -37,20 +37,6 @@ class WarehouseServiceCrud extends Component {
                     crudActions={crudActions}
                     enableAdd
                 />
-                {/* <Grid
-                    columns={this.gridColumns} 
-                    rows={[{id: 1, description: "asdf", rate: 10.99}]}
-                    enableAdd
-                    addHandler={showServiceFormModal}
-                    editHandler={showServiceFormModal}                    
-                    />            
-                <FormModal 
-                    title={id ? "Editar Servicio" : "Agregar Servicio"}
-                    form={WarehouseServiceForm}
-                    formName={formName}
-                    selectors={selectors}
-                    id={id}
-                /> */}
             </div>
         )
     }

@@ -118,7 +118,7 @@ export default class Grid extends Component {
                             ? this.wrapWithInfiniteScroll(this.getTable())
                             : this.getTable()
                     : (<Loader active inline='centered' />)
-                }    
+                }
             </div>
         )
     }

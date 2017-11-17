@@ -1,14 +1,26 @@
 import React, { Component } from 'react'
 import { Field, FieldArray } from 'redux-form'
-import { Button, Form, Divider, Segment } from 'semantic-ui-react'
+import { Button, Form, Divider, Segment, Input } from 'semantic-ui-react'
 import classnames from 'classnames'
 
-export function renderField (props) {
-    const { input, label, type="text", width, meta: { touched, error }, ...rest } = props;
+export function renderField ({ input, label, type="text", width, meta: { touched, error }, ...rest }) {
     return (
-        <Form.Field className={classnames({ error: touched && error })} width={width} style={{ marginBottom: '1em' }}>
+        <Form.Field className={classnames({ error: touched && error })} width={width}>
             <label>{label}</label>
-            <Form.Input {...input} {...rest} placeholder={label} type={type} />
+            <Input {...input} {...rest} placeholder={label} type={type}/>
+            {touched && error && <label className="error">{error}</label>}
+        </Form.Field>
+    )
+  }
+
+export function renderSearchField ({ input, label, type="text", width, meta: { touched, error }, reset }) {
+    return (
+        <Form.Field className={classnames({ error: touched && error })} width={width}>
+            <Input {...input} placeholder={label} type={type}>
+                <input/>
+                <Button type="submit" icon='remove' basic onClick={reset}/>
+                <Button primary type='submit' size='small'>Filtrar</Button>
+            </Input>
             {touched && error && <label className="error">{error}</label>}
         </Form.Field>
     )

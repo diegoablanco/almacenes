@@ -13,7 +13,7 @@ class PhoneFields extends Component {
             label="Número"
             iconPosition='left' 
             component={renderField}/>      
-        <Field name={`${phone}.type`}
+        <Field name={`${phone}.typeId`}
             label="Tipo"
             iconPosition='left' 
             component={renderSelect}

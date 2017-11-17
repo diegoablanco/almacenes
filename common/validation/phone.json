@@ -7,9 +7,9 @@
       "number": {
           "type": "string"
       },
-      "type": {
-          "type": "object"
+      "typeId": {
+          "type": "integer"
       }
   },
-  "required": ["number", "type"]
+  "required": ["number", "typeId"]
 }
