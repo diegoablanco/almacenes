@@ -12,7 +12,11 @@ export default class CustomerCrud extends Component {
         return false
     }
 
-    gridColumns = [['companyName', 'Nombre'], ['email', 'E-mail'], ['phone', 'Teléfono']]
+    gridColumns = [
+        { property: 'companyName', label: 'Nombre' }, 
+        { property: 'email', label: 'E-mail' }, 
+        { property: 'phone', label: 'Teléfono' }
+    ]
 
     confirmModalOptions = {        
         title:"Eliminar Cliente",

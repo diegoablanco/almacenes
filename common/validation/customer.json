@@ -9,7 +9,11 @@
       },
       "authorizedSignatory": {"type": ["object", "null"], "$ref": "contact.json#"},
       "address": {"type": ["object", "null"], "$ref": "address.json#"},
-      "account": {"type": ["object", "null"], "$ref": "account.json#"}
+      "account": {"type": ["object", "null"], "$ref": "account.json#"},
+      "authorizedPersons": {
+        "type": ["array", "null"],
+        "items": { "type": ["object", "null"], "$ref": "contact.json#"}
+      }
     },
     "required": ["companyName"]
 }

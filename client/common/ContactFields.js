@@ -3,8 +3,10 @@ import { Field, FieldArray } from 'redux-form'
 import { Button, Form, Grid, Divider, Tab, Segment } from 'semantic-ui-react'
 import { renderField, formFields } from '../utils/formHelpers'
 import PhoneFields from './PhoneFields'
+import {getPhoneFieldCells} from './PhoneFields'
+import tabulatedFormFields from '../utils/tabulatedFormFields'
 
-function renderContactFields(contact){
+function renderContactFields(contact, phoneTypes){
   return (       
     <div> 
       <Field name={`${contact}.name`}
@@ -22,10 +24,10 @@ function renderContactFields(contact){
             component={renderField}/>
       </Form.Group>
       <Divider horizontal>Teléfonos</Divider>
-      <FieldArray name={`${contact}.phones`} component={PhoneFields} />
+      <FieldArray name={`${contact}.phones`} component={tabulatedFormFields("Teléfonos", getPhoneFieldCells, phoneTypes)} />
     </div>
   )
 }
-export default function(title){
-  return formFields(title, renderContactFields)
+export default function(title, fieldTitle, phoneTypes){
+  return formFields(title, fieldTitle, contact => renderContactFields(contact, phoneTypes))
 }

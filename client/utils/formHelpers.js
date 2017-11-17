@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Field, FieldArray } from 'redux-form'
-import { Button, Form, Divider, Segment, Input } from 'semantic-ui-react'
+import { Button, Form, Divider, Segment, Input, Grid } from 'semantic-ui-react'
 import classnames from 'classnames'
 
 export function renderField ({ input, label, type="text", width, meta: { touched, error }, ...rest }) {
@@ -31,27 +31,45 @@ export function renderSelect ({ input, label, type, meta: { touched, error }, op
         return input.onChange(value)
       }
     return (
-        <Form.Field className={classnames({ error: touched && error })} style={{ marginBottom: '1em' }}>
+        <Form.Field className={classnames({ error: touched && error })} >
             <label>{label}</label>
             <Form.Select {...input} options={options} onChange={handleChange}/>
         </Form.Field>
     )
   }
 
-export function formFields(title, renderFields){
-    return ({ fields, meta: { error, submitFailed } }) => (      
-        <Segment.Group>
-        <Button type="button" icon="add circle" onClick={() => {
-            fields.push({})
-            return false
-            }} />
-            {fields.map((item, index) =>
-            <Segment key={index}>
-            <Button type="button" icon="remove circle" onClick={() => fields.remove(index)} />
-            <Divider horizontal>{title} #{index + 1}</Divider>
-            {renderFields(item)}
-            </Segment>
-        )}
-        </Segment.Group>    
+export function formFields(title, fieldTitle, renderFields){
+    return ({ fields, meta: { error, submitFailed } }) => (     
+        <div>
+            {fieldGroupHeader(title, fields)}
+            <Segment.Group>
+                {fields.map((item, index) =>
+                    <Segment key={index}>
+                        <Grid>
+                            <Grid.Column width={14}>
+                                <Divider horizontal >{title} #{index + 1}</Divider>
+                            </Grid.Column>
+                            <Grid.Column width={2} floated='right'>
+                                <Button type="button" icon="remove circle" negative onClick={() => fields.remove(index)} />
+                            </Grid.Column>
+                        </Grid>
+                        {renderFields(item)}
+                    </Segment>
+            )}
+            </Segment.Group>    
+        </div> 
+    )
+}
+
+export function fieldGroupHeader(title, fields){
+    return (
+        <Grid>
+            <Grid.Column width={14}>
+                <Divider horizontal >{title}</Divider>
+            </Grid.Column>
+            <Grid.Column width={2} floated='right'>
+                <Button type="button" icon="add circle" positive onClick={() => fields.push({})} />
+            </Grid.Column>
+        </Grid>
     )
 }

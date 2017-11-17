@@ -6,6 +6,8 @@ import classnames from 'classnames'
 import { renderField } from '../../utils/formHelpers'
 import renderContactFields from '../../common/ContactFields'
 import PhoneFields from '../../common/PhoneFields'
+import {getPhoneFieldCells} from '../../common/PhoneFields'
+import tabulatedFormFields from '../../utils/tabulatedFormFields'
 
 class CustomerForm extends Component {  
   render() {
@@ -52,7 +54,7 @@ class CustomerForm extends Component {
               component={renderField}/>
         </Form.Group>
         <Divider horizontal>Teléfonos</Divider>
-        <FieldArray name={`authorizedSignatory.phones`} component={PhoneFields} />
+        <FieldArray name={`authorizedSignatory.phones`} component={tabulatedFormFields("Teléfonos", getPhoneFieldCells, phoneTypes)} />
       </Tab.Pane> },
       { menuItem: 'Información de la Cuenta', render: () => <Tab.Pane>
         <Field name="account.bankName" 
@@ -91,11 +93,10 @@ class CustomerForm extends Component {
               label="País"
               component={renderField}/>     
         </Form.Group>  
-        <Divider horizontal>Personas Autorizadas</Divider>
-        <FieldArray name="authorizedPersons" component={renderContactFields("Persona Autorizada")} />
+        <FieldArray name="authorizedPersons" component={renderContactFields("Personas Autorizadas", "Persona Autorizada", phoneTypes)} />
       </Tab.Pane> },
     ]
-    const {handleSubmit, loading} = this.props
+    const {handleSubmit, loading, extras: {phoneTypes}} = this.props
     return (     
         <Tab panes={panes} menu={{ secondary: true, pointing: true }}/>
     )

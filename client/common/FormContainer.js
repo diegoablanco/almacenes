@@ -23,10 +23,10 @@ class FormContainer extends Component {
   shouldComponentUpdate(){
       return false
   }
-  innerForm = (F) => ({handleSubmit, loading, formContent, id}) => {
+  innerForm = (F) => ({handleSubmit, loading, formContent, id, extras}) => {
     return(   
-      <Form onSubmit={handleSubmit} loading={loading}>
-        <F id={id}/>
+      <Form onSubmit={handleSubmit} loading={loading} >
+        <F id={id} extras={extras}/>
       </Form>)
   }
   componentDidMount(){
@@ -42,7 +42,7 @@ class FormContainer extends Component {
   }
 
   render() {
-    const { formName, validate, selectors, onCreatedOrUpdated } = this.props
+    const { formName, validate, selectors, onCreatedOrUpdated, extras } = this.props
     
     const rf = reduxForm({
       form: formName,
@@ -54,7 +54,10 @@ class FormContainer extends Component {
     return ( 
       <div>
         {forms.map((f, index) => {
-        let ReduxForm = rf(connect(state => ({loading: selectors.getUiState(state).showModalLoadingIndicator}))(this.innerForm(f)))
+        let ReduxForm = rf(connect(state => ({
+          loading: selectors.getUiState(state).showModalLoadingIndicator,
+          extras
+        }))(this.innerForm(f)))
         return <ReduxForm key={formName + index} onSubmit={(values) => onCreatedOrUpdated(values, index === forms.length -1)} />
       }) }
     </div>

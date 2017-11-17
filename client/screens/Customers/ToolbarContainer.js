@@ -44,7 +44,7 @@ class Toolbar extends Component {
         </Menu.Item>
         <Menu.Item position='right'>
           <Button.Group labeled>
-              <Button icon='add' content='Agregar' onClick={() => showFormModal()}  />
+              <Button icon='add' content='Agregar' positive onClick={() => showFormModal()}  />
           </Button.Group>
         </Menu.Item>
       </Menu>

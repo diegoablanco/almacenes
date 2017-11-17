@@ -10,7 +10,9 @@ export default class Grid extends Component {
     static defaultProps = {
         enableInfiniteScroll: false,
         enableSort: false,
-        enableAdd: false
+        enableAdd: false,
+        enableEdit: true,
+        rowKey: 'id'
     }
     constructor(props){
         super(props)
@@ -18,16 +20,16 @@ export default class Grid extends Component {
         this.columns = createColumns(...columns)
     }    
     getActionColumns (){
-        const {editHandler, deleteHandler, addHandler, enableAdd, canAdd} = this.props
+        const {editHandler, deleteHandler, addHandler, enableAdd, enableEdit, canAdd} = this.props
         return [
             {
                 property: "id",
                 cell:{
                     formatters: [(id) => (<Button.Group>
-                        <Button icon="write" onClick={(e) => {
+                        {enableEdit && <Button icon="write" onClick={(e) => {
                             e.preventDefault()
                             editHandler(id)
-                        }} />
+                        }} />}
                         <Button negative icon="delete" onClick={(e) => {
                             e.preventDefault()
                             deleteHandler(id)
@@ -96,7 +98,8 @@ export default class Grid extends Component {
     getTable(){
         const { 
             rows, 
-            enableSort
+            enableSort,
+            rowKey
         } = this.props
 
         const columns = enableSort ? this.getSortableColumns(this.columns) : this.columns
@@ -105,7 +108,7 @@ export default class Grid extends Component {
             className="ui striped table sortable"
             columns={gridColumns} >
             <Table.Header />
-            <Table.Body rows={rows || []} rowKey="id" />
+            <Table.Body rows={rows || []} rowKey={rowKey} />
         </Table.Provider>)
     }
     render(){

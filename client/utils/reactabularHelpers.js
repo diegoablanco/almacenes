@@ -1,13 +1,14 @@
-export function createColumn(property, label) {
+export function createColumn({property, label, cellFormatters = []}) {
     return {
             property: property,
             header: {
                 label: label
-            }
+            },
+            cell: { formatters: cellFormatters}
     }
 }
 export function createColumns(...columns) {
-    return columns.map(column => createColumn(...column))
+    return columns.map(column => createColumn(column))
 }
 
 export function addHeaderTransforms(columns, headerTransforms) {

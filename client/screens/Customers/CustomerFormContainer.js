@@ -44,6 +44,7 @@ class CustomerFormContainer extends Component{
 
 const mapStateToProps = (state) => ({
     data: state.customers.data,
-    ui: state.ui.customers
+    ui: state.ui.customers,
+    extras: {phoneTypes: state.phoneTypes.queryResult}
 })
 export default connect(mapStateToProps)(CustomerFormContainer)
