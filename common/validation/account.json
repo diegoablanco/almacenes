@@ -7,19 +7,15 @@
   ],
   "properties": {
     "bankName": {
-      "type": "string"
+      "type": "string", "minLength": 1
     },
     "number": {
-      "type": "string"
+      "type": "string", "minLength": 1
     },
     "authorizedPerson": {
-      "type": [
-        "object",
-        "null"
-      ],
       "$ref": "contact.json#"
     },
-    "address": {"type": ["object", "null"], "$ref": "address.json#"}
+    "address": {"$ref": "address.json#"}
   },
   "required": [
     "bankName",

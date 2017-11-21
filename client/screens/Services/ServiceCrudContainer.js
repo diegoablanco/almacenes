@@ -13,7 +13,10 @@ export default class ServiceCrud extends Component {
         return false
     }
 
-    gridColumns = [['description', 'Descripción'], ['rate', 'Tarifa']]
+    gridColumns = [
+        { property: 'description', label: 'Descripción' }, 
+        { property: 'rate', label: 'Tarifa' }
+    ]
 
     confirmModalOptions = {        
         title:"Eliminar Servicio",

@@ -11,7 +11,7 @@ class WarehouseForm extends Component {
     const { handleSubmit, pristine, reset, submitting, invalid, isEdit } = this.props;
 
     const panes = [
-      { menuItem: 'Información de Contacto', render: () => <Tab.Pane> 
+      { menuItem: 'Información de Contacto', pane: <Tab.Pane> 
       <Grid verticalAlign="middle" centered textAlign="center">
         <Grid.Column tablet={10} mobile={16} computer={6}>
             <Field name="name" 
@@ -35,11 +35,11 @@ class WarehouseForm extends Component {
       </Tab.Pane> }]
       if(isEdit)
         panes.push( 
-          { menuItem: 'Servicios', render: () => <Tab.Pane> 
+          { menuItem: 'Servicios', pane: <Tab.Pane> 
             <WarehouseServiceCrud />
         </Tab.Pane> })
     return (
-      <Tab panes={panes} menu={{ secondary: true, pointing: true }}/>
+      <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false}/>
     )
   }
 }

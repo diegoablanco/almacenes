@@ -13,7 +13,11 @@ export default class WarehouseCrud extends Component {
         return false
     }
 
-    gridColumns = [['name', 'Nombre'], ['email', 'E-mail'], ['phone', 'Teléfono']]
+    gridColumns = [
+        { property: 'name', label: 'Nombre' }, 
+        { property: 'email', label: 'E-mail' }, 
+        { property: 'phone', label: 'Teléfono' }
+    ]
 
     confirmModalOptions = {        
         title:"Eliminar Almacén",

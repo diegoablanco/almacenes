@@ -5,7 +5,7 @@
   "type": ["object"],
   "properties": {
       "number": {
-          "type": "string"
+          "type": "string", "minLength": 1
       },
       "typeId": {
           "type": "integer"

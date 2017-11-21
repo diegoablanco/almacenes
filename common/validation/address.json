@@ -5,16 +5,16 @@
   "type": ["object"],
   "properties": {
       "line1": {
-          "type": "string"
+          "type": "string", "minLength": 1
       },
       "zipCode": {
-          "type": "string"
+          "type": "string", "minLength": 1
       },
       "city": {
-          "type": "string"
+          "type": "string", "minLength": 1
       },
       "country": {
-          "type": "string"
+          "type": "string", "minLength": 1
       }
   },
   "required": ["line1", "zipCode", "city", "country"]

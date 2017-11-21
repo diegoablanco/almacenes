@@ -18,7 +18,10 @@ class WarehouseServiceCrud extends Component {
         return false
     }
 
-    gridColumns = [['service.description', 'Descripción'], ['service.rate', 'Tarifa']]
+    gridColumns = [
+        { property: 'service.description', label: 'Descripción' }, 
+        { property: 'service.rate', label: 'Tarifa' }
+    ]
     
     confirmModalOptions = {        
         title:"Eliminar Servicio",

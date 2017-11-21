@@ -9,9 +9,6 @@ import schema from '../../../common/validation/warehouse.json'
 
 export const formName = "Warehouse"
 class WarehouseFormContainer extends Component{
-    validate(values){
-        return makeValidator(schema)(values)
-    }
     warehouseForm = () =>{
         const {id} = this.props
         return (<WarehouseForm isEdit={id != undefined}/>)

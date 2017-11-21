@@ -38,13 +38,12 @@ class CustomerFormContainer extends Component{
             formName={formName} 
             validate={this.getCustomerValidator()}  
             defaultData={this.defaultData}
+            
         />)
     }
 }
 
 const mapStateToProps = (state) => ({
-    data: state.customers.data,
-    ui: state.ui.customers,
     extras: {phoneTypes: state.phoneTypes.queryResult}
 })
 export default connect(mapStateToProps)(CustomerFormContainer)

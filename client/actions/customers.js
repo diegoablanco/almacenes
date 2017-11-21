@@ -17,7 +17,6 @@ export function getCrudPageActions(){
         },
         initializeForm: function(formName, id, defaultData){
             return (dispatch, getState) => {
-                dispatch({ type: actionTypes.SHOW_MODAL })
                 dispatch(feathersServices.phoneTypes.find()).then(
                     () => {
                         if(id)
