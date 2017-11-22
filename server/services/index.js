@@ -13,6 +13,7 @@ const warehouses = require('./warehouses/warehouses.service.js')
 const warehouseServices = require('./warehouseServices/warehouseServices.service.js')
 const services = require('./services/services.service.js')
 const phoneTypes = require('./phoneTypes/phoneTypes.service.js')
+const uneditables = require('./uneditables/uneditables.service')
 
 const tryHook = require('./hooks/tryHook')
 const logger = require('../utils/loggerProduction')
@@ -31,13 +32,14 @@ module.exports = function () {
   app.configure(warehouseServices);
   app.configure(services);
   app.configure(phoneTypes);
+  app.configure(uneditables);
 
   // get client config file
   app.use(`${config.apiPath}/config`, {
     get() {
       return Promise.resolve(config.clientConfig);
     },
-  });
+  })
 
   // create log entry
   app.use(`${config.apiPath}/logs`, {

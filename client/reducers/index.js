@@ -19,7 +19,7 @@ export default {
   warehouses: feathersServices.warehouses.reducer,
   services: feathersServices.services.reducer,
   warehouseServices: feathersServices.warehouseServices.reducer,
-  phoneTypes: feathersServices.phoneTypes.reducer,
+  uneditables: feathersServices.uneditables.reducer,
   ui: combineReducers({
     customers: customersReducer,
     warehouses: warehousesReducer,

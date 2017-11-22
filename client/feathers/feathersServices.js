@@ -12,7 +12,7 @@ export const mapServicePathsToNames = {
   warehouses: 'warehouses',
   services: 'services',
   warehouseServices: 'warehouseServices',
-  phoneTypes: 'phoneTypes'
+  uneditables: 'uneditables'
 };
 
 // See feathers-reduxify-services::getServicesStatus. Order highest priority msg first.
@@ -26,4 +26,5 @@ export const prioritizedListServices = [
   'phoneTypes', 
   'verifyReset', 
   'messages', 
+  'uneditables', 
   'logs'];

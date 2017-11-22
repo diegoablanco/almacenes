@@ -1,7 +1,3 @@
-const getAccount = require('./account')
-const getAddress = require('./address')
-const getContact = require('./contact')
-const getPhone = require('./phone')
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {  

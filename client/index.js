@@ -56,14 +56,14 @@ if (token) {
 
 // Get client config
 configLoad(store, feathersServices)
-  .then(clientConfig => { // the rest of the client startup requires the config be loaded
+  .then(async clientConfig => { // the rest of the client startup requires the config be loaded
     // Setup client logger first so we can log asap
     initLogger(store.dispatch, feathersServices.logs);
     logger('info', 'Agent connected'); // todo You may want to remove this
 
     // Explicitly pass the config to code common to both server and client.
     setClientValidationsConfig(clientConfig);
-
+    await store.dispatch(feathersServices.uneditables.find())
     // Setup React Router which starts up the rest of the app.
     // A hack. Lemme know if you have a better idea.
     //const AppRouter = require('./router').default; // eslint-disable-line global-require

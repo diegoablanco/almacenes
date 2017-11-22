@@ -44,6 +44,6 @@ class CustomerFormContainer extends Component{
 }
 
 const mapStateToProps = (state) => ({
-    extras: {phoneTypes: state.phoneTypes.queryResult || []}
+    extras: {phoneTypes: state.uneditables.queryResult.phoneTypes || []}
 })
 export default connect(mapStateToProps)(CustomerFormContainer)
