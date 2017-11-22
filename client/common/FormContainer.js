@@ -16,8 +16,9 @@ class FormContainer extends Component {
     form: PropTypes.func.isRequired,
     formName: PropTypes.string.isRequired
   }
-  shouldComponentUpdate(){
-      return false
+  shouldComponentUpdate(nextProps){
+    const { extras } = this.props
+    return extras && JSON.stringify(extras) !== JSON.stringify(nextProps.extras)
   }
   innerForm = (F) => ({handleSubmit, loading, formContent, id, extras}) => {
     return(   

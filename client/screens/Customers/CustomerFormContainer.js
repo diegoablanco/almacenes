@@ -28,7 +28,7 @@ class CustomerFormContainer extends Component{
         return getValidator(customerSchema, [accountSchema, addressSchema, contactSchema, phoneSchema])
     }
     render(){
-        const {id, ...rest} = this.props
+        const {id, phoneTypes, ...rest} = this.props
         
         return(<FormContainer
             {...rest}
@@ -44,6 +44,6 @@ class CustomerFormContainer extends Component{
 }
 
 const mapStateToProps = (state) => ({
-    extras: {phoneTypes: state.phoneTypes.queryResult}
+    extras: {phoneTypes: state.phoneTypes.queryResult || []}
 })
 export default connect(mapStateToProps)(CustomerFormContainer)

@@ -11,6 +11,39 @@ const accountSchema = require('../../../common/validation/account.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 
+function getIncludes(database){
+  const {
+    models: {
+      contact,
+      phone,
+      address,
+      account
+    }
+  } = database
+
+  return {
+    account: {
+      model: account,
+      include: [address]
+    },
+    address: {
+      model: address
+    },
+    authorizedSignatory: {
+      model: contact,
+      as: 'authorizedSignatory',
+      include: [{model: phone, as: 'phones', attributes: [ 'number' ], through: {
+        attributes: []
+       }}]
+    },
+    authorizedPersons: {
+      model: contact,
+      as: 'authorizedPersons',
+      through: 'customer_contacts',
+      include: [{model: phone, as: 'phones'}]
+    }    
+  }
+}
 function addIncludes(hook) {
   const {
     models: {
@@ -61,15 +94,13 @@ module.exports = {
     ],
     find: [
       function (hook) {
-        const {
-          models: {
-            address
-          }
-        } = hook.app.get('database')
+        const { authorizedSignatory } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
-          include: [address]
-        }
+          include: [
+            {...authorizedSignatory, attributes: ['name', 'email']}
+          ],
+          attributes: [ 'id', 'companyName', 'authorizedSignatoryId' ]}
       }
     ],
     get: [

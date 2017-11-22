@@ -16,7 +16,7 @@ class Toolbar extends Component {
       <form onSubmit={handleSubmit}>
         <Field name="search" 
             type="text"
-            placeholder='Nombre'
+            placeholder='Buscar por Nombre'
             component={renderSearchField}
             reset={reset}/>
       </form>

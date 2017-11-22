@@ -13,12 +13,12 @@ export function renderField ({ input, label, type="text", width, meta: { touched
     )
   }
 
-export function renderSearchField ({ input, label, type="text", width, meta: { touched, error }, reset }) {
+export function renderSearchField ({ input, label, type="text", width, meta: { touched, error }, reset, placeholder }) {
     return (
         <Form.Field className={classnames({ error: touched && error })} width={width}>
-            <Input {...input} placeholder={label} type={type}>
+            <Input {...input} placeholder={placeholder} type={type}>
                 <input/>
-                <Button type="submit" icon='remove' basic onClick={reset}/>
+                <Button type="button" icon='remove' basic onClick={reset}/>
                 <Button primary type='submit' size='small'>Filtrar</Button>
             </Input>
             {touched && error && <label className="error">{error}</label>}

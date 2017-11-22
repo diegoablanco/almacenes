@@ -14,10 +14,11 @@ export default class CustomerCrud extends Component {
 
     gridColumns = [
         { property: 'companyName', label: 'Nombre' }, 
-        { property: 'email', label: 'E-mail' }, 
-        { property: 'phone', label: 'Teléfono' }
+        { property: 'authorizedSignatory.name', label: 'Firmante Autorizado' }, 
+        { property: 'authorizedSignatory.email', label: 'E-mail' }, 
+        { property: 'authorizedSignatory.phones[0].number', label: 'Teléfono' }
     ]
-
+    
     confirmModalOptions = {        
         title:"Eliminar Cliente",
         message:"¿Confirma eliminar el cliente?"
