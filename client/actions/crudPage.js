@@ -2,6 +2,13 @@ import { createAction, handleActions } from 'redux-actions'
 import { initialize as initializeReduxForm} from 'redux-form'
 import { entityDeletedMessage, entityCreatedMessage, entityUpdatedMessage } from './messageBar'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
+import * as sort from 'sortabular'
+
+const sortingOrder = {
+    FIRST: 'asc',
+    asc: 'desc',
+    desc: 'asc'
+}
 
 export function getActionTypes(crudPage = ''){
     return {
@@ -138,14 +145,16 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
                 })
             }
         },        
-        sortGrid(sortingColumns){
+        sortGrid(selectedColumn){
             return (dispatch, getState) => {
-                    dispatch({type: actionTypes.SET_SORTING_COLUMNS, sortingColumns})
-                    dispatch(resetPageNumber())
-                    const query = getQuery(getState(), selectors)
-                    dispatch(serviceActions.find({query})).then(result => {
-                        dispatch(buildRows(result.value))
-                    })
+                const {sortingColumns} = selectors.getUiState(getState())
+                const newSortingColumns = sort.byColumn({sortingColumns, selectedColumn, sortingOrder})
+                dispatch({type: actionTypes.SET_SORTING_COLUMNS, sortingColumns: newSortingColumns})
+                dispatch(resetPageNumber())
+                const query = getQuery(getState(), selectors)
+                dispatch(serviceActions.find({query})).then(result => {
+                    dispatch(buildRows(result.value))
+                })
             }
         },           
         confirmDeleteItem(){

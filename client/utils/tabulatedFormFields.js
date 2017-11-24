@@ -10,7 +10,6 @@ export default function tabulatedFormFields(title, getFieldCells, additionalInfo
     }
     function getRows(fields){
         return fields.map((field, index) => {
-            var a
             return {id: index, name: field}
         })
     }

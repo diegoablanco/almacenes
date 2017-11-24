@@ -14,25 +14,6 @@ export function getCrudPageActions(){
             return (dispatch, getState) => {
                 dispatch({ type: actionTypes.SHOW_MODAL, id })
             }
-        },
-        // initializeForm: function(formName, id, defaultData){
-        //     return (dispatch, getState) => {
-        //         dispatch(feathersServices.phoneTypes.find()).then(
-        //             () => {
-        //                 if(id)
-        //                     dispatch(feathersServices.customers.get(id))
-        //                         .then((response) => {
-        //                             dispatch(initializeReduxForm(formName, response.value))
-        //                             dispatch({ type: actionTypes.HIDE_MODAL_LOADING_INDICATOR })
-        //                         })                  
-        //                 else{
-        //                     dispatch(initializeReduxForm(formName, defaultData))
-        //                     dispatch({ type: actionTypes.HIDE_MODAL_LOADING_INDICATOR })
-        //                 }
-
-        //             }
-        //         )
-        //     }
-        // },
+        }
     }
 }

@@ -49,16 +49,7 @@ export default class Grid extends Component {
             }
         ]
     }
-    sort = (selectedColumn) => {
-        const { sortingColumns, handleSort } = this.props
-        const sortingOrder = {
-            FIRST: 'asc',
-            asc: 'desc',
-            desc: 'asc'
-        }
-        const newSortingColumns = sort.byColumn({sortingColumns, selectedColumn, sortingOrder})
-        handleSort(newSortingColumns)
-    }
+
     transformSortClasses(props){
         let className = ""
         if(!props.className.includes("-none"))
@@ -83,18 +74,23 @@ export default class Grid extends Component {
     }
     getSortableColumns(){        
         const { 
-            sortingColumns
+            sortingColumns,
+            handleSort
         } = this.props
 
         const sortable = sort.sort({
-            getSortingColumns: () => sortingColumns, 
-            onSort: this.sort,
+            getSortingColumns: () => sortingColumns,
+            onSort:  handleSort,
             strategy: sort.strategies.byProperty
         })
 
         const customSortableTransform = (value, extra) => this.transformSortClasses(sortable(value, extra))
-        
-        return addHeaderTransforms(this.columns, [sortable, customSortableTransform])
+        return this.columns.map(column => {
+            const isSortable = column.property.indexOf('.') == -1
+            return isSortable 
+                ? addHeaderTransforms([column], [sortable, customSortableTransform])[0]
+                : column
+        })
     }
     getTable(){
         const { 

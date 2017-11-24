@@ -31,7 +31,7 @@ class SignInForm extends Component {
   }
     
   render() {
-    const { handleSubmit, pristine, reset, submitting, invalid, error } = this.props;
+    const { handleSubmit, pristine, reset, submitting, invalid, error, registerOpen } = this.props;
 
     return (
       <Grid verticalAlign="middle" centered textAlign="center">
@@ -55,7 +55,7 @@ class SignInForm extends Component {
             <Divider section />
             <Link to="forgotpwdsendemail">Blanquear contraseña</Link>
             <br/>
-            <Link to="signup">Registrar Usuario</Link>
+            {registerOpen && <Link to="signup">Registrar Usuario</Link>}
           </Form>
         </Grid.Column>
       </Grid>

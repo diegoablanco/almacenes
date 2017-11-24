@@ -14,6 +14,7 @@ const warehouseServices = require('./warehouseServices/warehouseServices.service
 const services = require('./services/services.service.js')
 const phoneTypes = require('./phoneTypes/phoneTypes.service.js')
 const uneditables = require('./uneditables/uneditables.service')
+const carriers = require('./carriers/carriers.service')
 
 const tryHook = require('./hooks/tryHook')
 const logger = require('../utils/loggerProduction')
@@ -24,15 +25,16 @@ module.exports = function () {
   debug('Config');
   const app = this;
 
-  app.configure(authentication);
-  app.configure(user);
-  app.configure(messages);
-  app.configure(customers);
-  app.configure(warehouses);
-  app.configure(warehouseServices);
-  app.configure(services);
-  app.configure(phoneTypes);
-  app.configure(uneditables);
+  app.configure(authentication)
+  app.configure(user)
+  app.configure(messages)
+  app.configure(customers)
+  app.configure(warehouses)
+  app.configure(warehouseServices)
+  app.configure(services)
+  app.configure(phoneTypes)
+  app.configure(uneditables)
+  app.configure(carriers)
 
   // get client config file
   app.use(`${config.apiPath}/config`, {

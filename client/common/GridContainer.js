@@ -9,15 +9,17 @@ class GridContainer extends Component {
         loadGrid()
     }
     
-    shouldComponentUpdate(nextProps, nextState) {
-        const {filter} = this.props
-        if(JSON.stringify(filter) !== JSON.stringify(nextProps.filter))
-            return false
-        return true
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     const {filter, filterColumns} = this.props
+    //     if(JSON.stringify(filter) !== JSON.stringify(nextProps.filter))
+    //         return true
+    //     if(JSON.stringify(filterColumns) !== JSON.stringify(nextProps.filterColumns))
+    //         return true
+    //     return false
+    // }
 
     render(){
-        const {crudActions, sortGrid, loadMore, filterGrid} = this.props
+        const {crudActions, sortGrid, loadMore, filterGrid, sortingColumns} = this.props
         return(
             <div>
                 {this.props.toolbar && <this.props.toolbar handleFilter={filterGrid} crudActions={crudActions}/>}
@@ -26,6 +28,8 @@ class GridContainer extends Component {
                     handleLoadMore={loadMore}
                     enableSort
                     handleSort={sortGrid}
+                    enableInfiniteScroll={true}
+                    sortingColumns={sortingColumns}
                 />
             </div>
         )

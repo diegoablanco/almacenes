@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import { Container, Menu, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import { config } from '../../../utils/config';
-
+import { config } from '../../../utils/config'
 class AppNavBar extends Component{
-  LoggedInMenuItems = (props) => {
-    const {user, location: {pathname}} = props
+  LoggedInMenuItems = ({user: {username, roles, isVerified}, location: {pathname}}) => {
+    const isSuperAdmin = isVerified && roles && roles.indexOf('superAdmin') !== -1
     return([       
       <Menu.Item key="warehouses" active={ pathname === '/warehouses' }>
         <Link to="warehouses">Almacenes</Link>
@@ -15,14 +14,20 @@ class AppNavBar extends Component{
       <Menu.Item key="warehouseServicess" active={ pathname === '/services' }>
         <Link to="services">Servicios de Almacén</Link>
       </Menu.Item>,
+      <Menu.Item key="carriers" active={ pathname === '/carriers' }>
+        <Link to="carriers">Transportistas</Link>
+      </Menu.Item>,
       <Menu.Item key="customers" active={ pathname === '/customers' }>
         <Link to="customers">Clientes</Link>
       </Menu.Item>,
       <Menu.Menu position='right' key="profile">
-        <Dropdown item text={user.username} >
+        <Dropdown item text={username} >
           <Dropdown.Menu>
+            {isSuperAdmin && <Dropdown.Item>
+              <Link to="/user/signup">Registrar un usuario</Link>
+            </Dropdown.Item>}
             <Dropdown.Item>
-              <Link to="user/signin">Salir</Link>
+              <Link to="/user/signin">Salir</Link>
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

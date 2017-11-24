@@ -10,7 +10,7 @@ export function getCrudReducer(crudPage, defaultInitialState = {}) {
         rows: [],
         sortingColumns: {
             'createdAt': {
-                direction: 'asc',
+                direction: 'desc',
                 position: 0
             }
         },

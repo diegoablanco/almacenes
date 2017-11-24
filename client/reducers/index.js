@@ -20,6 +20,7 @@ export default {
   services: feathersServices.services.reducer,
   warehouseServices: feathersServices.warehouseServices.reducer,
   uneditables: feathersServices.uneditables.reducer,
+  carriers: feathersServices.carriers.reducer,
   ui: combineReducers({
     customers: customersReducer,
     warehouses: warehousesReducer,
@@ -30,6 +31,7 @@ export default {
         }
     }}),    
     warehouses: warehousesReducer,
+    carriers: getCrudReducer(crudPages.CARRIERS),
     warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),    
     messageBar
   })

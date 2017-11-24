@@ -4,7 +4,6 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader'
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
 import { routerReducer, routerActions, routerMiddleware, push } from 'react-router-redux'
-import { UserAuthWrapper } from 'redux-auth-wrapper';
 
 import { config } from './utils/config';
 
@@ -25,6 +24,7 @@ import App from './screens/App';
 import Customers from './screens/Customers'
 import Warehouses from './screens/Warehouses'
 import Services from './screens/Services'
+import Carriers from './screens/Carriers'
 
 const authenticatedSelector = state => {
   return state.auth.user && state.auth.user.isVerified
@@ -88,6 +88,7 @@ export default class AppRouter extends Component {
             <Route path="/customers" component={UserIsAuthenticated(Customers)} />
             <Route path="/warehouses" component={UserIsAuthenticated(Warehouses)} />
             <Route path="/services" component={UserIsAuthenticated(Services)} />
+            <Route path="/carriers" component={UserIsAuthenticated(Carriers)} />
             <Route component={UserSignIn} />
           </Switch>
         </App>
