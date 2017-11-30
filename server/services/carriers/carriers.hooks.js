@@ -1,7 +1,6 @@
-const auth = require('feathers-authentication').hooks;
+const auth = require('feathers-authentication').hooks
 const Ajv = require('ajv')
-const commonHooks = require('feathers-hooks-common');
-const { validateSchema, setNow } = commonHooks;
+const { validateSchema, setNow } = require('feathers-hooks-common')
 const sequelize = require('sequelize')
 const carrierSchema = require('../../../common/validation/carrier.json')
 const contactSchema = require('../../../common/validation/contact.json')
@@ -11,7 +10,7 @@ const accountSchema = require('../../../common/validation/account.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 
-function getIncludes(database){
+function getIncludes(database) {
   const {
     models: {
       contact,
@@ -32,18 +31,18 @@ function getIncludes(database){
     authorizedSignatory: {
       model: contact,
       as: 'authorizedSignatory',
-      include: [{model: phone, as: 'phones'}]
+      include: [{ model: phone, as: 'phones' }]
     } 
   }
 }
 
 function addIncludes(hook) {
-  const { account, address, authorizedSignatory} = getIncludes(hook.app.get('database'))
+  const { account, address, authorizedSignatory } = getIncludes(hook.app.get('database'))
   hook.params.sequelize = hook.params.sequelize || {}
   hook.params.sequelize.include = [ account, address, authorizedSignatory]
 }
 
-function validate(){
+function validate() {
   var ajv = Ajv({allErrors: true})
   ajv.addSchema(carrierSchema)
   ajv.addSchema(contactSchema)
@@ -63,7 +62,7 @@ module.exports = {
     ],
     find: [
       function (hook) {
-        let { authorizedSignatory } = getIncludes(hook.app.get('database'))
+        const { authorizedSignatory } = getIncludes(hook.app.get('database'))
         const {models: {phone}} = hook.app.get('database')
         authorizedSignatory.include = [{model: phone, as: 'phones', attributes: [ 'number' ], through: { attributes: [] }}]
         authorizedSignatory.attributes = ['name', 'email']
@@ -92,7 +91,7 @@ module.exports = {
     update: [
       validate(),
       setNow('updatedAt'),
-      function (hook) {
+      function updateIncludes(hook) {
         const {
           models: {
             carrier: carrierModel,
@@ -131,9 +130,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [function (hook) {
-      var a
-    }],
+    find: [],
     get: [
       function (context) {
           if(context.result.dataValues.address === null)

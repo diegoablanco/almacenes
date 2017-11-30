@@ -8,6 +8,9 @@ class AppNavBar extends Component{
   LoggedInMenuItems = ({user: {username, roles, isVerified}, location: {pathname}}) => {
     const isSuperAdmin = isVerified && roles && roles.indexOf('superAdmin') !== -1
     return([       
+      <Menu.Item key="stock" active={ pathname === '/stock' }>
+        <Link to="stock">Stock</Link>
+      </Menu.Item>,
       <Menu.Item key="warehouses" active={ pathname === '/warehouses' }>
         <Link to="warehouses">Almacenes</Link>
       </Menu.Item>,

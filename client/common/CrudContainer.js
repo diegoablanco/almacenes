@@ -14,19 +14,21 @@ class CrudContainer extends Component {
         const {
             gridColumns, 
             selectors,
-            createOrUpdate,
             showModal,
-            showFormModal,
-            hideModal,
             crudActions,
             toolbar,
             confirmModalOptions,
             id,
-            showConfirmModal,
-            hideConfirmModal,
-            confirmDeleteItem,
-            initializeForm,
-            enableAdd
+            enableAdd,
+            bindActions: {
+                createOrUpdate,
+                showConfirmModal,
+                hideConfirmModal,
+                confirmDeleteItem,
+                showFormModal,
+                hideModal,
+                initializeForm
+            }
         } = this.props
         return(        
             <div>
@@ -46,6 +48,7 @@ class CrudContainer extends Component {
                     onCreatedOrUpdated={createOrUpdate} 
                     handleClose={hideModal} 
                     initializeForm={initializeForm}
+                    bindActions={this.props.bindActions}
                 />
                 <ConfirmModal 
                     {...confirmModalOptions}
@@ -72,7 +75,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     const { crudActions } = ownProps
-    return bindActionCreators(crudActions, dispatch)
+    return {
+        bindActions: bindActionCreators(crudActions, dispatch)
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CrudContainer)

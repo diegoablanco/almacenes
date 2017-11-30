@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 /* eslint new-cap: 0 */
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader'
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
-import { routerReducer, routerActions, routerMiddleware, push } from 'react-router-redux'
+import { routerActions } from 'react-router-redux'
 
 import { config } from './utils/config';
 
@@ -25,14 +25,13 @@ import Customers from './screens/Customers'
 import Warehouses from './screens/Warehouses'
 import Services from './screens/Services'
 import Carriers from './screens/Carriers'
+import Stock from './screens/Stock'
 
-const authenticatedSelector = state => {
-  return state.auth.user && state.auth.user.isVerified
-}
+const authenticatedSelector = state => state.auth.user && state.auth.user.isVerified
 // Authentication Higher Order Components to wrap route components.
 const UserIsAuthenticated = connectedRouterRedirect({
   // extract user data from state
-  authenticatedSelector: authenticatedSelector,
+  authenticatedSelector,
   /* When signin is pending but not fulfilled: */
   // determine if signin is pending
   authenticatingSelector: state => state.auth.isLoading,
@@ -46,7 +45,7 @@ const UserIsAuthenticated = connectedRouterRedirect({
   // action to dispatch to redirect
   redirectAction: routerActions.replace,
   /* For documentation: */
-  wrapperDisplayName: 'UserIsAuthenticated',
+  wrapperDisplayName: 'UserIsAuthenticated'
 });
 
 const UserIsAdmin = connectedRouterRedirect({
@@ -60,7 +59,7 @@ const UserIsAdmin = connectedRouterRedirect({
   redirectPath: '/user/signin',
   allowRedirectBack: false,
   redirectAction: routerActions.replace,
-  wrapperDisplayName: 'UserIsAdmin',
+  wrapperDisplayName: 'UserIsAdmin'
 });
 
 // Routing
@@ -89,6 +88,7 @@ export default class AppRouter extends Component {
             <Route path="/warehouses" component={UserIsAuthenticated(Warehouses)} />
             <Route path="/services" component={UserIsAuthenticated(Services)} />
             <Route path="/carriers" component={UserIsAuthenticated(Carriers)} />
+            <Route path="/stock" component={UserIsAuthenticated(Stock)} />
             <Route component={UserSignIn} />
           </Switch>
         </App>

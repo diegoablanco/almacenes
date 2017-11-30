@@ -14,7 +14,7 @@ module.exports = function (sequelize) {
     }
   })
   WarehouseInstruction.associate = function(models){
-    WarehouseInstruction.belongsTo(models['stockMovement'])
+    WarehouseInstruction.belongsTo(models['stockMovementType'])
   }
   
   return WarehouseInstruction

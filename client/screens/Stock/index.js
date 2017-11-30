@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import WarehouseCrud from './WarehouseCrudContainer'
+import CrudContainer from './CrudContainer'
 
-class Screen extends Component{
+class Screen extends Component {
   render(){    
     return (
       <div>
-        <WarehouseCrud />
+        <CrudContainer />
       </div>
     )
   } 
 }
+
 export default connect()(Screen)

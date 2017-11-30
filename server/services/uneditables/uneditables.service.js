@@ -1,8 +1,8 @@
 const config = require('config')
 const getDatabase = require('../../../server/database')
+
 module.exports = function () {
-  const app = this;
-  
+  const app = this
   app.get(`${config.apiPath}/uneditables`, 
     async (req, res, next)  => {
       const sequelize = getDatabase()
@@ -10,15 +10,15 @@ module.exports = function () {
         const {models: {
           user,
           phoneType,
-          stockMovement
+          stockMovementType
         }} = sequelize
         const phoneTypeModels = await phoneType.findAll({ attributes: ['id', 'description'] })
-        const stockMovementModels = await stockMovement.findAll({ attributes: ['id', 'description'] })
+        const stockMovementModels = await stockMovementType.findAll({ attributes: ['id', 'description'] })
         const usersCount = await user.findAll({ attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'total']]
         })
         res.json({
           phoneTypes: phoneTypeModels,
-          stockMovements: stockMovementModels,
+          stockMovementTypes: stockMovementModels,
           registerOpen: usersCount[0].get('total') === 0
         })
       }

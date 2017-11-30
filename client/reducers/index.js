@@ -1,13 +1,13 @@
 import { routerReducer } from 'react-router-redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 import { combineReducers } from 'redux'
-import { feathersServices, feathersAuthentication } from '../feathers';
-import {crudPage, getCrudReducer} from './crudPage'
-import {crudPages} from '../common/CrudPages'
-import customersPage from './customers'
+import { feathersServices, feathersAuthentication } from '../feathers'
+import { getCrudReducer } from './crudPage'
+import crudPages from '../common/CrudPages'
 import messageBar from './messageBar'
 import customersReducer from './customers'
 import warehousesReducer from './warehouses'
+import stocksReducer from './stocks'
 
 export default {
   routing: routerReducer,
@@ -21,18 +21,19 @@ export default {
   warehouseServices: feathersServices.warehouseServices.reducer,
   uneditables: feathersServices.uneditables.reducer,
   carriers: feathersServices.carriers.reducer,
+  stocks: feathersServices.stocks.reducer,
   ui: combineReducers({
     customers: customersReducer,
     warehouses: warehousesReducer,
-    services: getCrudReducer(crudPages.SERVICES, {sortingColumns: {
-        'description': {
-            direction: 'asc',
-            position: 0
-        }
-    }}),    
-    warehouses: warehousesReducer,
+    services: getCrudReducer(crudPages.SERVICES, { sortingColumns: {
+      description: {
+        direction: 'asc',
+        position: 0
+      }
+    } }),
     carriers: getCrudReducer(crudPages.CARRIERS),
-    warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),    
+    warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),
+    stocks: stocksReducer,
     messageBar
   })
 };

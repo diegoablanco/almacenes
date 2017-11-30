@@ -1,5 +1,5 @@
 import {crudPage, getCrudReducer} from './crudPage'
-import {crudPages} from '../common/CrudPages'
+import crudPages from '../common/CrudPages'
 
 const initialState = {
     sortingColumns: {

@@ -4,7 +4,7 @@ import { feathersServices } from '../../feathers'
 import ServiceFormModal from './ServiceFormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
-import { crudPages } from '../../common/CrudPages'
+import crudPages from '../../common/CrudPages'
 import { getCrudPageActions } from '../../actions/crudPage'
 import * as selectors from '../../selectors/services'
 

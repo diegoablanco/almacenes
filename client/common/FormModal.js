@@ -21,7 +21,8 @@ class FormModal extends Component {
             formName,
             onCreatedOrUpdated,
             initializeForm,
-            selectors
+            selectors,
+            bindActions
          } = this.props
         
         return(
@@ -30,7 +31,7 @@ class FormModal extends Component {
                     size='small'>
                     <Modal.Header content={title} />
                     <Modal.Content>
-                        <this.props.form {...{id, onCreatedOrUpdated, initializeForm, selectors}}/>
+                        <this.props.form {...{id, onCreatedOrUpdated, initializeForm, selectors, bindActions}}/>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button onClick={handleClose}>

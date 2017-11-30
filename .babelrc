@@ -1,6 +1,14 @@
 {
-  "presets": [["es2017"], "stage-0", "react"],
-  "plugins": ["react-hot-loader/babel"],
+  "presets": [
+    [
+      "es2017"
+    ],
+    "stage-0",
+    "react"
+  ],
+  "plugins": [
+    "react-hot-loader/babel"
+  ],
   "env": {
     "development": {
       "sourceMaps": "dev",
@@ -8,8 +16,8 @@
     },
     "production": {
       "plugins": [
-       "transform-react-constant-elements",
-       "transform-react-inline-elements"
+        "transform-react-constant-elements",
+        "transform-react-inline-elements"
       ]
     }
   }

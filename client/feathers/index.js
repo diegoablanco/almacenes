@@ -1,5 +1,5 @@
 
-/* global io, window */
+/* global window */
 
 import feathers from 'feathers-client';
 import reduxifyServices, { getServicesStatus } from 'feathers-reduxify-services';
@@ -20,9 +20,8 @@ export default app;
 export const feathersAuthentication = reduxifyAuthentication(app,
   { isUserAuthorized: (user) => user.isVerified } // user must be verified to authenticate
 )
-
 // Reduxify feathers services
-export const feathersServices = reduxifyServices(app, mapServicePathsToNames);
+export const feathersServices = Object.assign({}, ...mapServicePathsToNames.map(servicePaths => reduxifyServices(app, servicePaths)))
 
 // Convenience method to get status of feathers services, incl feathers-authentication
 export const getFeathersStatus =

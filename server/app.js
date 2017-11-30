@@ -18,14 +18,32 @@ const logger = require('./utils/loggerProduction')
 const middleware = require('./middleware')
 const services = require('./services')
 const getDatabase = require('./database')
+// Helpers
+
+function serveHtmlForEnvironment(req, res) {
+  var html; // eslint-disable-line no-var
+
+  switch (config.NODE_ENV) {
+    case 'devserver':
+      html = './index-devserver.html';
+      break;
+    case 'production': // fall through
+    case 'development': // fall through
+    default:
+      html = path.join('.', 'dist', 'index.html');
+  }
+
+  debug(`Serve file ${html} in ${config.NODE_ENV}`);
+  res.sendFile(html, { root: config.server.publicPath });
+}
 
 debug('Required');
 
 const app = feathers()
-  // We don't use feathers-configuration because 'config' is a better alternative.
-  // You don't have to pass app along for app.get() with 'config' and 'config' has more features.
-  // Feathersjs will switch to 'config' at some point,
-  // see https://github.com/feathersjs/feathers-configuration/issues/8
+// We don't use feathers-configuration because 'config' is a better alternative.
+// You don't have to pass app along for app.get() with 'config' and 'config' has more features.
+// Feathersjs will switch to 'config' at some point,
+// see https://github.com/feathersjs/feathers-configuration/issues/8
 
   .options('*', cors())
 
@@ -48,11 +66,12 @@ const app = feathers()
 
   // Routing for app. Load app; the client will handle rest of the routing.
   .use('/user', serveHtmlForEnvironment) // for '/user ...'
+  .use('/user/signup', serveHtmlForEnvironment) // for '/user ...'
   .use('/customers', serveHtmlForEnvironment) // for '/user ...'
   .use('/warehouses', serveHtmlForEnvironment) // for '/user ...'
   .use('/services', serveHtmlForEnvironment) // for '/user ...'
   .use('/carriers', serveHtmlForEnvironment) // for '/user ...'
-  .use('/user/signup', serveHtmlForEnvironment) // for '/user ...'
+  .use('/stock', serveHtmlForEnvironment) // for '/user ...'
   .use(config.client.defaultRoute, serveHtmlForEnvironment) // default is '/app ...'
 
   // Utilities
@@ -69,21 +88,3 @@ const app = feathers()
 
 module.exports = app;
 
-// Helpers
-
-function serveHtmlForEnvironment(req, res) {
-  var html; // eslint-disable-line no-var
-
-  switch (config.NODE_ENV) {
-    case 'devserver':
-      html = './index-devserver.html';
-      break;
-    case 'production': // fall through
-    case 'development': // fall through
-    default:
-      html = path.join('.', 'dist', 'index.html');
-  }
-
-  debug(`Serve file ${html} in ${config.NODE_ENV}`);
-  res.sendFile(html, { root: config.server.publicPath });
-}

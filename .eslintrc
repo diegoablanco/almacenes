@@ -8,7 +8,9 @@
     "mocha": true,
   },
   "plugins": [
-    "jsdoc",
+    "react",
+    "jsx-a11y",
+    "import"
   ],
   "rules": { // override airbnb rules, add other rules
     "func-names": 0,

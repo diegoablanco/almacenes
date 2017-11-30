@@ -1,10 +1,6 @@
-
-/* eslint no-console: 0, no-param-reassign: 0 */
-
 const debug = require('debug')('service:index')
 const config = require('config')
 const auth = require('feathers-authentication').hooks
-
 const authentication = require('./authentication')
 const user = require('./user')
 const messages = require('./messages')
@@ -15,15 +11,15 @@ const services = require('./services/services.service.js')
 const phoneTypes = require('./phoneTypes/phoneTypes.service.js')
 const uneditables = require('./uneditables/uneditables.service')
 const carriers = require('./carriers/carriers.service')
-
-const tryHook = require('./hooks/tryHook')
+const stock = require('./stock/service')
+const lookupEntities = require('./lookupEntities/service')
 const logger = require('../utils/loggerProduction')
 
-debug('Required');
+debug('Required')
 
 module.exports = function () {
-  debug('Config');
-  const app = this;
+  debug('Config')
+  const app = this
 
   app.configure(authentication)
   app.configure(user)
@@ -35,20 +31,22 @@ module.exports = function () {
   app.configure(phoneTypes)
   app.configure(uneditables)
   app.configure(carriers)
+  app.configure(stock)
+  app.configure(lookupEntities)
 
   // get client config file
   app.use(`${config.apiPath}/config`, {
     get() {
       return Promise.resolve(config.clientConfig);
-    },
+    }
   })
 
   // create log entry
   app.use(`${config.apiPath}/logs`, {
     before: {
       create: [
-        tryHook(auth.authenticate['jwt', 'local']),
-      ],
+        auth.authenticate(['jwt', 'local'])
+      ]
     },
     create({ level, msg, payload }, params) {
       const paramsUser = params.user;
@@ -72,7 +70,7 @@ module.exports = function () {
 
       // Note: Redux's action.payload will contain undefined instead of null
       return Promise.resolve(null);
-    },
+    }
   });
 
   debug('Config complete');

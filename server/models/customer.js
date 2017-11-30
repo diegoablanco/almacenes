@@ -1,13 +1,12 @@
 const Sequelize = require('sequelize')
 
-module.exports = function (sequelize) {  
+module.exports = function (sequelize) {
   const Customer = sequelize.define('customer', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true,
-      
+      primaryKey: true
     },
     companyName: {
       type: Sequelize.STRING,
@@ -19,17 +18,17 @@ module.exports = function (sequelize) {
   },
   {
     hooks: {
-      beforeCount: (options) => { 
-        options.raw = true 
+      beforeCount: (options) => {
+        options.raw = true
       }
     }
   }
 )
-  Customer.associate = function(models){
-    Customer.belongsTo(models['address'])
-    Customer.belongsTo(models['account'])
-    Customer.belongsTo(models['contact'], { as: 'authorizedSignatory'})
-    Customer.belongsToMany(models['contact'], { as: 'authorizedPersons', through: 'customer_contacts', onDelete: 'CASCADE'})
+  Customer.associate = function ({ address, account, contact }){
+    Customer.belongsTo(address)
+    Customer.belongsTo(account)
+    Customer.belongsTo(contact, { as: 'authorizedSignatory'})
+    Customer.belongsToMany(contact, { as: 'authorizedPersons', through: 'customer_contacts', onDelete: 'CASCADE'})
   }
   return Customer
 }

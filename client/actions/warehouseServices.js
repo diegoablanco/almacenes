@@ -2,7 +2,7 @@ import { initialize as initializeReduxForm, getFormValues} from 'redux-form'
 import { bindActionCreators  } from 'redux'
 import { feathersServices } from '../feathers';
 import { getCrudPageActions as getBaseCrudPageActions, getActionTypes, defaultGetQuery } from './crudPage'
-import { crudPages } from '../common/CrudPages'
+import crudPages from '../common/CrudPages'
 import * as selectors from '../selectors/warehouseServices'
 import * as warehouseSelectors from '../selectors/warehouses'
 import { getUiState as getWarehouseUiState }  from '../selectors/warehouses'

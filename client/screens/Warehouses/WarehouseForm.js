@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { Field } from 'redux-form'
 import { Button, Form, Grid, Tab } from 'semantic-ui-react'
-import classnames from 'classnames'
 import { renderField } from '../../utils/formHelpers'
 import WarehouseServiceCrud from '../WarehouseService/WarehouseServiceCrud'
 

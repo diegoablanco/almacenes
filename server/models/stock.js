@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 
-module.exports = function (sequelize) {  
+module.exports = function (sequelize) {
   const Stock = sequelize.define('stock', {
     id: {
       type: Sequelize.INTEGER,
@@ -12,10 +12,12 @@ module.exports = function (sequelize) {
       type: Sequelize.STRING
     }
   })
-  Stock.associate = function(models){
-    Stock.belongsTo(models['customer'])
-    Stock.belongsTo(models['customer'], {as: 'targetCustomer'})
-    Stock.belongsTo(models['customer'], {as: 'billingCustomer'})
+  Stock.associate = function({customer, contact, stockMovement, carrier}){
+    Stock.belongsTo(customer)
+    Stock.belongsTo(customer, {as: 'targetCustomer'})
+    Stock.belongsTo(customer, {as: 'billingCustomer'})
+    Stock.belongsTo(carrier)
+    Stock.belongsToMany(stockMovement, { as: 'movements', through: 'stock_movements'})
   }
   return Stock
 }

@@ -1,7 +1,6 @@
-const auth = require('feathers-authentication').hooks;
+const auth = require('feathers-authentication').hooks
 const Ajv = require('ajv')
-const commonHooks = require('feathers-hooks-common');
-const { validateSchema, setNow } = commonHooks;
+const { validateSchema, setNow } = require('feathers-hooks-common')
 const sequelize = require('sequelize')
 const customerSchema = require('../../../common/validation/customer.json')
 const contactSchema = require('../../../common/validation/contact.json')
@@ -11,7 +10,7 @@ const accountSchema = require('../../../common/validation/account.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 
-function getIncludes(database){
+function getIncludes(database) {
   const {
     models: {
       contact,
@@ -32,16 +31,19 @@ function getIncludes(database){
     authorizedSignatory: {
       model: contact,
       as: 'authorizedSignatory',
-      include: [{model: phone, as: 'phones', attributes: [ 'number' ], through: {
-        attributes: []
-       }}]
+      include: [{ model: phone,
+        as: 'phones',
+        attributes: ['number'],
+        through: {
+          attributes: []
+        } }]
     },
     authorizedPersons: {
       model: contact,
       as: 'authorizedPersons',
       through: 'customer_contacts',
-      include: [{model: phone, as: 'phones'}]
-    }    
+      include: [{ model: phone, as: 'phones' }]
+    }
   }
 }
 function addIncludes(hook) {
@@ -54,39 +56,38 @@ function addIncludes(hook) {
     }
   } = hook.app.get('database')
   hook.params.sequelize = hook.params.sequelize || {}
-  hook.params.sequelize.
-    include = [{
-        model: account,
-        include: [address]
-      },
-      {
-        model: address
-      }, 
-      {
-        model: contact,
-        as: 'authorizedSignatory',
-        include: [{model: phone, as: 'phones'}]
-      }, 
-      {
-        model: contact,
-        as: 'authorizedPersons',
-        through: 'customer_contacts',
-        include: [{model: phone, as: 'phones'}]
-      }
-    ]
+  hook.params.sequelize.include = [{
+    model: account,
+    include: [address]
+  },
+  {
+    model: address
+  },
+  {
+    model: contact,
+    as: 'authorizedSignatory',
+    include: [{ model: phone, as: 'phones' }]
+  },
+  {
+    model: contact,
+    as: 'authorizedPersons',
+    through: 'customer_contacts',
+    include: [{ model: phone, as: 'phones' }]
+  }
+  ]
 }
-function validate(){
-  var ajv = Ajv({allErrors: true})
+function validate() {
+  const ajv = Ajv({ allErrors: true })
   ajv.addSchema(customerSchema)
   ajv.addSchema(contactSchema)
   ajv.addSchema(phoneSchema)
   ajv.addSchema(addressSchema)
   ajv.addSchema(accountSchema)
-  
+
   return validateSchema(customerSchema, ajv, {
     addNewError: errorReducer
   })
-} 
+}
 module.exports = {
   before: {
     all: [
@@ -98,21 +99,13 @@ module.exports = {
         hook.params.sequelize = {
           raw: false,
           include: [
-            {...authorizedSignatory, attributes: ['name', 'email']}
+            { ...authorizedSignatory, attributes: ['name', 'email'] }
           ],
-          attributes: [ 'id', 'companyName', 'authorizedSignatoryId' ]}
+          attributes: ['id', 'companyName', 'authorizedSignatoryId'] }
       }
     ],
     get: [
       function (hook) {
-        const {
-          models: {
-            address,
-            contact,
-            account,
-            phone
-          }
-        } = hook.app.get('database')
         hook.params.sequelize = {
           raw: false
         }
@@ -142,29 +135,27 @@ module.exports = {
             id: hook.data.id
           },
           include: [{
-              model: accountModel,
-              include: [addressModel]
-            },
-            addressModel, 
-            {
-              model: contactModel,
-              as: 'authorizedSignatory',
-              include: [{model: phoneModel, as: 'phones', through: 'contact_phones'}],
-            }, 
-            {
-              model: contactModel,
-              as: 'authorizedPersons',
-              through: 'customer_contacts',
-              include: [{model: phoneModel, as: 'phones', through: 'contact_phones'}],
-            }
-        ]
+            model: accountModel,
+            include: [addressModel]
+          },
+          addressModel,
+          {
+            model: contactModel,
+            as: 'authorizedSignatory',
+            include: [{ model: phoneModel, as: 'phones', through: 'contact_phones' }]
+          },
+          {
+            model: contactModel,
+            as: 'authorizedPersons',
+            through: 'customer_contacts',
+            include: [{ model: phoneModel, as: 'phones', through: 'contact_phones' }]
+          }
+          ]
         }
-        
-        customerModel.findOne(filter).then(function (c) {          
-          const { address, authorizedSignatory, account, authorizedPersons } = hook.data
+        customerModel.findOne(filter).then((c) => {
           c.set(hook.data)
           createOrUpdateAssociations(c, hook.data, c.$options.include)
-      })
+        })
       }],
     patch: [],
     remove: []
@@ -172,17 +163,15 @@ module.exports = {
 
   after: {
     all: [],
-    find: [function (hook) {
-      var a
-    }],
+    find: [],
     get: [
       function (context) {
-          if(context.result.dataValues.address === null)
-            delete context.result.dataValues.address
-          if(context.result.dataValues.authorizedSignatory === null)
-            delete context.result.dataValues.authorizedSignatory
-          if(context.result.dataValues.account === null)
-            delete context.result.dataValues.account
+        if (context.result.dataValues.address === null) { delete context.result.dataValues.address }
+        if (context.result.dataValues.authorizedSignatory === null) { delete context.result.dataValues.authorizedSignatory }
+        if (context.result.dataValues.account === null) 
+          { delete context.result.dataValues.account } 
+        else if (context.result.dataValues.account.address === null) 
+          { delete context.result.dataValues.account.address }
       }],
     create: [],
     update: [],
@@ -199,4 +188,4 @@ module.exports = {
     patch: [],
     remove: []
   }
-};
+}

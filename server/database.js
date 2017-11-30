@@ -21,6 +21,7 @@ module.exports = function() {
   sequelize.import('../server/models/warehouseService')
   sequelize.import('../server/models/warehouseInstruction')
   sequelize.import('../server/models/stockMovement')
+  sequelize.import('../server/models/stockMovementType')
   sequelize.import('../server/models/stock')
 
   Object.keys(sequelize.models).forEach(function(modelName) {    
