@@ -7,7 +7,9 @@ const crudReducer = getCrudReducer(crudPages.STOCKS, {})
 function stockReducer(state, action) {
   return {
     ...state,
-    customersLookup: feathersServices.stockCustomerLookup.reducer(state.customersLookup, action)
+    customerLookup: feathersServices.customerLookup.reducer(state.customerLookup, action),
+    targetCustomerLookup: feathersServices.targetCustomerLookup.reducer(state.targetCustomerLookup, action),
+    carrierLookup: feathersServices.carrierLookup.reducer(state.carrierLookup, action)
   }
 }
 export default function (state, action) {

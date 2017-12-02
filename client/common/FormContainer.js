@@ -3,58 +3,49 @@ import React, {
 } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import {
-  reduxForm,
-  SubmissionError,
-  initialize
-} from 'redux-form'
+import { reduxForm } from 'redux-form'
 import { Form } from 'semantic-ui-react'
-import { entityCreated, entityUpdated } from '../actions/messageBar'
 
 class FormContainer extends Component {
-  shouldComponentUpdate(nextProps){
-    const { extras } = this.props
-    return extras != undefined && JSON.stringify(extras) !== JSON.stringify(nextProps.extras)
-  }
-  innerForm = (F) => ({handleSubmit, loading, formContent, id, extras}) => {
-    return(   
-      <Form onSubmit={handleSubmit} loading={loading} >
-        <F id={id} extras={extras} />
-      </Form>)
-  }
-  componentDidMount(){
-    const { initializeForm, formName, id , defaultData = {}} = this.props
+  componentDidMount() {
+    const { initializeForm, formName, id, defaultData = {} } = this.props
     initializeForm(formName, id, defaultData)
   }
-
+  shouldComponentUpdate(nextProps) {
+    return JSON.stringify(this.props) !== JSON.stringify(nextProps)
+  }
+  innerForm(F) {
+    return function ({ handleSubmit, loading, formContent, id, extras }) {
+      return (
+        <Form onSubmit={handleSubmit} loading={loading} >
+          <F id={id} extras={extras} />
+        </Form>)
+    }
+  }
   render() {
-    const { formName, validate, selectors, onCreatedOrUpdated, extras } = this.props
-    
-    const Rf = reduxForm({
+    const { id, formName, validate, selectors, onCreatedOrUpdated, loading, extras } = this.props
+
+    const RForm = reduxForm({
       form: formName,
-      validate: validate,
+      //validate,
+      onSubmit: onCreatedOrUpdated,
       extras,
-      onSubmit: onCreatedOrUpdated     
+      id,
+      loading
     })(this.innerForm(this.props.form))
-    
-    return ( 
-        <Rf/>
-    )
+    return (<RForm />)
   }
 }
 FormContainer.propTypes = {
   form: PropTypes.func.isRequired,
   formName: PropTypes.string.isRequired
 }
-const mapStateToProps = (state, ownProps) => 
-  {
-    const {id, showModalLoadingIndicator} = ownProps.selectors.getUiState(state)
-    return {
-      id,
-      loading: showModalLoadingIndicator
-    }
+const mapStateToProps = (state, ownProps) => {
+  const { id, showModalLoadingIndicator } = ownProps.selectors.getUiState(state)
+  return {
+    id,
+    loading: showModalLoadingIndicator
+  }
 }
 
-export default connect(
-  mapStateToProps
-)(FormContainer)
+export default connect(mapStateToProps)(FormContainer)

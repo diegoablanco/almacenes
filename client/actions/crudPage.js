@@ -82,8 +82,8 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
         if (id)
           {dispatch(serviceActions.get(id))
             .then((response) => {
-              dispatch(initializeReduxForm(formName, response.value))
               dispatch({ type: actionTypes.HIDE_MODAL_LOADING_INDICATOR })
+              dispatch(initializeReduxForm(formName, response.value))
             })}
         else {
           dispatch(initializeReduxForm(formName, defaultData))

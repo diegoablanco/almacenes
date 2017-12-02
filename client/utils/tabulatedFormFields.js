@@ -26,7 +26,7 @@ export default function tabulatedFormFields(title, getFieldCells, additionalInfo
             enableAdd={true}
             enableEdit={false}
             addHandler={addHandler(fields)}
-            deleteHandler={(index) => fields.remove(index)}
+            deleteHandler={fields.remove}
             columns={getColumns(fields)} 
             rows={getRows(fields)}
         /> 

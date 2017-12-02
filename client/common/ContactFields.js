@@ -6,28 +6,29 @@ import PhoneFields from './PhoneFields'
 import {getPhoneFieldCells} from './PhoneFields'
 import tabulatedFormFields from '../utils/tabulatedFormFields'
 
-function renderContactFields(contact, phoneTypes){
-  return (       
-    <div> 
-      <Field name={`${contact}.name`}
-              label="Nombre"
+function renderContactFields(phoneTypes){
+  return function(contact){           
+    return (<div key={contact}> 
+        <Field name={`${contact}.name`}
+                label="Nombre"
+                iconPosition='left' 
+                component={renderField}/>      
+        <Form.Group widths="equal">
+          <Field name={`${contact}.position`}
+              label="Posición"
               iconPosition='left' 
               component={renderField}/>      
-      <Form.Group widths="equal">
-        <Field name={`${contact}.position`}
-            label="Posición"
-            iconPosition='left' 
-            component={renderField}/>      
-        <Field name={`${contact}.email`}
-            label="Email"
-            iconPosition='left' 
-            component={renderField}/>
-      </Form.Group>
-      <Divider horizontal>Teléfonos</Divider>
-      <FieldArray name={`${contact}.phones`} component={tabulatedFormFields("Teléfonos", getPhoneFieldCells, phoneTypes)} />
-    </div>
-  )
+          <Field name={`${contact}.email`}
+              label="Email"
+              iconPosition='left' 
+              component={renderField}/>
+        </Form.Group>
+        <Divider horizontal>Teléfonos</Divider>
+        <FieldArray name={`${contact}.phones`} component={tabulatedFormFields("Teléfonos", getPhoneFieldCells, phoneTypes)} />
+      </div>
+    )
+  }
 }
 export default function(title, fieldTitle, phoneTypes){
-  return formFields(title, fieldTitle, contact => renderContactFields(contact, phoneTypes))
+  return formFields(title, fieldTitle, renderContactFields(phoneTypes))
 }

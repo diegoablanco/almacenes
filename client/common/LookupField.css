@@ -1,0 +1,3 @@
+.ui.form .field .search :disabled {
+    opacity: 1;
+}

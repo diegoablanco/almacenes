@@ -15,7 +15,13 @@ export const mapServicePathsToNames = [{
   stocks: 'stocks'
 },
 {
-  lookupEntities: 'stockCustomerLookup'
+  lookupEntities: 'carrierLookup'
+},
+{
+  lookupEntities: 'customerLookup'
+},
+{
+  lookupEntities: 'targetCustomerLookup'
 }]
 
 // See feathers-reduxify-services::getServicesStatus. Order highest priority msg first.

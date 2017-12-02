@@ -9,8 +9,12 @@ import PhoneFields from '../../common/PhoneFields'
 import {getPhoneFieldCells} from '../../common/PhoneFields'
 import tabulatedFormFields from '../../utils/tabulatedFormFields'
 
-class CustomerForm extends Component {  
-    render() {
+class CustomerForm extends Component {
+    constructor(props){
+        super(props)
+        this.panes = this.getPanes()
+    }
+    getPanes = () => {
         const {handleSubmit, loading, extras: {phoneTypes}} = this.props
         const panes = [
       { menuItem: 'Información de Contacto', pane: <Tab.Pane>              
@@ -95,10 +99,14 @@ class CustomerForm extends Component {
               component={renderField}/>     
         </Form.Group>  
         <FieldArray name="authorizedPersons" component={renderContactFields("Personas Autorizadas", "Persona Autorizada", phoneTypes)} />
-      </Tab.Pane> },
+      </Tab.Pane> }
     ]
+        return panes
+    }
+    render() {
+        
     return (     
-        <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false}/>
+        <Tab panes={this.panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false}/>
     )
   }
 }

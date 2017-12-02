@@ -17,7 +17,11 @@ module.exports = function () {
       switch (query.entity) {
         case 'customer':
           model = models.customer
-          attributes = ['id', 'companyName']
+          attributes = ['id', ['companyName', 'description']]
+          break
+        case 'carrier':
+          model = models.carrier
+          attributes = ['id', ['companyName', 'description']]
           break
         default:
           return ''
