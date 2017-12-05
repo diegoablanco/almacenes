@@ -60,4 +60,5 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm()(StockForm))
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
+  fields: ['boxes']})(StockForm))

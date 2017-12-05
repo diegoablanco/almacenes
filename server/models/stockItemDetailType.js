@@ -1,8 +1,7 @@
-const path = require('path')
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {
-  return sequelize.define('service', {
+  const StockItemDetailType = sequelize.define('stockItemDetailType', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
@@ -13,9 +12,9 @@ module.exports = function (sequelize) {
       type: Sequelize.STRING,
       allowNull: false
     },
-    rate: {
-      type: Sequelize.DataTypes.DECIMAL(10, 2),
-      allowNull: false
+    code: {
+      type: Sequelize.STRING
     }
   })
-};
+  return StockItemDetailType
+}

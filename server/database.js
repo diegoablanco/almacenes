@@ -1,13 +1,13 @@
 const config = require('config')
 const Sequelize = require('sequelize')
 
-module.exports = function() {
+module.exports = function () {
   const { database: { user, password, host, name } } = config
   const sequelize = new Sequelize(name, user, password, {
     dialect: 'mssql',
-    host: host
+    host
   })
-  
+
   sequelize.import('../server/models/user')
   sequelize.import('../server/models/phoneType')
   sequelize.import('../server/models/phone')
@@ -23,12 +23,15 @@ module.exports = function() {
   sequelize.import('../server/models/stockMovement')
   sequelize.import('../server/models/stockMovementType')
   sequelize.import('../server/models/stock')
+  sequelize.import('../server/models/stockBox')
+  sequelize.import('../server/models/stockItemDetail')
+  sequelize.import('../server/models/stockItemDetailType')
 
-  Object.keys(sequelize.models).forEach(function(modelName) {    
-      if ("associate" in sequelize.models[modelName]) {
-        sequelize.models[modelName].associate(sequelize.models);
-      }
+  Object.keys(sequelize.models).forEach((modelName) => {
+    if ('associate' in sequelize.models[modelName]) {
+      sequelize.models[modelName].associate(sequelize.models);
+    }
   })
-  
+
   return sequelize
 }

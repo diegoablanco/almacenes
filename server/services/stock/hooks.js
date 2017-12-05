@@ -4,6 +4,8 @@ const { validateSchema, setNow } = require('feathers-hooks-common')
 const hydrate = require('feathers-sequelize/hooks/hydrate')
 const stockSchema = require('../../../common/validation/stock.json')
 const errorReducer = require('../../helpers/errorReducer')
+const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
+
 function validate() {
   const ajv = Ajv({ allErrors: true })
   ajv.addSchema(stockSchema)
@@ -17,7 +19,8 @@ function getIncludes(database) {
       customer,
       warehouse,
       carrier,
-      warehouseInstruction
+      warehouseInstruction,
+      stockBox
     }
   } = database
   return {
@@ -34,6 +37,10 @@ function getIncludes(database) {
       model: customer,
       as: 'billingCustomer',
       attributes: ['companyName']
+    },
+    stockBox: {
+      model: stockBox,
+      as: 'boxes'
     },
     warehouse: {
       model: warehouse
@@ -64,7 +71,7 @@ module.exports = {
     ],
     get: [
       function (hook) {
-        const { customer, targetCustomer, billingCustomer, warehouse, carrier, warehouseInstruction } = getIncludes(hook.app.get('database'))
+        const { customer, targetCustomer, billingCustomer, warehouse, carrier, warehouseInstruction, stockBox } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
           include: [
@@ -73,16 +80,43 @@ module.exports = {
             { ...billingCustomer, attributes: ['id', 'companyName'] },
             { ...carrier, attributes: ['id', 'companyName'] },
             { ...warehouse, attributes: ['id', 'name'] },
-            { ...warehouseInstruction, attributes: ['id'], through: { attributes: [] } }
+            { ...warehouseInstruction, attributes: ['id'], through: { attributes: [] } },
+            stockBox
           ]
         }
       }
     ],
     create: [
       validate(),
+      function (hook) {
+        const { stockBox } = getIncludes(hook.app.get('database'))
+        hook.params.sequelize = {
+          raw: false,
+          include: [stockBox]
+        }
+      },
       setNow('createdAt')
     ],
-    update: [],
+    update: [
+      function (hook) {
+        const {
+          models: {
+            stock
+          }
+        } = hook.app.get('database')
+        const { stockBox } = getIncludes(hook.app.get('database'))
+        const filter = {
+          where: {
+            id: hook.data.id
+          },
+          include: [stockBox]
+        }
+        stock.findOne(filter).then(s => {
+          s.set(hook.data)
+          createOrUpdateAssociations(s, hook.data, s.$options.include)
+        })
+      }
+    ],
     patch: [],
     remove: []
   },

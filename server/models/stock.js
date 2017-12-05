@@ -10,9 +10,12 @@ module.exports = function (sequelize) {
     },
     name: {
       type: Sequelize.STRING
+    },
+    customInstructions: {
+      type: Sequelize.STRING
     }
   })
-  Stock.associate = function ({ customer, stockMovement, carrier, warehouse, warehouseInstruction }) {
+  Stock.associate = function ({ customer, stockMovement, carrier, warehouse, warehouseInstruction, stockBox }) {
     Stock.belongsTo(warehouse)
     Stock.belongsTo(customer)
     Stock.belongsTo(customer, { as: 'targetCustomer' })
@@ -20,6 +23,7 @@ module.exports = function (sequelize) {
     Stock.belongsTo(carrier)
     Stock.belongsToMany(stockMovement, { as: 'movements', through: 'stock_movements' })
     Stock.belongsToMany(warehouseInstruction, { as: 'instructions', through: 'stock_instructions' })
+    Stock.belongsTo(stockBox, { as: 'boxes' })
   }
   return Stock
 }

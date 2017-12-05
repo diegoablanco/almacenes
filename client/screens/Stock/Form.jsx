@@ -1,10 +1,68 @@
 import React from 'react'
-import { Field } from 'redux-form'
-import { Grid, Form, Tab } from 'semantic-ui-react'
+import { Field, formValues } from 'redux-form'
+import { Grid, Form, Tab, Accordion, Divider } from 'semantic-ui-react'
 import LookupSelectField from '../../common/LookupSelectField'
 import SelectField from '../../common/SelectField'
+import { renderTextArea, renderCheckbox, renderRadio, renderField, parseToInt } from '../../utils/formHelpers'
 
-
+function getGoodsPane() {
+  return (
+    <Tab.Pane>
+      <Grid verticalAlign="middle" centered textAlign="center">
+        <Grid.Column tablet={10} mobile={16} computer={14}>
+          <Accordion>
+            <Accordion.Title>
+              Cajas
+            </Accordion.Title>
+            <Accordion.Content active>
+              <Field
+                name="boxes.quantity"
+                type="text"
+                label="Cantidad"
+                parse={parseToInt}
+                component={renderField}
+              />
+              <Field
+                name="boxes.opened"
+                label="Abiertas"
+                component={renderCheckbox}
+              />
+              <Field
+                name="boxes.originalSeals"
+                label="Precintos originales"
+                component={renderCheckbox}
+              />
+              <Field
+                name="boxes.resealed"
+                label="Reprecintadas"
+                component={renderCheckbox}
+              />
+              <Field
+                name="boxes.serialNumbers"
+                label="Números de serie en cada caja"
+                component={renderCheckbox}
+              />
+              <Field
+                name="boxes.shrinkWapped"
+                label="Con precinto"
+                radioValue="sealed"
+                value="sealed"
+                component={formValues({ currentValue: 'boxes.shrinkWapped' })(renderRadio)}
+              />
+              <Field
+                name="boxes.shrinkWapped"
+                label="Sin precinto"
+                radioValue="unsealed"
+                value="unsealed"
+                component={formValues({ currentValue: 'boxes.shrinkWapped' })(renderRadio)}
+              />
+            </Accordion.Content>
+          </Accordion>
+        </Grid.Column>
+      </Grid>
+    </Tab.Pane>
+  )
+}
 export default function StockForm({
   targetCustomerLookup,
   targetCustomerLookupActions,
@@ -22,14 +80,15 @@ export default function StockForm({
   warehouseLookupActions,
   warehouse,
   availableInstructions,
-  instructions
+  instructions,
+  fields
 }) {
   const panes = [
     {
       menuItem: 'Información General',
       pane: <Tab.Pane>
         <Grid verticalAlign="middle" centered textAlign="center">
-          <Grid.Column tablet={10} mobile={16} computer={6}>
+          <Grid.Column tablet={10} mobile={16} computer={8}>
             <Field
               name="warehouseId"
               component={LookupSelectField}
@@ -80,10 +139,10 @@ export default function StockForm({
       </Tab.Pane>
     },
     {
-      menuItem: 'Mercadería',
+      menuItem: 'Instrucciones',
       pane: <Tab.Pane>
         <Grid verticalAlign="middle" centered textAlign="center">
-          <Grid.Column tablet={10} mobile={16} computer={6}>
+          <Grid.Column tablet={10} mobile={16} computer={12}>
             <Field
               name="instructions"
               component={SelectField}
@@ -92,9 +151,20 @@ export default function StockForm({
               multiple
               placeholder="Buscar una instrucción..."
             />
+            <Field
+              name="customInstructions"
+              type="textarea"
+              label="Intrucciones adicionales"
+              component={renderTextArea}
+              rows={5}
+            />
           </Grid.Column>
         </Grid>
       </Tab.Pane>
+    },
+    {
+      menuItem: 'Mercadería',
+      pane: getGoodsPane()
     }
   ]
   return (

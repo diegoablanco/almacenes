@@ -1,16 +1,9 @@
 import React, { Component } from 'react'
-import { Button, Form, Grid } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import { Field } from 'redux-form'
-import { renderField } from '../../utils/formHelpers'
+import { renderField, parseToFloat } from '../../utils/formHelpers'
 
 class ServiceForm extends Component { 
-  parseToFloat (value){
-    if(value.endsWith("."))
-      return value
-    const { isNaN, parseFloat} = Number
-    const float = parseFloat(value)
-    return isNaN(float) ? value : float
-  }   
   render() {
     const { handleSubmit, pristine, reset, submitting, invalid } = this.props;
 
@@ -20,12 +13,12 @@ class ServiceForm extends Component {
             <Field name="description" 
                 type="text" 
                 label="Descripción"
-                component={renderField}/>      
+                component={renderField}/>
             <Field name="rate" 
                 type="text" 
                 label="Tarifa"
-                parse={this.parseToFloat}
-                component={renderField}/>   
+                parse={parseToFloat}
+                component={renderField}/>
         </Grid.Column>
       </Grid>
     )

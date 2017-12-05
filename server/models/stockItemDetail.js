@@ -1,8 +1,7 @@
-const path = require('path')
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {
-  return sequelize.define('service', {
+  const StockItemDetail = sequelize.define('stockItemDetail', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
@@ -13,9 +12,13 @@ module.exports = function (sequelize) {
       type: Sequelize.STRING,
       allowNull: false
     },
-    rate: {
-      type: Sequelize.DataTypes.DECIMAL(10, 2),
+    quantity: {
+      type: Sequelize.INTEGER,
       allowNull: false
     }
   })
-};
+  StockItemDetail.associate = function ({ stockItemDetailType }) {
+    StockItemDetail.belongsTo(stockItemDetailType)
+  }
+  return StockItemDetail
+}

@@ -31,7 +31,7 @@ class FormModal extends Component {
                     open={showModal}
                     size='small'>
                     <Modal.Header content={title} />
-                    <Modal.Content>        
+                    <Modal.Content scrolling size="big">
                         <Dimmer.Dimmable dimmed={dimmed}>
                             <Dimmer active={dimmed} inverted />
                             <this.props.form {...{id, onCreatedOrUpdated, initializeForm, selectors, bindActions}}/>
