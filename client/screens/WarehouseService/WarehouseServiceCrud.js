@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { feathersServices } from '../../feathers'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getCrudPageActions } from '../../actions/warehouseServices'
+import getCrudPageActions from '../../actions/warehouseServices'
 import crudPages from '../../common/CrudPages'
 import { Button, Segment } from 'semantic-ui-react'
 import WarehouseServiceFormModal, {formName} from './WarehouseServiceFormModal'
@@ -45,6 +45,7 @@ class WarehouseServiceCrud extends Component {
     }
 }
 const mapStateToProps = (state, ownProps) => ({
+    warehouseId: state
 })
 const mapDispatchToProps = (dispatch, ownProps) => {
     return bindActionCreators({

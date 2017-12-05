@@ -35,6 +35,22 @@ console.log(`..This bundle was built for the ${nodeEnv} env.`); // eslint-disabl
 const history = createHistory()
 const store = configureStore(history);
 
+// Sign in with the JWT currently in localStorage
+const token = localStorage['feathers-jwt'] // eslint-disable-line no-undef
+if (token) {
+  store.dispatch(feathersAuthentication.authenticate(
+    {
+      strategy: 'jwt',
+      type: 'local',
+      accessToken: token
+    }))
+    .catch(err => {
+      console.log('authenticate catch', err) // eslint-disable-line no-console
+      if(err instanceof errors.NotAuthenticated)
+        store.dispatch(push('/user/signin'))
+      return err;
+    })
+}
 // Get client config
 configLoad(store, feathersServices)
   .then(async clientConfig => { // the rest of the client startup requires the config be loaded
@@ -97,21 +113,3 @@ function setupOnUncaughtExceptions() { // eslint-disable-line no-unused-vars
 if (nodeEnv === 'production') {
   setupOnUncaughtExceptions();
 }
-
-// Sign in with the JWT currently in localStorage
-const token = localStorage['feathers-jwt'] // eslint-disable-line no-undef
-if (token) {
-  store.dispatch(feathersAuthentication.authenticate(
-    {
-      strategy: 'jwt',
-      type: 'local',
-      accessToken: token
-    }))
-    .catch(err => {
-      console.log('authenticate catch', err) // eslint-disable-line no-console
-      if(err instanceof errors.NotAuthenticated)        
-        store.dispatch(push('/user/signin'))
-      return err;
-    })
-}
-

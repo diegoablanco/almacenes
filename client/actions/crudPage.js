@@ -1,4 +1,4 @@
-import { initialize as initializeReduxForm } from 'redux-form'
+import { initialize as initializeReduxForm, SubmissionError } from 'redux-form'
 import * as sort from 'sortabular'
 import { entityDeletedMessage, entityCreatedMessage, entityUpdatedMessage } from './messageBar'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'

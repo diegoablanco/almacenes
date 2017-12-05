@@ -4,7 +4,8 @@ import { feathersServices } from '../../feathers'
 import CustomerFormModal from './CustomerFormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
-import { getCrudPageActions } from '../../actions/customers'
+import crudPages from '../../common/CrudPages'
+import { getCrudPageActions } from '../../actions/crudPage'
 import * as selectors from '../../selectors/customers'
 
 export default class CustomerCrud extends Component {
@@ -25,7 +26,7 @@ export default class CustomerCrud extends Component {
     }
 
     render(){
-        const crudActions = getCrudPageActions()
+        const crudActions = getCrudPageActions(crudPages.CUSTOMERS, feathersServices.customers, selectors)
         return(       
             <div> 
                 <CrudContainer

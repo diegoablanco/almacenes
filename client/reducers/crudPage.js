@@ -1,11 +1,13 @@
 import { findIndex, filter } from 'lodash'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
 import { getActionTypes } from '../actions/crudPage'
+import { GENERAL_SERVICE_ERROR } from '../actions/common'
 
 export function getCrudReducer(crudPage, defaultInitialState = {}) {
     const initialState = {...{
         reloadGrid: false,
         showModal: false,
+        dimmed: false,
         filter: {},
         rows: [],
         sortingColumns: {
@@ -34,7 +36,9 @@ export function getCrudReducer(crudPage, defaultInitialState = {}) {
     return (state = initialState, action) => {
         switch(action.type){
             case actionTypes.SHOW_MODAL:
-                return { ...state, showModal: true, id: action.id, showModalLoadingIndicator: true }
+                return { ...state, showModal: true, id: action.id, showModalLoadingIndicator: true, dimmed: false }
+            case GENERAL_SERVICE_ERROR:
+                return { ...state, showModalLoadingIndicator: false, dimmed: true }
             case actionTypes.HIDE_MODAL:
                 return { ...state, showModal: false }
             case actionTypes.HIDE_MODAL_LOADING_INDICATOR:

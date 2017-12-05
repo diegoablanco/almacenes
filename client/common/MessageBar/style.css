@@ -1,3 +1,5 @@
 .ui.message {
     z-index: 1000;
+    top: 36px;
+    height: 36px;
 }

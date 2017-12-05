@@ -1,10 +1,8 @@
-const auth = require('feathers-authentication').hooks;
-const Ajv = require('ajv')
+const auth = require('feathers-authentication').hooks
 const { setNow } = require('feathers-hooks-common')
-const errorReducer = require('../../helpers/errorReducer')
 const hydrate = require('feathers-sequelize/hooks/hydrate')
 
-function addIncludes(hook){
+function addIncludes(hook) {
   const {
     models: {
       service
@@ -36,7 +34,7 @@ module.exports = {
     find: [],
     get: [],
     create: [],
-    update: [function(hook){
+    update: [function (hook) {
       const {
         models: { service }
       } = hook.app.get('database')

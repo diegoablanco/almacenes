@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Button, Modal, Header, Icon } from 'semantic-ui-react'
+import { Button, Modal, Header, Icon, Dimmer } from 'semantic-ui-react'
 import { connect } from 'react-redux';
 import { submit, isPristine, isSubmitting, hasSubmitSucceeded } from 'redux-form'
 
@@ -22,7 +22,8 @@ class FormModal extends Component {
             onCreatedOrUpdated,
             initializeForm,
             selectors,
-            bindActions
+            bindActions,
+            dimmed
          } = this.props
         
         return(
@@ -30,8 +31,11 @@ class FormModal extends Component {
                     open={showModal}
                     size='small'>
                     <Modal.Header content={title} />
-                    <Modal.Content>
-                        <this.props.form {...{id, onCreatedOrUpdated, initializeForm, selectors, bindActions}}/>
+                    <Modal.Content>        
+                        <Dimmer.Dimmable dimmed={dimmed}>
+                            <Dimmer active={dimmed} inverted />
+                            <this.props.form {...{id, onCreatedOrUpdated, initializeForm, selectors, bindActions}}/>
+                        </Dimmer.Dimmable>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button onClick={handleClose}>
@@ -47,16 +51,20 @@ class FormModal extends Component {
 }
 const mapStateToProps = (state, ownProps) => {      
     const {formName, selectors} = ownProps
+    const { dimmed, showModal } = selectors.getUiState(state)
     return {    
         pristine: isPristine(formName)(state),
         submitting: isSubmitting(formName)(state),
         submitSucceeded: hasSubmitSucceeded(formName)(state),
-        showModal: selectors.getUiState(state).showModal
+        showModal,
+        dimmed
     }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   handleSubmit: () => dispatch(submit(ownProps.formName))
 })
-
+FormModal.defaultProps = {
+    dimmed: false
+}
 export default connect(mapStateToProps, mapDispatchToProps)(FormModal);
