@@ -1,0 +1,17 @@
+{
+    "id": "http://xarxa.com/schemas/stock.json#",
+    "title": "Stock",
+    "description": "A stock",
+    "properties": {
+        "customerId": {
+            "type": "integer"
+        },
+        "warehouseId": {
+            "type": "integer"
+        }
+    },
+    "required": [
+        "customerId",
+        "warehouseId"
+    ]
+}

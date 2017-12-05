@@ -1,6 +1,6 @@
-
 const getDatabase = require('../server/database')
 const getCustomerIncludes = require('../server/services/customers/helper')
+const { createCustomer, createCarrier, createWarehouse, createService } = require('./fakes')
 
 const sequelize = getDatabase()
 
@@ -9,7 +9,11 @@ sequelize.sync({ force: true }).then(async () => {
     customer: customers,
     phoneType,
     stockMovementType,
-    user } = sequelize.models
+    user,
+    carrier,
+    warehouse,
+    warehouseInstruction,
+    service } = sequelize.models
   await user.create({
     name: 'diego',
     email: 'diegoablanco@gmail.com',
@@ -24,57 +28,35 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Particular' }
   ])
   stockMovementType.bulkCreate([
-    { description: 'Prealerta', code: 'prealerta' },
-    { description: 'Alta', code: 'alta' },
+    { description: 'Prealerta', code: 'preReceive' },
+    { description: 'Alta', code: 'receive' },
     { description: 'Release', code: 'release' },
     { description: 'Salida', code: 'salida' }
   ])
-  const customer = {
-    companyName: 'sabre',
-    address: {
-      line1: 'Honorio Pueyrredón 1713',
-      zipCode: '1414',
-      city: 'CABA',
-      country: 'Argentina'
-    },
-    authorizedSignatory: {
-      name: 'Diego Blanco',
-      position: 'Developer',
-      email: 'diegoablanco@gmail.com',
-      phones: [
-        {
-          typeId: 1,
-          number: '1132602055'
-        }
-      ]
-    },
-    account: {
-      bankName: 'Piano',
-      number: '12121-12313-23123'
-    },
-    authorizedPersons: [
-      {
-        name: 'Laura Blanco',
-        phones: [
-          {
-            typeId: 1,
-            number: '11112222'
-          }
-        ],
-        position: 'Comercial',
-        email: 'l@gmail.com'
-      }
-    ]
-  }
+  warehouseInstruction.bulkCreate([
+    { description: 'Verificar estado', code: 'checkCondition' },
+    { description: 'Tomar fotos', code: 'takePictures' },
+    { description: 'Contar unidades externamente', code: 'countExternaly' },
+    { description: 'Abrir, contar, verificar modelos', code: 'openCountAndCheckModels' },
+    { description: 'Lectura IMEIs / Serials', code: 'imeiSerialsReading' }
+  ])
   const customerIncludes = getCustomerIncludes(sequelize)
-  await customers.create(customer, { include: [
+  for (let index = 0; index < 10; index += 1)
+    {customers.create(createCustomer(), { include: [
+      customerIncludes.address,
+      customerIncludes.authorizedSignatory,
+      customerIncludes.account,
+      customerIncludes.authorizedPersons
+    ] })}
+
+  for (let index = 0; index < 10; index += 1)
+  {
+ carrier.create(createCarrier(), { include: [
     customerIncludes.address,
     customerIncludes.authorizedSignatory,
-    customerIncludes.account,
-    customerIncludes.authorizedPersons
-  ] })
-  // const address = await addresses.create({ line1: 'honorio pueyrredón', zipCode: '1414' })
-  // const authorizedSignatory = await contacts.create()
-  // customer.setAddress(address)
-  // customer.setAuthorizedSignatory(authorizedSignatory)
+    customerIncludes.account
+  ] }) 
+}
+  for (let index = 0; index < 10; index += 1) { warehouse.create(createWarehouse()) }
+  for (let index = 0; index < 10; index += 1) { service.create(createService()) }
 })

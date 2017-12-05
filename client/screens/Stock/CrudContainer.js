@@ -13,6 +13,9 @@ export default class CarrierCrud extends Component {
     }
 
     gridColumns = [
+        { property: 'warehouse.name', label: 'Almacén' }, 
+        { property: 'customer.companyName', label: 'Cliente' }, 
+        { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' }
     ]
     
     confirmModalOptions = {        

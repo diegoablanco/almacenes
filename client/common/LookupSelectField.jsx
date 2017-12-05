@@ -16,16 +16,20 @@ class LookupField extends Component {
     this.reset = this.reset.bind(this)
     this.search = this.search.bind(this)
   }
+  componentWillReceiveProps({ initialValue }) {
+    if (initialValue && this.props.initialValue === undefined) {
+      const { key: value } = initialValue
+      this.handleResultSelect(null, { value, options: [{ ...initialValue, value }] })
+    }
+  }
   handleResultSelect(e, { value, options }) {
     const { lookupActions: { clear }, input } = this.props
     input.onChange(value)
     this.setState({ value, options })
-    clear()
   }
   reset() {
     const { lookupActions: { clear }, input } = this.props
     input.onChange('')
-    clear()
   }
   search(event, { searchQuery }) {
     const { lookupActions: { search }, input } = this.props

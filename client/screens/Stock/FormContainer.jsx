@@ -1,10 +1,9 @@
-import { reduxForm, getFormValues } from 'redux-form'
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import { reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import StockForm from './Form'
 
-import carrierSchema from '../../../common/validation/carrier.json'
+import stockSchema from '../../../common/validation/stock.json'
+import customerSchema from '../../../common/validation/customer.json'
 import accountSchema from '../../../common/validation/account.json'
 import contactSchema from '../../../common/validation/contact.json'
 import addressSchema from '../../../common/validation/address.json'
@@ -13,40 +12,52 @@ import getValidator from '../../common/Validation'
 
 
 export const formName = 'Stock'
-const validator = getValidator(carrierSchema, [accountSchema, addressSchema, contactSchema, phoneSchema])
-class StockFormContainer extends Component {
-  render() {
-    const { extras } = this.props
-
-    return (<StockForm
-      extras={extras}
-    />)
-  }
-}
+const validate = getValidator(stockSchema, [customerSchema, accountSchema, addressSchema, contactSchema, phoneSchema])
 
 const mapStateToProps = (state, ownProps) => {
-  const { customerLookup, targetCustomerLookup, carrierLookup } = ownProps.selectors.getUiState(state)
+  const {
+    customerLookup,
+    targetCustomerLookup,
+    carrierLookup,
+    warehouseLookup,
+    billingCustomerLookup
+  } = ownProps.selectors.getUiState(state)
+  const getFormValues = formValueSelector(formName)
   const { bindActions: {
-    onCreatedOrUpdated,
     searchTargetCustomer,
     clearTargetCustomer,
     searchCustomer,
     clearCustomer,
+    searchBillingCustomer,
+    clearBillingCustomer,
     searchCarrier,
-    clearCarrier
+    clearCarrier,
+    searchWarehouse,
+    clearWarehouse
   } } = ownProps
   return {
-    extras: {
-      targetCustomerLookup,
-      targetCustomerLookupActions: { search: searchTargetCustomer, clear: clearTargetCustomer },
-      customerLookup,
-      customerLookupActions: { search: searchCustomer, clear: clearCustomer },
-      carrierLookup,
-      carrierLookupActions: { search: searchCarrier, clear: clearCarrier }
-    },
-    onCreatedOrUpdated
+    targetCustomerLookup,
+    targetCustomerLookupActions: { search: searchTargetCustomer, clear: clearTargetCustomer },
+    billingCustomerLookup,
+    billingCustomerLookupActions: { search: searchBillingCustomer, clear: clearBillingCustomer },
+    customerLookup,
+    customerLookupActions: { search: searchCustomer, clear: clearCustomer },
+    carrierLookup,
+    carrierLookupActions: { search: searchCarrier, clear: clearCarrier },
+    warehouseLookup,
+    warehouseLookupActions: { search: searchWarehouse, clear: clearWarehouse },
+    form: formName,
+    validate,
+    availableInstructions: state.uneditables.queryResult.warehouseInstructions,
+    ...getFormValues(state, 'customer', 'targetCustomer', 'billingCustomer', 'warehouse', 'carrier', 'instructions')
   }
 }
-export default reduxForm({
-  form: formName
-})(connect(mapStateToProps)(StockFormContainer))
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const { bindActions } = ownProps
+  return {
+    ...bindActions,
+    onSubmit: bindActions.createOrUpdate
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm()(StockForm))

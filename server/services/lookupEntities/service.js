@@ -6,7 +6,7 @@ module.exports = function () {
   const app = this
 
   const servicePath = `${config.apiPath}/lookupEntities`
-  // Initialize our service with any options it requires
+  
   app.use(servicePath, {
     find(params) {
       const { models } = getDatabase()
@@ -23,6 +23,10 @@ module.exports = function () {
           model = models.carrier
           attributes = ['id', ['companyName', 'description']]
           break
+        case 'warehouse':
+          model = models.warehouse
+          attributes = ['id', ['name', 'description']]
+          break
         default:
           return ''
       }
@@ -31,8 +35,6 @@ module.exports = function () {
     }
   })
 
-  // Get our initialized service so that we can register hooks and filters
   const service = app.service(servicePath)
-
   service.hooks(hooks)
 }

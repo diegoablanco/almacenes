@@ -27,7 +27,7 @@ class FormContainer extends Component {
 
     const RForm = reduxForm({
       form: formName,
-      //validate,
+      validate,
       onSubmit: onCreatedOrUpdated,
       extras,
       id,

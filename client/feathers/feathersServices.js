@@ -21,6 +21,15 @@ export const mapServicePathsToNames = [{
   lookupEntities: 'customerLookup'
 },
 {
+  lookupEntities: 'billingCustomerLookup'
+},
+{
+  lookupEntities: 'warehouseLookup'
+},
+{
+  lookupEntities: 'instructionsLookup'
+},
+{
   lookupEntities: 'targetCustomerLookup'
 }]
 

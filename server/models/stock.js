@@ -6,18 +6,20 @@ module.exports = function (sequelize) {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true      
-    }, 
+      primaryKey: true
+    },
     name: {
       type: Sequelize.STRING
     }
   })
-  Stock.associate = function({customer, contact, stockMovement, carrier}){
+  Stock.associate = function ({ customer, stockMovement, carrier, warehouse, warehouseInstruction }) {
+    Stock.belongsTo(warehouse)
     Stock.belongsTo(customer)
-    Stock.belongsTo(customer, {as: 'targetCustomer'})
-    Stock.belongsTo(customer, {as: 'billingCustomer'})
+    Stock.belongsTo(customer, { as: 'targetCustomer' })
+    Stock.belongsTo(customer, { as: 'billingCustomer' })
     Stock.belongsTo(carrier)
-    Stock.belongsToMany(stockMovement, { as: 'movements', through: 'stock_movements'})
+    Stock.belongsToMany(stockMovement, { as: 'movements', through: 'stock_movements' })
+    Stock.belongsToMany(warehouseInstruction, { as: 'instructions', through: 'stock_instructions' })
   }
   return Stock
 }
