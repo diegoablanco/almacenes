@@ -98,20 +98,24 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
       }
     },
     createOrUpdate(values) {
-      return dispatch => new Promise((resolve) => {
-        if (values.id) {
-          dispatch(serviceActions.update(values.id, values)).then(() => {
-            dispatch(hideModal())
-            dispatch(entityUpdatedMessage())
-            dispatch(reloadGrid()).then(resolve)
+      return dispatch => new Promise((resolve, reject) => {
+        const isUpdate = values.id !== undefined
+        const serviceAction = isUpdate
+          ? serviceActions.update(values.id, values)
+          : serviceActions.create(values)
+        const messageAction = isUpdate
+          ? entityUpdatedMessage()
+          : entityCreatedMessage()
+
+        dispatch(serviceAction).then(() => {
+          dispatch(hideModal())
+          dispatch(messageAction)
+          dispatch(reloadGrid()).then(resolve)
+        })
+          .catch(error => {
+            const details = JSON.stringify(error.errors)
+            reject(new SubmissionError({ _error: `Ocurrió un error al guardar. Detalles: ${details}` }))
           })
-        } else {
-          dispatch(serviceActions.create(values)).then(() => {
-            dispatch(hideModal())
-            dispatch(entityCreatedMessage())
-            dispatch(reloadGrid()).then(resolve)
-          })
-        }
       })
     },
 

@@ -8,6 +8,9 @@
         },
         "warehouseId": {
             "type": "integer"
+        },
+        "boxes": {
+            "$ref": "stockBox.json#"
         }
     },
     "required": [

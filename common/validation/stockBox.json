@@ -1,0 +1,36 @@
+{
+    "id": "http://xarxa.com/schemas/stockBox.json#",
+    "title": "Boxes",
+    "description": "A stock of boxes",
+    "properties": {
+        "quantity": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "opened": {
+            "type": "boolean"
+        },
+        "originalSeals": {
+            "type": "boolean"
+        },
+        "resealed": {
+            "type": "boolean"
+        },
+        "serialNumbers": {
+            "type": "boolean"
+        },
+        "shrinkWapped": {
+            "type": "string",
+            "pattern": "[sealed|unsealed]"
+        },
+        "individualWeight": {
+            "type": "number"
+        },
+        "totalWeight": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "quantity"
+    ]
+}

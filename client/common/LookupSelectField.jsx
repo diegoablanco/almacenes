@@ -49,10 +49,9 @@ class LookupField extends Component {
       label,
       placeholder
     } = this.props
-    const { value, options: stateOptions, searchQuery } = this.state
+    const { value, searchQuery } = this.state
     const options = (queryResult || [])
       .map(result => ({ key: result.id, value: result.id, text: result.description }))
-      .concat(stateOptions)
     return (
       <Form.Field className={classnames({ error: touched && error })} width={width}>
         <label>{label}</label>

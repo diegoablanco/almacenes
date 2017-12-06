@@ -3,12 +3,14 @@ const Ajv = require('ajv')
 const { validateSchema, setNow } = require('feathers-hooks-common')
 const hydrate = require('feathers-sequelize/hooks/hydrate')
 const stockSchema = require('../../../common/validation/stock.json')
+const stockBoxSchema = require('../../../common/validation/stockBox.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 
 function validate() {
   const ajv = Ajv({ allErrors: true })
   ajv.addSchema(stockSchema)
+  ajv.addSchema(stockBoxSchema)
   return validateSchema(stockSchema, ajv, {
     addNewError: errorReducer
   })

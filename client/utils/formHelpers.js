@@ -102,9 +102,9 @@ export function formFields(title, fieldTitle, renderFields) {
                               </Grid.Column>
                             </Grid>
                             {renderFields(item)}
-                          </Segment>))}
+                           </Segment>))}
       </Segment.Group>
-            </div>)
+    </div>)
   }
 }
 
@@ -122,3 +122,5 @@ export function parseToInt(value) {
   const int = parseInt(value)
   return isNaN(int) ? value : int
 }
+
+export function compose(...fns) { fns.reduce((f, g) => (...args) => f(g(...args))) }

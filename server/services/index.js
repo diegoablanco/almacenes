@@ -44,9 +44,6 @@ module.exports = function () {
   // create log entry
   app.use(`${config.apiPath}/logs`, {
     before: {
-      create: [
-        auth.authenticate(['jwt', 'local'])
-      ]
     },
     create({ level, msg, payload }, params) {
       const paramsUser = params.user;

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field, formValues } from 'redux-form'
-import { Grid, Form, Tab, Accordion, Divider } from 'semantic-ui-react'
+import { Grid, Form, Tab, Accordion, Divider, Message } from 'semantic-ui-react'
 import LookupSelectField from '../../common/LookupSelectField'
 import SelectField from '../../common/SelectField'
 import { renderTextArea, renderCheckbox, renderRadio, renderField, parseToInt } from '../../utils/formHelpers'
@@ -81,7 +81,8 @@ export default function StockForm({
   warehouse,
   availableInstructions,
   instructions,
-  fields
+  fields,
+  error
 }) {
   const panes = [
     {
@@ -168,8 +169,11 @@ export default function StockForm({
     }
   ]
   return (
-    <Form>
-      <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
-    </Form>
+    <div>
+      {error && <Message error>{error}</Message>}
+      <Form>
+        <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+      </Form>
+    </div>
   )
 }
