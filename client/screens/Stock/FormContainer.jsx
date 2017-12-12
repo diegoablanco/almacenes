@@ -33,7 +33,8 @@ const mapStateToProps = (state, ownProps) => {
     searchCarrier,
     clearCarrier,
     searchWarehouse,
-    clearWarehouse
+    clearWarehouse,
+    fileUploadActions
   } } = ownProps
   return {
     targetCustomerLookup,
@@ -49,6 +50,7 @@ const mapStateToProps = (state, ownProps) => {
     form: formName,
     validate,
     availableInstructions: state.uneditables.queryResult.warehouseInstructions,
+    fileUploadActions,
     ...getFormValues(state, 'customer', 'targetCustomer', 'billingCustomer', 'warehouse', 'carrier', 'instructions')
   }
 }

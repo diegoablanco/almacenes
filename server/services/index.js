@@ -8,12 +8,12 @@ const customers = require('./customers/customers.service.js')
 const warehouses = require('./warehouses/warehouses.service.js')
 const warehouseServices = require('./warehouseServices/warehouseServices.service.js')
 const services = require('./services/services.service.js')
-const phoneTypes = require('./phoneTypes/phoneTypes.service.js')
 const uneditables = require('./uneditables/uneditables.service')
 const carriers = require('./carriers/carriers.service')
 const stock = require('./stock/service')
 const lookupEntities = require('./lookupEntities/service')
 const logger = require('../utils/loggerProduction')
+const upload = require('./uploads/service')
 
 debug('Required')
 
@@ -22,13 +22,13 @@ module.exports = function () {
   const app = this
 
   app.configure(authentication)
+  app.configure(upload)
   app.configure(user)
   app.configure(messages)
   app.configure(customers)
   app.configure(warehouses)
   app.configure(warehouseServices)
   app.configure(services)
-  app.configure(phoneTypes)
   app.configure(uneditables)
   app.configure(carriers)
   app.configure(stock)

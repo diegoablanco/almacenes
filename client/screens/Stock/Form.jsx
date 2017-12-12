@@ -1,13 +1,14 @@
 import React from 'react'
-import { Field, formValues } from 'redux-form'
-import { Grid, Form, Tab, Accordion, Divider, Message } from 'semantic-ui-react'
+import { Field, formValues, FieldArray } from 'redux-form'
+import { Grid, Form, Tab, Accordion, Message } from 'semantic-ui-react'
 import LookupSelectField from '../../common/LookupSelectField'
 import SelectField from '../../common/SelectField'
 import { renderTextArea, renderCheckbox, renderRadio, renderField, parseToInt } from '../../utils/formHelpers'
+import attachmentFields from '../../utils/attachmentFields'
 
 function getGoodsPane() {
   return (
-    <Tab.Pane>
+    <Tab.Pane attached={false}>
       <Grid verticalAlign="middle" centered textAlign="center">
         <Grid.Column tablet={10} mobile={16} computer={14}>
           <Accordion>
@@ -63,6 +64,13 @@ function getGoodsPane() {
     </Tab.Pane>
   )
 }
+function getDocumentsPane() {
+  return (
+    <Tab.Pane attached={false}>
+      <FieldArray name="documents" component={attachmentFields} />
+    </Tab.Pane>
+  )
+}
 export default function StockForm({
   targetCustomerLookup,
   targetCustomerLookupActions,
@@ -87,7 +95,7 @@ export default function StockForm({
   const panes = [
     {
       menuItem: 'Información General',
-      pane: <Tab.Pane>
+      pane: <Tab.Pane attached={false}>
         <Grid verticalAlign="middle" centered textAlign="center">
           <Grid.Column tablet={10} mobile={16} computer={8}>
             <Field
@@ -141,7 +149,7 @@ export default function StockForm({
     },
     {
       menuItem: 'Instrucciones',
-      pane: <Tab.Pane>
+      pane: <Tab.Pane attached={false}>
         <Grid verticalAlign="middle" centered textAlign="center">
           <Grid.Column tablet={10} mobile={16} computer={12}>
             <Field
@@ -166,6 +174,10 @@ export default function StockForm({
     {
       menuItem: 'Mercadería',
       pane: getGoodsPane()
+    },
+    {
+      menuItem: 'Documentos',
+      pane: getDocumentsPane()
     }
   ]
   return (

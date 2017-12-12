@@ -8,8 +8,7 @@ class LookupField extends Component {
     super(props)
     this.state = {
       searchQuery: '',
-      value: null,
-      options: []
+      value: null
     }
 
     this.handleResultSelect = this.handleResultSelect.bind(this)
@@ -22,13 +21,13 @@ class LookupField extends Component {
       this.handleResultSelect(null, { value, options: [{ ...initialValue, value }] })
     }
   }
-  handleResultSelect(e, { value, options }) {
-    const { lookupActions: { clear }, input } = this.props
+  handleResultSelect(e, { value }) {
+    const { input } = this.props
     input.onChange(value)
-    this.setState({ value, options })
+    this.setState({ value })
   }
   reset() {
-    const { lookupActions: { clear }, input } = this.props
+    const { input } = this.props
     input.onChange('')
   }
   search(event, { searchQuery }) {

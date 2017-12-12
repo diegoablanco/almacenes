@@ -26,6 +26,7 @@ module.exports = function () {
   sequelize.import('../server/models/stockBox')
   sequelize.import('../server/models/stockItemDetail')
   sequelize.import('../server/models/stockItemDetailType')
+  sequelize.import('../server/models/documentType')
 
   Object.keys(sequelize.models).forEach((modelName) => {
     if ('associate' in sequelize.models[modelName]) {

@@ -14,7 +14,8 @@ sequelize.sync({ force: true }).then(async () => {
     warehouse,
     warehouseInstruction,
     service,
-    stockItemDetailType } = sequelize.models
+    stockItemDetailType,
+    documentType } = sequelize.models
   await user.create({
     name: 'diego',
     email: 'diegoablanco@gmail.com',
@@ -24,9 +25,9 @@ sequelize.sync({ force: true }).then(async () => {
     isVerified: 1
   })
   await phoneType.bulkCreate([
-    { description: 'Móvil' },
-    { description: 'Oficina' },
-    { description: 'Particular' }
+    { description: 'Móvil', code: 'mobile' },
+    { description: 'Oficina', code: 'work' },
+    { description: 'Particular', code: 'home' }
   ])
   stockMovementType.bulkCreate([
     { description: 'Prealerta', code: 'preReceive' },
@@ -39,6 +40,16 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Abolladas', code: 'crashed' },
     { description: 'Dañadas', code: 'damaged' },
     { description: 'Mojadas', code: 'wet' }
+  ])
+  documentType.bulkCreate([
+    { description: 'CMR', code: 'cmr' },
+    { description: 'Albarán', code: 'albaran' },
+    { description: 'Packing List', code: 'packlist' },
+    { description: 'Documento de Salida de Stock Firmado', code: 'signedWithdrawal' },
+    { description: 'Company title', code: 'companyTitle' },
+    { description: 'VAT registration', code: 'vatRegistration' },
+    { description: 'Trade License', code: 'tradeLicense' },
+    { description: 'Otro', code: 'other' }
   ])
   warehouseInstruction.bulkCreate([
     { description: 'Verificar estado', code: 'checkCondition' },
