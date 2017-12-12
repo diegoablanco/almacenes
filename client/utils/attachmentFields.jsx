@@ -33,7 +33,7 @@ class AttachmentFields extends Component {
     const { documentTypes } = this.props
     return (
       <span>
-        <Dropdown inline options={documentTypes} defaultValue={documentTypes[0].value} onChange={(e, { value }) => onChange(value)} />{': '}
+        <Dropdown inline options={documentTypes} placeholder="Seleccione el tipo de documento" onChange={(e, { value }) => onChange(value)} />{': '}
       </span>
     )
   }
@@ -52,7 +52,6 @@ class AttachmentFields extends Component {
       </Segment>)
   }
   render() {
-    // const { input, label, width, meta: { touched, error }, files } = this.props
     const { fields } = this.props
     return (
       <Dropzone
