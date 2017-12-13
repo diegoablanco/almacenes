@@ -1,0 +1,24 @@
+{
+    "id": "http://xarxa.com/schemas/documentAttachment.json#",
+    "title": "Document attachment",
+    "description": "A document attachment",
+    "type": [
+        "object"
+    ],
+    "properties": {
+        "fileName": {
+            "type": "string"
+        },
+        "hashName": {
+            "type": "string"
+        },
+        "documentTypeId": {
+            "type": "integer"
+        }
+    },
+    "required": [
+        "fileName",
+        "hashName",
+        "documentTypeId"
+    ]
+}

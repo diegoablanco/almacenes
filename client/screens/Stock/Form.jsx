@@ -1,10 +1,11 @@
 import React from 'react'
 import { Field, formValues, FieldArray } from 'redux-form'
 import { Grid, Form, Tab, Accordion, Message } from 'semantic-ui-react'
-import LookupSelectField from '../../common/LookupSelectField'
-import SelectField from '../../common/SelectField'
 import { renderTextArea, renderCheckbox, renderRadio, renderField, parseToInt } from '../../utils/formHelpers'
-import attachmentFields from '../../utils/attachmentFields'
+import DocumentAttachmentFields from '../../components/DocumentAttachmentFields'
+import ImageAttachmentFields from '../../components/ImageAttachmentFields'
+import SelectField from '../../common/SelectField'
+import GeneralInfoFields from './GeneralInfoFields'
 
 function getGoodsPane() {
   return (
@@ -67,85 +68,22 @@ function getGoodsPane() {
 function getDocumentsPane() {
   return (
     <Tab.Pane attached={false}>
-      <FieldArray name="documents" component={attachmentFields} />
+      <FieldArray name="documents" component={DocumentAttachmentFields} />
     </Tab.Pane>
   )
 }
-export default function StockForm({
-  targetCustomerLookup,
-  targetCustomerLookupActions,
-  targetCustomer,
-  billingCustomerLookup,
-  billingCustomerLookupActions,
-  billingCustomer,
-  customerLookup,
-  customerLookupActions,
-  customer,
-  carrierLookup,
-  carrierLookupActions,
-  carrier,
-  warehouseLookup,
-  warehouseLookupActions,
-  warehouse,
-  availableInstructions,
-  instructions,
-  fields,
-  error
-}) {
+export default function StockForm(props) {
+  const {
+    availableInstructions,
+    instructions,
+    error
+  } = props
   const panes = [
     {
       menuItem: 'Información General',
       pane: <Tab.Pane attached={false}>
-        <Grid verticalAlign="middle" centered textAlign="center">
-          <Grid.Column tablet={10} mobile={16} computer={8}>
-            <Field
-              name="warehouseId"
-              component={LookupSelectField}
-              lookupState={warehouseLookup}
-              lookupActions={warehouseLookupActions}
-              initialValue={warehouse && { key: warehouse.id, text: warehouse.name }}
-              label="Almacén"
-              placeholder="Buscar un almacén..."
-            />
-            <Field
-              name="carrierId"
-              component={LookupSelectField}
-              lookupState={carrierLookup}
-              lookupActions={carrierLookupActions}
-              initialValue={carrier && { key: carrier.id, text: carrier.companyName }}
-              label="Transportista"
-              placeholder="Buscar un transportista..."
-            />
-            <Field
-              name="customerId"
-              component={LookupSelectField}
-              lookupState={customerLookup}
-              lookupActions={customerLookupActions}
-              initialValue={customer && { key: customer.id, text: customer.companyName }}
-              label="Cliente"
-              placeholder="Buscar un cliente..."
-            />
-            <Field
-              name="targetCustomerId"
-              component={LookupSelectField}
-              lookupState={targetCustomerLookup}
-              lookupActions={targetCustomerLookupActions}
-              initialValue={targetCustomer && { key: targetCustomer.id, text: targetCustomer.companyName }}
-              label="Cliente Destinatario"
-              placeholder="Buscar un cliente..."
-            />
-            <Field
-              name="billingCustomerId"
-              component={LookupSelectField}
-              lookupState={billingCustomerLookup}
-              lookupActions={billingCustomerLookupActions}
-              initialValue={billingCustomer && { key: billingCustomer.id, text: billingCustomer.companyName }}
-              label="Cliente de Facturación"
-              placeholder="Buscar un cliente..."
-            />
-          </Grid.Column>
-        </Grid>
-      </Tab.Pane>
+        <GeneralInfoFields {...props} />
+      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     },
     {
       menuItem: 'Instrucciones',
@@ -169,7 +107,7 @@ export default function StockForm({
             />
           </Grid.Column>
         </Grid>
-      </Tab.Pane>
+      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     },
     {
       menuItem: 'Mercadería',
@@ -178,6 +116,12 @@ export default function StockForm({
     {
       menuItem: 'Documentos',
       pane: getDocumentsPane()
+    },
+    {
+      menuItem: 'Imágenes',
+      pane: <Tab.Pane attached={false}>
+        <FieldArray name="images" component={ImageAttachmentFields} />
+      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   ]
   return (

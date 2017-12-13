@@ -12,6 +12,8 @@
         "object-curly-newline": "off",
         "arrow-parens": "off",
         "react/prefer-stateless-function": "off",
+        "react/forbid-prop-types": "off",
+        "react/require-default-props": "off",
         "class-methods-use-this": "off",
         "jsx-a11y/label-has-for": "off"
     }

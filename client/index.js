@@ -63,9 +63,8 @@ configLoad(store, feathersServices)
     await store.dispatch(feathersServices.uneditables.find())
     // Setup React Router which starts up the rest of the app.
     // A hack. Lemme know if you have a better idea.
-    //const AppRouter = require('./router').default; // eslint-disable-line global-require
+    // const AppRouter = require('./router').default; // eslint-disable-line global-require
 
-    
     const render = Component => {
       ReactDOM.render(
         <Provider store={store}>

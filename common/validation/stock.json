@@ -11,6 +11,15 @@
         },
         "boxes": {
             "$ref": "stockBox.json#"
+        },
+        "documents": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "$ref": "documentAttachment.json#"
+            }
         }
     },
     "required": [

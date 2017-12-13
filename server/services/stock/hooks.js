@@ -4,6 +4,7 @@ const { validateSchema, setNow } = require('feathers-hooks-common')
 const hydrate = require('feathers-sequelize/hooks/hydrate')
 const stockSchema = require('../../../common/validation/stock.json')
 const stockBoxSchema = require('../../../common/validation/stockBox.json')
+const documentAttachmentSchema = require('../../../common/validation/documentAttachment.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 
@@ -11,6 +12,7 @@ function validate() {
   const ajv = Ajv({ allErrors: true })
   ajv.addSchema(stockSchema)
   ajv.addSchema(stockBoxSchema)
+  ajv.addSchema(documentAttachmentSchema)
   return validateSchema(stockSchema, ajv, {
     addNewError: errorReducer
   })
@@ -22,7 +24,9 @@ function getIncludes(database) {
       warehouse,
       carrier,
       warehouseInstruction,
-      stockBox
+      stockBox,
+      documentAttachment,
+      fileAttachment
     }
   } = database
   return {
@@ -54,6 +58,16 @@ function getIncludes(database) {
       model: warehouseInstruction,
       as: 'instructions',
       through: 'stock_instructions'
+    },
+    documents: {
+      model: documentAttachment,
+      as: 'documents',
+      through: 'stock_documents'
+    },
+    images: {
+      model: fileAttachment,
+      as: 'images',
+      through: 'stock_images'
     }
   }
 }
@@ -73,7 +87,16 @@ module.exports = {
     ],
     get: [
       function (hook) {
-        const { customer, targetCustomer, billingCustomer, warehouse, carrier, warehouseInstruction, stockBox } = getIncludes(hook.app.get('database'))
+        const {
+          customer,
+          targetCustomer,
+          billingCustomer,
+          warehouse,
+          carrier,
+          warehouseInstruction,
+          stockBox,
+          documents,
+          images } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
           include: [
@@ -83,7 +106,9 @@ module.exports = {
             { ...carrier, attributes: ['id', 'companyName'] },
             { ...warehouse, attributes: ['id', 'name'] },
             { ...warehouseInstruction, attributes: ['id'], through: { attributes: [] } },
-            stockBox
+            stockBox,
+            documents,
+            images
           ]
         }
       }
@@ -91,31 +116,33 @@ module.exports = {
     create: [
       validate(),
       function (hook) {
-        const { stockBox } = getIncludes(hook.app.get('database'))
+        const { stockBox, documents, images } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
-          include: [stockBox]
+          include: [stockBox, documents, images]
         }
       },
       setNow('createdAt')
     ],
     update: [
+      validate(),
+      setNow('updatedAt'),
       function (hook) {
         const {
           models: {
             stock
           }
         } = hook.app.get('database')
-        const { stockBox } = getIncludes(hook.app.get('database'))
+        const { stockBox, documents, images } = getIncludes(hook.app.get('database'))
         const filter = {
           where: {
             id: hook.data.id
           },
-          include: [stockBox]
+          include: [stockBox, documents, images]
         }
         stock.findOne(filter).then(s => {
           s.set(hook.data)
-          createOrUpdateAssociations(s, hook.data, s.$options.include)
+          createOrUpdateAssociations(s, hook.data, s._options.include)
         })
       }
     ],

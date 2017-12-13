@@ -7,24 +7,15 @@ class LookupField extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchQuery: '',
-      value: null
+      searchQuery: ''
     }
-
     this.handleResultSelect = this.handleResultSelect.bind(this)
     this.reset = this.reset.bind(this)
     this.search = this.search.bind(this)
   }
-  componentWillReceiveProps({ initialValue }) {
-    if (initialValue && this.props.initialValue === undefined) {
-      const { key: value } = initialValue
-      this.handleResultSelect(null, { value, options: [{ ...initialValue, value }] })
-    }
-  }
   handleResultSelect(e, { value }) {
     const { input } = this.props
     input.onChange(value)
-    this.setState({ value })
   }
   reset() {
     const { input } = this.props
@@ -42,15 +33,19 @@ class LookupField extends Component {
 
   render() {
     const {
+      input: { value },
       meta: { touched, error },
-      lookupState: { isLoading, queryResult },
+      lookupState: { isLoading, queryResult = [] },
       width,
       label,
-      placeholder
+      placeholder,
+      initialValue
     } = this.props
-    const { value, searchQuery } = this.state
-    const options = (queryResult || [])
-      .map(result => ({ key: result.id, value: result.id, text: result.description }))
+    const { searchQuery } = this.state
+    let options = (queryResult || []).map(result => ({ key: result.id, value: result.id, text: result.description }))
+    if (value && !options.find(x => x.key === value) && initialValue) {
+      options = [...options, { ...initialValue, value: initialValue.key }]
+    }
     return (
       <Form.Field className={classnames({ error: touched && error })} width={width}>
         <label>{label}</label>

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button, Form, Divider, Segment, Input, TextArea, Grid, Checkbox } from 'semantic-ui-react'
 import classnames from 'classnames'
-import Dropzone from 'react-dropzone'
 
 
 export function renderField({ input, label, type = 'text', width, meta: { touched, error }, ...rest }) {
@@ -10,38 +9,6 @@ export function renderField({ input, label, type = 'text', width, meta: { touche
       <label>{label}</label>
       <Input {...input} {...rest} placeholder={label} type={type} />
       {touched && error && <label className="error">{error}</label>}
-    </Form.Field>
-  )
-}
-export function renderFileInput(props) {
-  const { input, label, width, meta: { touched, error } } = props
-  
-  function handleDrop(filesAccepted, filesRejected) {
-    input.onChange(filesAccepted)
-    const [file] = filesAccepted
-    request
-      .post('/api/upload')
-      .attach('uri', file, file.name)
-      .on('progress', console.log)
-      .end(() => input.onChange(file.name))
-  }
-  return (
-    <Form.Field className={classnames({ error: touched && error })} width={width}>
-      <label>{label}</label>
-      <Dropzone
-        name={input.name}
-        onDrop={handleDrop}
-      >
-        <div>Try dropping some files here, or click to select files to upload.</div>
-      </Dropzone>
-      {field.meta.touched &&
-        field.meta.error &&
-        <span className="error">{field.meta.error}</span>}
-      {files && Array.isArray(files) && (
-        <ul>
-          { files.map(({ name: filename }) => <li key={filename}>{filename}</li>) }
-        </ul>
-      )}
     </Form.Field>
   )
 }

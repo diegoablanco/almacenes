@@ -64,7 +64,7 @@ const UserIsAdmin = connectedRouterRedirect({
 
 // Routing
 export default class AppRouter extends Component {
-  render(){
+  render() {
     return (
       <AppContainer>
         <App>
@@ -75,12 +75,14 @@ export default class AppRouter extends Component {
             <Route path="/user/verify/:token" component={UserSignUpValidateEmail} />
             <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />
             <Route path="/user/forgot/:token" component={UserForgotPwdReset} />
-            <Route path="/user/passwordchange"
+            <Route
+path="/user/passwordchange"
               component={UserIsAuthenticated(UserPasswordChange)}
             />
             <Route path="/user/emailchange" component={UserIsAuthenticated(UserEmailChange)} />
             <Route path="/user/profilechange" component={UserIsAuthenticated(UserProfileChange)} />
-            <Route path="/user/roleschange"
+            <Route
+path="/user/roleschange"
               component={UserIsAuthenticated(UserIsAdmin(UserRolesChange))}
             />
             <Route path="/user/profile" component={UserIsAuthenticated(UserProfile)} />
@@ -93,6 +95,6 @@ export default class AppRouter extends Component {
           </Switch>
         </App>
       </AppContainer>
-      )
-    }
+    )
+  }
 }

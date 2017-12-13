@@ -3,16 +3,13 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import StockForm from './Form'
 import stockSchema from '../../../common/validation/stock.json'
-import customerSchema from '../../../common/validation/customer.json'
+import documentAttachmentSchema from '../../../common/validation/documentAttachment.json'
 import stockBoxSchema from '../../../common/validation/stockBox.json'
-import contactSchema from '../../../common/validation/contact.json'
-import addressSchema from '../../../common/validation/address.json'
-import phoneSchema from '../../../common/validation/phone.json'
 import getValidator from '../../common/Validation'
 
 
 export const formName = 'Stock'
-const validate = getValidator(stockSchema, [stockBoxSchema])
+const validate = getValidator(stockSchema, [stockBoxSchema, documentAttachmentSchema])
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -48,7 +45,7 @@ const mapStateToProps = (state, ownProps) => {
     warehouseLookup,
     warehouseLookupActions: { search: searchWarehouse, clear: clearWarehouse },
     form: formName,
-    validate,
+    validate: validate, // eslint-disable-line object-shorthand
     availableInstructions: state.uneditables.queryResult.warehouseInstructions,
     fileUploadActions,
     ...getFormValues(state, 'customer', 'targetCustomer', 'billingCustomer', 'warehouse', 'carrier', 'instructions')
