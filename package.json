@@ -52,6 +52,7 @@
   },
   "homepage": "https://github.com/eddyystop/feathers-starter-react-redux-login-roles#readme",
   "dependencies": {
+    "@feathersjs/authentication-client": "feathersjs/authentication-client",
     "ajv": "^5.2.2",
     "ajv-errors": "^1.0.0",
     "ajv-i18n": "^2.1.1",

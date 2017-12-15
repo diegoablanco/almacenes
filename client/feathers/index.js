@@ -1,13 +1,14 @@
 
 /* global window */
 
-import feathers from 'feathers-client';
+import feathers from 'feathers-client'
 import reduxifyServices, { getServicesStatus } from 'feathers-reduxify-services';
 import reduxifyAuthentication from 'feathers-reduxify-authentication';
 
 import { mapServicePathsToNames, prioritizedListServices } from './feathersServices';
 
 // Configure feathers-client
+
 const app = feathers()
   .configure(feathers.rest('http://localhost:3030/api').fetch(window.fetch))
   .configure(feathers.hooks())

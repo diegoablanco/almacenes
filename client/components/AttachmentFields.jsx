@@ -16,7 +16,7 @@ class AttachmentFields extends Component {
     const { uploadFile, fields, meta: { form } } = this.props
     differenceWith(filesAccepted, fields.getAll(), (accepted, file) => accepted.name === file.fileName)
       .forEach(file => {
-        fields.push({ fileName: file.name })
+        fields.push({ fileName: file.name, documentTypeId: null })
         uploadFile(file, fields.name, form)
       })
   }

@@ -4,7 +4,7 @@ const dauria = require('dauria')
 module.exports = {
   before: {
     all: [
-      //auth.authenticate(['jwt', 'local'])
+      auth.authenticate(['jwt', 'local'])
     ],
     find: [],
     get: [],

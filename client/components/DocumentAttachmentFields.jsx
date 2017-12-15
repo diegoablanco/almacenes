@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field } from 'redux-form'
-import { Segment, Icon } from 'semantic-ui-react'
+import { Segment, Icon, Container } from 'semantic-ui-react'
 import DocumentTypePicker from './DocumentTypePicker'
 import AttachmentFields from './AttachmentFields'
 import LiteralField from './LiteralField'
@@ -10,15 +10,17 @@ import handleDeleteField from './helpers/handleDeleteField'
 function renderDocumentAttachment(attachmentItem, index, fields) {
   return (
     <Segment key={index}>
-      <Field
-        name={`${attachmentItem}.documentTypeId`}
-        component={DocumentTypePicker}
-      />
-      <Field
-        name={`${attachmentItem}.fileName`}
-        component={LiteralField}
-      />
-      <Icon link name="delete" onClick={e => handleDeleteField(e, index, fields)} />
+      <Container style={{ paddingBottom: '5px' }}>
+        <Field
+          name={`${attachmentItem}.documentTypeId`}
+          component={DocumentTypePicker}
+        />
+        <Field
+          name={`${attachmentItem}.fileName`}
+          component={LiteralField}
+        />
+        <Icon link name="delete" onClick={e => handleDeleteField(e, index, fields)} />
+      </Container>
       <Field
         name={`${attachmentItem}.percent`}
         component={ProgressBarField}
