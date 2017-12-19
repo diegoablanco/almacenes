@@ -29,7 +29,7 @@
  }
  */
 
-const debug = require('debug')('server:loggerProduction');
+const debug = require('debug')('server:loggerProduction')
 const path = require('path');
 const winston = require('winston');
 const morgan = require('morgan');

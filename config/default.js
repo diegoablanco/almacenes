@@ -25,7 +25,7 @@ module.exports = {
     // root folder with assets. Webpack bundles are written to ./dist
     publicPath: path.join(root, 'public'), // also some hard coding in server/app, webpack
     serverPath: path.join(root, 'server'), // also some hard coding in server/app, webpack
-    protocal: "http",
+    protocal: "http"
   },
   logs: {
     // log level for the file. from highest: 'error', 'warn', 'info', 'verbose', 'debug', 'silly'
@@ -35,7 +35,7 @@ module.exports = {
     // log file names
     fileName: 'server.log',
     // log level for the console
-    logConsoleLevel: undefined,
+    logConsoleLevel: undefined
   },
   // unused so far
   auth: {
@@ -48,14 +48,14 @@ module.exports = {
     appName: 'Xarxa Almacenes',
     // Route for app's root.
     // Used by Express middleware, React-Router config, and app when redirecting.
-    defaultRoute: '/customers',
+    defaultRoute: '/customers'
   },
   database: {
     // folder for NeDn database
     path: undefined,
     // Some DBs, like PostgreSQL, use 'id' prop for their record keys instead of '_id'.
     // The code sometimes cannot avoid having to use the prop name, e.g. with hook.restrictToOwner.
-    idName: '_id',
+    idName: '_id'
   },
   users: {
     roles: {
@@ -64,12 +64,12 @@ module.exports = {
       // the default roles for a new user
       default: '',
       // roles allowed to change the roles of other users
-      allowedToChangeRoles: ['superAdmin', 'admin'],
-    },
+      allowedToChangeRoles: ['superAdmin', 'admin']
+    }
   },
   paginate: {
-      default: 10,
-      max: 100
+    default: 10,
+    max: 100
   },
   // for transactional emails sent. here for convenience.
   authEmails: {
@@ -79,7 +79,7 @@ module.exports = {
       signUpEmailTokenTimeValidText: '24 hours',
       // duration of forgotten password tokens
       forgotPasswordEmailTokenTimeValid: 30 * min,
-      forgotPasswordEmailTokenTimeValidText: '30 minutes',
+      forgotPasswordEmailTokenTimeValidText: '30 minutes'
     },
     subs: {
       // text to include in emails and the sign up verification screen
@@ -88,30 +88,30 @@ module.exports = {
       senderName: '[Feathers Starter]',
       fromEmail: '[Feathers Starter <feathers-starter@gmail00.com>]',
       supportEmail: '[Starter Support <feathers-starter@gmail00.com>]',
-      copyrightYears: '2015-2016',
+      copyrightYears: '2015-2016'
     },
     // not used in boilerplate
     providers: {
       postmark: {
         fromEmail: undefined,
-        postmarkApiToken: undefined,
-      },
-    },
+        postmarkApiToken: undefined
+      }
+    }
   },
   // for user screens. here for convenience.
   validation: { // you need to make Joi changes in server/validations/schemas also.
     auth: {
       name: {
         re: "^[\\sa-zA-Z]{5,30}$", // regex cannot be encoded in JSON
-        err: 'El nombre debe tener entre 5 y 30 caracteres.',
+        err: 'El nombre debe tener entre 5 y 30 caracteres.'
       },
       username: {
         re: "^[a-zA-Z0-9]{5,30}$",
-        err: 'El nombre de usuario debe tener entre 5 y 30 caracteres.',
+        err: 'El nombre de usuario debe tener entre 5 y 30 caracteres.'
       },
       password: {
         re: "^[\\sa-zA-Z0-9]{8,30}$",
-        err: 'Debe tener entre 8 y 30 caracteres.',
+        err: 'Debe tener entre 8 y 30 caracteres.'
       },
       email: {
         // http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
@@ -119,32 +119,32 @@ module.exports = {
         err: 'Email inválido.',
         minLen: 8,
         maxLen: 30,
-        errLen: 'Debe tener entre 8 y 30 caracteres.',
-      },
-    },
+        errLen: 'Debe tener entre 8 y 30 caracteres.'
+      }
+    }
   },
   // client itself sets these on start up
   agent: {
     clientBuiltFor: null,
-    deviceId: null,
+    deviceId: null
   },
 
   // This is the subset of the config sent to the client
   clientConfig: defer(finalConfig => ({
     client: {
       appName: finalConfig.client.appName,
-      defaultRoute: finalConfig.client.defaultRoute,
+      defaultRoute: finalConfig.client.defaultRoute
     },
     users: {
       roles: {
-        allowedToChangeRoles: finalConfig.users.roles.allowedToChangeRoles,
-      },
+        allowedToChangeRoles: finalConfig.users.roles.allowedToChangeRoles
+      }
     },
     authEmails: {
       expires: {
         signUpEmailTokenTimeValidText: finalConfig.authEmails.expires.signUpEmailTokenTimeValidText,
         forgotPasswordEmailTokenTimeValidText:
-        finalConfig.authEmails.expires.forgotPasswordEmailTokenTimeValidText,
+        finalConfig.authEmails.expires.forgotPasswordEmailTokenTimeValidText
       },
       subs: {
         productName: finalConfig.authEmails.subs.productName,
@@ -152,35 +152,35 @@ module.exports = {
         senderName: finalConfig.authEmails.subs.senderName,
         fromEmail: finalConfig.authEmails.subs.fromEmail,
         supportEmail: finalConfig.authEmails.subs.supportEmail,
-        copyrightYears: finalConfig.authEmails.subs.copyrightYears,
-      },
+        copyrightYears: finalConfig.authEmails.subs.copyrightYears
+      }
     },
     validation: {
       auth: {
         name: {
           re: finalConfig.validation.auth.name.re,
-          err: finalConfig.validation.auth.name.err,
+          err: finalConfig.validation.auth.name.err
         },
         username: {
           re: finalConfig.validation.auth.username.re,
-          err: finalConfig.validation.auth.username.err,
+          err: finalConfig.validation.auth.username.err
         },
         password: {
           re: finalConfig.validation.auth.password.re,
-          err: finalConfig.validation.auth.password.err,
+          err: finalConfig.validation.auth.password.err
         },
         email: {
           re: finalConfig.validation.auth.email.re,
           err: finalConfig.validation.auth.email.err,
           minLen: finalConfig.validation.auth.email.minLen,
           maxLen: finalConfig.validation.auth.email.maxLen,
-          errLen: finalConfig.validation.auth.email.errLen,
-        },
-      },
+          errLen: finalConfig.validation.auth.email.errLen
+        }
+      }
     },
     agent: {
       clientBuiltFor: finalConfig.agent.clientBuiltFor,
-      deviceId: finalConfig.agent.deviceId,
-    },
-  })),
+      deviceId: finalConfig.agent.deviceId
+    }
+  }))
 };

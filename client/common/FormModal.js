@@ -29,7 +29,7 @@ class FormModal extends Component {
         return(
                 <Modal
                     open={showModal}
-                    size='small'>
+                    >
                     <Modal.Header content={title} />
                     <Modal.Content scrolling size="big">
                         <Dimmer.Dimmable dimmed={dimmed}>

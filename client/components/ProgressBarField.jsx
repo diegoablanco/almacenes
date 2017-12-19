@@ -4,9 +4,7 @@ import { Progress } from 'semantic-ui-react'
 
 export default function ProgressBar({ input: { value }, meta: { error } }) {
   return (
-    value !== '' && <Progress percent={value} autoSuccess error={error} size="tiny">
-      {(error !== '' && <label className="error">{error}</label>)}
-    </Progress>
+    value !== '' && <Progress percent={value} autoSuccess attached="bottom" error={error} />
   )
 }
 ProgressBar.propTypes = {

@@ -1,7 +1,6 @@
 const auth = require('feathers-authentication').hooks
 const Ajv = require('ajv')
 const { validateSchema, setNow } = require('feathers-hooks-common')
-const sequelize = require('sequelize')
 const customerSchema = require('../../../common/validation/customer.json')
 const contactSchema = require('../../../common/validation/contact.json')
 const phoneSchema = require('../../../common/validation/phone.json')
@@ -168,10 +167,7 @@ module.exports = {
       function (context) {
         if (context.result.dataValues.address === null) { delete context.result.dataValues.address }
         if (context.result.dataValues.authorizedSignatory === null) { delete context.result.dataValues.authorizedSignatory }
-        if (context.result.dataValues.account === null) 
-          { delete context.result.dataValues.account } 
-        else if (context.result.dataValues.account.address === null) 
-          { delete context.result.dataValues.account.address }
+        if (context.result.dataValues.account === null) { delete context.result.dataValues.account } else if (context.result.dataValues.account.address === null) { delete context.result.dataValues.account.address }
       }],
     create: [],
     update: [],

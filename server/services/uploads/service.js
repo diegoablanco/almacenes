@@ -5,11 +5,12 @@ const fs = require('fs-blob-store')
 const hooks = require('./hooks')
 
 const multipartMiddleware = multer()
+const { uploads: { path } } = config
 // feathers-blob service
 // Here we initialize a FileSystem storage,
 // but you can use feathers-blob with any other
 // storage service like AWS or Google Drive.
-const blobStorage = fs(`${__dirname}/uploads`)
+const blobStorage = fs(path)
 
 module.exports = function () {
   const app = this

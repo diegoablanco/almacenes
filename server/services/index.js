@@ -1,6 +1,5 @@
 const debug = require('debug')('service:index')
 const config = require('config')
-const auth = require('feathers-authentication').hooks
 const authentication = require('./authentication')
 const user = require('./user')
 const messages = require('./messages')

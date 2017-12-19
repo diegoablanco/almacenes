@@ -70,3 +70,4 @@ coverage
 # nyc test coverage
 .nyc_output
 /server/services/uploads/uploads
+/public/uploads

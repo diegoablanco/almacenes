@@ -22,13 +22,15 @@ export function uploadFile(file, fieldName, formName) {
       .on('progress', progress => {
         dispatch(change(formName, `${fieldPrefix}.percent`, progress.percent))
       })
-      .end((err, { body: { id: hashName } }) => {
-        if (err.response && err.response.error.status === 401) {
+      .end((err, { body: { id: hashName, thumb } }) => {
+        if (err && err.response.error.status === 401) {
           dispatch(change(formName, `${fieldPrefix}.error`, { percent: 'Error de autenticación' }))
           dispatch({ type: FILE_UPLOAD_ERROR, fileName: file.Name, error: { percent: 'Error de autenticación' } })
           resolve()
         }
         dispatch(change(formName, `${fieldPrefix}.hashName`, hashName))
+        dispatch(change(formName, `${fieldPrefix}.thumb`, thumb))
+        dispatch(change(formName, `${fieldPrefix}.preview`, ''))
         const newValues = getFormValues(formName)(getState())[fieldName]
         const errors = newValues.filter(x => x.error).map(value => {
           const index = newValues.findIndex(x => x.fileName === value.fileName)
