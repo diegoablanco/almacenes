@@ -24,6 +24,7 @@ module.exports = function () {
   sequelize.import('../server/models/stockMovementType')
   sequelize.import('../server/models/stock')
   sequelize.import('../server/models/stockBox')
+  sequelize.import('../server/models/stockPallets')
   sequelize.import('../server/models/stockItemDetail')
   sequelize.import('../server/models/stockItemDetailType')
   sequelize.import('../server/models/documentType')

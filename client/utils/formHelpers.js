@@ -66,10 +66,17 @@ export function renderSearchField({ input, label, type = 'text', width, meta: { 
 }
 
 export function renderSelect({ input, label, type, meta: { touched, error }, options, placeholder }) {
+  function handleChange(e, { value }) {
+    input.onChange(value)
+  }
   return (
     <Form.Field className={classnames({ error: touched && error })} >
       <label>{label}</label>
-      <Form.Select {...input} options={options} />
+      <Form.Select
+        {...input}
+        onChange={handleChange}
+        options={options}
+      />
     </Form.Field>
   )
 }

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {
-  const StockBox = sequelize.define('stockBox', {
+  const StockPallets = sequelize.define('stockPallets', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
@@ -12,20 +12,24 @@ module.exports = function (sequelize) {
       type: Sequelize.INTEGER,
       allowNull: false
     },
-    opened: {
-      type: Sequelize.BOOLEAN, defaultValue: false
+    unitsPerPallet: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+      allowNull: false
     },
-    originalSeals: {
-      type: Sequelize.BOOLEAN, defaultValue: false
-    },
-    resealed: {
-      type: Sequelize.BOOLEAN, defaultValue: false
-    },
-    serialNumbers: {
-      type: Sequelize.BOOLEAN, defaultValue: false
+    totalUnits: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+      allowNull: false
     },
     shrinkWapped: {
-      type: Sequelize.STRING
+      type: Sequelize.BOOLEAN, defaultValue: false
+    },
+    sealOverShrinkWrap: {
+      type: Sequelize.BOOLEAN, defaultValue: false
+    },
+    hoopStrap: {
+      type: Sequelize.BOOLEAN, defaultValue: false
     },
     individualWeight: {
       type: Sequelize.DataTypes.DECIMAL(10, 2),
@@ -36,8 +40,8 @@ module.exports = function (sequelize) {
       defaultValue: 0
     }
   })
-  StockBox.associate = function ({ stockItemDetail }) {
-    StockBox.belongsToMany(stockItemDetail, { as: 'details', through: 'stockBox_details' })
+  StockPallets.associate = function ({ stockItemDetail }) {
+    StockPallets.belongsToMany(stockItemDetail, { as: 'details', through: 'stockPallets_details' })
   }
-  return StockBox
+  return StockPallets
 }

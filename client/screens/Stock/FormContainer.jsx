@@ -5,11 +5,12 @@ import StockForm from './Form'
 import stockSchema from '../../../common/validation/stock.json'
 import documentAttachmentSchema from '../../../common/validation/documentAttachment.json'
 import stockBoxSchema from '../../../common/validation/stockBox.json'
+import stockPalletSchema from '../../../common/validation/stockPallet.json'
 import getValidator from '../../common/Validation'
 
 
 export const formName = 'Stock'
-const validate = getValidator(stockSchema, [stockBoxSchema, documentAttachmentSchema])
+const validate = getValidator(stockSchema, [stockBoxSchema, stockPalletSchema, documentAttachmentSchema])
 
 const mapStateToProps = (state, ownProps) => {
   const {

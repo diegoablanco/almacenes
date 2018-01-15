@@ -8,7 +8,6 @@ import messageBar from './messageBar'
 import customersReducer from './customers'
 import warehousesReducer from './warehouses'
 import stocksReducer from './stocks'
-import fileUploadReducer from './fileUpload'
 
 export default {
   routing: routerReducer,
@@ -35,8 +34,7 @@ export default {
     carriers: getCrudReducer(crudPages.CARRIERS),
     warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),
     stocks: stocksReducer,
-    messageBar,
-    fileUploads: fileUploadReducer
+    messageBar
   })
 };
 

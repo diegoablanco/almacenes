@@ -4,7 +4,7 @@ import { Button, Form, Grid } from 'semantic-ui-react'
 import { Field } from 'redux-form'
 import { renderField, renderSelect } from '../../utils/formHelpers'
 
-class WarehouseServiceForm extends Component {   
+class WarehouseServiceForm extends Component {
   render() {
     const { handleSubmit, pristine, reset, submitting, invalid, services } = this.props;
 

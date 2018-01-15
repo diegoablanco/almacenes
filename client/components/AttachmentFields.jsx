@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
 import { differenceWith } from 'lodash'
-import * as fileUploadActions from '../actions/fileUpload'
+import uploadFileAction from '../actions/fileUpload'
 
 class AttachmentFields extends Component {
   constructor(props) {
@@ -52,7 +52,7 @@ class AttachmentFields extends Component {
 const mapStateToProps = ({ uneditables: { queryResult: { documentTypes } } }) => ({
   documentTypes: documentTypes.map(x => ({ key: x.id, value: x.id, text: x.description }))
 })
-const mapDispatchToProps = (dispatch) => bindActionCreators(fileUploadActions, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ uploadFile: uploadFileAction }, dispatch)
 
 AttachmentFields.propTypes = {
   meta: PropTypes.object.isRequired,

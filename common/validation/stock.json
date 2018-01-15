@@ -12,6 +12,9 @@
         "boxes": {
             "$ref": "stockBox.json#"
         },
+        "palets": {
+            "$ref": "stockPallet.json#"
+        },
         "documents": {
             "type": [
                 "array",

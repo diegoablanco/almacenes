@@ -1,70 +1,13 @@
 import React from 'react'
-import { Field, formValues, FieldArray } from 'redux-form'
-import { Grid, Form, Tab, Accordion, Message } from 'semantic-ui-react'
-import { renderTextArea, renderCheckbox, renderRadio, renderField, parseToInt } from '../../utils/formHelpers'
+import { Field, FieldArray } from 'redux-form'
+import { Grid, Form, Tab, Message } from 'semantic-ui-react'
+import { renderTextArea } from '../../utils/formHelpers'
 import DocumentAttachmentFields from '../../components/DocumentAttachmentFields'
 import ImageAttachmentFields from '../../components/ImageAttachmentFields'
 import SelectField from '../../common/SelectField'
 import GeneralInfoFields from './GeneralInfoFields'
+import GoodsPane from './Goods'
 
-function getGoodsPane() {
-  return (
-    <Tab.Pane attached={false}>
-      <Grid verticalAlign="middle" centered textAlign="center">
-        <Grid.Column tablet={10} mobile={16} computer={14}>
-          <Accordion>
-            <Accordion.Title>
-              Cajas
-            </Accordion.Title>
-            <Accordion.Content active>
-              <Field
-                name="boxes.quantity"
-                type="text"
-                label="Cantidad"
-                parse={parseToInt}
-                component={renderField}
-              />
-              <Field
-                name="boxes.opened"
-                label="Abiertas"
-                component={renderCheckbox}
-              />
-              <Field
-                name="boxes.originalSeals"
-                label="Precintos originales"
-                component={renderCheckbox}
-              />
-              <Field
-                name="boxes.resealed"
-                label="Reprecintadas"
-                component={renderCheckbox}
-              />
-              <Field
-                name="boxes.serialNumbers"
-                label="Números de serie en cada caja"
-                component={renderCheckbox}
-              />
-              <Field
-                name="boxes.shrinkWapped"
-                label="Con precinto"
-                radioValue="sealed"
-                value="sealed"
-                component={formValues({ currentValue: 'boxes.shrinkWapped' })(renderRadio)}
-              />
-              <Field
-                name="boxes.shrinkWapped"
-                label="Sin precinto"
-                radioValue="unsealed"
-                value="unsealed"
-                component={formValues({ currentValue: 'boxes.shrinkWapped' })(renderRadio)}
-              />
-            </Accordion.Content>
-          </Accordion>
-        </Grid.Column>
-      </Grid>
-    </Tab.Pane>
-  )
-}
 function getDocumentsPane() {
   return (
     <Tab.Pane attached={false}>
@@ -111,7 +54,9 @@ export default function StockForm(props) {
     },
     {
       menuItem: 'Mercadería',
-      pane: getGoodsPane()
+      pane: <Tab.Pane attached={false}>
+        <GoodsPane />
+      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     },
     {
       menuItem: 'Documentos',
