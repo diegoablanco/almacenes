@@ -20,7 +20,10 @@
             "type": "boolean"
         },
         "shrinkWapped": {
-            "type": "string",
+            "type": [
+                "string",
+                "null"
+            ],
             "pattern": "[sealed|unsealed]"
         },
         "individualWeight": {
@@ -31,6 +34,15 @@
         },
         "totalWeight": {
             "type": "number"
+        },
+        "details": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "$ref": "stockItemDetail.json#"
+            }
         }
     },
     "required": [

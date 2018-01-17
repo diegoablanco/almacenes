@@ -6,11 +6,17 @@ import stockSchema from '../../../common/validation/stock.json'
 import documentAttachmentSchema from '../../../common/validation/documentAttachment.json'
 import stockBoxSchema from '../../../common/validation/stockBox.json'
 import stockPalletSchema from '../../../common/validation/stockPallet.json'
+import stockItemDetailSchema from '../../../common/validation/stockItemDetail.json'
 import getValidator from '../../common/Validation'
 
 
 export const formName = 'Stock'
-const validate = getValidator(stockSchema, [stockBoxSchema, stockPalletSchema, documentAttachmentSchema])
+const validate = getValidator(stockSchema, [
+  stockBoxSchema,
+  stockPalletSchema,
+  documentAttachmentSchema,
+  stockItemDetailSchema
+])
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -48,6 +54,7 @@ const mapStateToProps = (state, ownProps) => {
     form: formName,
     validate: validate, // eslint-disable-line object-shorthand
     availableInstructions: state.uneditables.queryResult.warehouseInstructions,
+    availableStockItemDetailTypes: state.uneditables.queryResult.stockItemDetailTypes,
     fileUploadActions,
     ...getFormValues(state, 'customer', 'targetCustomer', 'billingCustomer', 'warehouse', 'carrier', 'instructions')
   }

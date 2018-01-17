@@ -18,6 +18,7 @@ function getDocumentsPane() {
 export default function StockForm(props) {
   const {
     availableInstructions,
+    availableStockItemDetailTypes,
     instructions,
     error
   } = props
@@ -55,7 +56,7 @@ export default function StockForm(props) {
     {
       menuItem: 'Mercadería',
       pane: <Tab.Pane attached={false}>
-        <GoodsPane />
+        <GoodsPane {...{ availableStockItemDetailTypes }} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     },
     {

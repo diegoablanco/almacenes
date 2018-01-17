@@ -1,9 +1,11 @@
 import React from 'react'
-import { Field, formValues } from 'redux-form'
+import { Field, FieldArray, formValues } from 'redux-form'
 import { Grid, Tab, Form } from 'semantic-ui-react'
 import { renderCheckbox, renderRadio, renderField, parseToInt } from '../../utils/formHelpers'
+import SelectField from '../../common/SelectField'
+import AditionalStockDetailFields from './AditionalStockDetailFields'
 
-export default function getGoodsPane() {
+export default function getGoodsPane({ availableStockItemDetailTypes }) {
   const boxesPane = {
     menuItem: 'Cajas',
     pane: <Tab.Pane attached={false}>
@@ -65,6 +67,12 @@ export default function getGoodsPane() {
             radioValue="unsealed"
             value="unsealed"
             component={formValues({ currentValue: 'boxes.shrinkWapped' })(renderRadio)}
+          />
+          <FieldArray
+            name="boxes.details"
+            label="Detalles Adicionales"
+            component={AditionalStockDetailFields}
+            availableDetailTypes={availableStockItemDetailTypes.filter(x => ['signOfHandling', 'crashed', 'damaged', 'wet'].includes(x.code)).map(x => ({ key: x.id, value: x.id, text: x.description }))}
           />
         </Grid.Column>
       </Grid>
@@ -128,6 +136,12 @@ export default function getGoodsPane() {
             name="palets.hoopStrap"
             label="Fleje"
             component={renderCheckbox}
+          />
+          <FieldArray
+            name="palets.details"
+            label="Detalles Adicionales"
+            component={AditionalStockDetailFields}
+            availableDetailTypes={availableStockItemDetailTypes.filter(x => ['signOfHandling', 'damagedpallet', 'wetpallet'].includes(x.code)).map(x => ({ key: x.id, value: x.id, text: x.description }))}
           />
         </Grid.Column>
       </Grid>

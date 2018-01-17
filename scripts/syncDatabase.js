@@ -39,7 +39,10 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Manipulación evidente', code: 'signOfHandling' },
     { description: 'Abolladas', code: 'crashed' },
     { description: 'Dañadas', code: 'damaged' },
-    { description: 'Mojadas', code: 'wet' }
+    { description: 'Mojadas', code: 'wet' },
+
+    { description: 'Mojados', code: 'wetpallet' },
+    { description: 'Dañados', code: 'damagedpallet' }
   ])
   documentType.bulkCreate([
     { description: 'CMR', code: 'cmr' },

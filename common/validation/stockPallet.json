@@ -26,6 +26,15 @@
         },
         "totalWeight": {
             "type": "number"
+        },
+        "details": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "$ref": "stockItemDetail.json#"
+            }
         }
     },
     "required": [

@@ -1,0 +1,14 @@
+{
+    "id": "http://xarxa.com/schemas/stockItemDetail.json#",
+    "title": "Stock Item Detail",
+    "description": "Detailed information about a stock item",
+    "properties": {
+        "quantity": {
+            "type": "integer",
+            "minimum": 1
+        }
+    },
+    "required": [
+        "quantity"
+    ]
+}

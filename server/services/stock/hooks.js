@@ -6,6 +6,7 @@ const stockSchema = require('../../../common/validation/stock.json')
 const stockBoxSchema = require('../../../common/validation/stockBox.json')
 const stockPalletSchema = require('../../../common/validation/stockPallet.json')
 const documentAttachmentSchema = require('../../../common/validation/documentAttachment.json')
+const stockItemDetailSchema = require('../../../common/validation/stockItemDetail.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 
@@ -15,6 +16,7 @@ function validate() {
   ajv.addSchema(stockBoxSchema)
   ajv.addSchema(stockPalletSchema)
   ajv.addSchema(documentAttachmentSchema)
+  ajv.addSchema(stockItemDetailSchema)
   return validateSchema(stockSchema, ajv, {
     addNewError: errorReducer
   })
@@ -29,7 +31,8 @@ function getIncludes(database) {
       stockBox,
       stockPallets,
       documentAttachment,
-      fileAttachment
+      fileAttachment,
+      stockItemDetail
     }
   } = database
   return {
@@ -49,11 +52,13 @@ function getIncludes(database) {
     },
     stockBox: {
       model: stockBox,
-      as: 'boxes'
+      as: 'boxes',
+      include: [{ model: stockItemDetail, as: 'details' }]
     },
     stockPallets: {
       model: stockPallets,
-      as: 'palets'
+      as: 'palets',
+      include: [{ model: stockItemDetail, as: 'details' }]
     },
     warehouse: {
       model: warehouse
@@ -105,6 +110,16 @@ module.exports = {
           stockPallets,
           documents,
           images } = getIncludes(hook.app.get('database'))
+        const stockDetailIncludeSettings = {
+          attributes: ['id', 'description', 'quantity', 'stockItemDetailTypeId'],
+          through: { attributes: [] }
+        }
+        stockBox.include[0] = {
+          ...stockBox.include[0],
+          stockDetailIncludeSettings }
+        stockPallets.include[0] = {
+          ...stockPallets.include[0],
+          stockDetailIncludeSettings }
         hook.params.sequelize = {
           raw: false,
           include: [
