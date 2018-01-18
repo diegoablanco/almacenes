@@ -1,16 +1,16 @@
-const auth = require('feathers-authentication').hooks
 const { setNow } = require('feathers-hooks-common')
 const hydrate = require('feathers-sequelize/hooks/hydrate')
 
 function addIncludes(hook) {
   const {
     models: {
-      service
+      service,
+      stockMovementType
     }
   } = hook.app.get('database')
   hook.params.sequelize = hook.params.sequelize || {}
   hook.params.sequelize = {
-    include: [service]
+    include: [service, stockMovementType]
   }
 }
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
       addIncludes
     ],
     get: [],
-    create: [      
+    create: [
       setNow('createdAt')
     ],
     update: [],
@@ -38,8 +38,8 @@ module.exports = {
       const {
         models: { service }
       } = hook.app.get('database')
-      const association = { include: [{model: service}] }
-      hydrate( association ).call(this, hook)
+      const association = { include: [{ model: service }] }
+      hydrate(association).call(this, hook)
     }],
     patch: [addIncludes],
     remove: []
