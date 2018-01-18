@@ -24,7 +24,8 @@ const mapStateToProps = (state, ownProps) => {
     targetCustomerLookup,
     carrierLookup,
     warehouseLookup,
-    billingCustomerLookup
+    billingCustomerLookup,
+    stockMovementType
   } = ownProps.selectors.getUiState(state)
   const getFormValues = formValueSelector(formName)
   const { bindActions: {
@@ -56,7 +57,8 @@ const mapStateToProps = (state, ownProps) => {
     availableInstructions: state.uneditables.queryResult.warehouseInstructions,
     availableStockItemDetailTypes: state.uneditables.queryResult.stockItemDetailTypes,
     fileUploadActions,
-    ...getFormValues(state, 'customer', 'targetCustomer', 'billingCustomer', 'warehouse', 'carrier', 'instructions')
+    ...getFormValues(state, 'customer', 'targetCustomer', 'billingCustomer', 'warehouse', 'carrier', 'instructions'),
+    extras: { stockMovementType }
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

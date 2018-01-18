@@ -1,7 +1,7 @@
 import { findIndex, filter } from 'lodash'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
-import { getActionTypes } from '../actions/crudPage'
 import { GENERAL_SERVICE_ERROR } from '../actions/common'
+import { getActionTypes } from '../actions/crudPage'
 
 export function getCrudReducer(crudPage, defaultInitialState = {}) {
     const initialState = {...{

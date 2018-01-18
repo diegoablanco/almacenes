@@ -30,10 +30,11 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Particular', code: 'home' }
   ])
   stockMovementType.bulkCreate([
-    { description: 'Prealerta', code: 'preReceive' },
+    { description: 'Pre Alerta', code: 'preReceive' },
     { description: 'Alta', code: 'receive' },
     { description: 'Release', code: 'release' },
-    { description: 'Salida', code: 'salida' }
+    { description: 'Salida', code: 'salida' },
+    { description: 'Modificación', code: 'edit' }
   ])
   stockItemDetailType.bulkCreate([
     { description: 'Manipulación evidente', code: 'signOfHandling' },

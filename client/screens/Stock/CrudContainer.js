@@ -7,12 +7,13 @@ import ToolbarContainer from './ToolbarContainer'
 import getCrudPageActions from '../../actions/stocks'
 import selectors from '../../selectors/stocks'
 
-export default class CarrierCrud extends Component {
+export default class StockCrud extends Component {
     shouldComponentUpdate(){
         return false
     }
 
     gridColumns = [
+        { property: 'id', label: 'Código de Stock' }, 
         { property: 'warehouse.name', label: 'Almacén' }, 
         { property: 'customer.companyName', label: 'Cliente' }, 
         { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' }

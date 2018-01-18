@@ -1,6 +1,5 @@
-import { initialize as initializeReduxForm} from 'redux-form'
 import { bindActionCreators  } from 'redux'
-import { feathersServices } from '../feathers';
+import { feathersServices } from '../feathers'
 import { getCrudPageActions as getBaseCrudPageActions, getActionTypes } from './crudPage'
 import crudPages from '../common/CrudPages'
 import * as selectors from '../selectors/customers'

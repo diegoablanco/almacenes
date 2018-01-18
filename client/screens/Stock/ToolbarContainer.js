@@ -31,7 +31,7 @@ class Toolbar extends Component {
   }
 
   render(){
-    const { filterGrid, showFormModal } = this.props
+    const { filterGrid, showFormModal, stockMovementTypes } = this.props
     const ReduxForm = reduxForm({
       form: "filterStock",
       onSubmit: values => filterGrid(this.buildFilter(values)),
@@ -44,8 +44,8 @@ class Toolbar extends Component {
         </Menu.Item>
         <Menu.Item position='right'>
           <Button.Group labeled>
-              <Button icon='add' content='Prealerta' positive onClick={() => showFormModal()}  />
-              <Button icon='add' content='Alta' positive onClick={() => showFormModal()}  />
+              <Button icon='add' content='Prealerta' positive onClick={() => showFormModal(null, 'preReceive')}  />
+              <Button icon='add' content='Alta' positive onClick={() => showFormModal(null, "receive")}  />
           </Button.Group>
         </Menu.Item>
       </Menu>
@@ -53,9 +53,8 @@ class Toolbar extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return state.ui.warehouses
-}
+const mapStateToProps = (state, ownProps) => ({
+})
 const mapDispatchToProps = (dispatch, ownProps) => {
     const {crudActions} = ownProps
     return bindActionCreators(crudActions, dispatch)
