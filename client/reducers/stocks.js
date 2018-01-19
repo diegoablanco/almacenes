@@ -19,6 +19,10 @@ function stockReducer(state, action) {
   if (action.type === actionTypes.SET_STOCK_MOVEMENT_TYPE) {
     newState = { ...state, stockMovementType: action.stockMovementType }
   }
+  if (action.type === actionTypes.SET_AVAILABLE_SERVICES) {
+    const { availableServices } = action
+    newState = { ...state, availableServices }
+  }
 
   return {
     ...newState,

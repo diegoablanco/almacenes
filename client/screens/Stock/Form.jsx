@@ -7,6 +7,8 @@ import ImageAttachmentFields from '../../components/ImageAttachmentFields'
 import SelectField from '../../common/SelectField'
 import GeneralInfoFields from './GeneralInfoFields'
 import GoodsPane from './Goods'
+import getServiceFields from './ServiceFields'
+import tabulatedFormFields from '../../utils/tabulatedFormFields'
 
 export default class StockForm extends Component {
   constructor(props) {
@@ -16,6 +18,19 @@ export default class StockForm extends Component {
     this.getInstructionsPane = this.getInstructionsPane.bind(this)
     this.getGoodsPane = this.getGoodsPane.bind(this)
     this.getPanesByMovementType = this.getPanesByMovementType.bind(this)
+    this.getServicesPane = this.getServicesPane.bind(this)
+  }
+  getServicesPane() {
+    const {
+      availableServices,
+      setServiceRate
+    } = this.props
+    return {
+      menuItem: 'Servicios Asociados',
+      pane: <Tab.Pane attached={false}>
+        <FieldArray name="services" component={tabulatedFormFields('Servicios Asociados', getServiceFields(setServiceRate), availableServices)} />
+      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
+    }
   }
   getGeneralInfoPane() {
     return {
@@ -87,14 +102,15 @@ export default class StockForm extends Component {
       getInstructionsPane,
       getGoodsPane,
       getDocumentsPane,
-      getImagesPane
+      getImagesPane,
+      getServicesPane
     } = this
     switch (movementType) {
       case 'preReceive':
         return [getGeneralInfoPane(), getInstructionsPane()]
       case 'receive':
       case 'edit':
-        return [getGeneralInfoPane(), getInstructionsPane(), getGoodsPane(), getDocumentsPane(), getImagesPane()]
+        return [getGeneralInfoPane(), getServicesPane(), getInstructionsPane(), getGoodsPane(), getDocumentsPane(), getImagesPane()]
       default:
         return []
     }

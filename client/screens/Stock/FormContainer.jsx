@@ -25,7 +25,8 @@ const mapStateToProps = (state, ownProps) => {
     carrierLookup,
     warehouseLookup,
     billingCustomerLookup,
-    stockMovementType
+    stockMovementType,
+    availableServices
   } = ownProps.selectors.getUiState(state)
   const getFormValues = formValueSelector(formName)
   const { bindActions: {
@@ -39,7 +40,8 @@ const mapStateToProps = (state, ownProps) => {
     clearCarrier,
     searchWarehouse,
     clearWarehouse,
-    fileUploadActions
+    fileUploadActions,
+    setServiceRate
   } } = ownProps
   return {
     targetCustomerLookup,
@@ -56,7 +58,9 @@ const mapStateToProps = (state, ownProps) => {
     validate: validate, // eslint-disable-line object-shorthand
     availableInstructions: state.uneditables.queryResult.warehouseInstructions,
     availableStockItemDetailTypes: state.uneditables.queryResult.stockItemDetailTypes,
+    availableServices,
     fileUploadActions,
+    setServiceRate,
     ...getFormValues(state, 'customer', 'targetCustomer', 'billingCustomer', 'warehouse', 'carrier', 'instructions'),
     extras: { stockMovementType }
   }

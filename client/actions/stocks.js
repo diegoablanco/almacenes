@@ -1,14 +1,16 @@
-import { change } from 'redux-form'
+import { change, getFormValues } from 'redux-form'
 import { feathersServices } from '../feathers'
 import { getCrudPageActions as getBaseCrudPageActions, getActionTypes as getBaseActionTypes } from './crudPage'
 import crudPages from '../common/CrudPages'
 import selectors from '../selectors/stocks'
 import getLookupEntities from './lookupEntities'
+import { formName } from '../screens/Stock/FormContainer';
 
 export function getActionTypes() {
   return {
     ...getBaseActionTypes(crudPages.STOCKS),
-    SET_STOCK_MOVEMENT_TYPE: 'SET_STOCK_MOVEMENT_TYPE'
+    SET_STOCK_MOVEMENT_TYPE: 'SET_STOCK_MOVEMENT_TYPE',
+    SET_AVAILABLE_SERVICES: 'SET_AVAILABLE_SERVICES'
   }
 }
 
@@ -38,6 +40,20 @@ export default function getCrudPageActions() {
         dispatch({ type: actionTypes.SET_STOCK_MOVEMENT_TYPE, stockMovementType })
         await dispatch(baseCrudPageActions.showFormModal(id))
         dispatch(change('Stock', 'movementType', stockMovementType))
+        const query = {
+          $select: ['id', 'description', 'rate'],
+          $limit: 0,
+          $sort: { id: -1 }
+        }
+        const { value: { data: availableServices } } = await dispatch(feathersServices.services.find({ query }))
+        dispatch({ type: actionTypes.SET_AVAILABLE_SERVICES, availableServices })
+      }
+    },
+    setServiceRate(fieldIndex, rate) {
+      return (dispatch) => {
+        const fieldName = 'services'
+        const fieldPrefix = `${fieldName}[${fieldIndex}]`
+        dispatch(change(formName, `${fieldPrefix}.rate`, rate))
       }
     }
   }

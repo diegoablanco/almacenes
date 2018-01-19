@@ -32,7 +32,8 @@ function getIncludes(database) {
       stockPallets,
       documentAttachment,
       fileAttachment,
-      stockItemDetail
+      stockItemDetail,
+      stockService
     }
   } = database
   return {
@@ -80,6 +81,10 @@ function getIncludes(database) {
       model: fileAttachment,
       as: 'images',
       through: 'stock_images'
+    },
+    services: {
+      model: stockService,
+      as: 'services'
     }
   }
 }
@@ -109,7 +114,8 @@ module.exports = {
           stockBox,
           stockPallets,
           documents,
-          images } = getIncludes(hook.app.get('database'))
+          images,
+          services } = getIncludes(hook.app.get('database'))
         const stockDetailIncludeSettings = {
           attributes: ['id', 'description', 'quantity', 'stockItemDetailTypeId'],
           through: { attributes: [] }
@@ -132,7 +138,8 @@ module.exports = {
             stockBox,
             stockPallets,
             documents,
-            images
+            images,
+            services
           ]
         }
       }
@@ -140,10 +147,10 @@ module.exports = {
     create: [
       validate(),
       function (hook) {
-        const { stockBox, stockPallets, documents, images } = getIncludes(hook.app.get('database'))
+        const { stockBox, stockPallets, documents, images, services } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
-          include: [stockBox, stockPallets, documents, images]
+          include: [stockBox, stockPallets, documents, images, services]
         }
       },
       setNow('createdAt')
@@ -157,12 +164,12 @@ module.exports = {
             stock
           }
         } = hook.app.get('database')
-        const { stockBox, stockPallets, documents, images } = getIncludes(hook.app.get('database'))
+        const { stockBox, stockPallets, documents, images, services } = getIncludes(hook.app.get('database'))
         const filter = {
           where: {
             id: hook.data.id
           },
-          include: [stockBox, stockPallets, documents, images]
+          include: [stockBox, stockPallets, documents, images, services]
         }
         stock.findOne(filter).then(s => {
           s.set(hook.data)
@@ -179,7 +186,11 @@ module.exports = {
     create: [
       hydrate(),
       function (hook) {
-        const { result, data: { instructions = [] } } = hook
+        const {
+          result,
+          data: {
+            instructions = []
+          } } = hook
         result.setInstructions(instructions.map(x => x.id))
       }
     ],

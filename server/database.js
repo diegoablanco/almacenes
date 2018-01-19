@@ -27,6 +27,7 @@ module.exports = function () {
   sequelize.import('../server/models/stockPallets')
   sequelize.import('../server/models/stockItemDetail')
   sequelize.import('../server/models/stockItemDetailType')
+  sequelize.import('../server/models/stockService')
   sequelize.import('../server/models/documentType')
   sequelize.import('../server/models/documentAttachment')
   sequelize.import('../server/models/fileAttachment')
