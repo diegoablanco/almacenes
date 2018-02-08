@@ -15,7 +15,8 @@ sequelize.sync({ force: true }).then(async () => {
     warehouseInstruction,
     service,
     stockItemDetailType,
-    documentType } = sequelize.models
+    documentType,
+    stockStatus } = sequelize.models
   await user.create({
     name: 'diego',
     email: 'diegoablanco@gmail.com',
@@ -35,6 +36,12 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Release', code: 'release' },
     { description: 'Salida', code: 'salida' },
     { description: 'Modificación', code: 'edit' }
+  ])
+  stockStatus.bulkCreate([
+    { description: 'Pre Alerta', code: 'preReceive', color: 'yellow' },
+    { description: 'Alta', code: 'receive', color: 'green' },
+    { description: 'On Hold', code: 'onHold', color: 'yellow' },
+    { description: 'Completo', code: 'fulfilled', color: 'yellow' }
   ])
   stockItemDetailType.bulkCreate([
     { description: 'Manipulación evidente', code: 'signOfHandling' },

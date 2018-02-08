@@ -32,7 +32,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eddyystop/feathers-starter-react-redux-login-roles.git"
+    "url": "git+https://github.com/diegoablanco/almacenes.git"
   },
   "keywords": [
     "feathers",

@@ -9,6 +9,10 @@ const documentAttachmentSchema = require('../../../common/validation/documentAtt
 const stockItemDetailSchema = require('../../../common/validation/stockItemDetail.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
+const setMovement = require('./setMovement')
+const setStatus = require('./setStatus')
+const getIncludes = require('./includes')
+
 
 function validate() {
   const ajv = Ajv({ allErrors: true })
@@ -21,73 +25,12 @@ function validate() {
     addNewError: errorReducer
   })
 }
-function getIncludes(database) {
-  const {
-    models: {
-      customer,
-      warehouse,
-      carrier,
-      warehouseInstruction,
-      stockBox,
-      stockPallets,
-      documentAttachment,
-      fileAttachment,
-      stockItemDetail,
-      stockService
-    }
-  } = database
-  return {
-    customer: {
-      model: customer,
-      attributes: ['companyName']
-    },
-    targetCustomer: {
-      model: customer,
-      as: 'targetCustomer',
-      attributes: ['companyName']
-    },
-    billingCustomer: {
-      model: customer,
-      as: 'billingCustomer',
-      attributes: ['companyName']
-    },
-    stockBox: {
-      model: stockBox,
-      as: 'boxes',
-      include: [{ model: stockItemDetail, as: 'details' }]
-    },
-    stockPallets: {
-      model: stockPallets,
-      as: 'palets',
-      include: [{ model: stockItemDetail, as: 'details' }]
-    },
-    warehouse: {
-      model: warehouse
-    },
-    carrier: {
-      model: carrier
-    },
-    warehouseInstruction: {
-      model: warehouseInstruction,
-      as: 'instructions',
-      through: 'stock_instructions'
-    },
-    documents: {
-      model: documentAttachment,
-      as: 'documents',
-      through: 'stock_documents'
-    },
-    images: {
-      model: fileAttachment,
-      as: 'images',
-      through: 'stock_images'
-    },
-    services: {
-      model: stockService,
-      as: 'services'
-    }
-  }
+
+function setInstructions(hook) {
+  const { result, data: { instructions = [] } } = hook
+  result.setInstructions(instructions.map(x => x.id))
 }
+
 module.exports = {
   before: {
     all: [
@@ -95,10 +38,10 @@ module.exports = {
     ],
     find: [
       function (hook) {
-        const { customer, targetCustomer, warehouse } = getIncludes(hook.app.get('database'))
+        const { customer, targetCustomer, warehouse, status } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
-          include: [customer, targetCustomer, warehouse]
+          include: [customer, targetCustomer, warehouse, status]
         }
       }
     ],
@@ -115,7 +58,9 @@ module.exports = {
           stockPallets,
           documents,
           images,
-          services } = getIncludes(hook.app.get('database'))
+          services,
+          movements,
+          status } = getIncludes(hook.app.get('database'))
         const stockDetailIncludeSettings = {
           attributes: ['id', 'description', 'quantity', 'stockItemDetailTypeId'],
           through: { attributes: [] }
@@ -139,7 +84,9 @@ module.exports = {
             stockPallets,
             documents,
             images,
-            services
+            services,
+            movements,
+            status
           ]
         }
       }
@@ -185,23 +132,17 @@ module.exports = {
     all: [],
     create: [
       hydrate(),
-      function (hook) {
-        const {
-          result,
-          data: {
-            instructions = []
-          } } = hook
-        result.setInstructions(instructions.map(x => x.id))
-      }
+      setInstructions,
+      setMovement,
+      setStatus
     ],
     find: [],
     get: [],
     update: [
       hydrate(),
-      function (hook) {
-        const { result, data: { instructions = [] } } = hook
-        result.setInstructions(instructions.map(x => x.id))
-      }
+      setInstructions,
+      setMovement,
+      setStatus
     ],
     patch: [],
     remove: []

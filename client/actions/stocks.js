@@ -35,11 +35,13 @@ export default function getCrudPageActions() {
     ...{ searchCarrier, clearCarrier },
     ...{ searchWarehouse, clearWarehouse },
     ...{ searchInstructions, clearInstructions },
-    showFormModal(id, stockMovementType = 'edit') {
-      return async (dispatch) => {
+    showFormModal(id, stockMovementTypeCode = 'edit') {
+      return async (dispatch, getState) => {
+        const { uneditables: { queryResult: { stockMovementTypes } } } = getState()
+        const stockMovementType = stockMovementTypes.find(x => x.code === stockMovementTypeCode)
         dispatch({ type: actionTypes.SET_STOCK_MOVEMENT_TYPE, stockMovementType })
         await dispatch(baseCrudPageActions.showFormModal(id))
-        dispatch(change('Stock', 'movementType', stockMovementType))
+        dispatch(change('Stock', 'movementTypeId', stockMovementType.id))
         const query = {
           $select: ['id', 'description', 'rate'],
           $limit: 0,

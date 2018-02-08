@@ -105,7 +105,7 @@ export default class StockForm extends Component {
       getImagesPane,
       getServicesPane
     } = this
-    switch (movementType) {
+    switch (movementType.code) {
       case 'preReceive':
         return [getGeneralInfoPane(), getInstructionsPane()]
       case 'receive':

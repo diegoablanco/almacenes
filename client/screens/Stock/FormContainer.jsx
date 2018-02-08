@@ -62,7 +62,10 @@ const mapStateToProps = (state, ownProps) => {
     fileUploadActions,
     setServiceRate,
     ...getFormValues(state, 'customer', 'targetCustomer', 'billingCustomer', 'warehouse', 'carrier', 'instructions'),
-    extras: { stockMovementType }
+    extras: {
+      stockMovementType,
+      stockMovementTypes: state.uneditables.queryResult.stockMovementTypes
+    }
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

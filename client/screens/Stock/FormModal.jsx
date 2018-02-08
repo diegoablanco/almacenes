@@ -5,11 +5,10 @@ import Form, { formName } from './FormContainer'
 
 class Modal extends Component {
   render() {
-    const { id, stockMovementType, stockMovementTypes, ...rest } = this.props
-    const stockMovementTypeDescription = stockMovementTypes.find(x => x.code === stockMovementType).description
+    const { id, stockMovementType, ...rest } = this.props
     return (
       <FormModal
-        title={`Movimiento de Stock: ${stockMovementTypeDescription}`}
+        title={`Movimiento de Stock: ${stockMovementType && stockMovementType.description}`}
         form={Form}
         formName={formName}
         id={id}
@@ -20,10 +19,8 @@ class Modal extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { selectors: { getUiState } } = ownProps
-  const { uneditables: { queryResult: { stockMovementTypes } } } = state
   return {
-    stockMovementType: getUiState(state).stockMovementType || 'edit',
-    stockMovementTypes
+    stockMovementType: getUiState(state).stockMovementType
   }
 }
 

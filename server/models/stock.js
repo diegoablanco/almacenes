@@ -25,7 +25,8 @@ module.exports = function (sequelize) {
     stockPallets,
     documentAttachment,
     fileAttachment,
-    stockService }) {
+    stockService,
+    stockStatus }) {
     Stock.belongsTo(warehouse)
     Stock.belongsTo(carrier)
     Stock.belongsTo(customer)
@@ -33,11 +34,12 @@ module.exports = function (sequelize) {
     Stock.belongsTo(customer, { as: 'billingCustomer' })
     Stock.belongsTo(stockBox, { as: 'boxes' })
     Stock.belongsTo(stockPallets, { as: 'palets' })
-    Stock.belongsToMany(stockMovement, { as: 'movements', through: 'stock_movements' })
     Stock.belongsToMany(warehouseInstruction, { as: 'instructions', through: 'stock_instructions' })
     Stock.belongsToMany(documentAttachment, { as: 'documents', through: 'stock_documents' })
     Stock.belongsToMany(fileAttachment, { as: 'images', through: 'stock_images' })
+    Stock.hasMany(stockMovement, { as: 'movements' })
     Stock.hasMany(stockService, { as: 'services' })
+    Stock.belongsTo(stockStatus, { as: 'status' })
   }
   return Stock
 }
