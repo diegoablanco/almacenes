@@ -75,10 +75,14 @@ class Grid extends Component {
     const {
       rows,
       enableSort,
-      rowKey
+      rowKey,
+      enableActionColumn = true
     } = this.props
     const columns = enableSort ? this.getSortableColumns(this.columns) : this.columns
-    const gridColumns = [...columns, ...this.getActionColumns()]
+    const gridColumns = [...columns]
+    if (enableActionColumn) {
+      gridColumns.push(...this.getActionColumns())
+    }
     const tableRows = resolve.resolve({
       columns: resolve.columnChildren({ columns }),
       method: resolve.nested

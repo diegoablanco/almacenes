@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Field } from 'redux-form'
 import { Grid } from 'semantic-ui-react'
 import LookupSelectField from '../../components/LookupSelectField'
+import { renderField } from '../../utils/formHelpers'
 
 export default function StockGeneralInfoFields({
   targetCustomerLookup,
@@ -24,6 +25,12 @@ export default function StockGeneralInfoFields({
   return (
     <Grid verticalAlign="middle" centered textAlign="center">
       <Grid.Column tablet={10} mobile={16} computer={8}>
+        <Field
+          name="reference"
+          type="text"
+          label="Referencia"
+          component={renderField}
+        />
         <Field
           name="warehouseId"
           component={LookupSelectField}

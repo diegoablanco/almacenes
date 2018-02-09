@@ -27,7 +27,7 @@ export default class StockForm extends Component {
     } = this.props
     return {
       menuItem: 'Servicios Asociados',
-      pane: <Tab.Pane attached={false}>
+      pane: <Tab.Pane attached={false} key="services">
         <FieldArray name="services" component={tabulatedFormFields('Servicios Asociados', getServiceFields(setServiceRate), availableServices)} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
@@ -35,7 +35,7 @@ export default class StockForm extends Component {
   getGeneralInfoPane() {
     return {
       menuItem: 'Información General',
-      pane: <Tab.Pane attached={false}>
+      pane: <Tab.Pane attached={false} key="general-info">
         <GeneralInfoFields {...this.props} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
@@ -43,7 +43,7 @@ export default class StockForm extends Component {
   getDocumentsPane() {
     return {
       menuItem: 'Documentos',
-      pane: <Tab.Pane attached={false}>
+      pane: <Tab.Pane attached={false} key="documents">
         <FieldArray name="documents" component={DocumentAttachmentFields} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
@@ -51,7 +51,7 @@ export default class StockForm extends Component {
   getImagesPane() {
     return {
       menuItem: 'Imágenes',
-      pane: <Tab.Pane attached={false}>
+      pane: <Tab.Pane attached={false} key="images">
         <FieldArray name="images" component={ImageAttachmentFields} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
@@ -62,7 +62,7 @@ export default class StockForm extends Component {
     } = this.props
     return {
       menuItem: 'Mercadería',
-      pane: <Tab.Pane attached={false}>
+      pane: <Tab.Pane attached={false} key="goods">
         <GoodsPane {...{ availableStockItemDetailTypes }} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
@@ -73,7 +73,7 @@ export default class StockForm extends Component {
     } = this.props
     return {
       menuItem: 'Instrucciones',
-      pane: <Tab.Pane attached={false}>
+      pane: <Tab.Pane attached={false} key="instructions">
         <Grid verticalAlign="middle" centered textAlign="center">
           <Grid.Column tablet={10} mobile={16} computer={12}>
             <Field
@@ -110,7 +110,7 @@ export default class StockForm extends Component {
         return [getGeneralInfoPane(), getInstructionsPane()]
       case 'receive':
       case 'edit':
-        return [getGeneralInfoPane(), getServicesPane(), getInstructionsPane(), getGoodsPane(), getDocumentsPane(), getImagesPane()]
+        return [getGeneralInfoPane(), getInstructionsPane(), getGoodsPane(), getDocumentsPane(), getImagesPane(), getServicesPane()]
       default:
         return []
     }

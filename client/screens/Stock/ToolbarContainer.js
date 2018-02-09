@@ -44,7 +44,7 @@ class Toolbar extends Component {
         </Menu.Item>
         <Menu.Item position='right'>
           <Button.Group labeled>
-              <Button icon='add' content='Prealerta' color="yellow" onClick={() => showFormModal(null, 'preReceive')}  />
+              <Button icon='add' content='Pre Alerta' color="yellow" onClick={() => showFormModal(null, 'preReceive')}  />
               <Button icon='add' content='Alta' positive onClick={() => showFormModal(null, "receive")}  />
           </Button.Group>
         </Menu.Item>

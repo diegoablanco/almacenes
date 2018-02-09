@@ -23,10 +23,15 @@
             "items": {
                 "$ref": "documentAttachment.json#"
             }
+        },
+        "reference": {
+            "type": "string",
+            "minLength": 1
         }
     },
     "required": [
         "customerId",
-        "warehouseId"
+        "warehouseId",
+        "reference"
     ]
 }

@@ -1,24 +1,58 @@
 import React, { Component } from 'react'
-import { Label } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Label, Button } from 'semantic-ui-react'
 import FormModal from './FormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
 import getCrudPageActions from '../../actions/stocks'
 import selectors from '../../selectors/stocks'
-
-export default class StockCrud extends Component {
+import StatusColumn from './components/StatusColumn'
+class StockCrud extends Component {
   constructor(props) {
     super(props)
+    const { showFormModal } = props
     this.gridColumns = [
       { property: 'id', label: 'Código de Stock' },
+      { property: 'reference', label: 'Referencia' },
       {
         property: 'status',
         label: 'Estado',
-        cellFormatters: [({ description, color }) => (<Label color={color} horizontal>{description}</Label>)]
+        cellFormatters: [(status, { rowData }) => (<StatusColumn status={status} rowData={rowData} />)]
       },
       { property: 'warehouse.name', label: 'Almacén', sortable: true },
       { property: 'customer.companyName', label: 'Cliente' },
-      { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' }
+      { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' },
+      { cellFormatters: [(a, { rowData: { id, status, onHold } }) => {
+        switch (status.code) {
+          case 'preReceive':
+            return (
+              <Button
+                icon="add"
+                content="alta"
+                positive
+                onClick={() => showFormModal(id, 'receive')}
+              />)
+          case 'receive':
+            return (
+              onHold
+                ? <Button
+                  icon="unlock"
+                  color="purple"
+                  onClick={() => showFormModal(id, 'release')}
+                  content="release"
+                />
+                : <Button
+                  icon="share"
+                  content="salida"
+                  color="black"
+                  onClick={() => showFormModal(id, 'salida')}
+                />)
+          default:
+            return null
+        }
+      }] // eslint-disable-line react/jsx-closing-tag-location
+      }
     ]
     this.confirmModalOptions = {
       title: 'Eliminar Transportista',
@@ -40,8 +74,15 @@ export default class StockCrud extends Component {
           formModal={FormModal}
           toolbar={ToolbarContainer}
           crudActions={crudActions}
+          // enableActionColumn={false}
         />
       </div>
     )
   }
 }
+const mapDispatchToProps = (dispatch) => {
+  const { showFormModal } = getCrudPageActions()
+
+  return bindActionCreators({ showFormModal }, dispatch)
+}
+export default connect(null, mapDispatchToProps)(StockCrud)

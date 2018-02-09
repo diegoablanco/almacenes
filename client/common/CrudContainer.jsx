@@ -22,6 +22,8 @@ class CrudContainer extends Component {
       confirmModalOptions,
       id,
       enableAdd,
+      enableEdit,
+      enableActionColumn,
       bindActions: {
         createOrUpdate,
         showConfirmModal,
@@ -42,7 +44,9 @@ class CrudContainer extends Component {
           crudActions={crudActions}
           toolbar={toolbar}
           enableAdd={enableAdd}
+          enableEdit={enableEdit}
           addHandler={showFormModal}
+          enableActionColumn={enableActionColumn}
         />
         <this.props.formModal
           selectors={selectors}

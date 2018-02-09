@@ -2,13 +2,12 @@ import React from 'react'
 import { Field, FieldArray, formValues } from 'redux-form'
 import { Grid, Tab, Form } from 'semantic-ui-react'
 import { renderCheckbox, renderRadio, renderField, parseToInt } from '../../utils/formHelpers'
-import SelectField from '../../common/SelectField'
 import AditionalStockDetailFields from './AditionalStockDetailFields'
 
 export default function getGoodsPane({ availableStockItemDetailTypes }) {
   const boxesPane = {
     menuItem: 'Cajas',
-    pane: <Tab.Pane attached={false}>
+    pane: <Tab.Pane attached={false} key="boxes">
       <Grid verticalAlign="middle" centered textAlign="center">
         <Grid.Column tablet={10} mobile={16} computer={14}>
           <Form.Group widths="equal">
@@ -80,7 +79,7 @@ export default function getGoodsPane({ availableStockItemDetailTypes }) {
   }
   const paletsPane = {
     menuItem: 'Pallets',
-    pane: <Tab.Pane attached={false}>
+    pane: <Tab.Pane attached={false} key="palets">
       <Grid verticalAlign="middle" centered textAlign="center">
         <Grid.Column tablet={10} mobile={16} computer={14}>
           <Form.Group widths="equal">
@@ -148,10 +147,17 @@ export default function getGoodsPane({ availableStockItemDetailTypes }) {
     </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
   }
   return (
-    <Tab
-      panes={[boxesPane, paletsPane]}
-      menu={{ secondary: true, pointing: true }}
-      renderActiveOnly={false}
-    />
+    <div>
+      <Field
+        name="onHold"
+        label="On Hold"
+        component={renderCheckbox}
+      />
+      <Tab
+        panes={[boxesPane, paletsPane]}
+        menu={{ secondary: true, pointing: true }}
+        renderActiveOnly={false}
+      />
+    </div>
   )
 }

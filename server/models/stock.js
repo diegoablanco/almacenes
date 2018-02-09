@@ -13,6 +13,12 @@ module.exports = function (sequelize) {
     },
     customInstructions: {
       type: Sequelize.STRING
+    },
+    onHold: {
+      type: Sequelize.BOOLEAN, defaultValue: false
+    },
+    reference: {
+      type: Sequelize.STRING
     }
   })
   Stock.associate = function ({

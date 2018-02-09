@@ -9,17 +9,16 @@ class GridContainer extends Component {
     loadGrid()
   }
   render() {
-    const { crudActions, sortGrid, loadMore, filterGrid, sortingColumns } = this.props
+    const { crudActions, sortGrid, loadMore, filterGrid, ...rest } = this.props
     return (
       <div>
         {this.props.toolbar && <this.props.toolbar handleFilter={filterGrid} crudActions={crudActions} />}
         <Grid
-          {...this.props}
+          {...rest}
           handleLoadMore={loadMore}
           enableSort
           handleSort={sortGrid}
           enableInfiniteScroll
-          sortingColumns={sortingColumns}
         />
       </div>
     )
