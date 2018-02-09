@@ -8,6 +8,7 @@ const addressSchema = require('../../../common/validation/address.json')
 const accountSchema = require('../../../common/validation/account.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
+const { processSort } = require('../helpers')
 
 function getIncludes(database) {
   const {
@@ -101,6 +102,7 @@ module.exports = {
             { ...authorizedSignatory, attributes: ['name', 'email'] }
           ],
           attributes: ['id', 'companyName', 'authorizedSignatoryId'] }
+        processSort(hook, { authorizedSignatory })
       }
     ],
     get: [

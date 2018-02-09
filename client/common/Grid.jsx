@@ -69,12 +69,7 @@ class Grid extends Component {
     })
 
     const customSortableTransform = (value, extra) => this.transformSortClasses(sortable(value, extra))
-    return this.columns.map(column => {
-      const isSortable = column.property.indexOf('.') === -1
-      return isSortable
-        ? addHeaderTransforms([column], [sortable, customSortableTransform])[0]
-        : column
-    })
+    return this.columns.map(column => addHeaderTransforms([column], [sortable, customSortableTransform])[0])
   }
   getTable() {
     const {

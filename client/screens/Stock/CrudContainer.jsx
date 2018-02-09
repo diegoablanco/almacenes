@@ -16,7 +16,7 @@ export default class StockCrud extends Component {
         label: 'Estado',
         cellFormatters: [({ description, color }) => (<Label color={color} horizontal>{description}</Label>)]
       },
-      { property: 'warehouse.name', label: 'Almacén' },
+      { property: 'warehouse.name', label: 'Almacén', sortable: true },
       { property: 'customer.companyName', label: 'Cliente' },
       { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' }
     ]

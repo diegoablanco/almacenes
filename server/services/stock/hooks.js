@@ -12,6 +12,7 @@ const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateA
 const setMovement = require('./setMovement')
 const setStatus = require('./setStatus')
 const getIncludes = require('./includes')
+const { processSort } = require('../helpers')
 
 
 function validate() {
@@ -42,6 +43,22 @@ module.exports = {
         hook.params.sequelize = {
           raw: false,
           include: [customer, targetCustomer, warehouse, status]
+        }
+        processSort(hook, { customer, targetCustomer, warehouse, status })
+        const { params: { query: { $sort } } } = hook
+        if ($sort) {
+          const sortOrder = Object.values($sort)[0] === '1' ? 'ASC' : 'DESC'
+          switch (Object.keys($sort)[0]) {
+            case 'status':
+              hook.params.sequelize.order = [[status, 'id', sortOrder]]
+              break
+            case 'id':
+              hook.params.sequelize.order = [['createdAt', sortOrder]]
+              break
+            default:
+              hook.params.sequelize.order = [['createdAt', 'asc']]
+          }
+          delete hook.params.query.$sort
         }
       }
     ],
