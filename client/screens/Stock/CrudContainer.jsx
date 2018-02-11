@@ -14,12 +14,12 @@ class StockCrud extends Component {
     const { showFormModal } = props
     this.gridColumns = [
       { property: 'id', label: 'Código de Stock' },
-      { property: 'reference', label: 'Referencia' },
       {
         property: 'status',
         label: 'Estado',
         cellFormatters: [(status, { rowData }) => (<StatusColumn status={status} rowData={rowData} />)]
       },
+      { property: 'reference', label: 'Referencia' },
       { property: 'warehouse.name', label: 'Almacén', sortable: true },
       { property: 'customer.companyName', label: 'Cliente' },
       { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' },

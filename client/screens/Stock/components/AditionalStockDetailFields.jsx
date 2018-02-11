@@ -3,7 +3,7 @@ import { Field } from 'redux-form'
 import { Form, Dropdown, Segment, Divider } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { differenceWith } from 'lodash'
-import { renderTextArea, renderField, parseToInt } from '../../utils/formHelpers'
+import { renderTextArea, renderField, parseToInt } from '../../../utils/formHelpers'
 
 export default class AditionalStockDetailFields extends Component {
   constructor(props) {
@@ -52,7 +52,6 @@ export default class AditionalStockDetailFields extends Component {
       meta: { touched, error },
       width,
       label,
-      placeholder,
       availableDetailTypes,
       fields
     } = this.props

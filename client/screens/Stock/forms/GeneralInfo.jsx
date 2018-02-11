@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Field } from 'redux-form'
 import { Grid } from 'semantic-ui-react'
-import LookupSelectField from '../../components/LookupSelectField'
-import { renderField } from '../../utils/formHelpers'
+import LookupSelectField from '../../../components/LookupSelectField'
+import { renderField } from '../../../utils/formHelpers'
 
 export default function StockGeneralInfoFields({
   targetCustomerLookup,

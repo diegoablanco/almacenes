@@ -1,8 +1,8 @@
 import React from 'react'
 import { Field, FieldArray, formValues } from 'redux-form'
 import { Grid, Tab, Form } from 'semantic-ui-react'
-import { renderCheckbox, renderRadio, renderField, parseToInt } from '../../utils/formHelpers'
-import AditionalStockDetailFields from './AditionalStockDetailFields'
+import { renderCheckbox, renderRadio, renderField, parseToInt } from '../../../utils/formHelpers'
+import AditionalStockDetailFields from '../components/AditionalStockDetailFields'
 
 export default function getGoodsPane({ availableStockItemDetailTypes }) {
   const boxesPane = {

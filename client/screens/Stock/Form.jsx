@@ -5,9 +5,10 @@ import { renderTextArea } from '../../utils/formHelpers'
 import DocumentAttachmentFields from '../../components/DocumentAttachmentFields'
 import ImageAttachmentFields from '../../components/ImageAttachmentFields'
 import SelectField from '../../common/SelectField'
-import GeneralInfoFields from './GeneralInfoFields'
-import GoodsPane from './Goods'
-import getServiceFields from './ServiceFields'
+import GeneralInfo from './forms/GeneralInfo'
+import GoodsPane from './forms/Goods'
+import ReleasePane from './forms/Release'
+import getServiceFields from './components/ServiceFields'
 import tabulatedFormFields from '../../utils/tabulatedFormFields'
 
 export default class StockForm extends Component {
@@ -19,6 +20,7 @@ export default class StockForm extends Component {
     this.getGoodsPane = this.getGoodsPane.bind(this)
     this.getPanesByMovementType = this.getPanesByMovementType.bind(this)
     this.getServicesPane = this.getServicesPane.bind(this)
+    this.getReleasePane = this.getReleasePane.bind(this)
   }
   getServicesPane() {
     const {
@@ -36,7 +38,7 @@ export default class StockForm extends Component {
     return {
       menuItem: 'Información General',
       pane: <Tab.Pane attached={false} key="general-info">
-        <GeneralInfoFields {...this.props} />
+        <GeneralInfo {...this.props} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   }
@@ -64,6 +66,19 @@ export default class StockForm extends Component {
       menuItem: 'Mercadería',
       pane: <Tab.Pane attached={false} key="goods">
         <GoodsPane {...{ availableStockItemDetailTypes }} />
+      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
+    }
+  }
+  getReleasePane() {
+    const {
+      form,
+      targetCustomerLookup,
+      targetCustomerLookupActions
+    } = this.props
+    return {
+      menuItem: 'Detalles',
+      pane: <Tab.Pane attached={false} key="goods">
+        <ReleasePane formName={form} {...{ targetCustomerLookup, targetCustomerLookupActions }} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   }
@@ -103,11 +118,14 @@ export default class StockForm extends Component {
       getGoodsPane,
       getDocumentsPane,
       getImagesPane,
-      getServicesPane
+      getServicesPane,
+      getReleasePane
     } = this
     switch (movementType.code) {
       case 'preReceive':
         return [getGeneralInfoPane(), getInstructionsPane()]
+      case 'release':
+        return [getReleasePane()]
       case 'receive':
       case 'edit':
         return [getGeneralInfoPane(), getInstructionsPane(), getGoodsPane(), getDocumentsPane(), getImagesPane(), getServicesPane()]

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field } from 'redux-form'
-import { renderField, renderSelect } from '../../utils/formHelpers'
+import { renderField, renderSelect } from '../../../utils/formHelpers'
 
 export default function (setServiceRate) {
   return function (title, fields, availableServices) {

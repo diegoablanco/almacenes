@@ -56,13 +56,16 @@ module.exports = {
               hook.params.sequelize.order = [['createdAt', sortOrder]]
               break
             default:
-              hook.params.sequelize.order = [['createdAt', 'asc']]
+              hook.params.sequelize.order = [['createdAt', 'desc']]
           }
           delete hook.params.query.$sort
         }
       }
     ],
     get: [
+      function (hook) {
+        const { data: { movementType } } = hook
+      },
       function (hook) {
         const {
           customer,
