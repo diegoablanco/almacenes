@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Modal, Icon, Dimmer } from 'semantic-ui-react'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { submit, isPristine, isSubmitting, hasSubmitSucceeded } from 'redux-form'
 
 class FormModal extends Component {
@@ -17,7 +17,10 @@ class FormModal extends Component {
       initializeForm,
       selectors,
       bindActions,
-      dimmed
+      dimmed,
+      showSave = true,
+      showCustomButton = false,
+      CustomButton
     } = this.props
 
     return (
@@ -39,9 +42,11 @@ class FormModal extends Component {
           <Button onClick={handleClose}>
             <Icon name="cancel" /> Cancelar
           </Button>
+          {showSave &&
           <Button onClick={handleSubmit} disabled={pristine || submitting} loading={submitting}>
             <Icon name="save" /> Guardar
-          </Button>
+          </Button>}
+          { showCustomButton && <CustomButton /> }
         </Modal.Actions>
       </Modal>
     )

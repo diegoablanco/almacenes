@@ -73,12 +73,13 @@ export default class StockForm extends Component {
     const {
       form,
       targetCustomerLookup,
-      targetCustomerLookupActions
+      targetCustomerLookupActions,
+      targetCustomer
     } = this.props
     return {
       menuItem: 'Detalles',
       pane: <Tab.Pane attached={false} key="goods">
-        <ReleasePane formName={form} {...{ targetCustomerLookup, targetCustomerLookupActions }} />
+        <ReleasePane formName={form} {...{ targetCustomerLookup, targetCustomerLookupActions, targetCustomer }} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   }

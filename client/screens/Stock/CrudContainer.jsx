@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Label, Button } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 import FormModal from './FormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
 import getCrudPageActions from '../../actions/stocks'
 import selectors from '../../selectors/stocks'
 import StatusColumn from './components/StatusColumn'
+
 class StockCrud extends Component {
   constructor(props) {
     super(props)
@@ -20,6 +21,7 @@ class StockCrud extends Component {
         cellFormatters: [(status, { rowData }) => (<StatusColumn status={status} rowData={rowData} />)]
       },
       { property: 'reference', label: 'Referencia' },
+      { property: 'goods', label: 'Mercadería' },
       { property: 'warehouse.name', label: 'Almacén', sortable: true },
       { property: 'customer.companyName', label: 'Cliente' },
       { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' },

@@ -2,6 +2,7 @@ const auth = require('feathers-authentication').hooks
 const Ajv = require('ajv')
 const { validateSchema, setNow } = require('feathers-hooks-common')
 const hydrate = require('feathers-sequelize/hooks/hydrate')
+const dehydrate = require('feathers-sequelize/hooks/dehydrate')
 const stockSchema = require('../../../common/validation/stock.json')
 const stockBoxSchema = require('../../../common/validation/stockBox.json')
 const stockPalletSchema = require('../../../common/validation/stockPallet.json')
@@ -11,7 +12,9 @@ const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 const setMovement = require('./setMovement')
 const setStatus = require('./setStatus')
+const setGoodsDescription = require('./setGoodsDescription')
 const getIncludes = require('./includes')
+const { getFullStock, getStockForRelease } = require('./getHooks')
 const { processSort } = require('../helpers')
 
 
@@ -39,10 +42,10 @@ module.exports = {
     ],
     find: [
       function (hook) {
-        const { customer, targetCustomer, warehouse, status } = getIncludes(hook.app.get('database'))
+        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
-          include: [customer, targetCustomer, warehouse, status]
+          include: [customer, targetCustomer, warehouse, status, stockBox, stockPallets]
         }
         processSort(hook, { customer, targetCustomer, warehouse, status })
         const { params: { query: { $sort } } } = hook
@@ -64,50 +67,18 @@ module.exports = {
     ],
     get: [
       function (hook) {
-        const { data: { movementType } } = hook
-      },
-      function (hook) {
-        const {
-          customer,
-          targetCustomer,
-          billingCustomer,
-          warehouse,
-          carrier,
-          warehouseInstruction,
-          stockBox,
-          stockPallets,
-          documents,
-          images,
-          services,
-          movements,
-          status } = getIncludes(hook.app.get('database'))
-        const stockDetailIncludeSettings = {
-          attributes: ['id', 'description', 'quantity', 'stockItemDetailTypeId'],
-          through: { attributes: [] }
-        }
-        stockBox.include[0] = {
-          ...stockBox.include[0],
-          stockDetailIncludeSettings }
-        stockPallets.include[0] = {
-          ...stockPallets.include[0],
-          stockDetailIncludeSettings }
-        hook.params.sequelize = {
-          raw: false,
-          include: [
-            { ...customer, attributes: ['id', 'companyName'] },
-            { ...targetCustomer, attributes: ['id', 'companyName'] },
-            { ...billingCustomer, attributes: ['id', 'companyName'] },
-            { ...carrier, attributes: ['id', 'companyName'] },
-            { ...warehouse, attributes: ['id', 'name'] },
-            { ...warehouseInstruction, attributes: ['id'], through: { attributes: [] } },
-            stockBox,
-            stockPallets,
-            documents,
-            images,
-            services,
-            movements,
-            status
-          ]
+        const { params: { query: { movementType } } } = hook
+        delete hook.params.query.movementType
+        switch (movementType) {
+          case 'preReceive':
+          case 'receive':
+            getFullStock(hook)
+            break
+          case 'release':
+            getStockForRelease(hook)
+            break
+          default:
+            break
         }
       }
     ],
@@ -156,7 +127,7 @@ module.exports = {
       setMovement,
       setStatus
     ],
-    find: [],
+    find: [dehydrate(), setGoodsDescription],
     get: [],
     update: [
       hydrate(),

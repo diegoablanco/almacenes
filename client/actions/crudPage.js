@@ -76,10 +76,10 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
       })
     })
   }
-  function initializeForm(formName, id, defaultData) {
+  function initializeForm(formName, id, defaultData, query = {}) {
     return async (dispatch) => {
       if (id) {
-        const response = await dispatch(serviceActions.get(id))
+        const response = await dispatch(serviceActions.get(id, { query }))
         dispatch({ type: actionTypes.HIDE_MODAL_LOADING_INDICATOR })
         dispatch(initializeReduxForm(formName, response.value))
       } else {
@@ -181,11 +181,11 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
         type: actionTypes.GRID_RELOADED
       }
     },
-    showFormModal(id) {
+    showFormModal(id, query = {}) {
       return async (dispatch, getState) => {
         const { formName, defaultData } = selectors.getUiState(getState())
         dispatch({ type: actionTypes.SHOW_MODAL, id })
-        return dispatch(initializeForm(formName, id, defaultData))
+        return dispatch(initializeForm(formName, id, defaultData, query))
       }
     },
     hideModal,
