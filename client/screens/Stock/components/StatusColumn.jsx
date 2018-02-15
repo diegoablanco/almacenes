@@ -8,12 +8,10 @@ class StatusColumn extends Component {
     return (<Label color={status.color} horizontal>{status.description}</Label>)
   }
   render() {
-    const { status, rowData: { onHold }, stockStatuses } = this.props
-    const onHoldStatus = stockStatuses.find(x => x.code === 'onHold')
+    const { status } = this.props
     return (
       <div>
-        { !onHold && this.renderStatusLabel(status) }
-        { onHold && this.renderStatusLabel(onHoldStatus) }
+        { this.renderStatusLabel(status) }
       </div>
     )
   }

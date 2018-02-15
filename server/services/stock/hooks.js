@@ -72,6 +72,7 @@ module.exports = {
         switch (movementType) {
           case 'preReceive':
           case 'receive':
+          case 'edit':
             getFullStock(hook)
             break
           case 'release':

@@ -13,6 +13,7 @@ const stock = require('./stock/service')
 const lookupEntities = require('./lookupEntities/service')
 const logger = require('../utils/loggerProduction')
 const upload = require('./uploads/service')
+const stockMovements = require('./stockMovements/service')
 
 debug('Required')
 
@@ -32,6 +33,7 @@ module.exports = function () {
   app.configure(carriers)
   app.configure(stock)
   app.configure(lookupEntities)
+  app.configure(stockMovements)
 
   // get client config file
   app.use(`${config.apiPath}/config`, {

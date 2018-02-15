@@ -97,12 +97,12 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
         dispatch({ type: actionTypes.ITEM_EDITED, editedItem })
       }
     },
-    createOrUpdate(values) {
+    createOrUpdate(values, customServiceAction) {
       return dispatch => new Promise((resolve, reject) => {
         const isUpdate = values.id !== undefined
-        const serviceAction = isUpdate
+        const serviceAction = customServiceAction || (isUpdate
           ? serviceActions.update(values.id, values)
-          : serviceActions.create(values)
+          : serviceActions.create(values))
         const messageAction = isUpdate
           ? entityUpdatedMessage()
           : entityCreatedMessage()

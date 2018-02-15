@@ -61,6 +61,15 @@ export default function getCrudPageActions() {
         const fieldPrefix = `${fieldName}[${fieldIndex}]`
         dispatch(change(formName, `${fieldPrefix}.rate`, rate))
       }
+    },
+    createOrUpdate(data) {
+      return (dispatch) => {
+        let customServiceAction = null
+        if (data.movementType === 'release') {
+          customServiceAction = feathersServices.stockMovements.create(data)
+        }
+        dispatch(baseCrudPageActions.createOrUpdate(data, customServiceAction))
+      }
     }
   }
 }

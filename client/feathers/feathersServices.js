@@ -12,7 +12,8 @@ export const mapServicePathsToNames = [{
   warehouseServices: 'warehouseServices',
   uneditables: 'uneditables',
   carriers: 'carriers',
-  stocks: 'stocks'
+  stocks: 'stocks',
+  stockMovements: 'stockMovements'
 },
 {
   lookupEntities: 'carrierLookup'

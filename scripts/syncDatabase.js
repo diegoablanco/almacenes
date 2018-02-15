@@ -41,6 +41,7 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Pre Alerta', code: 'preReceive', color: 'yellow' },
     { description: 'Alta', code: 'receive', color: 'green' },
     { description: 'On Hold', code: 'onHold', color: 'grey' },
+    { description: 'Liberado', code: 'released', color: 'purple' },
     { description: 'Completo', code: 'fulfilled', color: 'black' }
   ])
   stockItemDetailType.bulkCreate([
@@ -70,22 +71,22 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Lectura IMEIs / Serials', code: 'imeiSerialsReading' }
   ])
   const customerIncludes = getCustomerIncludes(sequelize)
-  for (let index = 0; index < 10; index += 1)
-    {customers.create(createCustomer(), { include: [
+  for (let index = 0; index < 10; index += 1) {
+    customers.create(createCustomer(), { include: [
       customerIncludes.address,
       customerIncludes.authorizedSignatory,
       customerIncludes.account,
       customerIncludes.authorizedPersons
-    ] })}
+    ] })
+  }
 
-  for (let index = 0; index < 10; index += 1)
-  {
- carrier.create(createCarrier(), { include: [
-    customerIncludes.address,
-    customerIncludes.authorizedSignatory,
-    customerIncludes.account
-  ] }) 
-}
+  for (let index = 0; index < 10; index += 1) {
+    carrier.create(createCarrier(), { include: [
+      customerIncludes.address,
+      customerIncludes.authorizedSignatory,
+      customerIncludes.account
+    ] })
+  }
   for (let index = 0; index < 10; index += 1) { warehouse.create(createWarehouse()) }
   for (let index = 0; index < 10; index += 1) { service.create(createService()) }
 })
