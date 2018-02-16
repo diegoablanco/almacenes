@@ -1,4 +1,3 @@
-const hooks = require('./hooks')
 const config = require('config')
 const getDatabase = require('../../../server/database')
 const getIncludes = require('../stock/includes')
@@ -12,7 +11,7 @@ module.exports = function () {
     servicePath,
     async (data, res, next) => {
       try {
-        const { models: { stock } } = getDatabase()
+        const { models: { stock: stocks } } = getDatabase()
         const { customer, stockBox, stockPallets } = getIncludes(getDatabase())
         const { body: {
           id,
@@ -20,7 +19,8 @@ module.exports = function () {
           releaseType,
           movementTypeId,
           targetCustomerId,
-          quantity
+          quantity,
+          onHold
         } } = data
         const filter = {
           where: {
@@ -28,33 +28,32 @@ module.exports = function () {
           },
           include: [customer, stockBox, stockPallets]
         }
-        const stockModel = await stock.findOne(filter)
-        const sameCustomer = !(targetCustomerId && targetCustomerId !== stockModel.customer.id)
+        const stock = await stocks.findOne(filter)
+        const sameCustomer = !(targetCustomerId && targetCustomerId !== stock.customer.id)
         switch (movementType) {
           case 'release':
             // release total, mismo cliente o sin cliente destinatario: cambiar estado del stock a liberado
             // release total, diferente cliente dest: crear stock (onHold o no) para el cliente dest, cambiar estado stock a Entregado, mercadería a 0
             // release parcial, mismo cliente o sin cliente destinatario: crear nuevo stock para el cliente, restar mercadería
             // release parcial, diferente cliente dest: crear stock (onHold o no) para el cliente dest, restar mercadería
-            await stockModel.createMovement({ stockMovementTypeId: movementTypeId })
+            await stock.createMovement({ stockMovementTypeId: movementTypeId })
             if (releaseType === 'full') {
               if (sameCustomer) {
-                setStatusByCode(stockModel, 'released')
+                setStatusByCode(stock, 'released')
               } else {
-                await setStatusByCode(stockModel, 'fulfilled')
-                await releaseToCustomer(stockModel, targetCustomerId)
-                await reduceGoodsTotally(stockModel)
+                await releaseToCustomer({ stock, customerId: targetCustomerId, onHold })
+                await reduceGoodsTotally(stock)
               }
-            } else if (sameCustomer) {
-              await reduceGoodsBy(stockModel, quantity)
-              await releaseToCustomer(stockModel, stock.customer.id, quantity)
             } else {
-              await releaseToCustomer(stockModel, targetCustomerId, quantity)
-              await reduceGoodsBy(stockModel, quantity)
+              if (sameCustomer) {
+                await releaseToCustomer({ stock, customerId: stock.customer.id, quantity })
+              } else {
+                await releaseToCustomer({ stock, customerId: targetCustomerId, quantity, onHold })
+              }
+              await reduceGoodsBy(stock, quantity)
             }
             break
           case 'salida':
-            
             break
           default:
             break

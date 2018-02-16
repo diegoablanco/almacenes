@@ -12,31 +12,60 @@ module.exports = {
   async reduceGoodsBy(stock, quantity) {
     const goods = stock.boxes || stock.palets
     goods.quantity -= quantity
+    if (quantity === 0) await setStatusByCode(stock, 'fulfilled')
     await goods.save()
   },
   async reduceGoodsTotally(stock) {
     const goods = stock.boxes || stock.palets
     goods.quantity = 0
+    await setStatusByCode(stock, 'fulfilled')
     await goods.save()
   },
-  async releaseToCustomer(stock, customerId, quantity) {
+  async releaseToCustomer({ stock: { id: stockId }, customerId, quantity, onHold = false }) {
     const { models: { stock: stocks } } = getDatabase()
     const {
+      warehouseInstruction,
+      stockBox,
+      stockPallets,
+      documents,
+      images
+    } = getIncludes(getDatabase())
+    const sourceStock = await stocks.findById(stockId, {
+      include: [
+        warehouseInstruction,
+        stockBox,
+        stockPallets,
+        documents,
+        images]
+    })
+    const {
+      id: originalStockId,
+      boxesId,
+      paletsId,
       boxes,
       palets,
-      warehouseId,
-      carrierId,
-      instructions
-    } = stock.get({ plain: true })
+      createdAt,
+      updatedAt,
+      customerId: originalCustomerId,
+      onHold: originalOnHold,
+      statusId,
+      targetCustomerId,
+      instructions,
+      images: originalImages,
+      documents: originalDocuments,
+      ...originalStock
+    } = sourceStock.get({ plain: true })
+    const newStock = await stocks.create({ ...originalStock, customerId })
+    await newStock.setInstructions((instructions || []).map(x => x.id))
     if (quantity) (boxes || palets).quantity = quantity
-    const newStock = await stocks.create(
-      { warehouseId, carrierId, instructions, customerId },
-      { include: [] }
-    )
     if (boxes) {
-      const { id, ...newBoxes } = boxes
+      const { id: originalBoxesId, ...newBoxes } = boxes
       await newStock.createBoxes(newBoxes)
     }
-    await setStatusByCode(newStock, 'released')
+    if (palets) {
+      const { id: originalPaletsId, ...newPalets } = palets
+      await newStock.createPalets(newPalets)
+    }
+    await setStatusByCode(newStock, onHold ? 'onHold' : 'released')
   }
 }

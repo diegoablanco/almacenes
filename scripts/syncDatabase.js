@@ -42,7 +42,7 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Alta', code: 'receive', color: 'green' },
     { description: 'On Hold', code: 'onHold', color: 'grey' },
     { description: 'Liberado', code: 'released', color: 'purple' },
-    { description: 'Completo', code: 'fulfilled', color: 'black' }
+    { description: 'Completado', code: 'fulfilled', color: 'black' }
   ])
   stockItemDetailType.bulkCreate([
     { description: 'Manipulación evidente', code: 'signOfHandling' },
