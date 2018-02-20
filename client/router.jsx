@@ -1,25 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 /* eslint new-cap: 0 */
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom'
 import { AppContainer } from 'react-hot-loader'
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
 import { routerActions } from 'react-router-redux'
+import { config } from './utils/config'
 
-import { config } from './utils/config';
-
-import UserSignIn from './screens/Users/UserSignIn';
-import UserSignUp from './screens/Users/UserSignUp';
-import UserSignUpSendEmail from './screens/Users/UserSignUpSendEmail';
-import UserSignUpValidateEmail from './screens/Users/UserSignUpValidateEmail';
-import UserForgotPwdSendEmail from './screens/Users/UserForgotPwdSendEmail';
-import UserForgotPwdReset from './screens/Users/UserForgotPwdReset';
-import UserPasswordChange from './screens/Users/UserPasswordChange';
-import UserEmailChange from './screens/Users/UserEmailChange';
-import UserProfileChange from './screens/Users/UserProfileChange';
-import UserRolesChange from './screens/Users/UserRolesChange';
-import UserProfile from './screens/Users/UserProfile';
-import UserSignInPending from './screens/Users/UserSignInPending';
-import App from './screens/App';
+import UserSignIn from './screens/Users/UserSignIn'
+import UserSignUp from './screens/Users/UserSignUp'
+import UserSignUpSendEmail from './screens/Users/UserSignUpSendEmail'
+import UserSignUpValidateEmail from './screens/Users/UserSignUpValidateEmail'
+import UserForgotPwdSendEmail from './screens/Users/UserForgotPwdSendEmail'
+import UserForgotPwdReset from './screens/Users/UserForgotPwdReset'
+import UserPasswordChange from './screens/Users/UserPasswordChange'
+import UserSignInPending from './screens/Users/UserSignInPending'
+import App from './screens/App'
 
 import Customers from './screens/Customers'
 import Warehouses from './screens/Warehouses'
@@ -76,16 +71,9 @@ export default class AppRouter extends Component {
             <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />
             <Route path="/user/forgot/:token" component={UserForgotPwdReset} />
             <Route
-path="/user/passwordchange"
+              path="/user/passwordchange"
               component={UserIsAuthenticated(UserPasswordChange)}
             />
-            <Route path="/user/emailchange" component={UserIsAuthenticated(UserEmailChange)} />
-            <Route path="/user/profilechange" component={UserIsAuthenticated(UserProfileChange)} />
-            <Route
-path="/user/roleschange"
-              component={UserIsAuthenticated(UserIsAdmin(UserRolesChange))}
-            />
-            <Route path="/user/profile" component={UserIsAuthenticated(UserProfile)} />
             <Route path="/customers" component={UserIsAuthenticated(Customers)} />
             <Route path="/warehouses" component={UserIsAuthenticated(Warehouses)} />
             <Route path="/services" component={UserIsAuthenticated(Services)} />

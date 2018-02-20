@@ -1,14 +1,10 @@
 
-import { reduxForm, SubmissionError } from 'redux-form'
-import { push } from 'react-router-redux'
+import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
-import errors from 'feathers-errors'
-
-import { config } from '../../../utils/config'
+import { bindActionCreators } from 'redux'
 import Form from './Form'
-import schema from '../../../../common/Validation/forgotPassword.json'
+import schema from '../../../../common/validation/forgotPassword.json'
 import getValidator from '../../../common/Validation'
-import { bindActionCreators  } from 'redux'
 import { sendResetPasswordEmail } from '../../../actions/authentication'
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -18,9 +14,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
 export default connect(
   null,
   mapDispatchToProps
-)(
-  reduxForm({
-    form: 'UserForgotPwdSendEmail',
-    validate: getValidator(schema),
-  })(Form)
-)
+)(reduxForm({
+  form: 'UserForgotPwdSendEmail',
+  validate: getValidator(schema)
+})(Form))

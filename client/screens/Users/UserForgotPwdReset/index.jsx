@@ -1,8 +1,7 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import UsersNavBar from '../components/UsersNavBar'
-import FormContainer from './FormContainer.js'
+import FormContainer from './FormContainer'
 
 const Page = (props) => (
   <div>
@@ -11,7 +10,7 @@ const Page = (props) => (
 );
 
 Page.propTypes = {
-  params: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired
 };
 
 export default Page;

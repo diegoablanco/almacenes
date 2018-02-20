@@ -30,6 +30,9 @@ class AppNavBar extends Component{
               <Link to="/user/signup">Registrar un usuario</Link>
             </Dropdown.Item>}
             <Dropdown.Item>
+              <Link to="/user/forgotpwdsendemail">Blanquear Contraseña</Link>
+            </Dropdown.Item>
+            <Dropdown.Item>
               <Link to="/user/signin">Salir</Link>
             </Dropdown.Item>
           </Dropdown.Menu>
