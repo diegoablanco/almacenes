@@ -12,13 +12,13 @@
     "prebuild:dev": "rimraf ./public/dist/",
     "publish": "git push origin --tags && npm run changelog && git push origin",
     "changelog": "github_changelog_generator && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
-    "build": "NODE_ENV=production webpack --config webpack.production.config.js --history-api-fallback --progress --colors",
+    "build": "NODE_ENV=production webpack --config webpack.production.config.js --progress --colors",
     "build:dev": "NODE_ENV=development webpack --config webpack.production.config.js --history-api-fallback --progress --colors",
     "build:devserver": "NODE_ENV=devserver webpack-dev-server --config webpack.devserver.config.js --content-base public/dist/ | grep -v  \"\\[built\\]\"",
     "start": "NODE_ENV=production node server/index.js",
     "start:dev": "NODE_ENV=development node server/index.js",
     "start:devserver": "NODE_ENV=devserver node server/index.js",
-    "win:build": "set NODE_ENV=production&& webpack --config webpack.production.config.js --history-api-fallback --progress --colors",
+    "win:build": "set NODE_ENV=production&& webpack --config webpack.production.config.js --progress --colors",
     "win:build:dev": "set NODE_ENV=development&& webpack --config webpack.production.config.js --history-api-fallback --progress --colors",
     "win:build:devserver": "set NODE_ENV=devserver && webpack-dev-server --config webpack.devserver.config.js --content-base public/dist/",
     "win:build:devserver:size-analizer": "webpack --json --config webpack.devserver.config.js --content-base  | webpack-bundle-size-analyzer ",
@@ -29,10 +29,6 @@
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
     "release:updates": "npm-check-updates"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/diegoablanco/almacenes.git"
   },
   "keywords": [
     "feathers",
@@ -45,12 +41,8 @@
     "boilerplate",
     "login"
   ],
-  "author": "John Szwaronek <johnsz9999@gmail.com>",
+  "author": "Diego Blanco <diegoablanco@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/eddyystop/feathers-starter-react-redux-login-roles/issues"
-  },
-  "homepage": "https://github.com/eddyystop/feathers-starter-react-redux-login-roles#readme",
   "dependencies": {
     "@feathersjs/authentication-client": "feathersjs/authentication-client",
     "ajv": "^5.2.2",
@@ -138,6 +130,8 @@
     "superagent": "^3.8.1",
     "table-resolver": "^3.2.0",
     "tedious": "^2.0.0",
+    "uglifyjs": "^2.4.11",
+    "uglifyjs-webpack-plugin": "^1.1.8",
     "url-loader": "^0.5.9",
     "webpack": "^3.4.1",
     "webpack-dev-server": "^2.6.1",

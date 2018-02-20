@@ -10,6 +10,10 @@ const rucksack = require('rucksack-css');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const envalid = require('envalid');
 const path = require('path');
+const RewriteImportPlugin = require("less-plugin-rewrite-import")
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const ROOT_DIR = path.resolve(__dirname);
+const NODE_MODULES_DIR = path.resolve(__dirname, 'node_modules');
 
 // Validate environment variables
 validateEnvironmentVariables();
@@ -23,7 +27,7 @@ if (config.NODE_ENV === 'devserver') {
 const isProduction = config.isProduction;
 
 const outputPublicPaths = {
-  production: '/dist/',
+  production: 'public/dist/',
   development: '/dist/',
   devserver: 'http://localhost:8080/', // we don't use this config for webpack-dev-server
 };
@@ -181,7 +185,7 @@ const webpackConfig = {
           'style-loader',
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=' +
           '[name]__[local]___[hash:base64:5]',
-          'postcss-loader',
+          //'postcss-loader',
         ],
       },
       {
@@ -199,11 +203,41 @@ const webpackConfig = {
           */
           'babel-loader',
         ],
+      },     
+      {
+          test: /\.less/,
+          use: [{
+              loader: "style-loader"
+          }, {
+              loader: "css-loader", options: {
+                  sourceMap: true
+              }
+          }, {
+              loader: "less-loader", options: 
+              {
+                paths: [ROOT_DIR, NODE_MODULES_DIR], // this will force less-loader to use its own resolver, both should be absolute path
+                plugins: [
+                  new RewriteImportPlugin({
+                    paths: {
+                      '../../theme.config':  __dirname + '/client/semantic-ui/theme.config',
+                    },
+                  }),
+                ],
+              }
+          }]
       },
+      {
+        test: /\.jpe?g$|\.gif$|\.png$|\.ttf$|\.eot$|\.svg$/,
+        use: 'file-loader?name=[name].[ext]?[hash]'
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader?limit=10000&mimetype=application/fontwoff'
+      }
     ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
     // Reroute import/require to specific files. 'react$' reroutes 'react' but not 'react/foo'.
     alias: {
       /*
@@ -239,16 +273,16 @@ const webpackConfig = {
        */
     },
   },
-  postcss: [
-    rucksack({
-      autoprefixer: true,
-    }),
-  ],
+  // postcss: [
+    // rucksack({
+      // autoprefixer: true,
+    // }),
+  // ],
   plugins: [
     // Webpack's default file watcher does not work with NFS file systems on VMs,
     // definitely not with Oracle VM, and likely not with other VMs.
     // OldWatchingPlugin is a slower alternative that works everywhere.
-    new webpack.OldWatchingPlugin(), // can use "webpack-dev-server --watch-poll" instead
+    //new webpack.OldWatchingPlugin(), // can use "webpack-dev-server --watch-poll" instead
     /*
      Build our HTML file.
      */
@@ -323,14 +357,15 @@ if (isProduction) {
      Besides the normal benefits, this is needed to minify React, Redux and React-Router
      for production if you choose not to use their run-time versions.
      */
-    new webpack.optimize.UglifyJsPlugin({
-      compress: { warnings: false },
-      comments: false,
-      sourceMap: false,
-      mangle: true,
-      minimize: true,
-      verbose: false,
-    })
+    new UglifyJsPlugin({
+	  sourceMap: true,
+	  uglifyOptions: {
+		ecma:8,  
+		compress: {
+		  warnings: false
+		}
+	  }
+	})
   );
 }
 
