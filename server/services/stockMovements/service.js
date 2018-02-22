@@ -12,7 +12,7 @@ module.exports = function () {
     async (data, res, next) => {
       try {
         const { models: { stock: stocks } } = getDatabase()
-        const { customer, stockBox, stockPallets } = getIncludes(getDatabase())
+        const { stockBox, stockPallets } = getIncludes(getDatabase())
         const { body: {
           id,
           movementType,
@@ -26,10 +26,10 @@ module.exports = function () {
           where: {
             id
           },
-          include: [customer, stockBox, stockPallets]
+          include: [stockBox, stockPallets]
         }
         const stock = await stocks.findOne(filter)
-        const sameCustomer = !(targetCustomerId && targetCustomerId !== stock.customer.id)
+        const sameCustomer = !(targetCustomerId && targetCustomerId !== stock.customerId)
         switch (movementType) {
           case 'release':
             // release total, mismo cliente o sin cliente destinatario: cambiar estado del stock a liberado

@@ -6,22 +6,23 @@ const config = require('config')
 const debugHook = require('../hooks/debugHook')
 const authManagement = require('feathers-authentication-management')
 const notifier = require('./notifier')
+
 debug('Required');
 
 module.exports = function () { // 'function' needed as we use 'this'
   debug('Config');
   const app = this;
   const authConfig = config.auth;
-  
+
   app.configure(authentication(authConfig))
     .configure(jwt())
     .configure(local(authConfig.local))
     .configure(authManagement({
-      path: `${config.apiPath}/authManagement`, 
-      service: 'api/users', 
+      path: `${config.apiPath}/authManagement`,
+      service: 'api/users',
       notifier: notifier(app)
     }))
-    
+
   app.service(`${config.apiPath}/auth/local`).hooks({
     before: {
       all: debugHook(),
@@ -41,13 +42,10 @@ module.exports = function () { // 'function' needed as we use 'this'
       ]
     }
   })
-    
+
   app.service(`${config.apiPath}/authManagement`).hooks({
     after: {
-      all: debugHook("========================= authManagement ============================="),
-      create:  function(hook) {
-        var a
-      }
+      all: debugHook('========================= authManagement =============================')
     }
   })
 

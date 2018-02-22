@@ -22,6 +22,7 @@ export function getActionTypes(crudPage = '') {
     SET_PAGE_NUMBER: `${crudPage}/SET_PAGE_NUMBER`,
     RESET_PAGE_NUMBER: `${crudPage}/RESET_PAGE_NUMBER`,
     INCREASE_PAGE_NUMBER: `${crudPage}/INCREASE_PAGE_NUMBER`,
+    IS_LOADING_MORE: `${crudPage}/IS_LOADING_MORE`,
     RELOAD_GRID: `${crudPage}/RELOAD_GRID`,
     GRID_RELOADED: `${crudPage}/GRID_RELOADED`,
     DELETE_ITEM: `${crudPage}/DELETE_ITEM`,
@@ -66,6 +67,14 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
       type: actionTypes.RESET_PAGE_NUMBER
     }
   }
+  function loadGrid() {
+    return (dispatch, getState) => {
+      const query = getQuery(getState(), selectors)
+      dispatch(serviceActions.find({ query })).then(result => {
+        dispatch(buildRows(result.value))
+      })
+    }
+  }
   function reloadGrid() {
     return (dispatch, getState) => new Promise((resolve) => {
       dispatch(resetPageNumber())
@@ -75,6 +84,12 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
         resolve()
       })
     })
+  }
+  function initializeCrud() {
+    return (dispatch, getState) => {
+      const { rows } = selectors.getUiState(getState())
+      if (rows.length === 0) dispatch(loadGrid())
+    }
   }
   function initializeForm(formName, id, defaultData, query = {}) {
     return async (dispatch) => {
@@ -90,6 +105,7 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
   }
   return {
     initializeForm,
+    initializeCrud,
     buildRows,
     itemEdited(editedItem) {
       return (dispatch) => {
@@ -97,36 +113,29 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
         dispatch({ type: actionTypes.ITEM_EDITED, editedItem })
       }
     },
-    createOrUpdate(values, customServiceAction) {
-      return dispatch => new Promise((resolve, reject) => {
+    createOrUpdate(values) {
+      return async dispatch => {
         const isUpdate = values.id !== undefined
-        const serviceAction = customServiceAction || (isUpdate
+        const serviceAction = (isUpdate
           ? serviceActions.update(values.id, values)
           : serviceActions.create(values))
         const messageAction = isUpdate
           ? entityUpdatedMessage()
           : entityCreatedMessage()
-
-        dispatch(serviceAction).then(() => {
-          dispatch(hideModal())
-          dispatch(messageAction)
-          dispatch(reloadGrid()).then(resolve)
-        })
-          .catch(error => {
-            const details = JSON.stringify(error.errors)
-            reject(new SubmissionError({ _error: `Ocurrió un error al guardar. Detalles: ${details}` }))
-          })
-      })
-    },
-
-    loadGrid() {
-      return (dispatch, getState) => {
-        const query = getQuery(getState(), selectors)
-        dispatch(serviceActions.find({ query })).then(result => {
-          dispatch(buildRows(result.value))
-        })
+        
+        try {
+          await dispatch(serviceAction)
+        } catch (error) {
+          const details = JSON.stringify(error.errors)
+          throw new SubmissionError({ _error: `Ocurrió un error al guardar. Detalles: ${details}` })
+        }
+        dispatch(hideModal())
+        dispatch(messageAction)
+        await dispatch(reloadGrid())
       }
     },
+    loadGrid,
+    reloadGrid,
     filterGrid(filter) {
       return (dispatch, getState) => {
         dispatch(resetPageNumber())
@@ -138,12 +147,15 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
       }
     },
     loadMore() {
-      return (dispatch, getState) => {
-        dispatch({ type: actionTypes.INCREASE_PAGE_NUMBER })
+      return async (dispatch, getState) => {
+        const { rows, isLoadingMore } = selectors.getUiState(getState())
+        if (isLoadingMore) return
+        dispatch({ type: actionTypes.INCREASE_PAGE_NUMBER, qty: rows.length })
         const query = getQuery(getState(), selectors)
-        dispatch(serviceActions.find({ query })).then(result => {
-          dispatch(buildRows(result.value, true))
-        })
+        dispatch({ type: actionTypes.IS_LOADING_MORE, isLoadingMore: true })
+        const result = await dispatch(serviceActions.find({ query }))
+        dispatch({ type: actionTypes.IS_LOADING_MORE, isLoadingMore: false })
+        dispatch(buildRows(result.value, true))
       }
     },
     sortGrid(selectedColumn) {

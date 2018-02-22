@@ -9,6 +9,14 @@ class CrudContainer extends Component {
     super(props)
     this.deleteDialogStateSelector = this.deleteDialogStateSelector.bind(this)
   }
+  componentWillMount() {
+    const {
+      bindActions: {
+        initializeCrud
+      }
+    } = this.props
+    initializeCrud()
+  }
   deleteDialogStateSelector(state) {
     const { selectors } = this.props
     return selectors.getUiState(state).confirmDialog.show

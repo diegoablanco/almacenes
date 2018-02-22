@@ -1,6 +1,7 @@
-import { change, getFormValues } from 'redux-form'
+import { change, SubmissionError } from 'redux-form'
 import { feathersServices } from '../feathers'
 import { getCrudPageActions as getBaseCrudPageActions, getActionTypes as getBaseActionTypes } from './crudPage'
+import { showTimedMessage } from './messageBar'
 import crudPages from '../common/CrudPages'
 import selectors from '../selectors/stocks'
 import getLookupEntities from './lookupEntities'
@@ -63,12 +64,20 @@ export default function getCrudPageActions() {
       }
     },
     createOrUpdate(data) {
-      return (dispatch) => {
-        let customServiceAction = null
+      return async (dispatch) => {
         if (data.movementType === 'release') {
-          customServiceAction = feathersServices.stockMovements.create(data)
-        }
-        dispatch(baseCrudPageActions.createOrUpdate(data, customServiceAction))
+          const messageAction = showTimedMessage('Se ejecutó correctamente el Release')
+          const serviceAction = feathersServices.stockMovements.create(data)
+          try {
+            await dispatch(serviceAction)
+          } catch (error) {
+            const details = JSON.stringify(error.errors)
+            throw new SubmissionError({ _error: `Ocurrió un error al guardar. Detalles: ${details}` })
+          }
+          dispatch(baseCrudPageActions.hideModal())
+          dispatch(messageAction)
+          await dispatch(baseCrudPageActions.reloadGrid())
+        } else dispatch(baseCrudPageActions.createOrUpdate(data))
       }
     }
   }

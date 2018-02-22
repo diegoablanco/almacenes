@@ -1,19 +1,13 @@
 const getDatabase = require('../server/database')
-const getCustomerIncludes = require('../server/services/customers/helper')
-const { createCustomer, createCarrier, createWarehouse, createService } = require('./fakes')
 
 const sequelize = getDatabase()
 
 sequelize.sync({ force: true }).then(async () => {
   const {
-    customer: customers,
     phoneType,
     stockMovementType,
     user,
-    carrier,
-    warehouse,
     warehouseInstruction,
-    service,
     stockItemDetailType,
     documentType,
     stockStatus } = sequelize.models
@@ -38,11 +32,11 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Modificación', code: 'edit' }
   ])
   stockStatus.bulkCreate([
-    { description: 'Pre Alerta', code: 'preReceive', color: 'yellow' },
-    { description: 'Alta', code: 'receive', color: 'green' },
-    { description: 'On Hold', code: 'onHold', color: 'grey' },
-    { description: 'Liberado', code: 'released', color: 'purple' },
-    { description: 'Completado', code: 'fulfilled', color: 'black' }
+    { description: 'PRE ALERTA', code: 'preReceive', color: 'yellow' },
+    { description: 'ALTA', code: 'receive', color: 'green' },
+    { description: 'ON HOLD', code: 'onHold', color: 'grey' },
+    { description: 'LIBERADO', code: 'released', color: 'purple' },
+    { description: 'COMPLETADO', code: 'fulfilled', color: 'black' }
   ])
   stockItemDetailType.bulkCreate([
     { description: 'Manipulación evidente', code: 'signOfHandling' },
@@ -70,23 +64,5 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Abrir, contar, verificar modelos', code: 'openCountAndCheckModels' },
     { description: 'Lectura IMEIs / Serials', code: 'imeiSerialsReading' }
   ])
-  const customerIncludes = getCustomerIncludes(sequelize)
-  for (let index = 0; index < 10; index += 1) {
-    customers.create(createCustomer(), { include: [
-      customerIncludes.address,
-      customerIncludes.authorizedSignatory,
-      customerIncludes.account,
-      customerIncludes.authorizedPersons
-    ] })
-  }
-
-  for (let index = 0; index < 10; index += 1) {
-    carrier.create(createCarrier(), { include: [
-      customerIncludes.address,
-      customerIncludes.authorizedSignatory,
-      customerIncludes.account
-    ] })
-  }
-  for (let index = 0; index < 10; index += 1) { warehouse.create(createWarehouse()) }
-  for (let index = 0; index < 10; index += 1) { service.create(createService()) }
 })
+

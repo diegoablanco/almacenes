@@ -14,6 +14,7 @@ export default class CustomerCrud extends Component {
     }
 
     gridColumns = [
+        { property: 'id', label: 'Código' }, 
         { property: 'companyName', label: 'Nombre' }, 
         { property: 'authorizedSignatory.name', label: 'Firmante Autorizado' }, 
         { property: 'authorizedSignatory.email', label: 'E-mail' }, 

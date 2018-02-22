@@ -6,6 +6,7 @@ import errors from 'feathers-errors'
 import createHistory from 'history/createBrowserHistory'
 import { Provider } from 'react-redux'
 import 'semantic-ui-less/semantic.less'
+import '../public/App.css'
 import configureStore from './store'
 import {
   feathersServices,

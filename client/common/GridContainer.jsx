@@ -4,10 +4,6 @@ import { connect } from 'react-redux'
 import Grid from './Grid'
 
 class GridContainer extends Component {
-  componentDidMount() {
-    const { loadGrid } = this.props
-    loadGrid()
-  }
   render() {
     const { crudActions, sortGrid, loadMore, filterGrid, ...rest } = this.props
     return (
@@ -26,11 +22,12 @@ class GridContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { sortingColumns, filter, reloadGrid, rows, canAdd } = ownProps.selectors.getUiState(state)
+  const { sortingColumns, filter, reloadGrid, rows, canAdd, isLoadingMore } = ownProps.selectors.getUiState(state)
   const { queryResult, isLoading } = ownProps.selectors.getServiceState(state)
   const props = {
     queryResult: queryResult ? queryResult.data : [],
     isLoading,
+    isLoadingMore,
     hasMore: queryResult && queryResult.total > queryResult.limit + queryResult.skip,
     sortingColumns,
     filter,

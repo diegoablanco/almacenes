@@ -105,7 +105,8 @@ class Grid extends Component {
   wrapWithInfiniteScroll(table) {
     const {
       handleLoadMore,
-      hasMore
+      hasMore,
+      isLoadingMore
     } = this.props
 
     return (
@@ -114,22 +115,18 @@ class Grid extends Component {
         hasMore={hasMore}
         useWindow
         initialLoad={false}
-        loader={<div className="loader">Loading ...</div>}
+        loader={isLoadingMore ? <Loader active inline="centered" /> : 'Hay más registros ...'}
       >
         {table}
       </InfiniteScroll>)
   }
   render() {
-    const { enableInfiniteScroll, isLoading } = this.props
+    const { enableInfiniteScroll, isLoading, isLoadingMore } = this.props
     return (
       <div>
-        {
-          !isLoading
-          ? enableInfiniteScroll
-                  ? this.wrapWithInfiniteScroll(this.getTable())
-                  : this.getTable()
-          : (<Loader active inline="centered" />)
-        }
+        {isLoading && !isLoadingMore && <Loader active inline="centered" />}
+        {enableInfiniteScroll && (!isLoading || isLoadingMore) && this.wrapWithInfiniteScroll(this.getTable())}
+        {!isLoading && !enableInfiniteScroll && this.getTable()}
       </div>
     )
   }
