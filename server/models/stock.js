@@ -32,7 +32,10 @@ module.exports = function (sequelize) {
     documentAttachment,
     fileAttachment,
     stockService,
-    stockStatus }) {
+    stockStatus,
+    stock,
+    user
+  }) {
     Stock.belongsTo(warehouse)
     Stock.belongsTo(carrier)
     Stock.belongsTo(customer)
@@ -46,6 +49,9 @@ module.exports = function (sequelize) {
     Stock.hasMany(stockMovement, { as: 'movements' })
     Stock.hasMany(stockService, { as: 'services' })
     Stock.belongsTo(stockStatus, { as: 'status' })
+    Stock.belongsTo(stock, { as: 'parent' })
+    Stock.belongsTo(user, { as: 'createdBy' })
+    Stock.belongsTo(user, { as: 'updatedBy' })
   }
   return Stock
 }

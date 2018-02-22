@@ -41,7 +41,12 @@ export default function getCrudPageActions() {
         const { uneditables: { queryResult: { stockMovementTypes } } } = getState()
         const stockMovementType = stockMovementTypes.find(x => x.code === stockMovementTypeCode)
         dispatch({ type: actionTypes.SET_STOCK_MOVEMENT_TYPE, stockMovementType })
-        await dispatch(baseCrudPageActions.showFormModal(id, { movementType: stockMovementType.code }))
+        await dispatch(baseCrudPageActions.showFormModal(
+          id,
+          {
+            movementType: stockMovementType.code
+          }
+        ))
         dispatch(change('Stock', 'movementTypeId', stockMovementType.id))
         dispatch(change('Stock', 'movementType', stockMovementType.code))
         if (stockMovementTypeCode === 'release') {
@@ -52,7 +57,10 @@ export default function getCrudPageActions() {
           $limit: 0,
           $sort: { id: -1 }
         }
-        const { value: { data: availableServices } } = await dispatch(feathersServices.services.find({ query }))
+        const {
+          value: {
+            data: availableServices
+          } } = await dispatch(feathersServices.services.find({ query }))
         dispatch({ type: actionTypes.SET_AVAILABLE_SERVICES, availableServices })
       }
     },

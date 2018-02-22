@@ -16,6 +16,7 @@ const setGoodsDescription = require('./setGoodsDescription')
 const getIncludes = require('./includes')
 const { getFullStock, getStockForRelease } = require('./getHooks')
 const { processSort } = require('../helpers')
+const { setUser } = require('../hooks')
 
 
 function validate() {
@@ -92,7 +93,8 @@ module.exports = {
           include: [stockBox, stockPallets, documents, images, services]
         }
       },
-      setNow('createdAt')
+      setNow('createdAt'),
+      setUser('createdBy')
     ],
     update: [
       validate(),
@@ -114,7 +116,8 @@ module.exports = {
           s.set(hook.data)
           createOrUpdateAssociations(s, hook.data, s._options.include)
         })
-      }
+      },
+      setUser('updatedBy')
     ],
     patch: [],
     remove: []

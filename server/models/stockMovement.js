@@ -13,8 +13,9 @@ module.exports = function (sequelize) {
       default: Sequelize.DataTypes.Now
     }
   })
-  StockMovement.associate = function ({ stockMovementType }) {
+  StockMovement.associate = function ({ stockMovementType, user }) {
     StockMovement.belongsTo(stockMovementType)
+    StockMovement.belongsTo(user, { as: 'createdBy' })
   }
   return StockMovement
 }
