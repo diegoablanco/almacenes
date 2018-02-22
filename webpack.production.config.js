@@ -9,9 +9,39 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const envalid = require('envalid');
 const path = require('path');
-const RewriteImportPlugin = require("less-plugin-rewrite-import")
+const RewriteImportPlugin = require('less-plugin-rewrite-import')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
+
+// Validate environment variables
+function validateEnvironmentVariables() {
+  const strPropType = envalid.str;
+
+  // valid NODE_ENV values.
+  const nodeEnv = {
+    production: 'production',
+    prod: 'production',
+    development: 'development',
+    dev: 'development',
+    devserver: 'devserver',
+    testing: 'devserver',
+    test: 'devserver'
+  };
+
+  const cleanEnv = envalid.cleanEnv(
+    process.env,
+    {
+      NODE_ENV: strPropType({
+        choices: Object.keys(nodeEnv),
+        default: 'developmwent',
+        desc: 'processing environment'
+      })
+    }
+  );
+
+  process.env.NODE_ENV = nodeEnv[cleanEnv.NODE_ENV];
+}
 
 const extractLess = new ExtractTextPlugin({
   filename: '[name].[contenthash].css'
@@ -29,10 +59,10 @@ if (config.NODE_ENV === 'devserver') {
   throw new Error('This webpack config does not work as is with the web-dev-server.')
 }
 
-const isProduction = config.isProduction;
+const { isProduction } = config
 
 const outputPublicPaths = {
-  production: 'server/public/dist/',
+  production: '/almacenes/server/public/dist/',
   development: '/dist/',
   devserver: 'http://localhost:8080/' // we don't use this config for webpack-dev-server
 };
@@ -108,7 +138,7 @@ const webpackConfig = {
       Webpack-dev-server will serve the file on 8080, reading it quickly from its memory cache.
     */
     // Tell Webpack where it should store the resulting code.
-    path: path.join(__dirname, 'public', 'dist'),
+    path: path.join(__dirname, 'server', 'public', 'dist'),
     // Give Webpack the URL that points the server to output.path
     publicPath: outputPublicPaths[config.NODE_ENV]
   },
@@ -134,14 +164,21 @@ const webpackConfig = {
           'style-loader',
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=' +
           '[name]__[local]___[hash:base64:5]'
-          //'postcss-loader',
+          // 'postcss-loader',
         ]
       },
-      {
+	{
         // Standard processing for .css outside /client
         test: /\.css$/,
         exclude: /client/,
-        loader: 'style!css'
+        use: [
+          { loader: "style-loader" },
+          {
+            loader: 'css-loader',
+            options: { 
+              }
+          }
+        ]
       },
       {
         test: /\.(js|jsx)$/, // does anyone still use .jsx?
@@ -156,14 +193,13 @@ const webpackConfig = {
       {
         test: /\.less$/,
         use: extractLess.extract({
-          publicPath: '../',
           use: [{
             loader: 'css-loader'
           }, {
             loader: 'less-loader',
             options:
               {
-                paths: [ROOT_DIR, NODE_MODULES_DIR], // this will force less-loader to use its own resolver, both should be absolute path
+                paths: [ROOT_DIR, NODE_MODULES_DIR],
                 plugins: [
                   new RewriteImportPlugin({
                     paths: {
@@ -230,6 +266,7 @@ const webpackConfig = {
   // }),
   // ],
   plugins: [
+    extractLess,
     // Webpack's default file watcher does not work with NFS file systems on VMs,
     // definitely not with Oracle VM, and likely not with other VMs.
     // OldWatchingPlugin is a slower alternative that works everywhere.
@@ -261,14 +298,12 @@ const webpackConfig = {
       title: config.client.appName,
       faviconFile: '/favicon.ico',
       mobile: false,
-      links: [],
       baseHref: null,
       unsupportedBrowserSupport: false,
       appMountId: 'root',
       appMountIds: {},
       addRobotoFont: true, // See //www.google.com/fonts#UsePlace:use/Collection:Roboto:400,300,500
       copyWindowVars: {},
-      scripts: ['/socket.io/socket.io.js'],
       devServer: false,
       googleAnalytics: false
     }),
@@ -276,8 +311,7 @@ const webpackConfig = {
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: JSON.stringify(config.NODE_ENV) }, // used by React, etc
       __processEnvNODE_ENV__: JSON.stringify(config.NODE_ENV) // used by us
-    }),
-    extractLess
+    })
   ]
   /* Trying to get a stable chunk hash
    recordsPath: path.join(__dirname, 'webpack.records.json'),
@@ -293,50 +327,16 @@ const webpackConfig = {
 
 // Production customization
 
-if (isProduction) {
-  webpackConfig.plugins.push(
-    /*
-     Besides the normal benefits, this is needed to minify React, Redux and React-Router
-     for production if you choose not to use their run-time versions.
-     */
-    new UglifyJsPlugin({
-	 sourceMap: true,
-	 uglifyOptions: {
-        ecma:8,
-        compress: {
-		  warnings: false
-        }
-	  }
-    })
-  );
-}
-
-module.exports = webpackConfig;
-
-// Validate environment variables
-function validateEnvironmentVariables() {
-  const strPropType = envalid.str;
-
-  // valid NODE_ENV values.
-  const nodeEnv = {
-    production: 'production',
-    prod: 'production',
-    development: 'development',
-    dev: 'development',
-    devserver: 'devserver',
-    testing: 'devserver',
-    test: 'devserver'
-  };
-
-  const cleanEnv = envalid.cleanEnv(process.env,
-    {
-      NODE_ENV: strPropType({
-        choices: Object.keys(nodeEnv),
-        default: 'developmwent',
-        desc: 'processing environment'
-      })
+if (isProduction && false) {
+  webpackConfig.plugins.push(new UglifyJsPlugin({
+    sourceMap: true,
+    uglifyOptions: {
+      ecma: 8,
+      compress: {
+        warnings: false
+      }
     }
-  );
-
-  process.env.NODE_ENV = nodeEnv[cleanEnv.NODE_ENV];
+  }))
 }
+
+module.exports = webpackConfig
