@@ -10,10 +10,10 @@ import { mapServicePathsToNames, prioritizedListServices } from './feathersServi
 // Configure feathers-client
 
 const app = feathers()
-  .configure(feathers.rest('/api').fetch(window.fetch))
+  .configure(feathers.rest('/almacenes/api').fetch(window.fetch))
   .configure(feathers.hooks())
   .configure(feathers.authentication({
-    storage: window.localStorage, // store the token in localStorage and initially sign in with that
+    storage: window.localStorage // store the token in localStorage and initially sign in with that
   }))
 export default app;
 

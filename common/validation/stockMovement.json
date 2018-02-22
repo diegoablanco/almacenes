@@ -1,0 +1,27 @@
+{
+    "id": "http://xarxa.com/schemas/stockMovement.json#",
+    "title": "Stock Movement",
+    "description": "A Stock Movement",
+    "type": [
+        "object"
+    ],
+    "properties": {
+        "quantity": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": {
+                "$data": "1/boxes/quantity"
+            }
+        },
+        "boxes": {
+            "$ref": "stockBox.json#"
+        },
+        "palets": {
+            "$ref": "stockPallet.json#"
+        }
+    },
+    "required": [
+        "number",
+        "typeId"
+    ]
+}

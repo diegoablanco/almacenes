@@ -18,7 +18,7 @@ var alias = {};
 module.exports = {
   context: path.join(__dirname, './client'),
   devtool: 'eval-source-map',
-  entry: ['react-hot-loader/patch', 'webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server', './index.js'],
+  entry: ['react-hot-loader/patch', 'webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server', './index.jsx'],
   output: {
     path: path.join(__dirname, './public/dist'),
     filename: 'bundle.js',

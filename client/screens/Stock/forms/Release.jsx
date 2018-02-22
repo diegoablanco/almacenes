@@ -66,7 +66,7 @@ ReleaseForm.propTypes = {
 }
 
 const mapStateToProps = (state, { formName }) => ({
-    stock: getFormValues(formName)(state)
-  })
+  stock: getFormValues(formName)(state)
+})
 
 export default connect(mapStateToProps)(ReleaseForm)

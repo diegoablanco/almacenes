@@ -17,6 +17,7 @@ module.exports = {
   NODE_ENV: undefined,
   // npm debug
   DEBUG: undefined,
+  appPath: '/',
   server: {
     // host name e.g. localhost
     host: undefined,

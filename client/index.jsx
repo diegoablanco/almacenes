@@ -33,7 +33,7 @@ debug(`client starting. Built for ${nodeEnv} env.`);
 console.log(`..This bundle was built for the ${nodeEnv} env.`); // eslint-disable-line no-console
 
 // Initialize Redux
-const history = createHistory()
+const history = createHistory({ basename: '/almacenes' })
 const store = configureStore(history);
 
 // Sign in with the JWT currently in localStorage
@@ -47,8 +47,7 @@ if (token) {
     }))
     .catch(err => {
       console.log('authenticate catch', err) // eslint-disable-line no-console
-      if(err instanceof errors.NotAuthenticated)
-        store.dispatch(push('/user/signin'))
+      if (err instanceof errors.NotAuthenticated) store.dispatch(push('/user/signin'))
       return err;
     })
 }
