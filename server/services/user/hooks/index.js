@@ -1,7 +1,3 @@
-
-/* eslint no-console: 0 */
-/* global require */
-
 const hooks = require('feathers-hooks-common');
 const { callbackToPromise, validate } = require('feathers-hooks-common');
 const auth = require('feathers-authentication').hooks;
@@ -26,12 +22,12 @@ exports.before = (app) => {
   const users = app.service(`${config.apiPath}/users`); // eslint-disable-line no-unused-vars
 
   return {
-    
+
     all: debugHook(),
     find: [
       auth.authenticate(['jwt', 'local']),
-      function(hook) {
-        hook.params.query.$sort = hook.params.query.$sort || {createdAt: -1}
+      function (hook) {
+        hook.params.query.$sort = hook.params.query.$sort || { createdAt: -1 }
       }
     ],
     get: [
@@ -39,61 +35,60 @@ exports.before = (app) => {
       restrictToOwner({ ownerField: idName })
     ],
     create: [
-      validateSchema.form(schemas.signup, schemas.options), // schema validation
-      validate(client.signup),  // redo redux-form client validation
-      hooks.validate(values => 
-        app.services["api/authManagement"].create(
-        { action: 'checkUnique', value: { username: values.username, email: values.email } }
-      )),
+      // validateSchema.form(schemas.signup, schemas.options), // schema validation
+      validate(client.signup), // redo redux-form client validation
+      hooks.validate(values =>
+        app.service(`${config.apiPath}/authManagement`).create({
+          action: 'checkUnique',
+          value: { username: values.username, email: values.email }
+        })),
       hooks.validate(callbackToPromise(server.signup, { app })), // server validation
       hooks.remove('confirmPassword'),
-      verifyHooks.addVerification('api/authManagement'), // set email addr verification info
+      verifyHooks.addVerification(`${config.apiPath}/authManagement`), // set email addr verification info
       local.hooks.hashPassword()
     ],
     update: [
       auth.authenticate(['jwt', 'local']),
-      restrictToOwner({ ownerField: idName }),
+      restrictToOwner({ ownerField: idName })
     ],
     patch: [ // client route /user/rolechange patches roles. todo might check its an admin acct
       auth.authenticate(['jwt', 'local'])
     ],
     remove: [
       auth.authenticate(['jwt', 'local']),
-      restrictToOwner({ ownerField: idName }),
-    ],
+      restrictToOwner({ ownerField: idName })
+    ]
   };
 };
 
-exports.after = (app) =>{
-  return  {
-    all: debugHook(),
-    find: [
-      hooks.remove('password'),
-      verifyHooks.removeVerification(),
-    ],
-    get: [
-      hooks.remove('password'),
-      verifyHooks.removeVerification(),
-    ],
-    create: [
-      hooks.remove('password'),
-      sendVerificationEmail(), // send email to verify the email addr
-      verifyHooks.removeVerification(),
-    ],
-    update: [
-      hooks.remove('password'),
-      verifyHooks.removeVerification(),
-    ],
-    patch: [
-      hooks.remove('password'),
-      verifyHooks.removeVerification(),
-    ],
-    remove: [
-      hooks.remove('password'),
-      verifyHooks.removeVerification(),
-    ],
-  }
-}
+exports.after = (app) => ({
+  all: debugHook(),
+  find: [
+    hooks.remove('password'),
+    verifyHooks.removeVerification()
+  ],
+  get: [
+    hooks.remove('password'),
+    verifyHooks.removeVerification()
+  ],
+  create: [
+    hooks.remove('password'),
+    sendVerificationEmail(), // send email to verify the email addr
+    verifyHooks.removeVerification()
+  ],
+  update: [
+    hooks.remove('password'),
+    verifyHooks.removeVerification()
+  ],
+  patch: [
+    hooks.remove('password'),
+    verifyHooks.removeVerification()
+  ],
+  remove: [
+    hooks.remove('password'),
+    verifyHooks.removeVerification()
+  ]
+})
 
 function emailVerification(hook, next) {
   const user = clone(hook.result);
@@ -107,7 +102,7 @@ function emailVerification(hook, next) {
 const sendVerificationEmail = options => hook => {
   if (!hook.params.provider) { return hook; }
   const user = hook.result
-  if(hook.data && hook.data.email && user) {
+  if (hook.data && hook.data.email && user) {
     notifier(hook.app)('resendVerifySignup', user)
     return hook
   }

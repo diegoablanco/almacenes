@@ -75,7 +75,7 @@ const webpackConfig = {
   // re devtool: http://cheng.logdown.com/posts/2016/03/25/679045
   devtool: isProduction ? 'cheap-module-source-map' : 'source-map',
   entry: {
-    main: ['./index.js']
+    main: ['./index.jsx']
   },
   output: {
     filename: '[name].bundle.[chunkhash].js',
@@ -167,16 +167,16 @@ const webpackConfig = {
           // 'postcss-loader',
         ]
       },
-	{
+      {
         // Standard processing for .css outside /client
         test: /\.css$/,
         exclude: /client/,
         use: [
-          { loader: "style-loader" },
+          { loader: 'style-loader' },
           {
             loader: 'css-loader',
-            options: { 
-              }
+            options: {
+            }
           }
         ]
       },

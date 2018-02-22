@@ -19,7 +19,7 @@ module.exports = function () { // 'function' needed as we use 'this'
     .configure(local(authConfig.local))
     .configure(authManagement({
       path: `${config.apiPath}/authManagement`,
-      service: 'api/users',
+      service: `${config.apiPath}/users`,
       notifier: notifier(app)
     }))
 

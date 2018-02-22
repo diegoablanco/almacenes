@@ -14,6 +14,7 @@ module.exports = {
       'local'
     ],
     path: `${apiPath}/auth/local`,
+    users: `${apiPath}/users`,
     local: {
       entity: 'user',
       service: `${apiPath}/users`,

@@ -1,13 +1,20 @@
 
-const debug = require('debug')('validation:user');
-const rolesConfig = require('config').users.roles;
+const debug = require('debug')('validation:user')
+const { users: { roles: rolesConfig }, apiPath } = require('config')
 
 debug('Required');
+function clean(str) {
+  return (str || '').trim()
+}
+
+function cbErr(errors) {
+  return Object.keys(errors).length > 0 ? errors : null
+}
 
 module.exports = {
   signup: (data, { app }, cb) => {
     debug('signup');
-    const users = app.service('api/users');
+    const users = app.service(`${apiPath}/users`)
     const formErrors = {};
     const sanitized = {};
 
@@ -29,16 +36,6 @@ module.exports = {
       }
 
       return cb(cbErr(formErrors), sanitized);
-    });
-  },
-};
-
-// Helpers
-
-function clean(str) {
-  return (str || '').trim();
-}
-
-function cbErr(errors) {
-  return Object.keys(errors).length > 0 ? errors : null;
+    })
+  }
 }
