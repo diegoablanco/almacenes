@@ -39,7 +39,7 @@ module.exports = {
         images]
     })
     const {
-      id: originalStockId,
+      id: parentId,
       boxesId,
       paletsId,
       boxes,
@@ -55,7 +55,7 @@ module.exports = {
       documents: originalDocuments,
       ...originalStock
     } = sourceStock.get({ plain: true })
-    const newStock = await stocks.create({ ...originalStock, customerId })
+    const newStock = await stocks.create({ ...originalStock, customerId, parentId })
     await newStock.setInstructions((instructions || []).map(x => x.id))
     if (quantity) (boxes || palets).quantity = quantity
     if (boxes) {
