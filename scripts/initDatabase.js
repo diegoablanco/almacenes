@@ -28,7 +28,7 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Pre Alerta', code: 'preReceive' },
     { description: 'Alta', code: 'receive' },
     { description: 'Release', code: 'release' },
-    { description: 'Salida', code: 'salida' },
+    { description: 'Salida', code: 'issue' },
     { description: 'Modificación', code: 'edit' }
   ])
   stockStatus.bulkCreate([

@@ -42,7 +42,7 @@ class StockCrud extends Component {
                 icon="share"
                 content="salida"
                 color="black"
-                onClick={() => showFormModal(id, 'salida')}
+                onClick={() => showFormModal(id, 'issue')}
               />)
           case 'onHold':
             return (

@@ -8,6 +8,7 @@ import SelectField from '../../common/SelectField'
 import GeneralInfo from './forms/GeneralInfo'
 import GoodsPane from './forms/Goods'
 import ReleasePane from './forms/Release'
+import IssuePane from './forms/Issue'
 import getServiceFields from './components/ServiceFields'
 import tabulatedFormFields from '../../utils/tabulatedFormFields'
 
@@ -21,6 +22,7 @@ export default class StockForm extends Component {
     this.getPanesByMovementType = this.getPanesByMovementType.bind(this)
     this.getServicesPane = this.getServicesPane.bind(this)
     this.getReleasePane = this.getReleasePane.bind(this)
+    this.getIssuePane = this.getIssuePane.bind(this)
   }
   getServicesPane() {
     const {
@@ -83,6 +85,20 @@ export default class StockForm extends Component {
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   }
+  getIssuePane() {
+    const {
+      form,
+      targetCustomerLookup,
+      targetCustomerLookupActions,
+      targetCustomer
+    } = this.props
+    return {
+      menuItem: 'Detalles',
+      pane: <Tab.Pane attached={false} key="goods">
+        <IssuePane formName={form} {...{ targetCustomerLookup, targetCustomerLookupActions, targetCustomer }} />
+      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
+    }
+  }
   getInstructionsPane() {
     const {
       availableInstructions
@@ -120,13 +136,16 @@ export default class StockForm extends Component {
       getDocumentsPane,
       getImagesPane,
       getServicesPane,
-      getReleasePane
+      getReleasePane,
+      getIssuePane
     } = this
     switch (movementType.code) {
       case 'preReceive':
         return [getGeneralInfoPane(), getInstructionsPane()]
       case 'release':
         return [getReleasePane()]
+      case 'issue':
+        return [getIssuePane()]
       case 'receive':
       case 'edit':
         return [getGeneralInfoPane(), getInstructionsPane(), getGoodsPane(), getDocumentsPane(), getImagesPane(), getServicesPane()]

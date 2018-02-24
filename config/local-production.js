@@ -1,7 +1,7 @@
 const apiPath = '/almacenes/api'
 module.exports = {
   server: {
-    host: 'localhost',
+    host: 'xarxa.dyndns.org',
     port: '80'
   },
   database: {

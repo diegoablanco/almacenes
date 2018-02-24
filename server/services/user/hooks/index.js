@@ -1,22 +1,30 @@
-const hooks = require('feathers-hooks-common');
-const { callbackToPromise, validate } = require('feathers-hooks-common');
-const auth = require('feathers-authentication').hooks;
-const local = require('feathers-authentication-local');
-const { restrictToOwner } = require('feathers-authentication-hooks');
-const populate = require('feathers-populate-hook');
-const verifyHooks = require('feathers-authentication-management').hooks;
-const validateSchema = require('feathers-hooks-validate-joi');
-const config = require('config');
+const hooks = require('feathers-hooks-common')
+const { callbackToPromise, validate } = require('feathers-hooks-common')
+const auth = require('feathers-authentication').hooks
+const local = require('feathers-authentication-local')
+const { restrictToOwner } = require('feathers-authentication-hooks')
+const verifyHooks = require('feathers-authentication-management').hooks
+const config = require('config')
 const debugHook = require('../../hooks/debugHook')
 
-const emailer = require('../../../helpers/emails');
-const client = require('../../../../common/helpers/usersClientValidations');
-const schemas = require('../../../validations/schemas');
-const server = require('../../../validations/usersServerValidations');
+const client = require('../../../../common/helpers/usersClientValidations')
+const server = require('../../../validations/usersServerValidations')
 const notifier = require('../../authentication/notifier')
 
-const idName = config.database.idName;
+const { database: { idName } } = config
 const app = this;
+
+// Helpers
+
+const sendVerificationEmail = () => hook => {
+  if (!hook.params.provider) { return hook; }
+  const user = hook.result
+  if (hook.data && hook.data.email && user) {
+    notifier(hook.app)('resendVerifySignup', user)
+    return hook
+  }
+  return hook
+}
 
 exports.before = (app) => {
   const users = app.service(`${config.apiPath}/users`); // eslint-disable-line no-unused-vars
@@ -90,26 +98,3 @@ exports.after = (app) => ({
   ]
 })
 
-function emailVerification(hook, next) {
-  const user = clone(hook.result);
-  const params = hook.params;
-
-  emailer('send', user, params, (err) => {
-    next(err, hook);
-  });
-}
-
-const sendVerificationEmail = options => hook => {
-  if (!hook.params.provider) { return hook; }
-  const user = hook.result
-  if (hook.data && hook.data.email && user) {
-    notifier(hook.app)('resendVerifySignup', user)
-    return hook
-  }
-  return hook
-}
-// Helpers
-
-function clone(obj) {
-  return JSON.parse(JSON.stringify(obj));
-}
