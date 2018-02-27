@@ -9,7 +9,7 @@ export default function uploadFile(file, fieldName, formName) {
     dispatch(change(formName, `${fieldPrefix}.preview`, file.preview))
     dispatch(startAsyncValidation())
     request
-      .post('/api/upload')
+      .post('api/upload')
       .set('authorization', localStorage['feathers-jwt'])
       .attach('uri', file, file.name)
       .on('progress', progress => {

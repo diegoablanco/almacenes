@@ -70,17 +70,13 @@ module.exports = {
     await setStatusByCode(newStock, onHold ? 'onHold' : 'released')
   },
   async issue({ stock, date, carrierId, address, documents, images }) {
-    const { models: { stockIssue: stockIssues, address: adresses } } = getDatabase()
+    const { models: { stockIssue: stockIssues } } = getDatabase()
     const {
-      address: addressInclude,
       documents: documentsInclude,
       images: imagesInclude
     } = getIssueIncludes(getDatabase())
-    const stockIssue = await stockIssues.create(
-      { date, carrierId }
-    )
-    const address1 = await adresses.create(address)
-    stockIssue.setAddress(address1)
+    const stockIssue = await stockIssues.create({ date, carrierId, documents, images }, {include: [documentsInclude, imagesInclude] })
+    await stockIssue.createAddress(address)
     stock.setIssue(stockIssue)
   }
 }
