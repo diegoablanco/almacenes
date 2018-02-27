@@ -1,28 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { ConnectedRouter as Router, push } from 'react-router-redux'
 import makeDebug from 'debug'
 import errors from 'feathers-errors'
 import createHistory from 'history/createBrowserHistory'
 import { Provider } from 'react-redux'
 import 'semantic-ui-less/semantic.less'
+import 'moment/locale/es' // eslint-disable-line no-unused-vars, camelcase
 import '../public/App.css'
 import configureStore from './store'
 import {
   feathersServices,
   feathersAuthentication
-} from './feathers'; // does feathers init
+} from './feathers' // does feathers init
 import {
   setClientValidationsConfig
 } from '../common/helpers/usersClientValidations'
 import {
   configLoad
-} from './utils/config';
+} from './utils/config'
 import {
   initLogger,
   logger
-} from './utils/loggerRedux';
-import './utils/react-tap-event';
+} from './utils/loggerRedux'
+import './utils/react-tap-event'
 import AppRouter from './router'
 
 // __processEnvNODE_ENV__ is replaced during the webpack build process

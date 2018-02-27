@@ -32,6 +32,7 @@ module.exports = function () {
   sequelize.import('../server/models/documentAttachment')
   sequelize.import('../server/models/fileAttachment')
   sequelize.import('../server/models/stockStatus')
+  sequelize.import('../server/models/stockIssue')
 
   Object.keys(sequelize.models).forEach((modelName) => {
     if ('associate' in sequelize.models[modelName]) {

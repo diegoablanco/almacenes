@@ -1,16 +1,16 @@
 const Sequelize = require('sequelize')
 
-module.exports = function (sequelize) {  
+module.exports = function (sequelize) {
   const Account = sequelize.define('account', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true      
-    }, 
+      primaryKey: true
+    },
     bankName: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: false
     },
     number: {
       type: Sequelize.STRING,
@@ -21,11 +21,11 @@ module.exports = function (sequelize) {
     },
     swiftBic: {
       type: Sequelize.STRING
-    },
+    }
   })
-  Account.associate = function(models){
-    Account.belongsTo(models['address'])
-    Account.belongsToMany(models['contact'], {as: 'authorizedPerson', through: 'account_contacts', scope: { contactType: 'accountAuthorizedPerson' }})
+  Account.associate = function ({ address, contact }) {
+    Account.belongsTo(address)
+    Account.belongsToMany(contact, { as: 'authorizedPerson', through: 'account_contacts', scope: { contactType: 'accountAuthorizedPerson' } })
   }
 
   return Account

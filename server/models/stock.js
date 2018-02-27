@@ -34,6 +34,7 @@ module.exports = function (sequelize) {
     stockService,
     stockStatus,
     stock,
+    stockIssue,
     user
   }) {
     Stock.belongsTo(warehouse)
@@ -52,6 +53,7 @@ module.exports = function (sequelize) {
     Stock.belongsTo(stock, { as: 'parent' })
     Stock.belongsTo(user, { as: 'createdBy' })
     Stock.belongsTo(user, { as: 'updatedBy' })
+    Stock.hasOne(stockIssue, { as: 'issue' })
   }
   return Stock
 }
