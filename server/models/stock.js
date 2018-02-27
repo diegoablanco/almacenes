@@ -53,7 +53,7 @@ module.exports = function (sequelize) {
     Stock.belongsTo(stock, { as: 'parent' })
     Stock.belongsTo(user, { as: 'createdBy' })
     Stock.belongsTo(user, { as: 'updatedBy' })
-    Stock.hasOne(stockIssue, { as: 'issue' })
+    Stock.belongsTo(stockIssue, { as: 'issue' })
   }
   return Stock
 }

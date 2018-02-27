@@ -73,8 +73,8 @@ export default function getCrudPageActions() {
     },
     createOrUpdate(data) {
       return async (dispatch) => {
-        if (data.movementType === 'release') {
-          const messageAction = showTimedMessage('Se ejecutó correctamente el Release')
+        if (data.movementType === 'release' || data.movementType === 'issue') {
+          const messageAction = showTimedMessage(`Se ejecutó correctamente ${data.movementType === 'release' ? 'el Release' : 'la Salida'}`)
           const serviceAction = feathersServices.stockMovements.create(data)
           try {
             await dispatch(serviceAction)

@@ -1,3 +1,4 @@
-module.exports = function setMovement({ result, data: { movementTypeId } }) {
-  result.createMovement({ stockMovementTypeId: movementTypeId })
+module.exports = function setMovement(hook) {
+  const { result, data: { movementTypeId }, params: { user } } = hook
+  result.createMovement({ stockMovementTypeId: movementTypeId, createdById: user.id })
 }

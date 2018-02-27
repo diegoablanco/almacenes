@@ -46,6 +46,7 @@ class ReleaseForm extends Component {
             name="quantity"
             type="text"
             label="Cantidad a Liberar"
+            width={2}
             parse={parseToInt}
             component={renderField}
           />}

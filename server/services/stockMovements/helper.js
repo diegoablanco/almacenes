@@ -1,5 +1,6 @@
 const getDatabase = require('../../../server/database')
-const getIncludes = require('../stock/includes')
+const getStockIncludes = require('../stock/includes')
+const getIssueIncludes = require('./includes')
 
 async function setStatusByCode(stock, code) {
   const { models: { stockStatus } } = getDatabase()
@@ -29,7 +30,7 @@ module.exports = {
       stockPallets,
       documents,
       images
-    } = getIncludes(getDatabase())
+    } = getStockIncludes(getDatabase())
     const sourceStock = await stocks.findById(stockId, {
       include: [
         warehouseInstruction,
@@ -67,5 +68,19 @@ module.exports = {
       await newStock.createPalets(newPalets)
     }
     await setStatusByCode(newStock, onHold ? 'onHold' : 'released')
+  },
+  async issue({ stock, date, carrierId, address, documents, images }) {
+    const { models: { stockIssue: stockIssues, address: adresses } } = getDatabase()
+    const {
+      address: addressInclude,
+      documents: documentsInclude,
+      images: imagesInclude
+    } = getIssueIncludes(getDatabase())
+    const stockIssue = await stockIssues.create(
+      { date, carrierId }
+    )
+    const address1 = await adresses.create(address)
+    stockIssue.setAddress(address1)
+    stock.setIssue(stockIssue)
   }
 }

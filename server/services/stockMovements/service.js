@@ -3,7 +3,13 @@ const errors = require('feathers-errors');
 const hooks = require('./hooks')
 const getDatabase = require('../../../server/database')
 const getIncludes = require('../stock/includes')
-const { setStatusByCode, reduceGoodsBy, releaseToCustomer, reduceGoodsTotally } = require('./helper')
+const {
+  setStatusByCode,
+  reduceGoodsBy,
+  releaseToCustomer,
+  reduceGoodsTotally,
+  issue
+} = require('./helper')
 
 
 const servicePath = `${config.apiPath}/stockMovements`
@@ -32,6 +38,7 @@ module.exports = function () {
             include: [stockBox, stockPallets]
           }
           const stock = await stocks.findOne(filter)
+          await stock.createMovement({ stockMovementTypeId: movementTypeId, createdById: user.id })
           const sameCustomer = !(targetCustomerId && targetCustomerId !== stock.customerId)
           switch (movementType) {
             case 'release':
@@ -39,7 +46,6 @@ module.exports = function () {
             // release total, diferente cliente dest: crear stock (onHold o no) para el cliente dest, cambiar estado stock a Entregado, mercadería a 0
             // release parcial, mismo cliente o sin cliente destinatario: crear nuevo stock para el cliente, restar mercadería
             // release parcial, diferente cliente dest: crear stock (onHold o no) para el cliente dest, restar mercadería
-              await stock.createMovement({ stockMovementTypeId: movementTypeId, createdById: user.id })
               if (releaseType === 'full') {
                 if (sameCustomer) {
                   setStatusByCode(stock, 'released')
@@ -56,11 +62,14 @@ module.exports = function () {
                 await reduceGoodsBy(stock, quantity)
               }
               break
-            case 'salida':
+            case 'issue':
+              await issue({ stock, ...data })
+              setStatusByCode(stock, 'fulfilled')
               break
             default:
               break
           }
+          await stock.save()
           return {}
         } catch (error) {
           return new errors.GeneralError(error)
