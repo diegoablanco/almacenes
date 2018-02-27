@@ -19,7 +19,7 @@ export default class StockForm extends Component {
     this.getDocumentsPane = this.getDocumentsPane.bind(this)
     this.getInstructionsPane = this.getInstructionsPane.bind(this)
     this.getGoodsPane = this.getGoodsPane.bind(this)
-    this.getPanesByMovementType = this.getPanesByMovementType.bind(this)
+    this.getFormContentMovementType = this.getFormContentMovementType.bind(this)
     this.getServicesPane = this.getServicesPane.bind(this)
     this.getReleasePane = this.getReleasePane.bind(this)
     this.getIssuePane = this.getIssuePane.bind(this)
@@ -78,26 +78,23 @@ export default class StockForm extends Component {
       targetCustomerLookupActions,
       targetCustomer
     } = this.props
-    return {
-      menuItem: 'Detalles',
-      pane: <Tab.Pane attached={false} key="goods">
-        <ReleasePane formName={form} {...{ targetCustomerLookup, targetCustomerLookupActions, targetCustomer }} />
-      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
-    }
+    return (
+      <ReleasePane
+        formName={form}
+        {...{ targetCustomerLookup, targetCustomerLookupActions, targetCustomer }}
+      />)
   }
   getIssuePane() {
     const {
       form,
-      targetCustomerLookup,
-      targetCustomerLookupActions,
-      targetCustomer
+      carrierLookup,
+      carrierLookupActions,
+      carrier
     } = this.props
-    return {
-      menuItem: 'Detalles',
-      pane: <Tab.Pane attached={false} key="goods">
-        <IssuePane formName={form} {...{ targetCustomerLookup, targetCustomerLookupActions, targetCustomer }} />
-      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
-    }
+    const { getDocumentsPane, getImagesPane } = this
+    return (
+      <IssuePane formName={form} {...{ carrierLookup, carrierLookupActions, carrier, getDocumentsPane, getImagesPane }} />
+    )
   }
   getInstructionsPane() {
     const {
@@ -128,7 +125,7 @@ export default class StockForm extends Component {
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   }
-  getPanesByMovementType(movementType) {
+  getFormContentMovementType(movementType) {
     const {
       getGeneralInfoPane,
       getInstructionsPane,
@@ -141,14 +138,14 @@ export default class StockForm extends Component {
     } = this
     switch (movementType.code) {
       case 'preReceive':
-        return [getGeneralInfoPane(), getInstructionsPane()]
+        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
       case 'release':
-        return [getReleasePane()]
+        return getReleasePane()
       case 'issue':
-        return [getIssuePane()]
+        return getIssuePane()
       case 'receive':
       case 'edit':
-        return [getGeneralInfoPane(), getInstructionsPane(), getGoodsPane(), getDocumentsPane(), getImagesPane(), getServicesPane()]
+        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane(), getGoodsPane(), getDocumentsPane(), getImagesPane(), getServicesPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
       default:
         return []
     }
@@ -159,13 +156,11 @@ export default class StockForm extends Component {
       error
     } = this.props
 
-    const panes = this.getPanesByMovementType(stockMovementType)
-
     return (
       <div>
         {error && <Message error>{error}</Message>}
         <Form>
-          <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+          {this.getFormContentMovementType(stockMovementType)}
         </Form>
       </div>
     )

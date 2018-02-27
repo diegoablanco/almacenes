@@ -74,6 +74,7 @@ module.exports = {
           case 'preReceive':
           case 'receive':
           case 'edit':
+          case 'issue':
             getFullStock(hook)
             break
           case 'release':
