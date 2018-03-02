@@ -7,18 +7,14 @@ const errorMessageReplacements = {
   required: 'ingrese un valor',
   integer: 'debe ser numérico'
 }
+
 function errorMessage(error) {
-  const { keyword, params } = error
-  if (keyword === 'type') {
-    return {
-      required: 'ingrese un valor',
-      integer: 'debe ser numérico'
-    }[params.type]
+  const { keyword, schema, params } = error
+  if (keyword === 'required' && schema[params.missingProperty] && schema[params.missingProperty].$ref) {
+    return { type: 'missingEntity', message: error.message }
   }
-  localize.es([error])
   return error.message
 }
-
 export default function getValidator(schema, relatedSchemas = []) {
   const ajv = new Ajv({
     allErrors: true,
@@ -28,5 +24,5 @@ export default function getValidator(schema, relatedSchemas = []) {
     schemas: relatedSchemas.map(relatedSchema => ({ ...relatedSchema, errorMessage: errorMessageReplacements }))
   })
   ajvErrors(ajv)
-  return validate({ ...schema, errorMessage: errorMessageReplacements }, { ajv, errorMessage })
+  return validate(schema, { ajv, localize: localize.es, errorMessage })
 }

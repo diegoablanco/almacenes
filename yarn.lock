@@ -278,6 +278,14 @@ ajv@^5.2.3, ajv@^5.3.0:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.3.0"
 
+ajv@^6.0.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.2.0.tgz#afac295bbaa0152449e522742e4547c1ae9328d2"
+  dependencies:
+    fast-deep-equal "^1.0.0"
+    fast-json-stable-stringify "^2.0.0"
+    json-schema-traverse "^0.3.0"
+
 ajv@^6.1.0:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.1.1.tgz#978d597fbc2b7d0e5a5c3ddeb149a682f2abfa0e"
@@ -7720,10 +7728,6 @@ object-keys@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-0.4.0.tgz#28a6aae7428dd2c3a92f3d95f21335dd204e0336"
 
-object-path@^0.11.4:
-  version "0.11.4"
-  resolved "https://registry.yarnpkg.com/object-path/-/object-path-0.11.4.tgz#370ae752fbf37de3ea70a861c23bba8915691949"
-
 object.assign@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/object.assign/-/object.assign-4.0.4.tgz#b1c9cc044ef1b9fe63606fc141abbb32e14730cc"
@@ -9199,14 +9203,14 @@ redux-auth-wrapper@^2.0.1:
     prop-types "15.5.8"
     query-string "4.3.4"
 
-redux-form-with-ajv@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/redux-form-with-ajv/-/redux-form-with-ajv-0.3.0.tgz#497c38e20ff2f2970b2a0bf0284a20c752b9a8f3"
+redux-form-with-ajv@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/redux-form-with-ajv/-/redux-form-with-ajv-0.4.0.tgz#4c4d63d6e97b7325dceee665b3e3cd6a74c401fb"
   dependencies:
-    ajv "^5.2.2"
+    ajv "^6.0.0"
     ajv-errors "^1.0.0"
+    lodash.set "^4.3.2"
     object-assign "^4.1.1"
-    object-path "^0.11.4"
 
 redux-form@^7.2.0:
   version "7.2.0"

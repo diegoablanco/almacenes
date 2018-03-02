@@ -1,0 +1,18 @@
+{
+  "id": "http://xarxa.com/schemas/stockIssue.json#",
+  "title": "Stock Issue",
+  "description": "A stock issue",
+  "type": "object",
+  "properties": {
+    "carrierId": {
+      "type": "integer"
+    },
+    "address": {
+      "$ref": "address.json#"
+    }
+  },
+  "required": [
+    "carrierId",
+    "address"
+  ]
+}

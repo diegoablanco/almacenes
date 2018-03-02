@@ -1,5 +1,5 @@
 const getDatabase = require('../../../server/database')
-const { getIncludes: getStockIncludes } = require('../stock/helpers')
+const getStockIncludes = require('../stock/helpers/getIncludes')
 const getIssueIncludes = require('./includes')
 
 async function setStatusByCode(stock, code) {

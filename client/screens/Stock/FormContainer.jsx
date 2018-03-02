@@ -1,22 +1,35 @@
 import { reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import StockForm from './Form'
 import stockSchema from '../../../common/validation/stock.json'
 import documentAttachmentSchema from '../../../common/validation/documentAttachment.json'
 import stockBoxSchema from '../../../common/validation/stockBox.json'
 import stockPalletSchema from '../../../common/validation/stockPallet.json'
 import stockItemDetailSchema from '../../../common/validation/stockItemDetail.json'
+import stockReleaseSchema from '../../../common/validation/stockRelease.json'
+import stockIssueSchema from '../../../common/validation/stockIssue.json'
+import addressSchema from '../../../common/validation/address.json'
 import getValidator from '../../common/Validation'
+import StockForm from './Form'
 
 
 export const formName = 'Stock'
-const validate = getValidator(stockSchema, [
-  stockBoxSchema,
-  stockPalletSchema,
-  documentAttachmentSchema,
-  stockItemDetailSchema
-])
+function getValidatorByMovementType(movementType) {
+  if (movementType.code === 'issue') {
+    return getValidator(stockIssueSchema, [
+      addressSchema
+    ])
+  }
+  if (movementType.code === 'release') {
+    return getValidator(stockReleaseSchema)
+  }
+  return getValidator(stockSchema, [
+    stockBoxSchema,
+    stockPalletSchema,
+    documentAttachmentSchema,
+    stockItemDetailSchema
+  ])
+}
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -55,7 +68,7 @@ const mapStateToProps = (state, ownProps) => {
     warehouseLookup,
     warehouseLookupActions: { search: searchWarehouse, clear: clearWarehouse },
     form: formName,
-    validate: validate, // eslint-disable-line object-shorthand
+    validate: getValidatorByMovementType(stockMovementType), // eslint-disable-line object-shorthand
     availableInstructions: state.uneditables.queryResult.warehouseInstructions,
     availableStockItemDetailTypes: state.uneditables.queryResult.stockItemDetailTypes,
     availableServices,

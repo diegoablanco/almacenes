@@ -1,0 +1,52 @@
+{
+  "id": "http://xarxa.com/schemas/stockRelease.json#",
+  "title": "Stock Release",
+  "description": "A stock issue",
+  "type": "object",
+  "properties": {
+    "releaseType": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "releaseType"
+  ],
+  "definitions": {
+    "isPartial": {
+      "properties": {
+        "releaseType": {
+          "enum": [
+            "partial"
+          ]
+        }
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "allOf": [
+        {
+          "$ref": "#/definitions/isPartial"
+        },
+        {
+          "required": [
+            "quantity"
+          ],
+          "properties": {
+            "quantity": {
+              "minimum": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "not": {
+        "$ref": "#/definitions/isPartial"
+      }
+    }
+  ]
+}

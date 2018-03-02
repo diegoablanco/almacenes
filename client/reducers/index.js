@@ -14,7 +14,21 @@ export default {
   auth: feathersAuthentication.reducer,
   users: feathersServices.users.reducer,
   authManagement: feathersServices.authManagement.reducer,
-  form: reduxFormReducer,
+  form: reduxFormReducer.plugin({
+    Stock: (state, action) => {
+      switch (action.type) {
+        case '@@redux-form/UPDATE_SYNC_ERRORS':
+          let validationMessage = '' // eslint-disable-line no-case-declarations
+          const { payload: { syncErrors } } = action // eslint-disable-line no-case-declarations
+          return {
+            ...state,
+            error: Object.keys(syncErrors).map(key => syncErrors[key]).filter(error => error.type === 'missingEntity').map(error => error.message)
+          }
+        default:
+          return state
+      }
+    }
+  }),
   customers: feathersServices.customers.reducer,
   warehouses: feathersServices.warehouses.reducer,
   services: feathersServices.services.reducer,

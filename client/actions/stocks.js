@@ -1,5 +1,4 @@
 import { change, SubmissionError } from 'redux-form'
-import moment from 'moment'
 import { feathersServices } from '../feathers'
 import { getCrudPageActions as getBaseCrudPageActions, getActionTypes as getBaseActionTypes } from './crudPage'
 import { showTimedMessage } from './messageBar'
