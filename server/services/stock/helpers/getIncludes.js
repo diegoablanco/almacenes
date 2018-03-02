@@ -1,4 +1,4 @@
-module.exports = function getIncludes(database) {
+module.exports = function (database) {
   const {
     models: {
       customer,
@@ -41,7 +41,8 @@ module.exports = function getIncludes(database) {
       include: [{ model: stockItemDetail, as: 'details' }]
     },
     warehouse: {
-      model: warehouse
+      model: warehouse,
+      include: []
     },
     carrier: {
       model: carrier

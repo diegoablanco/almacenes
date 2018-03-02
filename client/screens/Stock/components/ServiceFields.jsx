@@ -1,9 +1,9 @@
 import React from 'react'
 import { Field } from 'redux-form'
-import { renderField, renderSelect } from '../../../utils/formHelpers'
+import { renderField, SelectOrLabel } from '../../../utils/formHelpers'
 
 export default function (setServiceRate) {
-  return function (title, fields, availableServices) {
+  return function (title, fields, availableServices = []) {
     function handleDetailSelect(index, serviceId) {
       setServiceRate(index, availableServices.find(x => x.id === serviceId).rate)
     }
@@ -14,7 +14,7 @@ export default function (setServiceRate) {
         formatter(value, { id: index, name }) {
           return (<Field
             name={`${name}.serviceId`}
-            component={renderSelect}
+            component={SelectOrLabel}
             onChange={(e, serviceId) => handleDetailSelect(index, serviceId)}
             options={availableServices.map(option => ({
               key: option.id,

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Button, Form, Divider, Segment, Input, TextArea, Grid, Checkbox } from 'semantic-ui-react'
 import classnames from 'classnames'
 
@@ -65,6 +65,17 @@ export function renderSearchField({ input, label, type = 'text', width, meta: { 
   )
 }
 
+function basicField(props) {
+  const { label, width, meta: { touched, error } } = props
+  const { fieldInput, ...propsToPass } = props
+  return (
+    <Form.Field className={classnames({ error: touched && error })} width={width}>
+      { props.fieldInput }
+      {touched && error && <label className="error">{error}</label>}
+    </Form.Field>
+  )
+}
+
 export function renderSelect({ input, label, type, meta: { touched, error }, options, placeholder }) {
   function handleChange(e, { value }) {
     input.onChange(value)
@@ -79,6 +90,37 @@ export function renderSelect({ input, label, type, meta: { touched, error }, opt
       />
     </Form.Field>
   )
+}
+export function SelectOrLabel(props) {
+  const { options, input: { value } } = props
+  const showLabel = value !== ''
+  const fieldInput = !showLabel
+    ? <Select2 {...props} />
+    : <label>{(options.find(x => x.value === value) || {}).text}</label>
+  return basicField({ ...props, fieldInput })
+}
+export class Select2 extends Component {
+  constructor(props) {
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
+  }
+  handleChange(e, { value }) {
+    const { input } = this.props
+    input.onChange(value)
+  }
+  render() {
+    const { input, label, meta: { touched, error }, options, placeholder = 'Seleccionar...' } = this.props
+    return (
+      <Form.Field className={classnames({ error: touched && error })} >
+        <label>{label}</label>
+        <Form.Select
+          {...input}
+          onChange={this.handleChange}
+          {...{ options, placeholder }}
+        />
+      </Form.Field>
+    )
+  }
 }
 
 export function fieldGroupHeader(title, fields) {

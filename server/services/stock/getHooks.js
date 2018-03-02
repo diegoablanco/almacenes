@@ -1,4 +1,4 @@
-const getIncludes = require('./includes')
+const { getIncludes } = require('./helpers')
 
 module.exports = {
   getFullStock(hook) {

@@ -10,10 +10,7 @@ const documentAttachmentSchema = require('../../../common/validation/documentAtt
 const stockItemDetailSchema = require('../../../common/validation/stockItemDetail.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
-const setMovement = require('./setMovement')
-const setStatus = require('./setStatus')
-const setGoodsDescription = require('./setGoodsDescription')
-const getIncludes = require('./includes')
+const { setMovement, setStatus, setGoodsDescription, getIncludes, setMovementServices } = require('./helpers')
 const { getFullStock, getStockForRelease } = require('./getHooks')
 const { processSort } = require('../helpers')
 const { setUser } = require('../hooks')
@@ -70,6 +67,7 @@ module.exports = {
       function (hook) {
         const { params: { query: { movementType } } } = hook
         delete hook.params.query.movementType
+        hook.params.movementType = movementType
         switch (movementType) {
           case 'preReceive':
           case 'receive':
@@ -133,7 +131,9 @@ module.exports = {
       setStatus
     ],
     find: [dehydrate(), setGoodsDescription],
-    get: [],
+    get: [
+      dehydrate(), setMovementServices
+    ],
     update: [
       hydrate(),
       setInstructions,

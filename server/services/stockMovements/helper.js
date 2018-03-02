@@ -1,5 +1,5 @@
 const getDatabase = require('../../../server/database')
-const getStockIncludes = require('../stock/includes')
+const { getIncludes: getStockIncludes } = require('../stock/helpers')
 const getIssueIncludes = require('./includes')
 
 async function setStatusByCode(stock, code) {
@@ -75,7 +75,7 @@ module.exports = {
       documents: documentsInclude,
       images: imagesInclude
     } = getIssueIncludes(getDatabase())
-    const stockIssue = await stockIssues.create({ date, carrierId, documents, images }, {include: [documentsInclude, imagesInclude] })
+    const stockIssue = await stockIssues.create({ date, carrierId, documents, images }, { include: [documentsInclude, imagesInclude] })
     await stockIssue.createAddress(address)
     stock.setIssue(stockIssue)
   }

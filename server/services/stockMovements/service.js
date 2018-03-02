@@ -2,7 +2,7 @@ const config = require('config')
 const errors = require('feathers-errors');
 const hooks = require('./hooks')
 const getDatabase = require('../../../server/database')
-const getIncludes = require('../stock/includes')
+const { getIncludes } = require('../stock/helpers')
 const {
   setStatusByCode,
   reduceGoodsBy,
