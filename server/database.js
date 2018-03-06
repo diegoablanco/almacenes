@@ -7,7 +7,8 @@ module.exports = function () {
     dialect: 'mssql',
     host
   })
-
+  
+  sequelize.import('../server/models/role')
   sequelize.import('../server/models/user')
   sequelize.import('../server/models/phoneType')
   sequelize.import('../server/models/phone')

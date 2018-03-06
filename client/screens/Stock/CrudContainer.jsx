@@ -6,7 +6,7 @@ import FormModal from './FormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
 import getCrudPageActions from '../../actions/stocks'
-import selectors from '../../selectors/stocks'
+import { stocks as selectors } from '../../selectors'
 import StatusColumn from './components/StatusColumn'
 
 class StockCrud extends Component {

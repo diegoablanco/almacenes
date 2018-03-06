@@ -45,11 +45,11 @@ const UserIsAuthenticated = connectedRouterRedirect({
 
 const UserIsAdmin = connectedRouterRedirect({
   authenticatedSelector: (state) => {
-    const { user } = state.auth.user
+    const { user } = state.auth
     if (!(user && user.isVerified && user.roles)) {
       return false;
     }
-    return config.users.roles.allowedToChangeRoles.some(role => user.roles.indexOf(role) !== -1)
+    return user.roles.includes('admin')
   },
   redirectPath: '/user/signin',
   allowRedirectBack: false,
@@ -65,7 +65,7 @@ export default class AppRouter extends Component {
         <App>
           <Switch>
             <Route path="/user/signin" component={UserSignIn} />
-            <Route path="/user/signup" component={UserSignUp} />
+            <Route path="/user/signup" component={UserIsAdmin(UserSignUp)} />
             <Route path="/user/signupsendemail" component={UserSignUpSendEmail} />
             <Route path="/user/verify/:token" component={UserSignUpValidateEmail} />
             <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />

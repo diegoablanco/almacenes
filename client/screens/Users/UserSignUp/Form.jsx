@@ -4,9 +4,10 @@ import PropTypes from 'prop-types'
 import { Field } from 'redux-form'
 import { Form, Button, Grid, Message } from 'semantic-ui-react'
 import { renderField } from '../../../utils/formHelpers'
+import SelectField from '../../../common/SelectField'
 
 const SignUpForm = props => {
-  const { handleSubmit, pristine, submitting, invalid } = props;
+  const { handleSubmit, pristine, submitting, invalid, roles } = props
 
   return (
     <Grid verticalAlign="middle" centered textAlign="center">
@@ -43,6 +44,14 @@ const SignUpForm = props => {
             component={renderField}
             type="password"
             label="Confirmar contraseña"
+          />
+          <Field
+            name="roles"
+            component={SelectField}
+            options={roles.map(x => ({ key: x.id, value: x.id, text: x.description }))}
+            label="Roles"
+            multiple
+            placeholder="Buscar un rol..."
           />
           <Button
             position="right"

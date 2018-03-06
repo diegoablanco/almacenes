@@ -6,9 +6,10 @@ const { restrictToOwner } = require('feathers-authentication-hooks')
 const verifyHooks = require('feathers-authentication-management').hooks
 const config = require('config')
 const debugHook = require('../../hooks/debugHook')
+const hydrate = require('feathers-sequelize/hooks/hydrate')
+const dehydrate = require('feathers-sequelize/hooks/dehydrate')
 
 const client = require('../../../../common/helpers/usersClientValidations')
-const server = require('../../../validations/usersServerValidations')
 const notifier = require('../../authentication/notifier')
 
 const { database: { idName } } = config
@@ -25,7 +26,10 @@ const sendVerificationEmail = () => hook => {
   }
   return hook
 }
-
+function setRoles(hook) {
+  const { result, data: { roles = [] } } = hook
+  result.setRoles(roles.map(x => x.id))
+}
 exports.before = (app) => {
   const users = app.service(`${config.apiPath}/users`); // eslint-disable-line no-unused-vars
 
@@ -50,7 +54,6 @@ exports.before = (app) => {
           action: 'checkUnique',
           value: { username: values.username, email: values.email }
         })),
-      hooks.validate(callbackToPromise(server.signup, { app })), // server validation
       hooks.remove('confirmPassword'),
       verifyHooks.addVerification(`${config.apiPath}/authManagement`), // set email addr verification info
       local.hooks.hashPassword()
@@ -81,6 +84,9 @@ exports.after = (app) => ({
   ],
   create: [
     hooks.remove('password'),
+    hydrate(),
+    setRoles,
+    dehydrate(),
     sendVerificationEmail(), // send email to verify the email addr
     verifyHooks.removeVerification()
   ],

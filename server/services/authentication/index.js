@@ -3,6 +3,7 @@ const authentication = require('feathers-authentication')
 const jwt = require('feathers-authentication-jwt')
 const local = require('feathers-authentication-local')
 const config = require('config')
+const { remove } = require('feathers-hooks-common')
 const debugHook = require('../hooks/debugHook')
 const authManagement = require('feathers-authentication-management')
 const notifier = require('./notifier')
@@ -33,12 +34,15 @@ module.exports = function () { // 'function' needed as we use 'this'
     after: {
       all: debugHook(),
       create: [
-        hook => {
-          hook.result.token = hook.result.accessToken
-          delete hook.result.accessToken
-          hook.result.data = hook.params.user
-          delete hook.result.data.password
-        }
+        async hook => {
+          const { models: { user: userModel, role } } = hook.app.get('database')
+          const { result, params: { user: { password, ...paramUser } } } = hook
+          const u = await userModel.findById(paramUser.id, { include: [{ model: role, through: 'user_roles' }] })
+
+          result.token = hook.result.accessToken
+          result.data = { ...paramUser, roles: u.roles.map(x => x.code) }
+        },
+        remove('accessToken')
       ]
     }
   })

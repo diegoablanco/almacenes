@@ -10,15 +10,21 @@ sequelize.sync({ force: true }).then(async () => {
     warehouseInstruction,
     stockItemDetailType,
     documentType,
-    stockStatus } = sequelize.models
-  await user.create({
+    stockStatus,
+    role } = sequelize.models
+  await role.bulkCreate([
+    { description: 'Administrador', code: 'admin' },
+    { description: 'Usuario', code: 'user' }
+  ])
+  const adminRole = await role.findOne({ where: { code: 'admin' } })
+  const adminUser = await user.create({
     name: 'diego',
     email: 'diegoablanco@gmail.com',
     username: 'diego',
     password: '$2a$10$dQy8UbosNI5J2OYtQ0QbyuqQ/Yim5upMI6YP3HGsYwfqQmEV.x1Si',
-    roles: 'superAdmin admin',
     isVerified: 1
   })
+  adminUser.addRole(adminRole)
   await phoneType.bulkCreate([
     { description: 'Móvil', code: 'mobile' },
     { description: 'Oficina', code: 'work' },

@@ -1,17 +1,14 @@
 const createService = require('feathers-sequelize')
 const config = require('config')
 
-const debug = require('debug')('service:user')
 const hooks = require('./hooks')
-const createModel = require('../../models/user')
 
 module.exports = function () { // 'function' needed as we use 'this'
   const app = this
-  
-  const Model = createModel(app.get('database'))
+  const { models: { user } } = app.get('database')
   const options = {
     name: 'users',
-    Model,
+    Model: user,
     paginate: config.paginate
   }
 

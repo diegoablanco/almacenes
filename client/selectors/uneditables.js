@@ -1,22 +1,8 @@
 export default function ({
   uneditables:
-    { queryResult:
-        {
-          phoneTypes,
-          stockMovementTypes,
-          warehouseInstructions,
-          documentTypes,
-          stockItemDetailTypes,
-          stockStatuses
-        }
-    }
+    { queryResult: uneditables }
 }) {
   return {
-    phoneTypes,
-    stockMovementTypes,
-    warehouseInstructions,
-    documentTypes,
-    stockItemDetailTypes,
-    stockStatuses
+    ...uneditables
   }
 }

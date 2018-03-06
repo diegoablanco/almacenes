@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import Form from './Form'
 import usersClientValidations from '../../../../common/helpers/usersClientValidations'
 import { registerUser, validateUser } from '../../../actions/authentication'
+import { uneditables } from '../../../selectors'
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
@@ -13,7 +14,12 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
   dispatch
 )
 
-export default connect(null, mapDispatchToProps)(reduxForm({
+const mapStateToProps = state => {
+  const { roles } = uneditables(state)
+  return { roles }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'UserSignUp',
   asyncBlurFields: ['username', 'email'],
   validate: usersClientValidations.signup

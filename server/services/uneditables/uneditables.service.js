@@ -15,7 +15,8 @@ module.exports = function () {
           warehouseInstruction,
           documentType,
           stockItemDetailType,
-          stockStatus
+          stockStatus,
+          role
         } } = sequelize
         const phoneTypes = await phoneType.findAll({ attributes: ['id', 'description'] })
         const stockMovementTypes = await stockMovementType.findAll({ attributes: ['id', 'description', 'code'] })
@@ -23,6 +24,7 @@ module.exports = function () {
         const warehouseInstructions = await warehouseInstruction.findAll({ attributes: ['id', 'description'] })
         const documentTypes = await documentType.findAll({ attributes: ['id', 'description'] })
         const stockItemDetailTypes = await stockItemDetailType.findAll({ attributes: ['id', 'description', 'code'] })
+        const roles = await role.findAll({ attributes: ['id', 'description', 'code'] })
         const stockStatuses = await stockStatus.findAll()
 
         res.json({
@@ -32,7 +34,8 @@ module.exports = function () {
           registerOpen: usersCount[0].get('total') === 0,
           documentTypes,
           stockItemDetailTypes,
-          stockStatuses
+          stockStatuses,
+          roles
         })
       } catch (e) {
         next(e)
