@@ -1,0 +1,17 @@
+{
+  "id": "http://xarxa.com/schemas/signIn.json#",
+  "title": "Signin",
+  "description": "A system sign in",
+  "properties": {
+    "email": {
+      "format": "email"
+    },
+    "password": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "email",
+    "password"
+  ]
+}

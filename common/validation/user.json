@@ -1,0 +1,42 @@
+{
+  "id": "http://xarxa.com/schemas/user.json#",
+  "title": "User",
+  "description": "A system user",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "email": {
+      "format": "email"
+    },
+    "password": {
+      "type": "string",
+      "minLength": 8
+    },
+    "confirmPassword": {
+      "type": "string",
+      "const": {
+        "$data": "1/password"
+      }
+    },
+    "roles": {
+      "type": [
+        "array"
+      ],
+      "items": {
+        "type": "object"
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "name",
+    "username",
+    "email",
+    "password",
+    "roles"
+  ]
+}

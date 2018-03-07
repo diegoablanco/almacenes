@@ -6,7 +6,7 @@ import {
 } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Form from './Form'
-import usersClientValidations from '../../../../common/helpers/usersClientValidations'
+import { userPasswordReset } from '../../../common/Validators'
 import { changePassword } from '../../../actions/authentication'
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -15,5 +15,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
 
 export default connect(null, mapDispatchToProps)(reduxForm({
   form: 'UserPasswordChange',
-  validate: usersClientValidations.changePassword
+  validate: userPasswordReset.validator
 })(Form))

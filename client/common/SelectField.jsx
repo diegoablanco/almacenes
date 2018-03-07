@@ -27,7 +27,7 @@ class SelectField extends Component {
     } = this.props
     const { searchQuery } = this.state
     return (
-      <Form.Field className={classnames({ error: touched && error })} width={width}>
+      <Form.Field className={classnames({ error: error !== undefined })} width={width}>
         <label>{label}</label>
         <Dropdown
           fluid
@@ -41,7 +41,7 @@ class SelectField extends Component {
           onSearchChange={this.search}
           noResultsMessage={searchQuery !== '' ? 'No se encontraron resultados' : placeholder}
         />
-        { touched && error && <label className="error">{error}</label> }
+        { error && <label className="error">{error}</label> }
       </Form.Field>
     )
   }

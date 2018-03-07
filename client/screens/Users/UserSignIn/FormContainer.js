@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux'
 import {
   config
 } from '../../../utils/config'
-import usersClientValidations from '../../../../common/helpers/usersClientValidations'
+import { signIn } from '../../../common/Validators'
 import Form from './Form'
 import { login, logout } from '../../../actions/authentication'
 
@@ -39,5 +39,5 @@ export default connect(
   mapDispatchToProps
 )(reduxForm({
   form: 'UserSignIn',
-  validate: usersClientValidations.signin
+  validate: signIn.validator
 })(Form))

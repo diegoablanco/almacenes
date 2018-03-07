@@ -55,13 +55,13 @@ class SignInForm extends Component {
               Ingresar
             </Button>
             <Divider section />
-            <Link to="forgotpwdsendemail">{ // eslint-disable-line jsx-a11y/anchor-is-valid
+            <Link to="/user/forgotpwdsendemail">{ // eslint-disable-line jsx-a11y/anchor-is-valid
             }
               Blanquear contraseña
             </Link>
             <br />
             { registerOpen &&
-            <Link to="signup"> {// eslint-disable-line jsx-a11y/anchor-is-valid
+            <Link to="/user/signup"> {// eslint-disable-line jsx-a11y/anchor-is-valid
             }
             Registrar Usuario
             </Link>

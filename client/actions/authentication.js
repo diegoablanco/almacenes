@@ -1,33 +1,39 @@
 import { SubmissionError } from 'redux-form'
 import { push } from 'react-router-redux'
 import errors from 'feathers-errors'
+import { formatAjvToRf } from '../common/Validation'
 import { feathersServices, feathersAuthentication } from '../feathers'
 import { config } from '../utils/config'
 import { showTimedMessage, showErrorMessage } from './messageBar'
 
 export function registerUser(user) {
-  return (dispatch) => {
-    dispatch(feathersServices.users.create(user))
-      .then(() => {
-        const message =
-                        `Un mail con el link de confirmación se ha enviado a ${user.email}. ` +
-                        `Tendrá validez por ${config.authEmails.expires.signUpEmailTokenTimeValidText}.`
-        dispatch(push('/user/signin'))
-        dispatch(showTimedMessage(message))
-      })
+  return async dispatch => {
+    try {
+      await dispatch(feathersServices.users.create(user))
+      const message =
+                          `Un mail con el link de confirmación se ha enviado a ${user.email}. ` +
+                          `Tendrá validez por ${config.authEmails.expires.signUpEmailTokenTimeValidText}.`
+      dispatch(push('/user/signin'))
+      dispatch(showTimedMessage(message))
+    } catch (error) {
+      if (error.errors) throw new SubmissionError(formatAjvToRf(error))
+    }
   }
 }
 
 export function validateUser(user) {
-  return (dispatch) => new Promise((resolve, reject) => {
-    dispatch(feathersServices.authManagement.create({
-      action: 'checkUnique',
-      value: { username: user.username, email: user.email },
-      meta: { noErrMsg: true }
-    }))
-      .then(() => resolve())
-      .catch(err => reject(err.errors))
-  })
+  return async dispatch => {
+    try {
+      await dispatch(feathersServices.authManagement.create({
+        action: 'checkUnique',
+        value: { username: user.username, email: user.email },
+        meta: { noErrMsg: true }
+      }))
+    } catch (err) {
+      Object.keys(err.errors).forEach(key => { err.errors[key] = 'no está disponible' })
+      throw err.errors
+    }
+  }
 }
 export function resendEmailToken(emailOrToken) {
   return (dispatch) => {

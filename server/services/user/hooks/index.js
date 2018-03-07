@@ -1,5 +1,8 @@
 const hooks = require('feathers-hooks-common')
-const { callbackToPromise, validate } = require('feathers-hooks-common')
+const Ajv = require('ajv')
+const { validateSchema } = require('feathers-hooks-common')
+const errorReducer = require('../../../helpers/errorReducer')
+const userSchema = require('../../../../common/validation/user.json')
 const auth = require('feathers-authentication').hooks
 const local = require('feathers-authentication-local')
 const { restrictToOwner } = require('feathers-authentication-hooks')
@@ -8,14 +11,20 @@ const config = require('config')
 const debugHook = require('../../hooks/debugHook')
 const hydrate = require('feathers-sequelize/hooks/hydrate')
 const dehydrate = require('feathers-sequelize/hooks/dehydrate')
-
-const client = require('../../../../common/helpers/usersClientValidations')
 const notifier = require('../../authentication/notifier')
 
 const { database: { idName } } = config
 const app = this;
 
 // Helpers
+
+function validate() {
+  const ajv = Ajv({ allErrors: true, $data: false })
+  ajv.addSchema(userSchema)
+  return validateSchema(userSchema, ajv, {
+    addNewError: errorReducer
+  })
+}
 
 const sendVerificationEmail = () => hook => {
   if (!hook.params.provider) { return hook; }
@@ -47,8 +56,7 @@ exports.before = (app) => {
       restrictToOwner({ ownerField: idName })
     ],
     create: [
-      // validateSchema.form(schemas.signup, schemas.options), // schema validation
-      validate(client.signup), // redo redux-form client validation
+      validate(),
       hooks.validate(values =>
         app.service(`${config.apiPath}/authManagement`).create({
           action: 'checkUnique',

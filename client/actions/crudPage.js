@@ -2,6 +2,7 @@ import { initialize as initializeReduxForm, SubmissionError } from 'redux-form'
 import * as sort from 'sortabular'
 import { entityDeletedMessage, entityCreatedMessage, entityUpdatedMessage } from './messageBar'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
+import { formatAjvToRf } from '../common/Validation'
 
 const sortingOrder = {
   FIRST: 'asc',
@@ -122,12 +123,10 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
         const messageAction = isUpdate
           ? entityUpdatedMessage()
           : entityCreatedMessage()
-        
         try {
           await dispatch(serviceAction)
         } catch (error) {
-          const details = JSON.stringify(error.errors)
-          throw new SubmissionError({ _error: `Ocurrió un error al guardar. Detalles: ${details}` })
+          throw new SubmissionError(formatAjvToRf(error))
         }
         dispatch(hideModal())
         dispatch(messageAction)
