@@ -19,7 +19,7 @@ const app = this;
 // Helpers
 
 function validate() {
-  const ajv = Ajv({ allErrors: true, $data: false })
+  const ajv = Ajv({ allErrors: true, $data: true })
   ajv.addSchema(userSchema)
   return validateSchema(userSchema, ajv, {
     addNewError: errorReducer
