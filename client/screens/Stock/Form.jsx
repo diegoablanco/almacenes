@@ -158,7 +158,7 @@ export default class StockForm extends Component {
 
     return (
       <div>
-        {error && <Message error>{error}</Message>}
+        {error && error.length > 0 && <Message error>{error}</Message>}
         <Form>
           {this.getFormContentMovementType(stockMovementType)}
         </Form>
