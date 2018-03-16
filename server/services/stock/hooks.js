@@ -10,7 +10,7 @@ const documentAttachmentSchema = require('../../../common/validation/documentAtt
 const stockItemDetailSchema = require('../../../common/validation/stockItemDetail.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
-const { setMovement, setStatus, setGoodsDescription, getIncludes, setMovementServices } = require('./helpers')
+const { setMovement, setStatus, setGoodsDescription, getIncludes, setMovementServices, setLastMovementDate } = require('./helpers')
 const { getFullStock, getStockForRelease } = require('./getHooks')
 const { processSort } = require('../helpers')
 const { setUser } = require('../hooks')
@@ -40,10 +40,10 @@ module.exports = {
     ],
     find: [
       function (hook) {
-        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets } = getIncludes(hook.app.get('database'))
+        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
-          include: [customer, targetCustomer, warehouse, status, stockBox, stockPallets]
+          include: [customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements]
         }
         processSort(hook, { customer, targetCustomer, warehouse, status })
         const { params: { query: { $sort } } } = hook
@@ -130,7 +130,7 @@ module.exports = {
       setMovement,
       setStatus
     ],
-    find: [dehydrate(), setGoodsDescription],
+    find: [dehydrate(), setGoodsDescription, setLastMovementDate],
     get: [
       dehydrate(), setMovementServices
     ],

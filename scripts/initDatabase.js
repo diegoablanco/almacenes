@@ -54,13 +54,13 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Dañados', code: 'damagedpallet' }
   ])
   documentType.bulkCreate([
-    { description: 'CMR', code: 'cmr' },
-    { description: 'Albarán', code: 'albaran' },
-    { description: 'Packing List', code: 'packlist' },
-    { description: 'Documento de Salida de Stock Firmado', code: 'signedWithdrawal' },
-    { description: 'Company title', code: 'companyTitle' },
-    { description: 'VAT registration', code: 'vatRegistration' },
-    { description: 'Trade License', code: 'tradeLicense' },
+    { description: 'CMR', code: 'cmr', type: 'stock' },
+    { description: 'Albarán', code: 'albaran', type: 'stock' },
+    { description: 'Packing List', code: 'packlist', type: 'stock' },
+    { description: 'Documento de Salida de Stock Firmado', code: 'signedWithdrawal', type: 'stock' },
+    { description: 'Company title', code: 'companyTitle', type: 'customer' },
+    { description: 'VAT registration', code: 'vatRegistration', type: 'customer' },
+    { description: 'Trade License', code: 'tradeLicense', type: 'customer' },
     { description: 'Otro', code: 'other' }
   ])
   warehouseInstruction.bulkCreate([

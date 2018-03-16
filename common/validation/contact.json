@@ -2,19 +2,31 @@
   "id": "http://xarxa.com/schemas/contact.json#",
   "title": "Customer",
   "description": "A contact",
-    "type": ["object"],
-    "properties": {
-      "name": {
-        "type": "string", "minLength": 1
-      },
-      "email": {
-        "type": "string",
-        "format": "email", "minLength": 1
-      },
-      "phones": {
-        "type": ["array", "null"],
-        "items": {"$ref": "phone.json#"}
-      }
+  "type": [
+    "object"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
     },
-    "required": ["name", "email"]
-  }
+    "email": {
+      "type": "string",
+      "format": "email",
+      "minLength": 1
+    },
+    "phones": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "phone.json#"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "email"
+  ]
+}

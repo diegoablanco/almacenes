@@ -24,6 +24,12 @@
                 "$ref": "documentAttachment.json#"
             }
         },
+        "services": {
+            "type": [
+                "array",
+                "null"
+            ]
+        },
         "reference": {
             "type": "string",
             "minLength": 1

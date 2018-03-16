@@ -7,13 +7,13 @@ import LiteralField from './LiteralField'
 import ProgressBarField from './ProgressBarField'
 import handleDeleteField from './helpers/handleDeleteField'
 
-function renderDocumentAttachment(attachmentItem, index, fields) {
+function renderDocumentAttachment(attachmentItem, index, fields, type) {
   return (
     <Segment key={index}>
       <Container style={{ paddingBottom: '5px' }}>
         <Field
           name={`${attachmentItem}.documentTypeId`}
-          component={DocumentTypePicker}
+          component={props => <DocumentTypePicker {...props} type={type} />}
         />
         <Field
           name={`${attachmentItem}.fileName`}
@@ -27,10 +27,12 @@ function renderDocumentAttachment(attachmentItem, index, fields) {
       />
     </Segment>)
 }
-function renderFields(fields) {
-  return fields.map((item, index) => renderDocumentAttachment(item, index, fields))
+function renderFields(type) {
+  return function (fields) {
+    return fields.map((item, index) => renderDocumentAttachment(item, index, fields, type))
+  }
 }
-export default function (props) {
-  return (<AttachmentFields renderFields={renderFields} {...props} />)
+export default function ({ type, ...props }) {
+  return (<AttachmentFields renderFields={renderFields(type)} {...props} />)
 }
 

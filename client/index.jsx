@@ -25,6 +25,7 @@ import {
 } from './utils/loggerRedux'
 import './utils/react-tap-event'
 import AppRouter from './router'
+import { ErrorBoundary } from './components'
 
 // __processEnvNODE_ENV__ is replaced during the webpack build process
 const nodeEnv = __processEnvNODE_ENV__; // eslint-disable-line no-undef, camelcase
@@ -69,9 +70,11 @@ configLoad(store, feathersServices)
     const render = Component => {
       ReactDOM.render(
         <Provider store={store}>
-          <Router history={history}>
-            <Component />
-          </Router>
+          <ErrorBoundary>
+            <Router history={history}>
+              <Component />
+            </Router>
+          </ErrorBoundary>
         </Provider>,
         document.getElementById('root')
       )

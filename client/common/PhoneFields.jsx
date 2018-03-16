@@ -7,9 +7,9 @@ export function getPhoneFieldCells(title, phone, options = []) {
     {
       property: 'number',
       label: 'Número',
-      formatter(value, { name: phone }) {
+      formatter(value, { name: fieldName }) {
         return (<Field
-          name={`${phone}.number`}
+          name={`${fieldName}.number`}
           iconPosition="left"
           component={renderField}
         />)
@@ -18,8 +18,8 @@ export function getPhoneFieldCells(title, phone, options = []) {
     {
       property: 'typeId',
       label: 'Tipo',
-      formatter: (value, { name: phone }) => (<Field
-        name={`${phone}.typeId`}
+      formatter: (value, { name: fieldName }) => (<Field
+        name={`${fieldName}.typeId`}
         iconPosition="left"
         component={renderSelect}
         options={options.map(option => ({

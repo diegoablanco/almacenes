@@ -1,34 +1,36 @@
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {
-  const Customer = sequelize.define('customer', {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      allowNull: false,
-      primaryKey: true
+  const Customer = sequelize.define(
+    'customer', {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true
+      },
+      companyName: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      vat: {
+        type: Sequelize.STRING
+      }
     },
-    companyName: {
-      type: Sequelize.STRING,
-      allowNull: false
-    }, 
-    vat: {
-      type: Sequelize.STRING
-    }
-  },
-  {
-    hooks: {
-      beforeCount: (options) => {
-        options.raw = true
+    {
+      hooks: {
+        beforeCount: (options) => {
+          options.raw = true
+        }
       }
     }
-  }
-)
-  Customer.associate = function ({ address, account, contact }){
+  )
+  Customer.associate = function ({ address, account, contact, documentAttachment }) {
     Customer.belongsTo(address)
     Customer.belongsTo(account)
-    Customer.belongsTo(contact, { as: 'authorizedSignatory'})
-    Customer.belongsToMany(contact, { as: 'authorizedPersons', through: 'customer_contacts', onDelete: 'CASCADE'})
+    Customer.belongsTo(contact, { as: 'authorizedSignatory' })
+    Customer.belongsToMany(documentAttachment, { as: 'documents', through: 'customer_documents' })
+    Customer.belongsToMany(contact, { as: 'authorizedPersons', through: 'customer_contacts', onDelete: 'CASCADE' })
   }
   return Customer
 }

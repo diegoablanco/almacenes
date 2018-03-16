@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Loader } from 'semantic-ui-react'
+import { Button, Loader, Message, Icon } from 'semantic-ui-react'
 import * as Table from 'reactabular-table'
 import * as sort from 'sortabular'
 import * as resolve from 'table-resolver'
@@ -11,6 +11,7 @@ class Grid extends Component {
     super(props)
     const { columns } = props
     this.columns = createColumns(...columns)
+    this.moreRowsMessage = this.moreRowsMessage.bind(this)
   }
   getActionColumns() {
     const { editHandler, deleteHandler, addHandler, enableAdd, enableEdit, canAdd } = this.props
@@ -102,6 +103,17 @@ class Grid extends Component {
     if (!props.className.includes('-none')) { className = `${props.className.includes('-asc') ? 'ascending' : 'descending'} sorted` }
     return { ...props, className }
   }
+  moreRowsMessage() {
+    const {
+      total,
+      rows
+    } = this.props
+    return (
+      <Message attached="bottom" info>
+        <Icon name="arrow down" />
+        {`Mostrando ${rows.length} de ${total}`}
+      </Message>)
+  }
   wrapWithInfiniteScroll(table) {
     const {
       handleLoadMore,
@@ -115,7 +127,7 @@ class Grid extends Component {
         hasMore={hasMore}
         useWindow
         initialLoad={false}
-        loader={isLoadingMore ? <Loader active inline="centered" /> : 'Hay más registros ...'}
+        loader={isLoadingMore ? <Loader active inline="centered" /> : this.moreRowsMessage()}
       >
         {table}
       </InfiniteScroll>)

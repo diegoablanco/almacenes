@@ -48,7 +48,7 @@ export default class StockForm extends Component {
     return {
       menuItem: 'Documentos',
       pane: <Tab.Pane attached={false} key="documents">
-        <FieldArray name="documents" component={DocumentAttachmentFields} />
+        <FieldArray name="documents" component={props => <DocumentAttachmentFields {...props} type="stock" />} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   }
@@ -91,9 +91,9 @@ export default class StockForm extends Component {
       carrierLookupActions,
       carrier
     } = this.props
-    const { getDocumentsPane, getImagesPane } = this
+    const { getDocumentsPane, getImagesPane, getServicesPane } = this
     return (
-      <IssuePane formName={form} {...{ carrierLookup, carrierLookupActions, carrier, getDocumentsPane, getImagesPane }} />
+      <IssuePane formName={form} {...{ carrierLookup, carrierLookupActions, carrier, getDocumentsPane, getImagesPane, getServicesPane }} />
     )
   }
   getInstructionsPane() {

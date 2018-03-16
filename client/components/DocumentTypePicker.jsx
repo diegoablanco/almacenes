@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Dropdown } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { uneditables } from '../selectors'
 
 class DocumentTypePicker extends Component {
   render() {
@@ -40,8 +41,12 @@ DocumentTypePicker.propTypes = {
   documentTypes: PropTypes.array.isRequired
 }
 
-const mapStateToProps = ({ uneditables: { queryResult: { documentTypes } } }) => ({
-  documentTypes: documentTypes.map(x => ({ key: x.id, value: x.id, text: x.description }))
-})
+const mapStateToProps = (state, ownProps) => {
+  let { documentTypes } = uneditables(state)
+  documentTypes = documentTypes
+    .filter(x => x.type === ownProps.type || !x.type)
+    .map(x => ({ key: x.id, value: x.id, text: x.description }))
+  return { documentTypes }
+}
 
 export default connect(mapStateToProps)(DocumentTypePicker)

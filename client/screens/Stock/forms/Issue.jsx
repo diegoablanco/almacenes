@@ -17,6 +17,7 @@ class IssueForm extends Component {
       carrierLookupActions,
       carrier,
       stock = {},
+      getServicesPane,
       getDocumentsPane,
       getImagesPane } = this.props
     return [
@@ -47,6 +48,7 @@ class IssueForm extends Component {
     </Grid>
   </Tab.Pane>
       },
+      getServicesPane(),
       getDocumentsPane(),
       getImagesPane()
     ]

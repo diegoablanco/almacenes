@@ -29,6 +29,7 @@ const mapStateToProps = (state, ownProps) => {
     isLoading,
     isLoadingMore,
     hasMore: queryResult && queryResult.total > queryResult.limit + queryResult.skip,
+    total: queryResult && queryResult.total,
     sortingColumns,
     filter,
     reloadGrid,

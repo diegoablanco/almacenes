@@ -11,22 +11,29 @@ export default function tabulatedFormFields(title, getFieldCells, additionalInfo
   function getRows(fields) {
     return fields.map((field, index) => ({ id: index, name: field }))
   }
+  function getFieldCellFormatter(fieldCellFormatter) {
+    return function (value, { rowData }) {
+      return fieldCellFormatter(value, rowData, additionalInformation)
+    }
+  }
   function getColumns(fields) {
     return getFieldCells(title, fields, additionalInformation).map(fieldCell => ({
       property: fieldCell.property,
-      cellFormatters: [(value, { rowData }) => fieldCell.formatter(value, rowData, additionalInformation)],
+      cellFormatters: [getFieldCellFormatter(fieldCell.formatter)],
       label: fieldCell.label
     }))
   }
-  return ({ fields }) => (
-    <Grid
-      canAdd
-      enableAdd
-      enableEdit={false}
-      addHandler={addHandler(fields)}
-      deleteHandler={fields.remove}
-      columns={getColumns(fields)}
-      rows={getRows(fields)}
-    />
-  )
+  return function ({ fields }) {
+    return (
+      <Grid
+        canAdd
+        enableAdd
+        enableEdit={false}
+        addHandler={addHandler(fields)}
+        deleteHandler={fields.remove}
+        columns={getColumns(fields)}
+        rows={getRows(fields)}
+      />
+    )
+  }
 }

@@ -1,5 +1,5 @@
 const getDatabase = require('../server/database')
-const getCustomerIncludes = require('../server/services/customers/helper')
+const { getIncludes } = require('../server/services/customers/helpers')
 const { createCustomer, createCarrier, createWarehouse, createService } = require('./fakes')
 
 const sequelize = getDatabase()
@@ -7,19 +7,10 @@ const sequelize = getDatabase()
 sequelize.sync({ force: false }).then(async () => {
   const {
     customer: customers,
-    user,
     carrier,
     warehouse,
     service } = sequelize.models
-  await user.create({
-    name: 'diego',
-    email: 'diegoablanco@gmail.com',
-    username: 'diego',
-    password: '$2a$10$dQy8UbosNI5J2OYtQ0QbyuqQ/Yim5upMI6YP3HGsYwfqQmEV.x1Si',
-    roles: 'superAdmin admin',
-    isVerified: 1
-  })
-  const customerIncludes = getCustomerIncludes(sequelize)
+  const customerIncludes = getIncludes(sequelize)
   for (let index = 0; index < 51; index += 1) {
     customers.create(createCustomer(), { include: [
       customerIncludes.address,

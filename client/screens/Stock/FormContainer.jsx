@@ -15,12 +15,12 @@ import StockForm from './Form'
 
 export const formName = 'Stock'
 function getValidatorByMovementType(movementType) {
-  if (movementType.code === 'issue') {
+  if (movementType === 'issue') {
     return getValidator(stockIssueSchema, [
       addressSchema
     ])
   }
-  if (movementType.code === 'release') {
+  if (movementType === 'release') {
     return getValidator(stockReleaseSchema)
   }
   return getValidator(stockSchema, [
@@ -31,6 +31,9 @@ function getValidatorByMovementType(movementType) {
   ])
 }
 
+function validator(values, propsToValidate) {
+  return getValidatorByMovementType(values.movementType)(values, propsToValidate)
+}
 const mapStateToProps = (state, ownProps) => {
   const {
     customerLookup,
@@ -68,7 +71,8 @@ const mapStateToProps = (state, ownProps) => {
     warehouseLookup,
     warehouseLookupActions: { search: searchWarehouse, clear: clearWarehouse },
     form: formName,
-    validate: getValidatorByMovementType(stockMovementType), // eslint-disable-line object-shorthand
+    // validate: getValidatorByMovementType(stockMovementType),
+    validate: validator,
     availableInstructions: state.uneditables.queryResult.warehouseInstructions,
     availableStockItemDetailTypes: state.uneditables.queryResult.stockItemDetailTypes,
     availableServices,

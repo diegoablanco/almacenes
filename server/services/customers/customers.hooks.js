@@ -1,6 +1,7 @@
 const auth = require('feathers-authentication').hooks
 const Ajv = require('ajv')
 const { validateSchema, setNow } = require('feathers-hooks-common')
+const dehydrate = require('feathers-sequelize/hooks/dehydrate')
 const customerSchema = require('../../../common/validation/customer.json')
 const contactSchema = require('../../../common/validation/contact.json')
 const phoneSchema = require('../../../common/validation/phone.json')
@@ -9,73 +10,8 @@ const accountSchema = require('../../../common/validation/account.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 const { processSort } = require('../helpers')
+const { getIncludes } = require('./helpers')
 
-function getIncludes(database) {
-  const {
-    models: {
-      contact,
-      phone,
-      address,
-      account
-    }
-  } = database
-
-  return {
-    account: {
-      model: account,
-      include: [address]
-    },
-    address: {
-      model: address
-    },
-    authorizedSignatory: {
-      model: contact,
-      as: 'authorizedSignatory',
-      include: [{ model: phone,
-        as: 'phones',
-        attributes: ['number'],
-        through: {
-          attributes: []
-        } }]
-    },
-    authorizedPersons: {
-      model: contact,
-      as: 'authorizedPersons',
-      through: 'customer_contacts',
-      include: [{ model: phone, as: 'phones' }]
-    }
-  }
-}
-function addIncludes(hook) {
-  const {
-    models: {
-      contact,
-      phone,
-      address,
-      account
-    }
-  } = hook.app.get('database')
-  hook.params.sequelize = hook.params.sequelize || {}
-  hook.params.sequelize.include = [{
-    model: account,
-    include: [address]
-  },
-  {
-    model: address
-  },
-  {
-    model: contact,
-    as: 'authorizedSignatory',
-    include: [{ model: phone, as: 'phones' }]
-  },
-  {
-    model: contact,
-    as: 'authorizedPersons',
-    through: 'customer_contacts',
-    include: [{ model: phone, as: 'phones' }]
-  }
-  ]
-}
 function validate() {
   const ajv = Ajv({ allErrors: true })
   ajv.addSchema(customerSchema)
@@ -107,16 +43,23 @@ module.exports = {
     ],
     get: [
       function (hook) {
+        const { account, address, authorizedSignatory, authorizedPersons, documents } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
-          raw: false
+          raw: false,
+          include: [account, address, authorizedSignatory, authorizedPersons, documents]
         }
-      },
-      addIncludes
+      }
     ],
     create: [
       validate(),
       setNow('createdAt'),
-      addIncludes
+      function (hook) {
+        const { account, address, authorizedSignatory, authorizedPersons, documents } = getIncludes(hook.app.get('database'))
+        hook.params.sequelize = {
+          raw: false,
+          include: [account, address, authorizedSignatory, authorizedPersons, documents]
+        }
+      }
     ],
     update: [
       validate(),
@@ -124,38 +67,19 @@ module.exports = {
       function (hook) {
         const {
           models: {
-            customer: customerModel,
-            address: addressModel,
-            contact: contactModel,
-            phone: phoneModel,
-            account: accountModel
+            customer
           }
         } = hook.app.get('database')
+        const { account, address, authorizedSignatory, authorizedPersons, documents } = getIncludes(hook.app.get('database'))
         const filter = {
           where: {
             id: hook.data.id
           },
-          include: [{
-            model: accountModel,
-            include: [addressModel]
-          },
-          addressModel,
-          {
-            model: contactModel,
-            as: 'authorizedSignatory',
-            include: [{ model: phoneModel, as: 'phones', through: 'contact_phones' }]
-          },
-          {
-            model: contactModel,
-            as: 'authorizedPersons',
-            through: 'customer_contacts',
-            include: [{ model: phoneModel, as: 'phones', through: 'contact_phones' }]
-          }
-          ]
+          include: [account, address, authorizedSignatory, authorizedPersons, documents]
         }
-        customerModel.findOne(filter).then((c) => {
+        customer.findOne(filter).then((c) => {
           c.set(hook.data)
-          createOrUpdateAssociations(c, hook.data, c.$options.include)
+          createOrUpdateAssociations(c, hook.data, c._options.include)
         })
       }],
     patch: [],
@@ -170,6 +94,11 @@ module.exports = {
         if (context.result.dataValues.address === null) { delete context.result.dataValues.address }
         if (context.result.dataValues.authorizedSignatory === null) { delete context.result.dataValues.authorizedSignatory }
         if (context.result.dataValues.account === null) { delete context.result.dataValues.account } else if (context.result.dataValues.account.address === null) { delete context.result.dataValues.account.address }
+      },
+      dehydrate(),
+      context => {
+        context.result.services = [
+          { id: 3, serviceId: 4, rate: 859.13 }]
       }],
     create: [],
     update: [],
@@ -184,6 +113,11 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [
+      context => {
+        var a = 1
+       // The DELETE statement conflicted with the REFERENCE constraint (".+"). The conflict occurred in database (".+"), table (".+"), column ('.+')
+      }
+    ]
   }
 }

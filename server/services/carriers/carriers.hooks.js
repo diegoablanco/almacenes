@@ -123,7 +123,7 @@ module.exports = {
         carrierModel.findOne(filter).then(function (c) {          
           const { address, authorizedSignatory, account } = hook.data
           c.set(hook.data)
-          createOrUpdateAssociations(c, hook.data, c.$options.include)
+          createOrUpdateAssociations(c, hook.data, c._options.include)
       })
       }],
     patch: [],

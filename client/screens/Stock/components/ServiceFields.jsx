@@ -11,22 +11,20 @@ export default function (setServiceRate) {
       {
         property: 'serviceId',
         label: 'Servicio',
-        formatter(value, { id: index, name }) {
-          return (<Field
-            name={`${name}.serviceId`}
-            component={SelectOrLabel}
-            onChange={(e, serviceId) => handleDetailSelect(index, serviceId)}
-            options={availableServices.map(option => ({
+        formatter: (value, { id: index, name }) => (<Field
+          name={`${name}.serviceId`}
+          component={SelectOrLabel}
+          onChange={(e, serviceId) => handleDetailSelect(index, serviceId)}
+          options={availableServices.map(option => ({
               key: option.id,
               value: option.id,
               text: option.description
             }))}
-          />)
-          // <Field
-          //   name={`${name}.description`}
-          //   component={renderField}
-          // />
-        }
+        />)
+        // <Field
+        //   name={`${name}.description`}
+        //   component={renderField}
+        // />
       },
       {
         property: 'rate',

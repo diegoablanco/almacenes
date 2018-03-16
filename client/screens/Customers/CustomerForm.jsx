@@ -6,11 +6,20 @@ import renderContactFields from '../../common/ContactFields'
 import { getPhoneFieldCells } from '../../common/PhoneFields'
 import tabulatedFormFields from '../../utils/tabulatedFormFields'
 import { Address } from '../../components'
+import DocumentAttachmentFields from '../../components/DocumentAttachmentFields'
 
 class CustomerForm extends Component {
   constructor(props) {
     super(props)
     this.getPanes = this.getPanes.bind(this)
+  }
+  getDocumentsPane() {
+    return {
+      menuItem: 'Documentos',
+      pane: <Tab.Pane attached={false} key="documents">
+        <FieldArray name="documents" component={props => (<DocumentAttachmentFields {...props} type="customer" />)} />
+      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
+    }
   }
   getPanes() {
     const { extras: { phoneTypes } } = this.props
@@ -91,7 +100,8 @@ class CustomerForm extends Component {
       <Address />
     </FormSection>
     <FieldArray name="authorizedPersons" component={renderContactFields('Personas Autorizadas', 'Persona Autorizada', phoneTypes)} />
-  </Tab.Pane> }
+  </Tab.Pane> },
+      this.getDocumentsPane()
     ]
     return panes
   }

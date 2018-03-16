@@ -1,10 +1,11 @@
-module.exports = function getIncludes(database) {
+module.exports = function (database) {
   const {
     models: {
       contact,
       phone,
       address,
-      account
+      account,
+      documentAttachment
     }
   } = database
   return {
@@ -18,15 +19,18 @@ module.exports = function getIncludes(database) {
     authorizedSignatory: {
       model: contact,
       as: 'authorizedSignatory',
-      include: [{ model: phone,
-        as: 'phones'
-      }]
+      include: [{ model: phone, as: 'phones' }]
     },
     authorizedPersons: {
       model: contact,
       as: 'authorizedPersons',
       through: 'customer_contacts',
       include: [{ model: phone, as: 'phones' }]
+    },
+    documents: {
+      model: documentAttachment,
+      as: 'documents',
+      through: 'customer_documents'
     }
   }
 }

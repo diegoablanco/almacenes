@@ -29,6 +29,8 @@ function errorMessage(error, customError) {
 
 export function formatAjvToRf(validationResult, localizeFunc = localize.es, customError) {
   const errors = {}
+  if(!Array.isArray(validationResult.errors))
+    return { _error: validationResult.message }
   localizeFunc(validationResult.errors);
   validationResult.errors.forEach((_error) => {
     const error = _error.params.errors ? _error.params.errors[0] : _error;
