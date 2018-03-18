@@ -1,10 +1,10 @@
 import React from 'react'
-import { Field, FieldArray, formValues } from 'redux-form'
+import { Field, FieldArray } from 'redux-form'
 import { Grid, Tab, Form } from 'semantic-ui-react'
-import { renderCheckbox, renderRadio, renderField, parseToInt } from '../../../utils/formHelpers'
+import { renderCheckbox, renderField, parseToInt } from '../../../utils/formHelpers'
 import AditionalStockDetailFields from '../components/AditionalStockDetailFields'
 
-export default function getGoodsPane({ availableStockItemDetailTypes }) {
+export default function getGoodsPane({ availableStockItemDetailTypes, stockMovementType }) {
   const boxesPane = {
     menuItem: 'Cajas',
     pane: <Tab.Pane attached={false} key="boxes">
@@ -33,45 +33,22 @@ export default function getGoodsPane({ availableStockItemDetailTypes }) {
               component={renderField}
             />
           </Form.Group>
-          <Field
-            name="boxes.opened"
-            label="Abiertas"
-            component={renderCheckbox}
-          />
-          <Field
-            name="boxes.originalSeals"
-            label="Precintos originales"
-            component={renderCheckbox}
-          />
-          <Field
-            name="boxes.resealed"
-            label="Reprecintadas"
-            component={renderCheckbox}
-          />
-          <Field
-            name="boxes.serialNumbers"
-            label="Números de serie en cada caja"
-            component={renderCheckbox}
-          />
-          <Field
-            name="boxes.shrinkWapped"
-            label="Con precinto"
-            radioValue="sealed"
-            value="sealed"
-            component={formValues({ currentValue: 'boxes.shrinkWapped' })(renderRadio)}
-          />
-          <Field
-            name="boxes.shrinkWapped"
-            label="Sin precinto"
-            radioValue="unsealed"
-            value="unsealed"
-            component={formValues({ currentValue: 'boxes.shrinkWapped' })(renderRadio)}
-          />
           <FieldArray
             name="boxes.details"
             label="Detalles Adicionales"
             component={AditionalStockDetailFields}
-            availableDetailTypes={availableStockItemDetailTypes.filter(x => ['signOfHandling', 'crashed', 'damaged', 'wet'].includes(x.code)).map(x => ({ key: x.id, value: x.id, text: x.description }))}
+            availableDetailTypes={availableStockItemDetailTypes.filter(x => [
+              'signOfHandling',
+              'crashed',
+              'damaged',
+              'wet',
+              'opened',
+              'originalSeals',
+              'resealed',
+              'serialNumbers',
+              'sealed',
+              'unsealed'
+            ].includes(x.code)).map(x => ({ key: x.id, value: x.id, text: x.description }))}
           />
         </Grid.Column>
       </Grid>
@@ -121,26 +98,18 @@ export default function getGoodsPane({ availableStockItemDetailTypes }) {
               component={renderField}
             />
           </Form.Group>
-          <Field
-            name="palets.shrinkWrapped"
-            label="Retractilados"
-            component={renderCheckbox}
-          />
-          <Field
-            name="palets.sealOverShrinkWrap"
-            label="Precinto sobre retráctil"
-            component={renderCheckbox}
-          />
-          <Field
-            name="palets.hoopStrap"
-            label="Fleje"
-            component={renderCheckbox}
-          />
           <FieldArray
             name="palets.details"
             label="Detalles Adicionales"
             component={AditionalStockDetailFields}
-            availableDetailTypes={availableStockItemDetailTypes.filter(x => ['signOfHandling', 'damagedpallet', 'wetpallet'].includes(x.code)).map(x => ({ key: x.id, value: x.id, text: x.description }))}
+            availableDetailTypes={availableStockItemDetailTypes.filter(x => [
+              'signOfHandling',
+              'damagedpallet',
+              'wetpallet',
+              'shrinkWrapped',
+              'sealOverShrinkWrap',
+              'hoopStrap'
+          ].includes(x.code)).map(x => ({ key: x.id, value: x.id, text: x.description }))}
           />
         </Grid.Column>
       </Grid>
@@ -148,11 +117,12 @@ export default function getGoodsPane({ availableStockItemDetailTypes }) {
   }
   return (
     <div>
-      <Field
+
+      { stockMovementType.code === 'receive' && <Field
         name="onHold"
         label="On Hold"
         component={renderCheckbox}
-      />
+      /> }
       <Tab
         panes={[boxesPane, paletsPane]}
         menu={{ secondary: true, pointing: true }}

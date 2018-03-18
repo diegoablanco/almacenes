@@ -52,9 +52,8 @@ export default function getCrudPageActions() {
         if (stockMovementTypeCode === 'release') {
           dispatch(change('Stock', 'releaseType', 'full'))
         }
-        if (stockMovementTypeCode === 'issue') {
-          dispatch(change('Stock', 'date', new Date()))
-        }
+        dispatch(change('Stock', 'date', new Date()))
+        
         const query = {
           $select: ['id', 'description', 'rate'],
           $limit: 0,

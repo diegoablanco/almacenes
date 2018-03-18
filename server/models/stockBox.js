@@ -12,21 +12,6 @@ module.exports = function (sequelize) {
       type: Sequelize.INTEGER,
       allowNull: false
     },
-    opened: {
-      type: Sequelize.BOOLEAN, defaultValue: false
-    },
-    originalSeals: {
-      type: Sequelize.BOOLEAN, defaultValue: false
-    },
-    resealed: {
-      type: Sequelize.BOOLEAN, defaultValue: false
-    },
-    serialNumbers: {
-      type: Sequelize.BOOLEAN, defaultValue: false
-    },
-    shrinkWapped: {
-      type: Sequelize.STRING
-    },
     individualWeight: {
       type: Sequelize.DataTypes.DECIMAL(10, 2),
       defaultValue: 0

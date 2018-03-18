@@ -71,7 +71,6 @@ const mapStateToProps = (state, ownProps) => {
     warehouseLookup,
     warehouseLookupActions: { search: searchWarehouse, clear: clearWarehouse },
     form: formName,
-    // validate: getValidatorByMovementType(stockMovementType),
     validate: validator,
     availableInstructions: state.uneditables.queryResult.warehouseInstructions,
     availableStockItemDetailTypes: state.uneditables.queryResult.stockItemDetailTypes,

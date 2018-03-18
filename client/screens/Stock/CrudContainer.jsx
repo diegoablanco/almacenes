@@ -21,9 +21,9 @@ class StockCrud extends Component {
         cellFormatters: [(status, { rowData }) => (<StatusColumn status={status} rowData={rowData} />)]
       },
       { property: 'reference', label: 'Referencia' },
+      { property: 'customer.companyName', label: 'Cliente' },
       { property: 'goods', label: 'Mercadería' },
       { property: 'warehouse.name', label: 'Almacén', sortable: true },
-      { property: 'customer.companyName', label: 'Cliente' },
       { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' },
       { cellFormatters: [(a, { rowData: { id, status } }) => {
         switch (status.code) {
@@ -78,6 +78,7 @@ class StockCrud extends Component {
           formModal={FormModal}
           toolbar={ToolbarContainer}
           crudActions={crudActions}
+          enableDelete={false}
           // enableActionColumn={false}
         />
       </div>

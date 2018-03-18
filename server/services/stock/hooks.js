@@ -11,7 +11,7 @@ const stockItemDetailSchema = require('../../../common/validation/stockItemDetai
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 const { setMovement, setStatus, setGoodsDescription, getIncludes, setMovementServices, setLastMovementDate } = require('./helpers')
-const { getFullStock, getStockForRelease } = require('./getHooks')
+const { getFullStock, getStockForRelease, getStockForIssue } = require('./getHooks')
 const { processSort } = require('../helpers')
 const { setUser } = require('../hooks')
 
@@ -72,8 +72,10 @@ module.exports = {
           case 'preReceive':
           case 'receive':
           case 'edit':
-          case 'issue':
             getFullStock(hook)
+            break
+          case 'issue':
+            getStockForIssue(hook)
             break
           case 'release':
             getStockForRelease(hook)

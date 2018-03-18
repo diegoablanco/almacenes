@@ -49,9 +49,18 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Abolladas', code: 'crashed' },
     { description: 'Dañadas', code: 'damaged' },
     { description: 'Mojadas', code: 'wet' },
+    { description: 'Abiertas', code: 'opened' },
+    { description: 'Precintos originales', code: 'originalSeals' },
+    { description: 'Reprecintadas', code: 'resealed' },
+    { description: 'Números de serie en cada caja', code: 'serialNumbers' },
+    { description: 'Con precinto', code: 'sealed' },
+    { description: 'Sin precinto', code: 'unsealed' },
 
     { description: 'Mojados', code: 'wetpallet' },
-    { description: 'Dañados', code: 'damagedpallet' }
+    { description: 'Dañados', code: 'damagedpallet' },
+    { description: 'Retractilados', code: 'shrinkWrapped' },
+    { description: 'Precinto sobre retráctil', code: 'sealOverShrinkWrap' },
+    { description: 'Fleje', code: 'hoopStrap' }
   ])
   documentType.bulkCreate([
     { description: 'CMR', code: 'cmr', type: 'stock' },

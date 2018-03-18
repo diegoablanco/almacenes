@@ -10,7 +10,7 @@ module.exports = function (sequelize) {
     },
     date: {
       type: Sequelize.DataTypes.DATE,
-      default: Sequelize.DataTypes.Now
+      defaultValue: Sequelize.Now
     }
   })
   StockMovement.associate = function ({ stockMovementType, user }) {

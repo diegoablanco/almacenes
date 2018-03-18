@@ -6,6 +6,7 @@ import { Grid } from 'semantic-ui-react'
 import LookupSelectField from '../../../components/LookupSelectField'
 import GoodsResume from '../components/GoodsResume'
 import { renderRadio, renderField, parseToInt, renderCheckbox } from '../../../utils/formHelpers'
+import { DateTimeField } from '../../../components'
 
 class ReleaseForm extends Component {
   render() {
@@ -19,6 +20,11 @@ class ReleaseForm extends Component {
       <Grid verticalAlign="middle" centered textAlign="center">
         <Grid.Column >
           <GoodsResume stock={stock} />
+          <Field
+            name="date"
+            component={DateTimeField}
+            label="Fecha"
+          />
           <Field
             name="targetCustomerId"
             component={LookupSelectField}

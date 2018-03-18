@@ -22,15 +22,6 @@ module.exports = function (sequelize) {
       defaultValue: 0,
       allowNull: false
     },
-    shrinkWapped: {
-      type: Sequelize.BOOLEAN, defaultValue: false
-    },
-    sealOverShrinkWrap: {
-      type: Sequelize.BOOLEAN, defaultValue: false
-    },
-    hoopStrap: {
-      type: Sequelize.BOOLEAN, defaultValue: false
-    },
     individualWeight: {
       type: Sequelize.DataTypes.DECIMAL(10, 2),
       defaultValue: 0

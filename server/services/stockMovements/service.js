@@ -1,5 +1,5 @@
 const config = require('config')
-const errors = require('feathers-errors');
+const { BadRequest } = require('feathers-errors');
 const hooks = require('./hooks')
 const getDatabase = require('../../../server/database')
 const { getIncludes } = require('../stock/helpers')
@@ -20,10 +20,12 @@ module.exports = function () {
     {
       async create(data, { user }) {
         try {
-          const { models: { stock: stocks } } = getDatabase()
+          const sequelize = getDatabase()
+          const { models: { stock: stocks } } = sequelize
           const { stockBox, stockPallets } = getIncludes(getDatabase())
           const {
             id,
+            date,
             movementType,
             releaseType,
             movementTypeId,
@@ -38,47 +40,49 @@ module.exports = function () {
             include: [stockBox, stockPallets]
           }
           const stock = await stocks.findOne(filter)
-          await stock.createMovement({ stockMovementTypeId: movementTypeId, createdById: user.id })
-          const sameCustomer = !(targetCustomerId && targetCustomerId !== stock.customerId)
-          switch (movementType) {
-            case 'release':
-            // release total, mismo cliente o sin cliente destinatario: cambiar estado del stock a liberado
-            // release total, diferente cliente dest: crear stock (onHold o no) para el cliente dest, cambiar estado stock a Entregado, mercadería a 0
-            // release parcial, mismo cliente o sin cliente destinatario: crear nuevo stock para el cliente, restar mercadería
-            // release parcial, diferente cliente dest: crear stock (onHold o no) para el cliente dest, restar mercadería
-              if (releaseType === 'full') {
-                if (sameCustomer) {
-                  setStatusByCode(stock, 'released')
+          await sequelize.transaction(async transaction => {
+            await stock.createMovement({ stockMovementTypeId: movementTypeId, createdById: user.id, date }, { transaction })
+            const sameCustomer = !(targetCustomerId && targetCustomerId !== stock.customerId)
+            switch (movementType) {
+              case 'release':
+              // release total, mismo cliente o sin cliente destinatario: cambiar estado del stock a liberado
+              // release total, diferente cliente dest: crear stock (onHold o no) para el cliente dest, cambiar estado stock a Entregado, mercadería a 0
+              // release parcial, mismo cliente o sin cliente destinatario: crear nuevo stock para el cliente, restar mercadería
+              // release parcial, diferente cliente dest: crear stock (onHold o no) para el cliente dest, restar mercadería
+                if (releaseType === 'full') {
+                  if (sameCustomer) {
+                    setStatusByCode(stock, 'released', transaction)
+                  } else {
+                    await releaseToCustomer({ stock, customerId: targetCustomerId, onHold, transaction })
+                    await reduceGoodsTotally(stock, transaction)
+                  }
                 } else {
-                  await releaseToCustomer({ stock, customerId: targetCustomerId, onHold })
-                  await reduceGoodsTotally(stock)
+                  if (sameCustomer) {
+                    await releaseToCustomer({ stock, customerId: stock.customerId, quantity, transaction })
+                  } else {
+                    await releaseToCustomer({ stock, customerId: targetCustomerId, quantity, onHold, transaction })
+                  }
+                  await reduceGoodsBy(stock, quantity, transaction)
                 }
-              } else {
-                if (sameCustomer) {
-                  await releaseToCustomer({ stock, customerId: stock.customerId, quantity })
-                } else {
-                  await releaseToCustomer({ stock, customerId: targetCustomerId, quantity, onHold })
-                }
-                await reduceGoodsBy(stock, quantity)
-              }
-              break
-            case 'issue':
-              await issue({ stock, ...data })
-              setStatusByCode(stock, 'fulfilled')
-              break
-            default:
-              break
-          }
-          await stock.save()
+                break
+              case 'issue':
+                await issue({ stock, ...data, transaction })
+                await setStatusByCode(stock, 'fulfilled', transaction)
+                break
+              default:
+                break
+            }
+            await stock.save({ transaction })
+          })
           return {}
         } catch (error) {
-          return new errors.GeneralError(error)
+          throw new BadRequest({ errors: error.message })
         }
       }
     }
   )
 
-  const service = app.service(servicePath);
+  const service = app.service(servicePath)
 
   service.hooks(hooks)
 }

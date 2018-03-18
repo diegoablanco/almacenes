@@ -31,6 +31,7 @@ class CrudContainer extends Component {
       id,
       enableAdd,
       enableEdit,
+      enableDelete,
       enableActionColumn,
       bindActions: {
         createOrUpdate,
@@ -51,8 +52,7 @@ class CrudContainer extends Component {
           selectors={selectors}
           crudActions={crudActions}
           toolbar={toolbar}
-          enableAdd={enableAdd}
-          enableEdit={enableEdit}
+          {...{ enableAdd, enableEdit, enableDelete }}
           addHandler={showFormModal}
           enableActionColumn={enableActionColumn}
         />

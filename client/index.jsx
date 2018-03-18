@@ -25,7 +25,6 @@ import {
 } from './utils/loggerRedux'
 import './utils/react-tap-event'
 import AppRouter from './router'
-import { ErrorBoundary } from './components'
 
 // __processEnvNODE_ENV__ is replaced during the webpack build process
 const nodeEnv = __processEnvNODE_ENV__; // eslint-disable-line no-undef, camelcase
@@ -41,12 +40,11 @@ const store = configureStore(history);
 // Sign in with the JWT currently in localStorage
 const token = localStorage['feathers-jwt'] // eslint-disable-line no-undef
 if (token) {
-  store.dispatch(feathersAuthentication.authenticate(
-    {
-      strategy: 'jwt',
-      type: 'local',
-      accessToken: token
-    }))
+  store.dispatch(feathersAuthentication.authenticate({
+    strategy: 'jwt',
+    type: 'local',
+    accessToken: token
+  }))
     .catch(err => {
       console.log('authenticate catch', err) // eslint-disable-line no-console
       if (err instanceof errors.NotAuthenticated) store.dispatch(push('/user/signin'))
@@ -70,11 +68,9 @@ configLoad(store, feathersServices)
     const render = Component => {
       ReactDOM.render(
         <Provider store={store}>
-          <ErrorBoundary>
-            <Router history={history}>
-              <Component />
-            </Router>
-          </ErrorBoundary>
+          <Router history={history}>
+            <Component />
+          </Router>
         </Provider>,
         document.getElementById('root')
       )

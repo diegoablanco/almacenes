@@ -14,7 +14,15 @@ class Grid extends Component {
     this.moreRowsMessage = this.moreRowsMessage.bind(this)
   }
   getActionColumns() {
-    const { editHandler, deleteHandler, addHandler, enableAdd, enableEdit, canAdd } = this.props
+    const {
+      editHandler,
+      deleteHandler,
+      addHandler,
+      enableAdd,
+      enableEdit,
+      enableDelete,
+      canAdd
+    } = this.props
     return [
       {
         property: 'id',
@@ -28,14 +36,15 @@ class Grid extends Component {
                     editHandler(id)
                 }}
               />}
-            <Button
-              negative
-              icon="delete"
-              onClick={(e) => {
+            {enableDelete &&
+              <Button
+                negative
+                icon="delete"
+                onClick={(e) => {
                   e.preventDefault()
                   deleteHandler(id)
               }}
-            />
+              />}
           </Button.Group>)] // eslint-disable-line react/jsx-closing-tag-location
         },
         header: {
@@ -148,6 +157,7 @@ Grid.defaultProps = {
   enableSort: false,
   enableAdd: false,
   enableEdit: true,
+  enableDelete: true,
   rowKey: 'id'
 }
 export default Grid

@@ -62,12 +62,13 @@ export default class StockForm extends Component {
   }
   getGoodsPane() {
     const {
-      availableStockItemDetailTypes
+      availableStockItemDetailTypes,
+      extras: { stockMovementType }
     } = this.props
     return {
-      menuItem: 'Mercadería',
+      menuItem: 'Mercancía',
       pane: <Tab.Pane attached={false} key="goods">
-        <GoodsPane {...{ availableStockItemDetailTypes }} />
+        <GoodsPane {...{ availableStockItemDetailTypes, stockMovementType }} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   }
@@ -138,7 +139,7 @@ export default class StockForm extends Component {
     } = this
     switch (movementType.code) {
       case 'preReceive':
-        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane(), getGoodsPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
       case 'release':
         return getReleasePane()
       case 'issue':

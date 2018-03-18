@@ -45,6 +45,24 @@ module.exports = {
       ]
     }
   },
+  getStockForIssue(hook) {
+    const {
+      carrier,
+      stockBox,
+      stockPallets,
+      services
+    } = getIncludes(hook.app.get('database'))
+    hook.params.sequelize = {
+      raw: false,
+      attributes: ['id', 'carrierId'],
+      include: [
+        { ...carrier, attributes: ['id', 'companyName'] },
+        stockBox,
+        stockPallets,
+        services
+      ]
+    }
+  },
   getStockForRelease(hook) {
     const {
       customer,

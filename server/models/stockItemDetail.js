@@ -9,8 +9,7 @@ module.exports = function (sequelize) {
       primaryKey: true
     },
     description: {
-      type: Sequelize.STRING,
-      allowNull: false
+      type: Sequelize.STRING
     },
     quantity: {
       type: Sequelize.INTEGER,
