@@ -1,18 +1,38 @@
 {
-    "id": "http://xarxa.com/schemas/customer.json#",
-    "title": "Warehouse customer",
-    "description": "A warehouse customer",
-    "type": "object",
-    "properties": {
-      "companyName": {
-        "type": "string", "minLength": 1
-      },
-      "authorizedSignatory": {"$ref": "contact.json#"},
-      "address": {"$ref": "address.json#"},
-      "account": {"$ref": "account.json#"},
-      "authorizedPersons": {
-        "items": {"$ref": "contact.json#"}
+  "id": "http://xarxa.com/schemas/customer.json#",
+  "title": "Warehouse customer",
+  "description": "A warehouse customer",
+  "type": "object",
+  "properties": {
+    "companyName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authorizedSignatory": {
+      "$ref": "contact.json#"
+    },
+    "address": {
+      "$ref": "address.json#"
+    },
+    "account": {
+      "$ref": "account.json#"
+    },
+    "authorizedPersons": {
+      "items": {
+        "$ref": "contact.json#"
       }
     },
-    "required": ["companyName"]
+    "documents": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "documentAttachment.json#"
+      }
+    }
+  },
+  "required": [
+    "companyName"
+  ]
 }

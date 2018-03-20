@@ -3,23 +3,13 @@ import { connect } from 'react-redux'
 import { feathersServices } from '../../feathers'
 import FormContainer from '../../common/FormContainer'
 import CustomerForm from './CustomerForm'
-
-import customerSchema from '../../../common/validation/customer.json'
-import accountSchema from '../../../common/validation/account.json'
-import contactSchema from '../../../common/validation/contact.json'
-import addressSchema from '../../../common/validation/address.json'
-import phoneSchema from '../../../common/validation/phone.json'
-import getValidator from '../../common/Validation'
+import { customer } from '../../common/Validators'
 
 export const formName = 'Customer'
 class CustomerFormContainer extends Component {
   constructor(props) {
     super(props)
     this.defaultData = {}
-    this.getCustomerValidator = () => getValidator(
-      customerSchema,
-      [accountSchema, addressSchema, contactSchema, phoneSchema]
-    )
   }
 
 
@@ -32,7 +22,7 @@ class CustomerFormContainer extends Component {
       id={id}
       form={CustomerForm}
       formName={formName}
-      validate={this.getCustomerValidator()}
+      validate={customer.validator}
       defaultData={this.defaultData}
     />)
   }

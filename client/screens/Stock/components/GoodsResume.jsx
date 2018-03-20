@@ -4,6 +4,10 @@ import { Statistic, Segment } from 'semantic-ui-react'
 import getUneditables from '../../../selectors/uneditables'
 
 class GoodsResume extends Component {
+  constructor(props) {
+    super(props)
+    this.renderInfo = this.renderInfo.bind(this)
+  }
   renderBoxesInfo({ quantity, individualWeight }) {
     const items = [
       { key: 'quantity', label: 'Cantidad', value: `${quantity} Cajas` },
@@ -27,12 +31,26 @@ class GoodsResume extends Component {
       <Statistic.Group items={items} />
     )
   }
+  renderInfo() {
+    const {
+      stock: {
+        quantity,
+        reference
+      }
+    } = this.props
+    const items = [
+      { key: 'reference', label: 'Referencia', value: `${reference}` },
+      { key: 'quantity', label: 'Cantidad de Unidades', value: `${quantity}` }
+    ]
+    return (
+      <Statistic.Group items={items} />
+    )
+  }
   render() {
-    const { stock: { boxes, palets } = {} } = this.props
+    const { stock } = this.props
     return (
       <Segment>
-        { boxes && this.renderBoxesInfo(boxes) }
-        { palets && this.renderPaletsInfo(palets) }
+        { stock && this.renderInfo() }
       </Segment>
     )
   }

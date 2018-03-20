@@ -33,11 +33,14 @@
         },
         {
           "required": [
-            "quantity"
+            "releaseQuantity"
           ],
           "properties": {
-            "quantity": {
-              "minimum": 1
+            "releaseQuantity": {
+              "minimum": 1,
+              "maximum": {
+                "$data": "1/quantity"
+              }
             }
           }
         }

@@ -123,6 +123,14 @@ export default function getGoodsPane({ availableStockItemDetailTypes, stockMovem
         label="On Hold"
         component={renderCheckbox}
       /> }
+      <Field
+        name="quantity"
+        type="text"
+        label="Cantidad de Unidades"
+        parse={parseToInt}
+        component={renderField}
+        required
+      />
       <Tab
         panes={[boxesPane, paletsPane]}
         menu={{ secondary: true, pointing: true }}

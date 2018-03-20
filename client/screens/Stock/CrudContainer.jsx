@@ -22,7 +22,7 @@ class StockCrud extends Component {
       },
       { property: 'reference', label: 'Referencia' },
       { property: 'customer.companyName', label: 'Cliente' },
-      { property: 'goods', label: 'Mercadería' },
+      { property: 'goods', label: 'Mercancía' },
       { property: 'warehouse.name', label: 'Almacén', sortable: true },
       { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' },
       { cellFormatters: [(a, { rowData: { id, status } }) => {

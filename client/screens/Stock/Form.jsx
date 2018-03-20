@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Field, FieldArray } from 'redux-form'
 import { Grid, Form, Tab, Message } from 'semantic-ui-react'
 import { renderTextArea } from '../../utils/formHelpers'
+import { ValidationSummary } from '../../components'
 import DocumentAttachmentFields from '../../components/DocumentAttachmentFields'
 import ImageAttachmentFields from '../../components/ImageAttachmentFields'
 import SelectField from '../../common/SelectField'
@@ -159,7 +160,7 @@ export default class StockForm extends Component {
 
     return (
       <div>
-        {error && error.length > 0 && <Message error>{error}</Message>}
+        { ValidationSummary(error) }
         <Form>
           {this.getFormContentMovementType(stockMovementType)}
         </Form>

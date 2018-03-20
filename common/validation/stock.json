@@ -33,11 +33,15 @@
         "reference": {
             "type": "string",
             "minLength": 1
+        },
+        "quantity": {
+            "type": "integer"
         }
     },
     "required": [
         "customerId",
         "warehouseId",
-        "reference"
+        "reference",
+        "quantity"
     ]
 }

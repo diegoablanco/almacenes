@@ -30,6 +30,7 @@ export default function StockGeneralInfoFields({
           type="text"
           label="Referencia"
           component={renderField}
+          required
         />
         <Field
           name="warehouseId"
@@ -39,6 +40,7 @@ export default function StockGeneralInfoFields({
           initialValue={warehouse && { key: warehouse.id, text: warehouse.name }}
           label="Almacén"
           placeholder="Buscar un almacén..."
+          required
         />
         <Field
           name="carrierId"
@@ -57,6 +59,7 @@ export default function StockGeneralInfoFields({
           initialValue={customer && { key: customer.id, text: customer.companyName }}
           label="Cliente"
           placeholder="Buscar un cliente..."
+          required
         />
         <Field
           name="targetCustomerId"

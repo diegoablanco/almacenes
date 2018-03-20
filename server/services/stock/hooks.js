@@ -134,6 +134,9 @@ module.exports = {
     ],
     find: [dehydrate(), setGoodsDescription, setLastMovementDate],
     get: [
+      function (context) {
+        if (context.result.dataValues.carrierId === null) { delete context.result.dataValues.carrierId }
+      },
       dehydrate(), setMovementServices
     ],
     update: [

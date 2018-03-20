@@ -5,9 +5,9 @@ const getDatabase = require('../../../server/database')
 const { getIncludes } = require('../stock/helpers')
 const {
   setStatusByCode,
-  reduceGoodsBy,
   releaseToCustomer,
-  reduceGoodsTotally,
+  reduceUnitsBy,
+  reduceUnitsTotally,
   issue
 } = require('./helper')
 
@@ -20,8 +20,8 @@ module.exports = function () {
     {
       async create(data, { user }) {
         try {
-          const sequelize = getDatabase()
-          const { models: { stock: stocks } } = sequelize
+          const database = getDatabase()
+          const { models: { stock: stocks } } = database
           const { stockBox, stockPallets } = getIncludes(getDatabase())
           const {
             id,
@@ -30,7 +30,7 @@ module.exports = function () {
             releaseType,
             movementTypeId,
             targetCustomerId,
-            quantity,
+            releaseQuantity,
             onHold
           } = data
           const filter = {
@@ -40,7 +40,7 @@ module.exports = function () {
             include: [stockBox, stockPallets]
           }
           const stock = await stocks.findOne(filter)
-          await sequelize.transaction(async transaction => {
+          await database.transaction(async transaction => {
             await stock.createMovement({ stockMovementTypeId: movementTypeId, createdById: user.id, date }, { transaction })
             const sameCustomer = !(targetCustomerId && targetCustomerId !== stock.customerId)
             switch (movementType) {
@@ -51,18 +51,19 @@ module.exports = function () {
               // release parcial, diferente cliente dest: crear stock (onHold o no) para el cliente dest, restar mercadería
                 if (releaseType === 'full') {
                   if (sameCustomer) {
-                    setStatusByCode(stock, 'released', transaction)
+                    await setStatusByCode(stock, 'released', transaction)
                   } else {
                     await releaseToCustomer({ stock, customerId: targetCustomerId, onHold, transaction })
-                    await reduceGoodsTotally(stock, transaction)
+                    await reduceUnitsTotally(stock, transaction)
+                    await setStatusByCode(stock, 'fulfilled', transaction)
                   }
                 } else {
                   if (sameCustomer) {
-                    await releaseToCustomer({ stock, customerId: stock.customerId, quantity, transaction })
+                    await releaseToCustomer({ stock, customerId: stock.customerId, quantity: releaseQuantity, transaction })
                   } else {
-                    await releaseToCustomer({ stock, customerId: targetCustomerId, quantity, onHold, transaction })
+                    await releaseToCustomer({ stock, customerId: targetCustomerId, quantity: releaseQuantity, onHold, transaction })
                   }
-                  await reduceGoodsBy(stock, quantity, transaction)
+                  await reduceUnitsBy(stock, releaseQuantity, transaction)
                 }
                 break
               case 'issue':

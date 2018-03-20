@@ -1,34 +1,19 @@
 import { reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import stockSchema from '../../../common/validation/stock.json'
-import documentAttachmentSchema from '../../../common/validation/documentAttachment.json'
-import stockBoxSchema from '../../../common/validation/stockBox.json'
-import stockPalletSchema from '../../../common/validation/stockPallet.json'
-import stockItemDetailSchema from '../../../common/validation/stockItemDetail.json'
-import stockReleaseSchema from '../../../common/validation/stockRelease.json'
-import stockIssueSchema from '../../../common/validation/stockIssue.json'
-import addressSchema from '../../../common/validation/address.json'
-import getValidator from '../../common/Validation'
+import { stock } from '../../common/Validators'
 import StockForm from './Form'
 
 
 export const formName = 'Stock'
 function getValidatorByMovementType(movementType) {
   if (movementType === 'issue') {
-    return getValidator(stockIssueSchema, [
-      addressSchema
-    ])
+    return stock.issue
   }
   if (movementType === 'release') {
-    return getValidator(stockReleaseSchema)
+    return stock.release
   }
-  return getValidator(stockSchema, [
-    stockBoxSchema,
-    stockPalletSchema,
-    documentAttachmentSchema,
-    stockItemDetailSchema
-  ])
+  return stock.default
 }
 
 function validator(values, propsToValidate) {

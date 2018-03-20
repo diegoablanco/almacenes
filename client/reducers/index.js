@@ -8,6 +8,7 @@ import messageBar from './messageBar'
 import customersReducer from './customers'
 import warehousesReducer from './warehouses'
 import stocksReducer from './stocks'
+import commonFormReducer from './formReducer'
 
 export default {
   routing: routerReducer,
@@ -15,19 +16,8 @@ export default {
   users: feathersServices.users.reducer,
   authManagement: feathersServices.authManagement.reducer,
   form: reduxFormReducer.plugin({
-    Stock: (state, action) => {
-      switch (action.type) {
-        case '@@redux-form/UPDATE_SYNC_ERRORS':
-          let validationMessage = '' // eslint-disable-line no-case-declarations
-          const { payload: { syncErrors } } = action // eslint-disable-line no-case-declarations
-          return {
-            ...state,
-            error: Object.keys(syncErrors).map(key => syncErrors[key]).filter(error => error.type === 'missingEntity').map(error => error.message)
-          }
-        default:
-          return state
-      }
-    }
+    Stock: commonFormReducer,
+    Customer: commonFormReducer
   }),
   customers: feathersServices.customers.reducer,
   warehouses: feathersServices.warehouses.reducer,

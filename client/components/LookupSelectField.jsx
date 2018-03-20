@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Dropdown, Label, Form } from 'semantic-ui-react'
+import { renderLabel } from '../utils/formHelpers'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
@@ -39,7 +40,8 @@ class LookupField extends Component {
       width,
       label,
       placeholder,
-      initialValue
+      initialValue,
+      required
     } = this.props
     const { searchQuery } = this.state
     let options = (queryResult || []).map(result => ({ key: result.id, value: result.id, text: result.description }))
@@ -47,8 +49,8 @@ class LookupField extends Component {
       options = [...options, { ...initialValue, value: initialValue.key }]
     }
     return (
-      <Form.Field className={classnames({ error: touched && error })} width={width}>
-        <label>{label}</label>
+      <Form.Field className={classnames({ error: touched && error })} width={width}>        
+        { renderLabel({ label, required })}
         <Dropdown
           fluid
           selection

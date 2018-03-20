@@ -14,7 +14,7 @@ class ReleaseForm extends Component {
       targetCustomerLookup,
       targetCustomerLookupActions,
       targetCustomer,
-      stock = {}
+      stock
     } = this.props
     return (
       <Grid verticalAlign="middle" centered textAlign="center">
@@ -49,7 +49,7 @@ class ReleaseForm extends Component {
             component={formValues({ currentValue: 'releaseType' })(renderRadio)}
           />
           { stock.releaseType === 'partial' && <Field
-            name="quantity"
+            name="releaseQuantity"
             type="text"
             label="Cantidad a Liberar"
             width={2}

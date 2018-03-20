@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { Button, Form, Divider, Segment, Input, TextArea, Grid, Checkbox } from 'semantic-ui-react'
+import { Button, Form, Divider, Segment, Input, TextArea, Grid, Checkbox, Icon } from 'semantic-ui-react'
 import classnames from 'classnames'
 
-
-export function renderField({ input, label, type = 'text', width, meta: { touched, error }, ...rest }) {
+export function renderLabel({ label, required }) {
+  return (<label>{label}{required && (<Icon name="asterisk" color="red" />)}</label>)
+}
+export function renderField({ input, label, type = 'text', width, required, meta: { touched, error }, ...rest }) {
   return (
     <Form.Field className={classnames({ error: touched && error })} width={width}>
-      <label>{label}</label>
-      <Input {...input} {...rest} placeholder={label} type={type} />
+      { renderLabel({ label, required })}
+      <Input {...input} {...rest} placeholder={label} type={type} labelPosition="right corner" />
       {touched && error && <label className="error">{error}</label>}
     </Form.Field>
   )
@@ -42,10 +44,10 @@ export function renderCheckbox({ input, width, onChange, meta: { touched, error 
   )
 }
 
-export function renderTextArea({ input, label, width, meta: { touched, error }, ...rest }) {
+export function renderTextArea({ input, label, width, required, meta: { touched, error }, ...rest }) {
   return (
     <Form.Field className={classnames({ error: touched && error })} width={width}>
-      <label>{label}</label>
+      { renderLabel({ label, required })}
       <TextArea {...input} {...rest} placeholder={label} />
       {touched && error && <label className="error">{error}</label>}
     </Form.Field>
@@ -111,8 +113,8 @@ export class Select2 extends Component {
   render() {
     const { input, label, meta: { touched, error }, options, placeholder = 'Seleccionar...' } = this.props
     return (
-      <Form.Field className={classnames({ error: touched && error })} >
-        <label>{label}</label>
+      <Form.Field className={classnames({ error: touched && error })} >        
+        { renderLabel({ label, required })}
         <Form.Select
           {...input}
           onChange={this.handleChange}
@@ -151,9 +153,9 @@ export function formFields(title, fieldTitle, renderFields) {
                               </Grid.Column>
                             </Grid>
                             {renderFields(item)}
-                          </Segment>))}
+                           </Segment>))}
       </Segment.Group>
-            </div>)
+    </div>)
   }
 }
 

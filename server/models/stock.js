@@ -8,9 +8,6 @@ module.exports = function (sequelize) {
       allowNull: false,
       primaryKey: true
     },
-    name: {
-      type: Sequelize.STRING
-    },
     customInstructions: {
       type: Sequelize.STRING
     },
@@ -19,6 +16,10 @@ module.exports = function (sequelize) {
     },
     reference: {
       type: Sequelize.STRING
+    },
+    quantity: {
+      type: Sequelize.INTEGER,
+      allowNull: false
     }
   })
   Stock.associate = function ({

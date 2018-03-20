@@ -7,6 +7,7 @@ const contactSchema = require('../../../common/validation/contact.json')
 const phoneSchema = require('../../../common/validation/phone.json')
 const addressSchema = require('../../../common/validation/address.json')
 const accountSchema = require('../../../common/validation/account.json')
+const documentAttachmentSchema = require('../../../common/validation/documentAttachment.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 const { processSort } = require('../helpers')
@@ -19,6 +20,7 @@ function validate() {
   ajv.addSchema(phoneSchema)
   ajv.addSchema(addressSchema)
   ajv.addSchema(accountSchema)
+  ajv.addSchema(documentAttachmentSchema)
 
   return validateSchema(customerSchema, ajv, {
     addNewError: errorReducer

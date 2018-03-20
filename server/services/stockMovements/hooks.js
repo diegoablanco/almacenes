@@ -8,7 +8,7 @@ const addressSchema = require('../../../common/validation/address.json')
 const errorReducer = require('../../helpers/errorReducer')
 
 function getValidatorByMovementType(movementType) {
-  const ajv = Ajv({ allErrors: true })
+  const ajv = Ajv({ allErrors: true, $data: true })
   if (movementType === 'issue') {
     ajv.addSchema(stockIssueSchema)
     ajv.addSchema(addressSchema)

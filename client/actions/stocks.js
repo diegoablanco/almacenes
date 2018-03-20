@@ -5,7 +5,8 @@ import { showTimedMessage } from './messageBar'
 import crudPages from '../common/CrudPages'
 import selectors from '../selectors/stocks'
 import getLookupEntities from './lookupEntities'
-import { formName } from '../screens/Stock/FormContainer';
+import { formName } from '../screens/Stock/FormContainer'
+import { formatAjvToRf } from '../common/Validation'
 
 export function getActionTypes() {
   return {
@@ -81,8 +82,7 @@ export default function getCrudPageActions() {
           try {
             await dispatch(serviceAction)
           } catch (error) {
-            const details = JSON.stringify(error.errors)
-            throw new SubmissionError({ _error: `Ocurrió un error al guardar. Detalles: ${details}` })
+            throw new SubmissionError(formatAjvToRf(error))
           }
           dispatch(baseCrudPageActions.hideModal())
           dispatch(messageAction)

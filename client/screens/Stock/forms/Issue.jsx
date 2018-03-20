@@ -16,7 +16,7 @@ class IssueForm extends Component {
       carrierLookup,
       carrierLookupActions,
       carrier,
-      stock = {},
+      stock,
       getServicesPane,
       getDocumentsPane,
       getImagesPane } = this.props
@@ -39,7 +39,7 @@ class IssueForm extends Component {
           lookupActions={carrierLookupActions}
           initialValue={carrier && { key: carrier.id, text: carrier.companyName }}
           label="Transportista"
-          placeholder="Buscar un transportista..."
+          placeholder="Buscar..."
         />
         <FormSection name="address">
           <Address />

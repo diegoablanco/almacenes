@@ -5,32 +5,29 @@ const getIssueIncludes = require('./includes')
 async function setStatusByCode(stock, code, transaction) {
   const { models: { stockStatus } } = getDatabase()
   const status = await stockStatus.find({ where: { code } })
-  stock.setStatus(status.id)
-  await stock.save({ transaction })
+  await stock.setStatus(status.id, { transaction })
+}
+async function reduceUnitsBy(stock, quantity, transaction) {
+  stock.quantity -= quantity
+  if (stock.quantity === 0) await setStatusByCode(stock, 'fulfilled', transaction)
+  // await stock.save({ transaction })
 }
 module.exports = {
   setStatusByCode,
-  async reduceGoodsBy(stock, quantity, transaction) {
-    const goods = stock.boxes || stock.palets
-    goods.quantity -= quantity
-    if (quantity === 0) await setStatusByCode(stock, 'fulfilled')
-    await goods.save({ transaction })
-  },
-  async reduceGoodsTotally(stock, transaction) {
-    const goods = stock.boxes || stock.palets
-    goods.quantity = 0
-    await setStatusByCode(stock, 'fulfilled', transaction)
-    await goods.save({ transaction })
+  reduceUnitsBy,
+  async reduceUnitsTotally(stock, transaction) {
+    reduceUnitsBy(stock, stock.quantity, transaction)
   },
   async releaseToCustomer({ stock: { id: stockId }, customerId, quantity, onHold = false, transaction }) {
-    const { models: { stock: stocks } } = getDatabase()
+    const database = getDatabase()
+    const { models: { stock: stocks } } = database
     const {
       warehouseInstruction,
       stockBox,
       stockPallets,
       documents,
       images
-    } = getStockIncludes(getDatabase())
+    } = getStockIncludes(database)
     const sourceStock = await stocks.findById(stockId, {
       include: [
         warehouseInstruction,
@@ -52,22 +49,23 @@ module.exports = {
       statusId,
       targetCustomerId,
       instructions,
+      quantity: originalQuantity,
       images: originalImages,
       documents: originalDocuments,
       ...originalStock
     } = sourceStock.get({ plain: true })
-    const newStock = await stocks.create({ ...originalStock, customerId, parentId }, { transaction })
-    await newStock.setInstructions((instructions || []).map(x => x.id))
-    if (quantity) (boxes || palets).quantity = quantity
-    if (boxes) {
-      const { id: originalBoxesId, ...newBoxes } = boxes
-      await newStock.createBoxes(newBoxes, { transaction })
-    }
-    if (palets) {
-      const { id: originalPaletsId, ...newPalets } = palets
-      await newStock.createPalets(newPalets, { transaction })
-    }
-    await setStatusByCode(newStock, onHold ? 'onHold' : 'released')
+    const newStock = await stocks.create({ ...originalStock, customerId, parentId, quantity: quantity || originalQuantity }, { transaction })
+    await newStock.setInstructions((instructions || []).map(x => x.id), { transaction })
+    // if (quantity) (boxes || palets).quantity = quantity
+    // if (boxes) {
+    //   const { id: originalBoxesId, ...newBoxes } = boxes
+    //   await newStock.createBoxes(newBoxes, { transaction })
+    // }
+    // if (palets) {
+    //   const { id: originalPaletsId, ...newPalets } = palets
+    //   await newStock.createPalets(newPalets, { transaction })
+    // }
+    await setStatusByCode(newStock, onHold ? 'onHold' : 'released', transaction)
   },
   async issue({ stock, date, carrierId, address, documents, images, transaction }) {
     const { models: { address: addresses } } = getDatabase()
@@ -83,15 +81,5 @@ module.exports = {
     ],
     transaction,
     raw: false })
-    // return
-    // const stockIssue = await stockIssues.create({ date, carrierId, documents, images }, { include: [
-    //   includes.documents,
-    //   includes.images,
-    //   includes.address
-    // ] })
-    // if (address) {
-    //   await stockIssue.createAddress(address)
-    // }
-    // stock.setIssue(stockIssue)
   }
 }

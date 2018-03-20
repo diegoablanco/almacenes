@@ -5,7 +5,7 @@ import { renderField } from '../../utils/formHelpers'
 import renderContactFields from '../../common/ContactFields'
 import { getPhoneFieldCells } from '../../common/PhoneFields'
 import tabulatedFormFields from '../../utils/tabulatedFormFields'
-import { Address } from '../../components'
+import { Address, ValidationSummary } from '../../components'
 import DocumentAttachmentFields from '../../components/DocumentAttachmentFields'
 
 class CustomerForm extends Component {
@@ -34,6 +34,7 @@ class CustomerForm extends Component {
         type="text"
         label="Nombre de la Compañía"
         component={renderField}
+        required
       />
       <Field
         name="vat"
@@ -106,12 +107,16 @@ class CustomerForm extends Component {
     return panes
   }
   render() {
+    const { error } = this.props
     return (
-      <Tab
-        panes={this.getPanes()}
-        menu={{ secondary: true, pointing: true }}
-        renderActiveOnly={false}
-      />
+      <div>
+        { ValidationSummary(error) }
+        <Tab
+          panes={this.getPanes()}
+          menu={{ secondary: true, pointing: true }}
+          renderActiveOnly={false}
+        />
+      </div>
     )
   }
 }
