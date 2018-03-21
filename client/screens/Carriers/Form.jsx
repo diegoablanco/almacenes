@@ -4,11 +4,11 @@ import { Form, Divider, Tab } from 'semantic-ui-react'
 import { renderField } from '../../utils/formHelpers'
 import { getPhoneFieldCells } from '../../common/PhoneFields'
 import tabulatedFormFields from '../../utils/tabulatedFormFields'
-import { Address } from '../../components'
+import { Address, ValidationSummary } from '../../components'
 
 class CarrierForm extends Component {
   render() {
-    const { extras: { phoneTypes } } = this.props
+    const { extras: { phoneTypes }, error, loading } = this.props
     const panes = [
       { menuItem: 'Información de Contacto',
         pane:
@@ -20,6 +20,7 @@ class CarrierForm extends Component {
         type="text"
         label="Nombre de la Compañía"
         component={renderField}
+        required
       />
     </Form.Group>
 
@@ -49,7 +50,12 @@ class CarrierForm extends Component {
   </Tab.Pane> }
     ]
     return (
-      <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+      <div>
+        { ValidationSummary(error) }
+        <Form loading={loading}>
+          <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+        </Form>
+      </div>
     )
   }
 }

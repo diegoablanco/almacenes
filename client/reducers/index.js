@@ -17,7 +17,10 @@ export default {
   authManagement: feathersServices.authManagement.reducer,
   form: reduxFormReducer.plugin({
     Stock: commonFormReducer,
-    Customer: commonFormReducer
+    Customer: commonFormReducer,
+    Carrier: commonFormReducer,
+    Warehouse: commonFormReducer,
+    Service: commonFormReducer
   }),
   customers: feathersServices.customers.reducer,
   warehouses: feathersServices.warehouses.reducer,
@@ -34,8 +37,10 @@ export default {
         direction: 'asc',
         position: 0
       }
-    } }),
-    carriers: getCrudReducer(crudPages.CARRIERS),
+    },
+    formName: 'Service'
+    }),
+    carriers: getCrudReducer(crudPages.CARRIERS, { formName: 'Carrier' }),
     warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),
     stocks: stocksReducer,
     messageBar

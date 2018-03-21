@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Field } from 'redux-form'
-import { Grid, Tab } from 'semantic-ui-react'
+import { Form, Grid, Tab } from 'semantic-ui-react'
 import { renderField } from '../../utils/formHelpers'
 import WarehouseServiceCrud from '../WarehouseService/WarehouseServiceCrud'
+import { ValidationSummary } from '../../components'
 
 class WarehouseForm extends Component {
   render() {
-    const { isEdit } = this.props
+    const { isEdit, loading, error } = this.props
     const panes = [
       {
         menuItem: 'Información de Contacto',
@@ -18,6 +19,7 @@ class WarehouseForm extends Component {
                 type="text"
                 label="Nombre"
                 component={renderField}
+                required
               />
               <Field
                 name="email"
@@ -26,6 +28,7 @@ class WarehouseForm extends Component {
                 icon="mail"
                 iconPosition="left"
                 component={renderField}
+                required
               />
               <Field
                 name="phone"
@@ -48,7 +51,12 @@ class WarehouseForm extends Component {
       })
     }
     return (
-      <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+      <div>
+        { ValidationSummary(error) }
+        <Form loading={loading}>
+          <Tab panes={panes} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+        </Form>
+      </div>
     )
   }
 }

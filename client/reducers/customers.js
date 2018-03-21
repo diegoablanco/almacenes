@@ -7,6 +7,7 @@ const initialState = {
       direction: 'asc',
       position: 0
     }
-  }
+  },
+  formName: 'Customer'
 }
 export default getCrudReducer(crudPages.CUSTOMERS, initialState)

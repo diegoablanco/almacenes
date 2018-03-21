@@ -1,16 +1,16 @@
+import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form'
-import { connect } from 'react-redux'
-import WarehouseForm from './WarehouseForm'
-import { warehouse } from '../../common/Validators'
+import CarrierForm from './Form'
+import { carrier } from '../../common/Validators'
 
-export const formName = 'Warehouse'
+export const formName = 'Carrier'
 
 const mapStateToProps = (state, ownProps) => {
   const { showModalLoadingIndicator } = ownProps.selectors.getUiState(state)
   return {
     extras: { phoneTypes: state.uneditables.queryResult.phoneTypes || [] },
-    validate: warehouse.validator,
+    validate: carrier.validator,
     form: formName,
     loading: showModalLoadingIndicator
   }
@@ -22,5 +22,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onSubmit: bindActions.createOrUpdate
   }
 }
-export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm())(WarehouseForm)
-
+export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm())(CarrierForm)

@@ -111,7 +111,7 @@ export class Select2 extends Component {
     input.onChange(value)
   }
   render() {
-    const { input, label, meta: { touched, error }, options, placeholder = 'Seleccionar...' } = this.props
+    const { input, label, meta: { touched, error }, options, placeholder = 'Seleccionar...', required } = this.props
     return (
       <Form.Field className={classnames({ error: touched && error })} >        
         { renderLabel({ label, required })}

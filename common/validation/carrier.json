@@ -1,15 +1,24 @@
 {
-    "id": "http://xarxa.com/schemas/carrier.json#",
-    "title": "Carrier",
-    "description": "A carrier",
-    "type": "object",
-    "properties": {
-      "companyName": {
-        "type": "string", "minLength": 1
-      },
-      "authorizedSignatory": {"$ref": "contact.json#"},
-      "address": {"$ref": "address.json#"},
-      "account": {"$ref": "account.json#"}
+  "id": "http://xarxa.com/schemas/carrier.json#",
+  "title": "Carrier",
+  "description": "A carrier",
+  "type": "object",
+  "properties": {
+    "companyName": {
+      "type": "string",
+      "minLength": 1
     },
-    "required": ["companyName"]
+    "authorizedSignatory": {
+      "$ref": "contact.json#"
+    },
+    "address": {
+      "$ref": "address.json#"
+    },
+    "account": {
+      "$ref": "account.json#"
+    }
+  },
+  "required": [
+    "companyName"
+  ]
 }

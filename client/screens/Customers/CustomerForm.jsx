@@ -107,15 +107,17 @@ class CustomerForm extends Component {
     return panes
   }
   render() {
-    const { error } = this.props
+    const { error, loading } = this.props
     return (
       <div>
         { ValidationSummary(error) }
-        <Tab
-          panes={this.getPanes()}
-          menu={{ secondary: true, pointing: true }}
-          renderActiveOnly={false}
-        />
+        <Form loading={loading}>
+          <Tab
+            panes={this.getPanes()}
+            menu={{ secondary: true, pointing: true }}
+            renderActiveOnly={false}
+          />
+        </Form>
       </div>
     )
   }

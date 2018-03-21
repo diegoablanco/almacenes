@@ -3,11 +3,17 @@ import signIn from './signIn'
 import userPasswordReset from './userPasswordReset'
 import stock from './stock'
 import customer from './customer'
+import carrier from './carrier'
+import warehouse from './warehouse'
+import service from './service'
 
 export {
   signUp,
   signIn,
   userPasswordReset,
   stock,
-  customer
+  customer,
+  carrier,
+  warehouse,
+  service
 }

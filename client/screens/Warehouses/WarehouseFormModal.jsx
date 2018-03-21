@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import FormModal from '../../common/FormModal'
 import WarehouseForm, { formName } from './WarehouseFormContainer'
 
