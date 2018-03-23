@@ -17,7 +17,7 @@ export default {
   authManagement: feathersServices.authManagement.reducer,
   form: reduxFormReducer.plugin({
     Stock: commonFormReducer,
-    Customer: commonFormReducer,
+    customer: commonFormReducer('customer'),
     Carrier: commonFormReducer,
     Warehouse: commonFormReducer,
     Service: commonFormReducer

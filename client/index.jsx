@@ -6,7 +6,9 @@ import errors from 'feathers-errors'
 import createHistory from 'history/createBrowserHistory'
 import { Provider } from 'react-redux'
 import 'semantic-ui-less/semantic.less'
+import intl from 'react-intl-universal'
 import 'moment/locale/es' // eslint-disable-line no-unused-vars, camelcase
+import locales from '../common/locales'
 import '../public/App.css'
 import configureStore from './store'
 import {
@@ -25,7 +27,6 @@ import {
 } from './utils/loggerRedux'
 import './utils/react-tap-event'
 import AppRouter from './router'
-
 // __processEnvNODE_ENV__ is replaced during the webpack build process
 const nodeEnv = __processEnvNODE_ENV__; // eslint-disable-line no-undef, camelcase
 const debug = makeDebug('index');
@@ -36,6 +37,11 @@ console.log(`..This bundle was built for the ${nodeEnv} env.`); // eslint-disabl
 // Initialize Redux
 const history = createHistory({ basename: '/almacenes' })
 const store = configureStore(history);
+
+intl.init({
+  currentLocale: 'es-ES', // TODO: determine locale here
+  locales
+})
 
 // Sign in with the JWT currently in localStorage
 const token = localStorage['feathers-jwt'] // eslint-disable-line no-undef

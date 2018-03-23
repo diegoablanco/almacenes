@@ -32,7 +32,6 @@ class CustomerForm extends Component {
         name="companyName"
         width={12}
         type="text"
-        label="Nombre de la Compañía"
         component={renderField}
         required
       />
@@ -40,7 +39,6 @@ class CustomerForm extends Component {
         name="vat"
         width={4}
         type="text"
-        label="VAT"
         component={renderField}
       />
     </Form.Group>
@@ -50,18 +48,15 @@ class CustomerForm extends Component {
     <Divider horizontal>Firmante Autorizado</Divider>
     <Field
       name="authorizedSignatory.name"
-      label="Nombre"
       component={renderField}
     />
     <Form.Group widths="equal">
       <Field
         name="authorizedSignatory.position"
-        label="Posición"
         component={renderField}
       />
       <Field
         name="authorizedSignatory.email"
-        label="Email"
         component={renderField}
       />
     </Form.Group>
@@ -74,26 +69,22 @@ class CustomerForm extends Component {
     <Field
       name="account.bankName"
       type="text"
-      label="Nombre del Banco"
       component={renderField}
     />
     <Field
       name="account.number"
       type="text"
-      label="Número de Cuenta"
       component={renderField}
     />
     <Form.Group widths="equal">
       <Field
         name="account.iban"
         type="text"
-        label="IBAN"
         component={renderField}
       />
       <Field
         name="account.swiftBic"
         type="text"
-        label="SWIFT/BIC"
         component={renderField}
       />
     </Form.Group>

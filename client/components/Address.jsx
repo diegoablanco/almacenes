@@ -9,26 +9,22 @@ export default function Address() {
       <Field
         name="line1"
         type="text"
-        label="Dirección"
         component={renderField}
       />
       <Form.Group widths="equal">
         <Field
           name="zipCode"
           type="text"
-          label="Código Postal"
           component={renderField}
         />
         <Field
           name="city"
           type="text"
-          label="Ciudad"
           component={renderField}
         />
         <Field
           name="country"
           type="text"
-          label="País"
           component={renderField}
         />
       </Form.Group>
