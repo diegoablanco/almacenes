@@ -14,28 +14,25 @@ export default function getGoodsPane({ availableStockItemDetailTypes, stockMovem
             <Field
               name="boxes.quantity"
               type="text"
-              label="Cantidad"
               parse={parseToInt}
               component={renderField}
+              required
             />
             <Field
               name="boxes.individualWeight"
               type="text"
-              label="Peso individual"
               parse={parseToInt}
               component={renderField}
             />
             <Field
               name="boxes.totalWeight"
               type="text"
-              label="Peso total"
               parse={parseToInt}
               component={renderField}
             />
           </Form.Group>
           <FieldArray
             name="boxes.details"
-            label="Detalles Adicionales"
             component={AditionalStockDetailFields}
             availableDetailTypes={availableStockItemDetailTypes.filter(x => [
               'signOfHandling',
@@ -55,7 +52,7 @@ export default function getGoodsPane({ availableStockItemDetailTypes, stockMovem
     </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
   }
   const paletsPane = {
-    menuItem: 'Pallets',
+    menuItem: 'Palets',
     pane: <Tab.Pane attached={false} key="palets">
       <Grid verticalAlign="middle" centered textAlign="center">
         <Grid.Column tablet={10} mobile={16} computer={14}>
@@ -63,21 +60,19 @@ export default function getGoodsPane({ availableStockItemDetailTypes, stockMovem
             <Field
               name="palets.quantity"
               type="text"
-              label="Cantidad"
               parse={parseToInt}
               component={renderField}
+              required
             />
             <Field
               name="palets.unitsPerPallet"
               type="text"
-              label="Unidades por Pallet"
               parse={parseToInt}
               component={renderField}
             />
             <Field
               name="palets.totalUnits"
               type="text"
-              label="Cantidad Total"
               parse={parseToInt}
               component={renderField}
             />
@@ -86,21 +81,18 @@ export default function getGoodsPane({ availableStockItemDetailTypes, stockMovem
             <Field
               name="palets.individualWeight"
               type="text"
-              label="Peso individual"
               parse={parseToInt}
               component={renderField}
             />
             <Field
               name="palets.totalWeight"
               type="text"
-              label="Peso total"
               parse={parseToInt}
               component={renderField}
             />
           </Form.Group>
           <FieldArray
             name="palets.details"
-            label="Detalles Adicionales"
             component={AditionalStockDetailFields}
             availableDetailTypes={availableStockItemDetailTypes.filter(x => [
               'signOfHandling',
@@ -117,7 +109,6 @@ export default function getGoodsPane({ availableStockItemDetailTypes, stockMovem
   }
   return (
     <div>
-
       { stockMovementType.code === 'receive' && <Field
         name="onHold"
         label="On Hold"
@@ -126,7 +117,6 @@ export default function getGoodsPane({ availableStockItemDetailTypes, stockMovem
       <Field
         name="quantity"
         type="text"
-        label="Cantidad de Unidades"
         parse={parseToInt}
         component={renderField}
         required

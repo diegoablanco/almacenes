@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form'
 import CarrierForm from './Form'
 import { carrier } from '../../common/Validators'
 
-export const formName = 'Carrier'
+export const formName = 'carrier'
 
 const mapStateToProps = (state, ownProps) => {
   const { showModalLoadingIndicator } = ownProps.selectors.getUiState(state)

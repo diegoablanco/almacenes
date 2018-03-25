@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Dropdown, Form } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import intl from 'react-intl-universal'
+import { getFieldTranslationKey } from '../utils/formHelpers'
 
 class SelectField extends Component {
   constructor(props) {
@@ -17,14 +19,14 @@ class SelectField extends Component {
   }
   render() {
     const {
-      meta: { touched, error },
+      meta: { error, form },
       width,
-      label,
       placeholder,
       multiple,
       options,
-      input: { value }
+      input: { value, name }
     } = this.props
+    const label = intl.get(getFieldTranslationKey(form, name))
     const { searchQuery } = this.state
     return (
       <Form.Field className={classnames({ error: error !== undefined })} width={width}>
@@ -36,7 +38,7 @@ class SelectField extends Component {
           multiple
           options={options}
           value={multiple ? (value !== '' ? value : []).map(x => x.id) : value}
-          placeholder={placeholder || label}
+          placeholder={placeholder || intl.get('common.searchPlaceholder')}
           onChange={this.handleResultSelect}
           onSearchChange={this.search}
           noResultsMessage={searchQuery !== '' ? 'No se encontraron resultados' : placeholder}

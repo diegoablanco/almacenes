@@ -111,9 +111,7 @@ export default class StockForm extends Component {
               name="instructions"
               component={SelectField}
               options={availableInstructions.map(x => ({ key: x.id, value: x.id, text: x.description }))}
-              label="Instrucciones"
               multiple
-              placeholder="Buscar una instrucción..."
             />
             <Field
               name="customInstructions"

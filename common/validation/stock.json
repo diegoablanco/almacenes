@@ -28,7 +28,10 @@
             "type": [
                 "array",
                 "null"
-            ]
+            ],
+            "items": {
+                "$ref": "stockService.json#"
+            }
         },
         "reference": {
             "type": "string",

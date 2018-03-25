@@ -1,16 +1,22 @@
 import React from 'react'
 import { Message } from 'semantic-ui-react'
 
-export default function (error) {
-  return (<div>
-    { error && error.length > 1 && <Message
+export default function (errors) {
+  function getErrorText({ property, message }) {
+    return <div><b>{property}</b>: {message}</div>
+  }
+  return (
+    <div>
+      { errors && errors.length > 1 && <Message
         error
-        list={Array.isArray(error) && error} 
-        header="Ocurrieron los siguientes errores de validación:" /> }
-      { error && error.length === 1 && <Message
+        list={errors.map(getErrorText)}
+        header="Ocurrieron los siguientes errores de validación:"
+      /> }
+      { errors && errors.length === 1 && <Message
         error
         header="Ocurrió el siguiente error de validación:"
-        content={error} /> }
-  </div>
+        content={getErrorText(errors[0])}
+      /> }
+    </div>
   )
 }

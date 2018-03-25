@@ -11,6 +11,6 @@ const initialState = {
   warehouseService: {
     showModal: false
   },
-  formName: 'Warehouse'
+  formName: 'warehouse'
 }
 export default getCrudReducer(crudPages.WAREHOUSES, initialState)

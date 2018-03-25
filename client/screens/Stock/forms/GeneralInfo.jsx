@@ -28,7 +28,6 @@ export default function StockGeneralInfoFields({
         <Field
           name="reference"
           type="text"
-          label="Referencia"
           component={renderField}
           required
         />
@@ -38,8 +37,6 @@ export default function StockGeneralInfoFields({
           lookupState={warehouseLookup}
           lookupActions={warehouseLookupActions}
           initialValue={warehouse && { key: warehouse.id, text: warehouse.name }}
-          label="Almacén"
-          placeholder="Buscar un almacén..."
           required
         />
         <Field
@@ -48,8 +45,6 @@ export default function StockGeneralInfoFields({
           lookupState={carrierLookup}
           lookupActions={carrierLookupActions}
           initialValue={carrier && { key: carrier.id, text: carrier.companyName }}
-          label="Transportista"
-          placeholder="Buscar un transportista..."
         />
         <Field
           name="customerId"
@@ -57,8 +52,6 @@ export default function StockGeneralInfoFields({
           lookupState={customerLookup}
           lookupActions={customerLookupActions}
           initialValue={customer && { key: customer.id, text: customer.companyName }}
-          label="Cliente"
-          placeholder="Buscar un cliente..."
           required
         />
         <Field
@@ -67,8 +60,6 @@ export default function StockGeneralInfoFields({
           lookupState={targetCustomerLookup}
           lookupActions={targetCustomerLookupActions}
           initialValue={targetCustomer && { key: targetCustomer.id, text: targetCustomer.companyName }}
-          label="Cliente Destinatario"
-          placeholder="Buscar un cliente..."
         />
         <Field
           name="billingCustomerId"
@@ -76,8 +67,6 @@ export default function StockGeneralInfoFields({
           lookupState={billingCustomerLookup}
           lookupActions={billingCustomerLookupActions}
           initialValue={billingCustomer && { key: billingCustomer.id, text: billingCustomer.companyName }}
-          label="Cliente de Facturación"
-          placeholder="Buscar un cliente..."
         />
       </Grid.Column>
     </Grid>

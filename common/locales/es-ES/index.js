@@ -1,5 +1,13 @@
+const common = require('./common')
 const customer = require('./customer')
+const stock = require('./stock')
+const warehouse = require('./warehouse')
+const carrier = require('./carrier')
 
 module.exports = {
-  customer
+  common,
+  customer,
+  stock,
+  warehouse,
+  carrier
 }

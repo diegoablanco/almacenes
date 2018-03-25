@@ -5,7 +5,7 @@ import { feathersServices } from '../feathers'
 
 const actionTypes = getActionTypes()
 const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)))
-const crudReducer = getCrudReducer(crudPages.STOCKS, { formName: 'Stock', defaultData: { instructions: [] } })
+const crudReducer = getCrudReducer(crudPages.STOCKS, { formName: 'stock', defaultData: { instructions: [] } })
 const {
   customerLookup,
   targetCustomerLookup,

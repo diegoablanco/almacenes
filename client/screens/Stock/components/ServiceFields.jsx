@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field } from 'redux-form'
-import { renderField, SelectOrLabel } from '../../../utils/formHelpers'
+import { renderField, SelectOrLabel, parseToFloat } from '../../../utils/formHelpers'
 
 export default function (setServiceRate) {
   return function (title, fields, availableServices = []) {
@@ -32,6 +32,8 @@ export default function (setServiceRate) {
         formatter: (value, { name }) => (<Field
           name={`${name}.rate`}
           component={renderField}
+          parse={parseToFloat}
+          label=""
         />)
       }
     ]

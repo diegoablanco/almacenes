@@ -3,14 +3,16 @@ import { Button, Form, Divider, Segment, Input, TextArea, Grid, Checkbox, Icon }
 import classnames from 'classnames'
 import intl from 'react-intl-universal'
 
-function getFieldTranslationKey(form, inputName) {
+export function getFieldTranslationKey(form, inputName) {
   return `${form}.${inputName}`.replace(/\[\d\]/, '')
 }
 export function renderLabel({ label, required }) {
   return (<label>{label}{required && (<Icon name="asterisk" color="red" />)}</label>)
 }
-export function renderField({ input, type = 'text', width, required, meta: { touched, error, form }, ...rest }) {
-  const label = intl.get(getFieldTranslationKey(form, input.name))
+export function renderField({ input, type = 'text', width, required, label, meta: { touched, error, form }, ...rest }) {
+  if (label === undefined) {
+    label = intl.get(getFieldTranslationKey(form, input.name))
+  }
   return (
     <Form.Field className={classnames({ error: touched && error })} width={width}>
       { renderLabel({ label, required })}
@@ -37,7 +39,8 @@ export function renderRadio({ input, width, meta: { touched, error }, radioValue
   )
 }
 
-export function renderCheckbox({ input, width, onChange, meta: { touched, error }, ...rest }) {
+export function renderCheckbox({ input, width, onChange, meta: { touched, error, form }, ...rest }) {
+  const label = intl.get(getFieldTranslationKey(form, input.name))
   function handleChange(e, { value }) {
     input.onChange(!value)
   }
@@ -49,7 +52,8 @@ export function renderCheckbox({ input, width, onChange, meta: { touched, error 
   )
 }
 
-export function renderTextArea({ input, label, width, required, meta: { touched, error }, ...rest }) {
+export function renderTextArea({ input, width, required, meta: { touched, error, form }, ...rest }) {
+  const label = intl.get(getFieldTranslationKey(form, input.name))
   return (
     <Form.Field className={classnames({ error: touched && error })} width={width}>
       { renderLabel({ label, required })}
@@ -158,9 +162,9 @@ export function formFields(title, fieldTitle, renderFields) {
                               </Grid.Column>
                             </Grid>
                             {renderFields(item)}
-                          </Segment>))}
+                           </Segment>))}
       </Segment.Group>
-            </div>)
+    </div>)
   }
 }
 

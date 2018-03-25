@@ -1,0 +1,16 @@
+{
+  "id": "http://xarxa.com/schemas/stockService.json#",
+  "type": "object",
+  "properties": {
+    "serviceId": {
+      "type": "integer"
+    },
+    "rate": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "serviceId",
+    "rate"
+  ]
+}

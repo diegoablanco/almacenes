@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import WarehouseForm from './WarehouseForm'
 import { warehouse } from '../../common/Validators'
 
-export const formName = 'Warehouse'
+export const formName = 'warehouse'
 
 const mapStateToProps = (state, ownProps) => {
   const { showModalLoadingIndicator } = ownProps.selectors.getUiState(state)

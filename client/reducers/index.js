@@ -16,11 +16,11 @@ export default {
   users: feathersServices.users.reducer,
   authManagement: feathersServices.authManagement.reducer,
   form: reduxFormReducer.plugin({
-    Stock: commonFormReducer,
+    stock: commonFormReducer('stock'),
     customer: commonFormReducer('customer'),
-    Carrier: commonFormReducer,
-    Warehouse: commonFormReducer,
-    Service: commonFormReducer
+    carrier: commonFormReducer('carrier'),
+    warehouse: commonFormReducer('warehouse'),
+    Service: commonFormReducer('service')
   }),
   customers: feathersServices.customers.reducer,
   warehouses: feathersServices.warehouses.reducer,

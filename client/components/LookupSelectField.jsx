@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Dropdown, Label, Form } from 'semantic-ui-react'
-import { renderLabel } from '../utils/formHelpers'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import intl from 'react-intl-universal'
+import { renderLabel, getFieldTranslationKey } from '../utils/formHelpers'
 
 class LookupField extends Component {
   constructor(props) {
@@ -34,22 +35,22 @@ class LookupField extends Component {
 
   render() {
     const {
-      input: { value },
-      meta: { touched, error },
+      input: { value, name },
+      meta: { touched, error, form },
       lookupState: { isLoading, queryResult = [] },
       width,
-      label,
       placeholder,
       initialValue,
       required
     } = this.props
+    const label = intl.get(getFieldTranslationKey(form, name))
     const { searchQuery } = this.state
     let options = (queryResult || []).map(result => ({ key: result.id, value: result.id, text: result.description }))
     if (value && !options.find(x => x.key === value) && initialValue) {
       options = [...options, { ...initialValue, value: initialValue.key }]
     }
     return (
-      <Form.Field className={classnames({ error: touched && error })} width={width}>        
+      <Form.Field className={classnames({ error: touched && error })} width={width}>
         { renderLabel({ label, required })}
         <Dropdown
           fluid
@@ -58,7 +59,7 @@ class LookupField extends Component {
           search
           options={options}
           value={value}
-          placeholder={placeholder || label}
+          placeholder={placeholder || intl.get('common.searchPlaceholder')}
           onChange={this.handleResultSelect}
           onSearchChange={this.search}
           loading={isLoading}
@@ -80,7 +81,6 @@ LookupField.propTypes = {
   input: PropTypes.element.isRequired,
   width: PropTypes.string,
   placeholder: PropTypes.string,
-  label: PropTypes.string.isRequired,
   lookupActions: PropTypes.object.isRequired,
   lookupState: PropTypes.object.isRequired
 }

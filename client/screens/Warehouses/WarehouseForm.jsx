@@ -17,14 +17,12 @@ class WarehouseForm extends Component {
               <Field
                 name="name"
                 type="text"
-                label="Nombre"
                 component={renderField}
                 required
               />
               <Field
                 name="email"
                 type="text"
-                label="E-mail"
                 icon="mail"
                 iconPosition="left"
                 component={renderField}
@@ -33,7 +31,6 @@ class WarehouseForm extends Component {
               <Field
                 name="phone"
                 type="text"
-                label="Teléfono"
                 icon="phone"
                 iconPosition="left"
                 component={renderField}

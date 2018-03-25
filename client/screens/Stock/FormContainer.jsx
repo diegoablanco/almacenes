@@ -5,7 +5,7 @@ import { stock } from '../../common/Validators'
 import StockForm from './Form'
 
 
-export const formName = 'Stock'
+export const formName = 'stock'
 function getValidatorByMovementType(movementType) {
   if (movementType === 'issue') {
     return stock.issue

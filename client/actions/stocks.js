@@ -48,12 +48,12 @@ export default function getCrudPageActions() {
             movementType: stockMovementType.code
           }
         ))
-        dispatch(change('Stock', 'movementTypeId', stockMovementType.id))
-        dispatch(change('Stock', 'movementType', stockMovementType.code))
+        dispatch(change('stock', 'movementTypeId', stockMovementType.id))
+        dispatch(change('stock', 'movementType', stockMovementType.code))
         if (stockMovementTypeCode === 'release') {
-          dispatch(change('Stock', 'releaseType', 'full'))
+          dispatch(change('stock', 'releaseType', 'full'))
         }
-        dispatch(change('Stock', 'date', new Date()))
+        dispatch(change('stock', 'date', new Date()))
         
         const query = {
           $select: ['id', 'description', 'rate'],

@@ -3,7 +3,8 @@ import { Field } from 'redux-form'
 import { Form, Dropdown, Segment, Divider } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { differenceWith } from 'lodash'
-import { renderTextArea, renderField, parseToInt } from '../../../utils/formHelpers'
+import intl from 'react-intl-universal'
+import { renderTextArea, renderField, parseToInt, getFieldTranslationKey } from '../../../utils/formHelpers'
 
 export default class AditionalStockDetailFields extends Component {
   constructor(props) {
@@ -31,7 +32,6 @@ export default class AditionalStockDetailFields extends Component {
             width={4}
             name={`${item}.quantity`}
             type="text"
-            label="Cantidad"
             parse={parseToInt}
             component={renderField}
           />
@@ -39,7 +39,6 @@ export default class AditionalStockDetailFields extends Component {
             width={12}
             name={`${item}.description`}
             type="textarea"
-            label="Descripción"
             component={renderTextArea}
             rows={3}
           />
@@ -51,11 +50,11 @@ export default class AditionalStockDetailFields extends Component {
     const {
       meta: { touched, error },
       width,
-      label,
       availableDetailTypes,
       fields
     } = this.props
     const value = (fields.getAll() || []).map(x => x.stockItemDetailTypeId)
+    const label = intl.get('stock.details')
     return (
       <div>
         <Form.Field width={width}>
@@ -67,7 +66,7 @@ export default class AditionalStockDetailFields extends Component {
             multiple
             value={value}
             options={availableDetailTypes}
-            placeholder="Buscar..."
+            placeholder={intl.get('common.searchPlaceholder')}
             onChange={this.handleDetailSelect}
             noResultsMessage="No se encontraron resultados"
           />
