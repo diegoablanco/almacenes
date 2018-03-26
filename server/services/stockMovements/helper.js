@@ -67,7 +67,7 @@ module.exports = {
     // }
     await setStatusByCode(newStock, onHold ? 'onHold' : 'released', transaction)
   },
-  async issue({ stock, date, carrierId, address, documents, images, transaction }) {
+  async issue({ stock, date, carrierId, address, documents = [], images = [], transaction }) {
     const { models: { address: addresses } } = getDatabase()
     const includes = getIssueIncludes(getDatabase())
     let addressId

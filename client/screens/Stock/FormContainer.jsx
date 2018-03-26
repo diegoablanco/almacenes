@@ -27,7 +27,8 @@ const mapStateToProps = (state, ownProps) => {
     warehouseLookup,
     billingCustomerLookup,
     stockMovementType,
-    availableServices
+    availableServices,
+    showModalLoadingIndicator
   } = ownProps.selectors.getUiState(state)
   const getFormValues = formValueSelector(formName)
   const { bindActions: {
@@ -66,7 +67,8 @@ const mapStateToProps = (state, ownProps) => {
     extras: {
       stockMovementType,
       stockMovementTypes: state.uneditables.queryResult.stockMovementTypes
-    }
+    },
+    loading: showModalLoadingIndicator
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

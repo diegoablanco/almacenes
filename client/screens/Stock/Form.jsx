@@ -153,13 +153,14 @@ export default class StockForm extends Component {
   render() {
     const {
       extras: { stockMovementType },
-      error
+      error,
+      loading
     } = this.props
 
     return (
       <div>
         { ValidationSummary(error) }
-        <Form>
+        <Form loading={loading}>
           {this.getFormContentMovementType(stockMovementType)}
         </Form>
       </div>

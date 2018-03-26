@@ -40,7 +40,7 @@ export default {
     },
     formName: 'Service'
     }),
-    carriers: getCrudReducer(crudPages.CARRIERS, { formName: 'Carrier' }),
+    carriers: getCrudReducer(crudPages.CARRIERS, { formName: 'carrier' }),
     warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),
     stocks: stocksReducer,
     messageBar
