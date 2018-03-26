@@ -4,7 +4,9 @@
 .ui.message {
     z-index: 1000;
 }
-
+table .field {
+  min-height: 55px;
+}
 /*******************************
       Messages Container
 *******************************/

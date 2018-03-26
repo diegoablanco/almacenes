@@ -12,6 +12,7 @@ export function getPhoneFieldCells(title, phone, options = []) {
           name={`${fieldName}.number`}
           iconPosition="left"
           component={renderField}
+          label=""
         />)
       }
     },
@@ -22,6 +23,7 @@ export function getPhoneFieldCells(title, phone, options = []) {
         name={`${fieldName}.typeId`}
         iconPosition="left"
         component={renderSelect}
+        label=""
         options={options.map(option => ({
           key: option.id,
           value: option.id,

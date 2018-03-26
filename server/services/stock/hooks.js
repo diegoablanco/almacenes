@@ -8,6 +8,7 @@ const stockBoxSchema = require('../../../common/validation/stockBox.json')
 const stockPalletSchema = require('../../../common/validation/stockPallet.json')
 const documentAttachmentSchema = require('../../../common/validation/documentAttachment.json')
 const stockItemDetailSchema = require('../../../common/validation/stockItemDetail.json')
+const stockServiceDetailSchema = require('../../../common/validation/stockService.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 const { setMovement, setStatus, setGoodsDescription, getIncludes, setMovementServices, setLastMovementDate } = require('./helpers')
@@ -23,6 +24,7 @@ function validate() {
   ajv.addSchema(stockPalletSchema)
   ajv.addSchema(documentAttachmentSchema)
   ajv.addSchema(stockItemDetailSchema)
+  ajv.addSchema(stockServiceDetailSchema)
   return validateSchema(stockSchema, ajv, {
     addNewError: errorReducer
   })

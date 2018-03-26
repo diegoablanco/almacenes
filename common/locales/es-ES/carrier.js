@@ -1,5 +1,5 @@
 const address = require('./address.json')
-const contact = require('./contact.json')
+const contact = require('./contact')
 
 module.exports = {
   companyName: 'Nombre de la Compañía',
