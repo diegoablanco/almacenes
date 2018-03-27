@@ -12,10 +12,11 @@ module.exports = function (database) {
       stockItemDetail,
       stockService,
       stockMovement,
-      stockStatus
+      stockStatus,
+      stock
     }
   } = database
-  return {
+  const includes = {
     customer: {
       model: customer,
       attributes: ['companyName']
@@ -73,6 +74,33 @@ module.exports = function (database) {
     movements: {
       model: stockMovement,
       as: 'movements'
+    }
+  }
+  return {
+    ...includes,
+    children: {
+      model: stock,
+      as: 'children',
+      include: [{
+        model: stockStatus,
+        as: 'status'
+      },
+      {
+        model: warehouse
+      },
+      {
+        model: customer,
+        attributes: ['companyName']
+      },
+      {
+        model: customer,
+        as: 'targetCustomer',
+        attributes: ['companyName']
+      },
+      {
+        model: stockMovement,
+        as: 'movements'
+      }]
     }
   }
 }

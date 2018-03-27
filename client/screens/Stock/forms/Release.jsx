@@ -30,7 +30,8 @@ class ReleaseForm extends Component {
             component={LookupSelectField}
             lookupState={targetCustomerLookup}
             lookupActions={targetCustomerLookupActions}
-            initialValue={targetCustomer && { key: targetCustomer.id, text: targetCustomer.companyName }}
+            initialValue={targetCustomer
+              && { key: targetCustomer.id, text: targetCustomer.companyName }}
             label="Cliente Destinatario"
             placeholder="Buscar un cliente..."
           />

@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import { AppContainer } from 'react-hot-loader'
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
 import { routerActions } from 'react-router-redux'
-import { config } from './utils/config'
+import { ErrorBoundary } from './components'
 
 import UserSignIn from './screens/Users/UserSignIn'
 import UserSignUp from './screens/Users/UserSignUp'
@@ -63,24 +63,26 @@ export default class AppRouter extends Component {
     return (
       <AppContainer>
         <App>
-          <Switch>
-            <Route path="/user/signin" component={UserSignIn} />
-            <Route path="/user/signup" component={UserIsAdmin(UserSignUp)} />
-            <Route path="/user/signupsendemail" component={UserSignUpSendEmail} />
-            <Route path="/user/verify/:token" component={UserSignUpValidateEmail} />
-            <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />
-            <Route path="/user/forgot/:token" component={UserForgotPwdReset} />
-            <Route
-              path="/user/passwordchange"
-              component={UserIsAuthenticated(UserPasswordChange)}
-            />
-            <Route path="/customers" component={UserIsAuthenticated(Customers)} />
-            <Route path="/warehouses" component={UserIsAuthenticated(Warehouses)} />
-            <Route path="/services" component={UserIsAuthenticated(Services)} />
-            <Route path="/carriers" component={UserIsAuthenticated(Carriers)} />
-            <Route path="/stock" component={UserIsAuthenticated(Stock)} />
-            <Route component={UserSignIn} />
-          </Switch>
+          <ErrorBoundary>
+            <Switch>
+              <Route path="/user/signin" component={UserSignIn} />
+              <Route path="/user/signup" component={UserIsAdmin(UserSignUp)} />
+              <Route path="/user/signupsendemail" component={UserSignUpSendEmail} />
+              <Route path="/user/verify/:token" component={UserSignUpValidateEmail} />
+              <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />
+              <Route path="/user/forgot/:token" component={UserForgotPwdReset} />
+              <Route
+                path="/user/passwordchange"
+                component={UserIsAuthenticated(UserPasswordChange)}
+              />
+              <Route path="/customers" component={UserIsAuthenticated(Customers)} />
+              <Route path="/warehouses" component={UserIsAuthenticated(Warehouses)} />
+              <Route path="/services" component={UserIsAuthenticated(Services)} />
+              <Route path="/carriers" component={UserIsAuthenticated(Carriers)} />
+              <Route path="/stock" component={UserIsAuthenticated(Stock)} />
+              <Route component={UserSignIn} />
+            </Switch>
+          </ErrorBoundary>
         </App>
       </AppContainer>
     )

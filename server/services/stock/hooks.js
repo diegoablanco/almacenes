@@ -3,6 +3,7 @@ const Ajv = require('ajv')
 const { validateSchema, setNow } = require('feathers-hooks-common')
 const hydrate = require('feathers-sequelize/hooks/hydrate')
 const dehydrate = require('feathers-sequelize/hooks/dehydrate')
+const { Op } = require('sequelize')
 const stockSchema = require('../../../common/validation/stock.json')
 const stockBoxSchema = require('../../../common/validation/stockBox.json')
 const stockPalletSchema = require('../../../common/validation/stockPallet.json')
@@ -11,7 +12,7 @@ const stockItemDetailSchema = require('../../../common/validation/stockItemDetai
 const stockServiceDetailSchema = require('../../../common/validation/stockService.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
-const { setMovement, setStatus, setGoodsDescription, getIncludes, setMovementServices, setLastMovementDate } = require('./helpers')
+const { setMovement, setStatus, setGoodsDescription, getIncludes, setMovementServices, setLastMovementDate, expandChildren } = require('./helpers')
 const { getFullStock, getStockForRelease, getStockForIssue } = require('./getHooks')
 const { processSort } = require('../helpers')
 const { setUser } = require('../hooks')
@@ -42,10 +43,13 @@ module.exports = {
     ],
     find: [
       function (hook) {
-        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements } = getIncludes(hook.app.get('database'))
+        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements, children } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
-          include: [customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements]
+          include: [customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements, children],
+          where: { parentId: {
+            [Op.eq]: null
+          } }
         }
         processSort(hook, { customer, targetCustomer, warehouse, status })
         const { params: { query: { $sort } } } = hook
@@ -134,7 +138,18 @@ module.exports = {
       setMovement,
       setStatus
     ],
-    find: [dehydrate(), setGoodsDescription, setLastMovementDate],
+    find: [
+      expandChildren,
+      dehydrate(),
+      context => {
+        context.result.data = context.result.data.map(item => {
+          delete item.children
+          return item
+        })
+      },
+      setGoodsDescription,
+      setLastMovementDate
+    ],
     get: [
       function (context) {
         if (context.result.dataValues.carrierId === null) { delete context.result.dataValues.carrierId }

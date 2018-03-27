@@ -1,7 +1,6 @@
 const auth = require('feathers-authentication').hooks
 const Ajv = require('ajv')
 const { validateSchema, setNow } = require('feathers-hooks-common')
-const sequelize = require('sequelize')
 const carrierSchema = require('../../../common/validation/carrier.json')
 const contactSchema = require('../../../common/validation/contact.json')
 const phoneSchema = require('../../../common/validation/phone.json')
@@ -33,24 +32,24 @@ function getIncludes(database) {
       model: contact,
       as: 'authorizedSignatory',
       include: [{ model: phone, as: 'phones' }]
-    } 
+    }
   }
 }
 
 function addIncludes(hook) {
   const { account, address, authorizedSignatory } = getIncludes(hook.app.get('database'))
   hook.params.sequelize = hook.params.sequelize || {}
-  hook.params.sequelize.include = [ account, address, authorizedSignatory]
+  hook.params.sequelize.include = [account, address, authorizedSignatory]
 }
 
 function validate() {
-  var ajv = Ajv({allErrors: true})
+  const ajv = Ajv({ allErrors: true })
   ajv.addSchema(carrierSchema)
   ajv.addSchema(contactSchema)
   ajv.addSchema(phoneSchema)
   ajv.addSchema(addressSchema)
   ajv.addSchema(accountSchema)
-  
+
   return validateSchema(carrierSchema, ajv, {
     addNewError: errorReducer
   })
@@ -64,15 +63,15 @@ module.exports = {
     find: [
       function (hook) {
         const { authorizedSignatory } = getIncludes(hook.app.get('database'))
-        const {models: {phone}} = hook.app.get('database')
-        authorizedSignatory.include = [{model: phone, as: 'phones', attributes: [ 'number' ], through: { attributes: [] }}]
+        const { models: { phone } } = hook.app.get('database')
+        authorizedSignatory.include = [{ model: phone, as: 'phones', attributes: ['number'], through: { attributes: [] } }]
         authorizedSignatory.attributes = ['name', 'email']
         hook.params.sequelize = {
           raw: false,
           include: [
             authorizedSignatory
           ],
-          attributes: [ 'id', 'companyName', 'authorizedSignatoryId', 'createdAt' ]
+          attributes: ['id', 'companyName', 'authorizedSignatoryId', 'createdAt']
         }
         processSort(hook, { authorizedSignatory })
       }
@@ -80,7 +79,7 @@ module.exports = {
     get: [
       function (hook) {
         hook.params.sequelize = {
-          raw: false,
+          raw: false
         }
       },
       addIncludes
@@ -108,23 +107,26 @@ module.exports = {
             id: hook.data.id
           },
           include: [{
-              model: accountModel,
-              include: [addressModel]
-            },
-            addressModel, 
-            {
-              model: contactModel,
-              as: 'authorizedSignatory',
-              include: [{model: phoneModel, as: 'phones', through: 'contact_phones'}],
-            }
-        ]
+            model: accountModel,
+            include: [addressModel]
+          },
+          addressModel,
+          {
+            model: contactModel,
+            as: 'authorizedSignatory',
+            include: [{ model: phoneModel, as: 'phones', through: 'contact_phones' }]
+          }
+          ]
         }
-        
-        carrierModel.findOne(filter).then(function (c) {          
-          const { address, authorizedSignatory, account } = hook.data
+
+        carrierModel.findOne(filter).then((c) => {
           c.set(hook.data)
-          createOrUpdateAssociations(c, hook.data, c._options.include)
-      })
+          createOrUpdateAssociations(
+            c,
+            hook.data,
+            c._options.include // eslint-disable-line no-underscore-dangle
+          )
+        })
       }],
     patch: [],
     remove: []
@@ -135,12 +137,11 @@ module.exports = {
     find: [],
     get: [
       function (context) {
-          if(context.result.dataValues.address === null)
-            delete context.result.dataValues.address
-          if(context.result.dataValues.authorizedSignatory === null)
-            delete context.result.dataValues.authorizedSignatory
-          if(context.result.dataValues.account === null)
-            delete context.result.dataValues.account
+        if (context.result.dataValues.address === null) { delete context.result.dataValues.address }
+        if (context.result.dataValues.authorizedSignatory === null) {
+          delete context.result.dataValues.authorizedSignatory
+        }
+        if (context.result.dataValues.account === null) { delete context.result.dataValues.account }
       }],
     create: [],
     update: [],

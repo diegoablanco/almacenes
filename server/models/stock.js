@@ -52,6 +52,7 @@ module.exports = function (sequelize) {
     Stock.hasMany(stockService, { as: 'services' })
     Stock.belongsTo(stockStatus, { as: 'status' })
     Stock.belongsTo(stock, { as: 'parent' })
+    Stock.hasMany(stock, { as: 'children', foreignKey: 'parentId' })
     Stock.belongsTo(user, { as: 'createdBy' })
     Stock.belongsTo(user, { as: 'updatedBy' })
     Stock.belongsTo(stockIssue, { as: 'issue' })

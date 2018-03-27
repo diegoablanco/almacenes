@@ -109,18 +109,19 @@ export default function getGoodsPane({ availableStockItemDetailTypes, stockMovem
   }
   return (
     <div>
-      { stockMovementType.code === 'receive' && <Field
-        name="onHold"
-        label="On Hold"
-        component={renderCheckbox}
-      /> }
       <Field
         name="quantity"
         type="text"
         parse={parseToInt}
         component={renderField}
+        width={4}
         required
       />
+      { stockMovementType.code === 'receive' && <Field
+        name="onHold"
+        label="On Hold"
+        component={renderCheckbox}
+      /> }
       <Tab
         panes={[boxesPane, paletsPane]}
         menu={{ secondary: true, pointing: true }}

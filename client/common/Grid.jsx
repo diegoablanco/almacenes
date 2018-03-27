@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import { Button, Loader, Message, Icon } from 'semantic-ui-react'
+import { Button, Loader, Message, Icon, Label } from 'semantic-ui-react'
+import { compose } from 'redux'
 import * as Table from 'reactabular-table'
 import * as sort from 'sortabular'
 import * as resolve from 'table-resolver'
+import * as tree from 'treetabular'
 import InfiniteScroll from 'react-infinite-scroller'
+import { findIndex } from 'lodash'
 import { createColumns, addHeaderTransforms } from '../utils/reactabularHelpers'
 
 class Grid extends Component {
@@ -12,6 +15,7 @@ class Grid extends Component {
     const { columns } = props
     this.columns = createColumns(...columns)
     this.moreRowsMessage = this.moreRowsMessage.bind(this)
+    this.treeCellFormatter = this.treeCellFormatter.bind(this)
   }
   getActionColumns() {
     const {
@@ -78,25 +82,35 @@ class Grid extends Component {
       strategy: sort.strategies.byProperty
     })
 
-    const customSortableTransform = (value, extra) => this.transformSortClasses(sortable(value, extra))
-    return this.columns.map(column => addHeaderTransforms([column], [sortable, customSortableTransform])[0])
+    const customSortableTransform = (value, extra) =>
+      this.transformSortClasses(sortable(value, extra))
+    return this.columns.map(column =>
+      addHeaderTransforms([column], [sortable, customSortableTransform])[0])
   }
   getTable() {
     const {
-      rows,
       enableSort,
       rowKey,
-      enableActionColumn = true
+      enableActionColumn = true,
+      enableTreeTabular = false
     } = this.props
+    let { rows } = this.props
     const columns = enableSort ? this.getSortableColumns(this.columns) : this.columns
     const gridColumns = [...columns]
+    const rowTransformers = [this.resolveNestedColumns(columns)]
+    if (enableTreeTabular) {
+      rowTransformers.push(tree.filter({ fieldName: 'showingChildren', parentField: 'parentId' }))
+      const fixOrder = tree.fixOrder({ parentField: 'parentId' })
+      rows = fixOrder(rows)
+      const { cell } = gridColumns.find(column => column.property === rowKey)
+      cell.formatters = [
+        ...cell.formatters,
+        this.treeCellFormatter(rows)]
+    }
     if (enableActionColumn) {
       gridColumns.push(...this.getActionColumns())
     }
-    const tableRows = resolve.resolve({
-      columns: resolve.columnChildren({ columns }),
-      method: resolve.nested
-    })(rows)
+    const tableRows = compose(...rowTransformers)(rows)
     return (
       <Table.Provider
         className="ui striped table sortable"
@@ -106,6 +120,27 @@ class Grid extends Component {
         <Table.Body rows={tableRows} rowKey={rowKey} />
       </Table.Provider>
     )
+  }
+  resolveNestedColumns(columns) {
+    return resolve.resolve({
+      columns: resolve.columnChildren({ columns }),
+      method: resolve.nested
+    })
+  }
+  treeCellFormatter(rows) {
+    return (value, { rowData: { id, showingChildren } }) => {
+      const {
+        toggleShowingChildren
+      } = this.props
+      const index = findIndex(rows, { id })
+      const hasChildren = tree.hasChildren({ index, parentField: 'parentId' })(rows)
+      const level = tree.getLevel({ index, parentField: 'parentId' })(rows)
+      const style = { marginLeft: `${level}em` }
+      if (hasChildren) {
+        return (hasChildren && <Label style={style} as="a" icon={`angle ${showingChildren ? 'down' : 'right'}`} onClick={() => toggleShowingChildren(id)} content={id} />)
+      }
+      return (<Label style={style}>{id}</Label>)
+    }
   }
   transformSortClasses(props) {
     let className = ''
@@ -146,7 +181,9 @@ class Grid extends Component {
     return (
       <div>
         {isLoading && !isLoadingMore && <Loader active inline="centered" />}
-        {enableInfiniteScroll && (!isLoading || isLoadingMore) && this.wrapWithInfiniteScroll(this.getTable())}
+        {enableInfiniteScroll
+          && (!isLoading || isLoadingMore)
+          && this.wrapWithInfiniteScroll(this.getTable())}
         {!isLoading && !enableInfiniteScroll && this.getTable()}
       </div>
     )

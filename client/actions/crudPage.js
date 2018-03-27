@@ -135,6 +135,16 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
     },
     loadGrid,
     reloadGrid,
+    toggleShowingChildren(id) {
+      return (dispatch, getState) => {
+        const { rows } = selectors.getUiState(getState())
+        const row = rows.find(x => x.id === id)
+        dispatch({
+          type: actionTypes.ITEM_EDITED,
+          editedItem: { ...row, showingChildren: !row.showingChildren
+          } })
+      }
+    },
     filterGrid(filter) {
       return (dispatch, getState) => {
         dispatch(resetPageNumber())

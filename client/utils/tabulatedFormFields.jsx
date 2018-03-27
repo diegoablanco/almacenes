@@ -28,6 +28,7 @@ export default function tabulatedFormFields(title, getFieldCells, additionalInfo
       <Grid
         canAdd
         enableAdd
+        compact
         enableEdit={false}
         addHandler={addHandler(fields)}
         deleteHandler={fields.remove}

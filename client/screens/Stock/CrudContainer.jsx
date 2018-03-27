@@ -80,6 +80,7 @@ class StockCrud extends Component {
           crudActions={crudActions}
           enableDelete={false}
           // enableActionColumn={false}
+          enableTreeTabular
         />
       </div>
     )
