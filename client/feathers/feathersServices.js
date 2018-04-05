@@ -13,7 +13,8 @@ export const mapServicePathsToNames = [{
   uneditables: 'uneditables',
   carriers: 'carriers',
   stocks: 'stocks',
-  stockMovements: 'stockMovements'
+  stockMovements: 'stockMovements',  
+  download: 'download'
 },
 {
   lookupEntities: 'carrierLookup'

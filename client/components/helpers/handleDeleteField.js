@@ -1,4 +1,6 @@
-export default function handleDelete(e, index, fields) {
-  fields.remove(index)
-  e.stopPropagation()
+export default function handleDelete({ fields, index }) {
+  return e => {
+    fields.remove(index)
+    e.stopPropagation()
+  }
 }

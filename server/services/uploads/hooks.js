@@ -3,7 +3,6 @@ const dauria = require('dauria')
 const { thumb } = require('node-thumbnail')
 const config = require('config')
 const path = require('path')
-const debug = require('debug')('server:uploads')
 
 const { uploads: { path: uploadsPath } } = config
 

@@ -46,7 +46,16 @@ module.exports = {
         const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements, children } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
-          include: [customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements, children],
+          include: [
+            customer,
+            targetCustomer,
+            warehouse,
+            status,
+            stockBox,
+            stockPallets,
+            movements,
+            children
+          ],
           where: { parentId: {
             [Op.eq]: null
           } }
@@ -121,7 +130,10 @@ module.exports = {
         }
         stock.findOne(filter).then(s => {
           s.set(hook.data)
-          createOrUpdateAssociations(s, hook.data, s._options.include)
+          createOrUpdateAssociations(
+            s, hook.data,
+            s._options.include // eslint-disable-line no-underscore-dangle
+          )
         })
       },
       setUser('updatedBy')
@@ -152,7 +164,9 @@ module.exports = {
     ],
     get: [
       function (context) {
-        if (context.result.dataValues.carrierId === null) { delete context.result.dataValues.carrierId }
+        if (context.result.dataValues.carrierId === null) {
+          delete context.result.dataValues.carrierId
+        }
       },
       dehydrate(), setMovementServices
     ],

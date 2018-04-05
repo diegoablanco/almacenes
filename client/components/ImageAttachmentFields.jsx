@@ -1,12 +1,12 @@
 import React from 'react'
 import { Field } from 'redux-form'
 import pathParse from 'path-parse'
-import { Segment, Icon, Image, Grid } from 'semantic-ui-react'
+import { Segment, Icon, Image } from 'semantic-ui-react'
 import AttachmentFields from './AttachmentFields'
 import LiteralField from './LiteralField'
 import ProgressBarField from './ProgressBarField'
 import ErrorMessageField from './ErrorMessageField'
-import handleDeleteField from './helpers/handleDeleteField'
+import { handleDeleteField, handleDownloadFile } from './helpers'
 
 function renderPreview({ input: { value } }) {
   return (value !== '' && <Image src={value} size="medium" />)
@@ -37,7 +37,8 @@ function renderImageAttachment(attachmentItem, index, fields) {
           name={`${attachmentItem}.fileName`}
           component={LiteralField}
         />
-        <Icon link name="delete" onClick={e => handleDeleteField(e, index, fields)} />
+        <Icon link name="delete" onClick={handleDeleteField({ fields, index })} />
+        <Icon link name="download" onClick={handleDownloadFile({ fields, index })} />
         <Field
           name={`${attachmentItem}.percent`}
           component={ProgressBarField}

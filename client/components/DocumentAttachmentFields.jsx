@@ -1,38 +1,53 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Field } from 'redux-form'
-import { Segment, Icon, Container } from 'semantic-ui-react'
+import { Segment, Icon, Grid } from 'semantic-ui-react'
 import DocumentTypePicker from './DocumentTypePicker'
 import AttachmentFields from './AttachmentFields'
 import LiteralField from './LiteralField'
 import ProgressBarField from './ProgressBarField'
-import handleDeleteField from './helpers/handleDeleteField'
+import { handleDeleteField, handleDownloadFile } from './helpers'
 
-function renderDocumentAttachment(attachmentItem, index, fields, type) {
-  return (
-    <Segment key={index}>
-      <Container style={{ paddingBottom: '5px' }}>
+
+class DocumentAttachmentFields extends Component {
+  constructor(props) {
+    super(props)
+    this.renderDocumentAttachment = this.renderDocumentAttachment.bind(this)
+  }
+  renderDocumentAttachment(attachmentItem, index, fields, type) {
+    return (
+      <Segment key={index}>
+        <Grid columns={2} relaxed>
+          <Grid.Column>
+            <Field
+              name={`${attachmentItem}.documentTypeId`}
+              component={props => <DocumentTypePicker {...props} type={type} />}
+            />
+            <Field
+              name={`${attachmentItem}.fileName`}
+              component={LiteralField}
+            />
+          </Grid.Column>
+          <Grid.Column floated="right">
+            <Icon link name="delete" onClick={handleDeleteField({ fields, index })} />
+            <Icon link name="download" onClick={handleDownloadFile({ fields, index })} />
+          </Grid.Column>
+        </Grid>
         <Field
-          name={`${attachmentItem}.documentTypeId`}
-          component={props => <DocumentTypePicker {...props} type={type} />}
+          name={`${attachmentItem}.percent`}
+          component={ProgressBarField}
         />
-        <Field
-          name={`${attachmentItem}.fileName`}
-          component={LiteralField}
-        />
-        <Icon link name="delete" onClick={e => handleDeleteField(e, index, fields)} />
-      </Container>
-      <Field
-        name={`${attachmentItem}.percent`}
-        component={ProgressBarField}
-      />
-    </Segment>)
-}
-function renderFields(type) {
-  return function (fields) {
-    return fields.map((item, index) => renderDocumentAttachment(item, index, fields, type))
+      </Segment>)
+  }
+  renderFields(type) {
+    const { renderDocumentAttachment } = this
+    return function (fields) {
+      return fields.map((item, index) => renderDocumentAttachment(item, index, fields, type))
+    }
+  }
+  render() {
+    const { type, ...props } = this.props
+    return (<AttachmentFields renderFields={this.renderFields(type)} {...props} />)
   }
 }
-export default function ({ type, ...props }) {
-  return (<AttachmentFields renderFields={renderFields(type)} {...props} />)
-}
 
+export default DocumentAttachmentFields

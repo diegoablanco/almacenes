@@ -2,12 +2,13 @@ import request from 'superagent'
 import { change, getFormValues, stopAsyncValidation, startAsyncValidation } from 'redux-form'
 
 export default function uploadFile(file, fieldName, formName) {
-  return (dispatch, getState) => new Promise((resolve) => {
+  return async (dispatch, getState) => {
     const values = getFormValues(formName)(getState())[fieldName]
     const fileIndex = values.findIndex(x => x.fileName === file.name)
     const fieldPrefix = `${fieldName}[${fileIndex}]`
     dispatch(change(formName, `${fieldPrefix}.preview`, file.preview))
     dispatch(startAsyncValidation())
+    dispatch(change(formName, `${fieldPrefix}.percent`, 0))
     request
       .post('api/upload')
       .set('authorization', localStorage['feathers-jwt'])
@@ -18,7 +19,6 @@ export default function uploadFile(file, fieldName, formName) {
       .end((err, { body: { id: hashName, thumb } }) => {
         if (err && err.response.error.status === 401) {
           dispatch(change(formName, `${fieldPrefix}.error`, { percent: 'Error de autenticación' }))
-          resolve()
         }
         dispatch(change(formName, `${fieldPrefix}.hashName`, hashName))
         dispatch(change(formName, `${fieldPrefix}.thumb`, thumb))
@@ -29,7 +29,6 @@ export default function uploadFile(file, fieldName, formName) {
           return { [index]: value.error }
         })
         dispatch(stopAsyncValidation(formName, { [fieldName]: Object.assign({}, ...errors) }))
-        resolve()
       })
-  })
+  }
 }

@@ -77,14 +77,15 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
     }
   }
   function reloadGrid() {
-    return (dispatch, getState) => new Promise((resolve) => {
+    return async (dispatch, getState) => {
       dispatch(resetPageNumber())
+      const { rows } = selectors.getUiState(getState())
+      const showingChildrenRows = rows.filter(x => x.showingChildren).map(({ id }) => id)
       const query = getQuery(getState(), selectors)
-      dispatch(serviceActions.find({ query })).then(result => {
-        dispatch(buildRows(result.value))
-        resolve()
-      })
-    })
+      const { value: newRows } = await dispatch(serviceActions.find({ query }))
+      newRows.data = newRows.data.map(row => ({ ...row, showingChildren: showingChildrenRows.includes(row.id) }))
+      dispatch(buildRows(newRows))
+    }
   }
   function initializeCrud() {
     return (dispatch, getState) => {
