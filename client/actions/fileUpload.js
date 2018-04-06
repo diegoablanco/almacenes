@@ -8,7 +8,6 @@ export default function uploadFile(file, fieldName, formName) {
     const fieldPrefix = `${fieldName}[${fileIndex}]`
     dispatch(change(formName, `${fieldPrefix}.preview`, file.preview))
     dispatch(startAsyncValidation())
-    dispatch(change(formName, `${fieldPrefix}.percent`, 0))
     request
       .post('api/upload')
       .set('authorization', localStorage['feathers-jwt'])

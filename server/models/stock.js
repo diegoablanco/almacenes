@@ -20,6 +20,10 @@ module.exports = function (sequelize) {
     quantity: {
       type: Sequelize.INTEGER,
       allowNull: false
+    },
+    date: {
+      type: Sequelize.DataTypes.DATE,
+      defaultValue: Sequelize.Now
     }
   })
   Stock.associate = function ({

@@ -22,7 +22,7 @@ export default function ({ input, label, width, meta: { touched, error } }) {
         placeholder={`${formatDate(new Date(), 'L', 'es')}`}
         formatDate={formatDate}
         parseDate={parseDate}
-        value={input.value}
+        value={formatDate(input.value)}
       />
       {touched && error && <label className="error">{error}</label>}
     </Form.Field>

@@ -4,6 +4,7 @@ import { Field } from 'redux-form'
 import { Grid } from 'semantic-ui-react'
 import LookupSelectField from '../../../components/LookupSelectField'
 import { renderField } from '../../../utils/formHelpers'
+import { DateTimeField } from '../../../components'
 
 export default function StockGeneralInfoFields({
   targetCustomerLookup,
@@ -25,6 +26,11 @@ export default function StockGeneralInfoFields({
   return (
     <Grid verticalAlign="middle" centered textAlign="center">
       <Grid.Column tablet={10} mobile={16} computer={8}>
+        <Field
+          name="date"
+          component={DateTimeField}
+          label="Fecha"
+        />
         <Field
           name="reference"
           type="text"

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Button } from 'semantic-ui-react'
+import moment from 'moment'
 import FormModal from './FormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
@@ -20,6 +21,8 @@ class StockCrud extends Component {
         label: 'Estado',
         cellFormatters: [(status, { rowData }) => (<StatusColumn status={status} rowData={rowData} />)]
       },
+      { property: 'date', label: 'Fecha', cellFormatters: [date => moment(date).calendar()] },
+      { property: 'lastMovementDate', label: 'Último Movimiento', cellFormatters: [date => date && moment(date).fromNow()] },
       { property: 'reference', label: 'Referencia' },
       { property: 'customer.companyName', label: 'Cliente' },
       { property: 'goods', label: 'Mercancía' },

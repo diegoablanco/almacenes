@@ -1,4 +1,5 @@
-import { change, SubmissionError } from 'redux-form'
+import { change, SubmissionError, getFormValues } from 'redux-form'
+import moment from 'moment'
 import { feathersServices } from '../feathers'
 import { getCrudPageActions as getBaseCrudPageActions, getActionTypes as getBaseActionTypes } from './crudPage'
 import { showTimedMessage } from './messageBar'
@@ -53,8 +54,10 @@ export default function getCrudPageActions() {
         if (stockMovementTypeCode === 'release') {
           dispatch(change('stock', 'releaseType', 'full'))
         }
-        dispatch(change('stock', 'date', new Date()))
-        
+        if (getFormValues('stock', 'date') === undefined) {
+          dispatch(change('stock', 'date', moment().toDate()))
+        }
+
         const query = {
           $select: ['id', 'description', 'rate'],
           $limit: 0,
