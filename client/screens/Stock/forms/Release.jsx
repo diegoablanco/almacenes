@@ -14,7 +14,7 @@ class ReleaseForm extends Component {
       targetCustomerLookup,
       targetCustomerLookupActions,
       targetCustomer,
-      stock
+      stock = {}
     } = this.props
     return (
       <Grid verticalAlign="middle" centered textAlign="center">
