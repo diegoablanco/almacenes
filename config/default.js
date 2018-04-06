@@ -21,8 +21,6 @@ module.exports = {
   server: {
     // host name e.g. localhost
     host: undefined,
-    // port number for server
-    port: undefined,
     // root folder with assets. Webpack bundles are written to ./dist
     publicPath: path.join(root, 'public'), // also some hard coding in server/app, webpack
     serverPath: path.join(root, 'server'), // also some hard coding in server/app, webpack
