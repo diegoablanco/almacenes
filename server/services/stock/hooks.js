@@ -71,10 +71,12 @@ module.exports = {
             case 'id':
               hook.params.sequelize.order = [['createdAt', sortOrder]]
               break
-            default:
-              hook.params.sequelize.order = [['createdAt', 'desc']]
+            // default:
+            //   hook.params.sequelize.order = [$sort]
           }
-          delete hook.params.query.$sort
+          if (hook.params.sequelize.order) {
+            delete hook.params.query.$sort
+          }
         }
       }
     ],

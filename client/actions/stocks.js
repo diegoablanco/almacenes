@@ -54,7 +54,8 @@ export default function getCrudPageActions() {
         if (stockMovementTypeCode === 'release') {
           dispatch(change('stock', 'releaseType', 'full'))
         }
-        if (getFormValues('stock', 'date') === undefined) {
+        const { date } = getFormValues('stock')(getState())
+        if (!date) {
           dispatch(change('stock', 'date', moment().toDate()))
         }
 

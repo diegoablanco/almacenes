@@ -22,11 +22,14 @@ class StockCrud extends Component {
         cellFormatters: [(status, { rowData }) => (<StatusColumn status={status} rowData={rowData} />)]
       },
       { property: 'date', label: 'Fecha', cellFormatters: [date => moment(date).calendar()] },
-      { property: 'lastMovementDate', label: 'Último Movimiento', cellFormatters: [date => date && moment(date).fromNow()] },
+      { property: 'lastMovementDate',
+        label: 'Último Movimiento',
+        cellFormatters: [date => date && moment(date).fromNow()]
+      },
       { property: 'reference', label: 'Referencia' },
       { property: 'customer.companyName', label: 'Cliente' },
       { property: 'goods', label: 'Mercancía' },
-      { property: 'warehouse.name', label: 'Almacén', sortable: true },
+      { property: 'warehouse.name', label: 'Almacén' },
       { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' },
       { cellFormatters: [(a, { rowData: { id, status } }) => {
         switch (status.code) {
