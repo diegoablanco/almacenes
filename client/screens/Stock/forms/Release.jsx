@@ -49,7 +49,7 @@ class ReleaseForm extends Component {
             value="partial"
             component={formValues({ currentValue: 'releaseType' })(renderRadio)}
           />
-          { stock.releaseType === 'partial' && <Field
+          { stock && stock.releaseType === 'partial' && <Field
             name="releaseQuantity"
             type="text"
             label="Cantidad a Liberar"
