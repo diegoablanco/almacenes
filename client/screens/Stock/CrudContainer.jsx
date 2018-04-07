@@ -82,7 +82,7 @@ class StockCrud extends Component {
           confirmModalOptions={this.confirmModalOptions}
           selectors={selectors}
           formModal={FormModal}
-          toolbar={ToolbarContainer}
+          toolbar={props => <ToolbarContainer {...props} {...crudActions} />}
           crudActions={crudActions}
           enableDelete={false}
           // enableActionColumn={false}

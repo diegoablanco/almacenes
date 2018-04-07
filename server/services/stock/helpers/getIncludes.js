@@ -77,30 +77,6 @@ module.exports = function (database) {
     }
   }
   return {
-    ...includes,
-    children: {
-      model: stock,
-      as: 'children',
-      include: [{
-        model: stockStatus,
-        as: 'status'
-      },
-      {
-        model: warehouse
-      },
-      {
-        model: customer,
-        attributes: ['companyName']
-      },
-      {
-        model: customer,
-        as: 'targetCustomer',
-        attributes: ['companyName']
-      },
-      {
-        model: stockMovement,
-        as: 'movements'
-      }]
-    }
+    ...includes
   }
 }

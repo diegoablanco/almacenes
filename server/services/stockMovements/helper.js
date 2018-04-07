@@ -45,7 +45,6 @@ module.exports = {
       createdAt,
       updatedAt,
       customerId: originalCustomerId,
-      onHold: originalOnHold,
       statusId,
       targetCustomerId,
       instructions,

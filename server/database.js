@@ -1,5 +1,5 @@
 const config = require('config')
-const Sequelize = require('sequelize')
+const Sequelize = require('sequelize-hierarchy')()
 
 module.exports = function () {
   const { database: { user, password, host, name } } = config

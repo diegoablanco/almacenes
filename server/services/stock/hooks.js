@@ -14,7 +14,7 @@ const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 const { setMovement, setStatus, setGoodsDescription, getIncludes, setMovementServices, setLastMovementDate, expandChildren } = require('./helpers')
 const { getFullStock, getStockForRelease, getStockForIssue } = require('./getHooks')
-const { processSort } = require('../helpers')
+const { processSort, processFilter } = require('../helpers')
 const { setUser } = require('../hooks')
 
 
@@ -43,7 +43,9 @@ module.exports = {
     ],
     find: [
       function (hook) {
-        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements, children } = getIncludes(hook.app.get('database'))
+        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements } = getIncludes(hook.app.get('database'))
+        // status.where = { id: { [Op.in]: [1, 2] } }
+        processFilter(hook, { status })
         hook.params.sequelize = {
           raw: false,
           include: [
@@ -53,12 +55,8 @@ module.exports = {
             status,
             stockBox,
             stockPallets,
-            movements,
-            children
-          ],
-          where: { parentId: {
-            [Op.eq]: null
-          } }
+            movements
+          ]
         }
         processSort(hook, { customer, targetCustomer, warehouse, status })
         const { params: { query: { $sort } } } = hook

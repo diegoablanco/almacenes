@@ -19,6 +19,7 @@ export function getActionTypes() {
 
 export default function getCrudPageActions() {
   const { search: searchCustomer, clear: clearCustomer } = getLookupEntities(feathersServices.customerLookup, 'customer', 'companyName')
+  const { search: searchFilterCustomer, clear: clearFilterCustomer } = getLookupEntities(feathersServices.customerFilterLookup, 'customer', 'companyName')
   const { search: searchTargetCustomer, clear: clearTargetCustomer } = getLookupEntities(feathersServices.targetCustomerLookup, 'customer', 'companyName')
   const { search: searchBillingCustomer, clear: clearBillingCustomer } = getLookupEntities(feathersServices.billingCustomerLookup, 'customer', 'companyName')
   const { search: searchCarrier, clear: clearCarrier } = getLookupEntities(feathersServices.carrierLookup, 'carrier', 'companyName')
@@ -33,6 +34,7 @@ export default function getCrudPageActions() {
   return {
     ...baseCrudPageActions,
     ...{ searchCustomer, clearCustomer },
+    ...{ searchFilterCustomer, clearFilterCustomer },
     ...{ searchTargetCustomer, clearTargetCustomer },
     ...{ searchBillingCustomer, clearBillingCustomer },
     ...{ searchCarrier, clearCarrier },

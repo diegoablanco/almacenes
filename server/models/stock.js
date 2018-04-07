@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize')
+const Sequelize = require('sequelize-hierarchy')()
 
 module.exports = function (sequelize) {
   const Stock = sequelize.define('stock', {
@@ -38,7 +38,6 @@ module.exports = function (sequelize) {
     fileAttachment,
     stockService,
     stockStatus,
-    stock,
     stockIssue,
     user
   }) {
@@ -55,11 +54,13 @@ module.exports = function (sequelize) {
     Stock.hasMany(stockMovement, { as: 'movements' })
     Stock.hasMany(stockService, { as: 'services' })
     Stock.belongsTo(stockStatus, { as: 'status' })
-    Stock.belongsTo(stock, { as: 'parent' })
-    Stock.hasMany(stock, { as: 'children', foreignKey: 'parentId' })
     Stock.belongsTo(user, { as: 'createdBy' })
     Stock.belongsTo(user, { as: 'updatedBy' })
     Stock.belongsTo(stockIssue, { as: 'issue' })
   }
+  Stock.isHierarchy({
+    through: 'stock_ancestors',
+    freezeTableName: true
+  })
   return Stock
 }

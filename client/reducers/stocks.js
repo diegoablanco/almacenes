@@ -8,6 +8,7 @@ const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)))
 const crudReducer = getCrudReducer(crudPages.STOCKS, { formName: 'stock', defaultData: { instructions: [] } })
 const {
   customerLookup,
+  customerFilterLookup,
   targetCustomerLookup,
   billingCustomerLookup,
   carrierLookup,
@@ -27,6 +28,7 @@ function stockReducer(state, action) {
   return {
     ...newState,
     customerLookup: customerLookup.reducer(state.customerLookup, action),
+    customerFilterLookup: customerFilterLookup.reducer(state.customerFilterLookup, action),
     targetCustomerLookup: targetCustomerLookup.reducer(state.targetCustomerLookup, action),
     billingCustomerLookup: billingCustomerLookup.reducer(state.billingCustomerLookup, action),
     carrierLookup: carrierLookup.reducer(state.carrierLookup, action),

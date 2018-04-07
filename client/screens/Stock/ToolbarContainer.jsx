@@ -2,51 +2,37 @@ import React, { Component } from 'react'
 import { Button, Menu } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { reduxForm, Field } from 'redux-form'
-import { renderSearchField } from '../../utils/formHelpers'
+import ToolbarForm from './ToolbarForm'
 
 class Toolbar extends Component {
   constructor(props) {
     super(props)
-    this.filterForm = this.filterForm.bind(this)
-  }
-  shouldComponentUpdate() {
-    return false
+    this.filter = this.filter.bind(this)
+    this.buildFilter = this.buildFilter.bind(this)
   }
 
-  filterForm({ handleSubmit, reset }) {
-    return (
-      <form onSubmit={handleSubmit}>
-        <Field
-          name="search"
-          type="text"
-          placeholder="Buscar por Referencia"
-          component={renderSearchField}
-          reset={reset}
-        />
-      </form>
-    )
-  }
-
-  buildFilter({ search }) {
-    return search && {
-      reference: {
+  buildFilter({ search, status, customer }) {
+    return {
+      reference: search && {
         $like: `%${search}%`
+      },
+      customerId: customer,
+      where: {
+        status: status && status.map(x => x.id)
       }
     }
   }
-
+  filter(values) {
+    const { filterGrid } = this.props
+    filterGrid(this.buildFilter(values))
+  }
   render() {
-    const { filterGrid, showFormModal } = this.props
-    const ReduxForm = reduxForm({
-      form: 'filterStock',
-      onSubmit: values => filterGrid(this.buildFilter(values))
-    })(this.filterForm)
+    const { showFormModal, crudActions } = this.props
 
     return (
       <Menu>
         <Menu.Item>
-          <ReduxForm />
+          <ToolbarForm onSubmit={this.filter} {...{ crudActions }} />
         </Menu.Item>
         <Menu.Item position="right">
           <Button.Group labeled>
@@ -58,6 +44,7 @@ class Toolbar extends Component {
     )
   }
 }
+
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { crudActions } = ownProps

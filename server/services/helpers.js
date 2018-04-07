@@ -1,3 +1,5 @@
+const { Op } = require('sequelize')
+
 module.exports = {
   processSort(hook, includes) {
     const { params: { query: { $sort } } } = hook
@@ -8,5 +10,13 @@ module.exports = {
       hook.params.sequelize.order = [[includes[include], property, sortOrder]]
       delete hook.params.query.$sort
     }
+  },
+  processFilter(hook, includes) {
+    const { params: { query: { where = [] } } } = hook
+    Object.keys(where).forEach(x => {
+      includes[x].where = { id: { [Op.in]: where[x] } }
+    })
+    
+    delete hook.params.query.where
   }
 }

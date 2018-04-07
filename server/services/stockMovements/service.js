@@ -55,7 +55,6 @@ module.exports = function () {
                   } else {
                     await releaseToCustomer({ stock, customerId: targetCustomerId, onHold, transaction })
                     await reduceUnitsTotally(stock, transaction)
-                    await setStatusByCode(stock, 'fulfilled', transaction)
                   }
                 } else {
                   if (sameCustomer) {

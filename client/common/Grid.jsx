@@ -128,14 +128,13 @@ class Grid extends Component {
     })
   }
   treeCellFormatter(rows) {
-    return (value, { rowData: { id, showingChildren } }) => {
+    return (value, { rowData: { id, showingChildren, hierarchyLevel } }) => {
       const {
         toggleShowingChildren
       } = this.props
       const index = findIndex(rows, { id })
       const hasChildren = tree.hasChildren({ index, parentField: 'parentId' })(rows)
-      const level = tree.getLevel({ index, parentField: 'parentId' })(rows)
-      const style = { marginLeft: `${level}em` }
+      const style = { marginLeft: `${hierarchyLevel}em` }
       if (hasChildren) {
         return (hasChildren && <Label style={style} as="a" icon={`angle ${showingChildren ? 'down' : 'right'}`} onClick={() => toggleShowingChildren(id)} content={id} />)
       }
