@@ -41,7 +41,8 @@ class Toolbar extends Component {
     const { filterGrid, showFormModal } = this.props
     const ReduxForm = reduxForm({
       form: 'filterWarehouses',
-      onSubmit: values => filterGrid(this.buildFilter(values))
+      onSubmit: values => filterGrid(this.buildFilter(values)),
+      destroyOnUnmount: false
     })(this.filterForm)
 
     return (
