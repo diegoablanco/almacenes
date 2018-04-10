@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dropdown, Label, Form } from 'semantic-ui-react'
+import { Dropdown, Label, Form, Icon } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import intl from 'react-intl-universal'
@@ -9,19 +9,22 @@ class LookupField extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchQuery: ''
+      searchQuery: '',
+      open: false
     }
     this.handleResultSelect = this.handleResultSelect.bind(this)
     this.reset = this.reset.bind(this)
     this.search = this.search.bind(this)
+    this.getIcons = this.getIcons.bind(this)
   }
   handleResultSelect(e, { value }) {
     const { input } = this.props
     input.onChange(value)
   }
-  reset() {
+  reset(e) {
     const { input } = this.props
     input.onChange('')
+    e.stopPropagation()
   }
   search(event, { searchQuery }) {
     const { lookupActions: { search }, input } = this.props
@@ -32,7 +35,20 @@ class LookupField extends Component {
   resultRenderer({ id, description }) {
     return (<Label content={description} key={id} />)
   }
-
+  getIcons2() {
+    const { input: { value } } = this.props
+    return (<div style={{ float: 'right' }}>
+      { value && <Icon name="delete" onClick={this.reset} /> }
+      <Icon name="dropdown" />
+    </div>)
+  }
+  getIcons() {
+    const { input: { value } } = this.props
+    const icon = value
+      ? <Icon name="delete" onClick={this.reset} />
+      : <Icon name="dropdown" cssClass="dropdown" />
+    return icon
+  }
   render() {
     const {
       input: { value, name },
@@ -64,6 +80,7 @@ class LookupField extends Component {
           onSearchChange={this.search}
           loading={isLoading}
           noResultsMessage={searchQuery !== '' ? 'No se encontraron resultados' : placeholder}
+          icon={this.getIcons()}
         />
         { touched && error && <label className="error">{error}</label> }
       </Form.Field>
