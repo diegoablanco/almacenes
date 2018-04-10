@@ -16,7 +16,7 @@ module.exports = function (database) {
       stock
     }
   } = database
-  const includes = {
+  const getIncludes = () => ({
     customer: {
       model: customer,
       attributes: ['companyName']
@@ -75,8 +75,14 @@ module.exports = function (database) {
       model: stockMovement,
       as: 'movements'
     }
-  }
+  })
+  const { customer: childStockCustomer, targetCustomer, status } = getIncludes()
   return {
-    ...includes
+    ...getIncludes(),
+    stock: {
+      model: stock,
+      as: 'ancestors',
+      include: [childStockCustomer, targetCustomer, status]
+    }
   }
 }

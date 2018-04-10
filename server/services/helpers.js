@@ -1,4 +1,5 @@
 const { Op } = require('sequelize')
+const { isEmpty } = require('lodash')
 
 module.exports = {
   processSort(hook, includes) {
@@ -12,11 +13,12 @@ module.exports = {
     }
   },
   processFilter(hook, includes) {
-    const { params: { query: { where = [] } } } = hook
+    const { params: { query: { where = {} } } } = hook
     Object.keys(where).forEach(x => {
       includes[x].where = { id: { [Op.in]: where[x] } }
     })
     
+    hook.data.filtered = !isEmpty(where)
     delete hook.params.query.where
   }
 }

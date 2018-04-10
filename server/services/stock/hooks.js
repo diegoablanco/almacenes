@@ -12,7 +12,17 @@ const stockItemDetailSchema = require('../../../common/validation/stockItemDetai
 const stockServiceDetailSchema = require('../../../common/validation/stockService.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
-const { setMovement, setStatus, setGoodsDescription, getIncludes, setMovementServices, setLastMovementDate, expandChildren } = require('./helpers')
+const {
+  setMovement,
+  setStatus,
+  setGoodsDescription,
+  getIncludes,
+  setMovementServices,
+  setLastMovementDate,
+  expandChildren,
+  setItemsToHighlight,
+  highlightItems
+} = require('./helpers')
 const { getFullStock, getStockForRelease, getStockForIssue } = require('./getHooks')
 const { processSort, processFilter } = require('../helpers')
 const { setUser } = require('../hooks')
@@ -43,8 +53,7 @@ module.exports = {
     ],
     find: [
       function (hook) {
-        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements } = getIncludes(hook.app.get('database'))
-        // status.where = { id: { [Op.in]: [1, 2] } }
+        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements, stock } = getIncludes(hook.app.get('database'))
         processFilter(hook, { status })
         hook.params.sequelize = {
           raw: false,
@@ -55,8 +64,10 @@ module.exports = {
             status,
             stockBox,
             stockPallets,
-            movements
-          ]
+            movements,
+            stock
+          ],
+          order: [[stock, 'hierarchyLevel']]
         }
         processSort(hook, { customer, targetCustomer, warehouse, status })
         const { params: { query: { $sort } } } = hook
@@ -151,6 +162,7 @@ module.exports = {
       setStatus
     ],
     find: [
+      setItemsToHighlight,
       expandChildren,
       dehydrate(),
       context => {
@@ -160,7 +172,8 @@ module.exports = {
         })
       },
       setGoodsDescription,
-      setLastMovementDate
+      setLastMovementDate,
+      highlightItems
     ],
     get: [
       function (context) {

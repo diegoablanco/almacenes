@@ -16,22 +16,22 @@ class StockCrud extends Component {
     const { showFormModal } = props
     this.gridColumns = [
       { property: 'id', label: 'Código de Stock' },
-      {
-        property: 'status',
-        label: 'Estado',
-        cellFormatters: [(status, { rowData }) => (<StatusColumn status={status} rowData={rowData} />)]
-      },
       { property: 'date', label: 'Fecha', cellFormatters: [date => moment(date).calendar()] },
+      { property: 'customer.companyName', label: 'Cliente' },
+      { property: 'warehouse.name', label: 'Almacén' },
       { property: 'lastMovementDate',
         label: 'Último Movimiento',
         cellFormatters: [date => date && moment(date).fromNow()]
       },
       { property: 'reference', label: 'Referencia' },
-      { property: 'customer.companyName', label: 'Cliente' },
       { property: 'goods', label: 'Mercancía' },
-      { property: 'warehouse.name', label: 'Almacén' },
       { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' },
-      { cellFormatters: [(a, { rowData: { id, status } }) => {
+      {
+        property: 'status',
+        label: 'Estado',
+        cellFormatters: [(status, { rowData }) => (status && <StatusColumn status={status} rowData={rowData} />)]
+      },
+      { cellFormatters: [(a, { rowData: { id, status = {} } }) => {
         switch (status.code) {
           case 'preReceive':
             return (

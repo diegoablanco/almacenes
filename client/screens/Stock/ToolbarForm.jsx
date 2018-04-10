@@ -61,4 +61,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return bindActionCreators({ searchFilterCustomer, clearFilterCustomer }, dispatch)
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({ form: 'filterStock' }))(ToolbarForm)
+export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({ form: 'filterStock', destroyOnUnmount: false }))(ToolbarForm)

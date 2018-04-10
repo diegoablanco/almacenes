@@ -1,5 +1,6 @@
 import { initialize as initializeReduxForm, SubmissionError } from 'redux-form'
 import * as sort from 'sortabular'
+import { expandAll } from 'treetabular'
 import { entityDeletedMessage, entityCreatedMessage, entityUpdatedMessage } from './messageBar'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
 import { formatAjvToRf } from '../common/Validation'
@@ -146,13 +147,16 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
           } })
       }
     },
-    filterGrid(filter) {
+    filterGrid({ anyFilter, ...filter } = {}) {
       return (dispatch, getState) => {
         dispatch(resetPageNumber())
         dispatch({ type: actionTypes.SET_FILTER, filter })
         const query = getQuery(getState(), selectors)
-        dispatch(serviceActions.find({ query })).then(result => {
-          dispatch(buildRows(result.value))
+        dispatch(serviceActions.find({ query })).then(({ value: result }) => {
+          if (anyFilter) {
+            result.data = expandAll()(result.data)
+          }
+          dispatch(buildRows(result))
         })
       }
     },

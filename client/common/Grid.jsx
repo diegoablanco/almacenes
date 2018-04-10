@@ -117,7 +117,15 @@ class Grid extends Component {
         columns={gridColumns}
       >
         <Table.Header />
-        <Table.Body rows={tableRows} rowKey={rowKey} />
+        <Table.Body
+          rows={tableRows}
+          rowKey={rowKey}
+          onRow={({ highlight }) =>
+             ({
+              className: highlight ? 'warning' : ''
+            })
+          }
+        />
       </Table.Provider>
     )
   }

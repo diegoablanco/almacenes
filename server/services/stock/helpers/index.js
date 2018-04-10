@@ -5,6 +5,8 @@ const setMovementServices = require('./setMovementServices')
 const setStatus = require('./setStatus')
 const setLastMovementDate = require('./setLastMovementDate')
 const expandChildren = require('./expandChildren')
+const setItemsToHighlight = require('./setItemsToHighlight')
+const highlightItems = require('./highlightItems')
 
 module.exports = {
   getIncludes,
@@ -13,6 +15,8 @@ module.exports = {
   setMovementServices,
   setStatus,
   setLastMovementDate,
-  expandChildren
+  expandChildren,
+  setItemsToHighlight,
+  highlightItems
 }
 

@@ -19,7 +19,8 @@ class Toolbar extends Component {
       customerId: customer,
       where: {
         status: status && status.map(x => x.id)
-      }
+      },
+      anyFilter: (search || customer) !== undefined || (status !== undefined && status.length > 0)
     }
   }
   filter(values) {
