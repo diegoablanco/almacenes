@@ -76,13 +76,20 @@ module.exports = function (database) {
       as: 'movements'
     }
   })
-  const { customer: childStockCustomer, targetCustomer, status } = getIncludes()
+  const { customer: ancestorCustomer, targetCustomer, status, warehouse: ancestorWarehouse } = getIncludes()
+  const { customer: descendentCustomer, targetCustomer: descendentTargetCustomer, status: descendentStatus, warehouse: descendentWarehouse } = getIncludes()
   return {
     ...getIncludes(),
     stock: {
       model: stock,
       as: 'ancestors',
-      include: [childStockCustomer, targetCustomer, status]
+      include: [ancestorCustomer, targetCustomer, status, ancestorWarehouse]
+    },
+    descendantStock: {
+      model: stock,
+      as: 'descendents',
+      include: [descendentCustomer, descendentTargetCustomer, descendentStatus, descendentWarehouse],
+      hierarchy: true
     }
   }
 }

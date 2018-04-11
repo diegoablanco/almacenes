@@ -13,12 +13,12 @@ module.exports = {
     }
   },
   processFilter(hook, includes) {
-    const { params: { query: { where = {} } } } = hook
+    const { params: { query: { where = {}, $sort, $skip, ...query } } } = hook
     Object.keys(where).forEach(x => {
       includes[x].where = { id: { [Op.in]: where[x] } }
     })
     
-    hook.data.filtered = !isEmpty(where)
+    hook.data.filtered = !isEmpty(where) || !isEmpty(query)
     delete hook.params.query.where
   }
 }

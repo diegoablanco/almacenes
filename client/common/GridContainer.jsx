@@ -22,12 +22,13 @@ class GridContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { sortingColumns, filter, reloadGrid, rows, canAdd, isLoadingMore } = ownProps.selectors.getUiState(state)
+  const { sortingColumns, filter, reloadGrid, rows, canAdd, isLoadingMore, enableTreeTabular } = ownProps.selectors.getUiState(state)
   const { queryResult, isLoading } = ownProps.selectors.getServiceState(state)
   const props = {
     queryResult: queryResult ? queryResult.data : [],
     isLoading,
     isLoadingMore,
+    // hasMore: queryResult && queryResult.total > rows.length,
     hasMore: queryResult && queryResult.total > queryResult.limit + queryResult.skip,
     total: queryResult && queryResult.total,
     sortingColumns,
@@ -35,6 +36,7 @@ const mapStateToProps = (state, ownProps) => {
     reloadGrid,
     rows,
     canAdd,
+    enableTreeTabular,
     ...ownProps
   }
   return props

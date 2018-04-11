@@ -1,9 +1,9 @@
 import { initialize as initializeReduxForm, SubmissionError } from 'redux-form'
 import * as sort from 'sortabular'
-import { expandAll } from 'treetabular'
 import { entityDeletedMessage, entityCreatedMessage, entityUpdatedMessage } from './messageBar'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
 import { formatAjvToRf } from '../common/Validation'
+import { expandHighlightedAncestors } from './helpers'
 
 const sortingOrder = {
   FIRST: 'asc',
@@ -150,11 +150,11 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
     filterGrid({ anyFilter, ...filter } = {}) {
       return (dispatch, getState) => {
         dispatch(resetPageNumber())
-        dispatch({ type: actionTypes.SET_FILTER, filter })
+        dispatch({ type: actionTypes.SET_FILTER, filter, anyFilter })
         const query = getQuery(getState(), selectors)
         dispatch(serviceActions.find({ query })).then(({ value: result }) => {
           if (anyFilter) {
-            result.data = expandAll()(result.data)
+            result.data = expandHighlightedAncestors(result.data)
           }
           dispatch(buildRows(result))
         })
@@ -162,14 +162,23 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
     },
     loadMore() {
       return async (dispatch, getState) => {
-        const { rows, isLoadingMore } = selectors.getUiState(getState())
+        const { rows, isLoadingMore, anyFilter, enableTreeTabular } = selectors.getUiState(getState())
         if (isLoadingMore) return
-        dispatch({ type: actionTypes.INCREASE_PAGE_NUMBER, qty: rows.length })
+        const qty = (enableTreeTabular ? rows.filter(row => (anyFilter ? row.highlight : row.hierarchyLevel === 1)) : rows).length
+        dispatch({ type: actionTypes.INCREASE_PAGE_NUMBER, qty })
         const query = getQuery(getState(), selectors)
         dispatch({ type: actionTypes.IS_LOADING_MORE, isLoadingMore: true })
-        const result = await dispatch(serviceActions.find({ query }))
+        const { value: result } = await dispatch(serviceActions.find({ query }))
         dispatch({ type: actionTypes.IS_LOADING_MORE, isLoadingMore: false })
-        dispatch(buildRows(result.value, true))
+        if (anyFilter) {
+          const newRows = rows.map(row => {
+            const highlight = result.data.find(x => x.id === row.id && x.highlight)
+            return { ...row, highlight: highlight || row.highlight }
+          }).concat(result.data.filter(x => !rows.some(y => y.id === x.id)))
+          dispatch(buildRows({ data: expandHighlightedAncestors(newRows) }))
+        } else {
+          dispatch(buildRows(result, true))
+        }
       }
     },
     sortGrid(selectedColumn) {

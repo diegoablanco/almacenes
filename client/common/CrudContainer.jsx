@@ -53,7 +53,7 @@ class CrudContainer extends Component {
           selectors={selectors}
           crudActions={crudActions}
           toolbar={toolbar}
-          {...{ enableAdd, enableEdit, enableDelete, enableTreeTabular }}
+          {...{ enableAdd, enableEdit, enableDelete }}
           addHandler={showFormModal}
           enableActionColumn={enableActionColumn}
         />

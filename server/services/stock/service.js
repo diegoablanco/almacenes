@@ -11,7 +11,7 @@ module.exports = function () {
     name: 'stocks',
     Model: stock,
     paginate: {
-      default: 100,
+      default: 3,
       max: 100
     }
   };

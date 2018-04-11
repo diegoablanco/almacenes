@@ -85,8 +85,6 @@ class StockCrud extends Component {
           toolbar={props => <ToolbarContainer {...props} {...crudActions} />}
           crudActions={crudActions}
           enableDelete={false}
-          // enableActionColumn={false}
-          enableTreeTabular
         />
       </div>
     )

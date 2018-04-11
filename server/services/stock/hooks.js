@@ -3,7 +3,6 @@ const Ajv = require('ajv')
 const { validateSchema, setNow } = require('feathers-hooks-common')
 const hydrate = require('feathers-sequelize/hooks/hydrate')
 const dehydrate = require('feathers-sequelize/hooks/dehydrate')
-const { Op } = require('sequelize')
 const stockSchema = require('../../../common/validation/stock.json')
 const stockBoxSchema = require('../../../common/validation/stockBox.json')
 const stockPalletSchema = require('../../../common/validation/stockPallet.json')
@@ -53,10 +52,11 @@ module.exports = {
     ],
     find: [
       function (hook) {
-        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements, stock } = getIncludes(hook.app.get('database'))
+        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements, stock, descendantStock } = getIncludes(hook.app.get('database'))
         processFilter(hook, { status })
         hook.params.sequelize = {
           raw: false,
+          distinct: true,
           include: [
             customer,
             targetCustomer,
@@ -65,9 +65,13 @@ module.exports = {
             stockBox,
             stockPallets,
             movements,
-            stock
+            stock,
+            descendantStock
           ],
           order: [[stock, 'hierarchyLevel']]
+        }
+        if (!hook.data.filtered) {
+          hook.params.sequelize.where = { ...(hook.params.sequelize.where || {}), hierarchyLevel: 1 }
         }
         processSort(hook, { customer, targetCustomer, warehouse, status })
         const { params: { query: { $sort } } } = hook

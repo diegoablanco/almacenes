@@ -38,7 +38,7 @@ export function getCrudReducer(crudPage, defaultInitialState = {}) {
       case actionTypes.HIDE_CONFIRM_MODAL:
         return { ...state, confirmDialog: { show: false } }
       case actionTypes.SET_FILTER:
-        return { ...state, filter: action.filter }
+        return { ...state, filter: action.filter, anyFilter: action.anyFilter }
       case actionTypes.SET_SORTING_COLUMNS:
         return { ...state, sortingColumns: action.sortingColumns }
       case actionTypes.SET_PAGE_NUMBER:
