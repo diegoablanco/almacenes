@@ -67,8 +67,7 @@ module.exports = {
             movements,
             stock,
             descendantStock
-          ],
-          order: [[stock, 'hierarchyLevel']]
+          ]
         }
         if (!hook.data.filtered) {
           hook.params.sequelize.where = { ...(hook.params.sequelize.where || {}), hierarchyLevel: 1 }

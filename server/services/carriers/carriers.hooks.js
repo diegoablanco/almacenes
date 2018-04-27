@@ -67,9 +67,9 @@ module.exports = {
         authorizedSignatory.include = [{ model: phone, as: 'phones', attributes: ['number'], through: { attributes: [] } }]
         authorizedSignatory.attributes = ['name', 'email']
         hook.params.sequelize = {
-          raw: false,
+          subQuery: false,
           include: [
-            authorizedSignatory
+            { ...authorizedSignatory, attributes: ['name', 'email'], include: [] }
           ],
           attributes: ['id', 'companyName', 'authorizedSignatoryId', 'createdAt']
         }

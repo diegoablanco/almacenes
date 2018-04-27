@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose, bindActionCreators } from 'redux'
-import { Form } from 'semantic-ui-react'
+import { Form, Button, Segment } from 'semantic-ui-react'
 import { reduxForm, Field } from 'redux-form'
-import { renderSearchField } from '../../utils/formHelpers'
+import { renderField } from '../../utils/formHelpers'
 import { stocks as selectors } from '../../selectors'
 import getUneditables from '../../selectors/uneditables'
 import SelectField from '../../common/SelectField'
 import LookupSelectField from '../../components/LookupSelectField'
+import { DateTimeField } from '../../components'
 
 class ToolbarForm extends Component {
   render() {
@@ -21,25 +22,40 @@ class ToolbarForm extends Component {
     } = this.props
     return (
       <Form onSubmit={handleSubmit}>
-        <Field
-          name="search"
-          type="text"
-          placeholder="Buscar por Referencia"
-          component={renderSearchField}
-          reset={reset}
-        />
-        <Field
-          name="status"
-          component={SelectField}
-          options={statuses}
-          multiple
-        />
-        <Field
-          name="customer"
-          component={LookupSelectField}
-          lookupState={customerFilterLookup}
-          lookupActions={{ search: searchFilterCustomer, clear: clearFilterCustomer }}
-        />
+        <Segment attached="top">
+          Filtros
+        </Segment>
+        <Segment attached>
+          <Field
+            name="reference"
+            type="text"
+            component={renderField}
+            reset={reset}
+          />
+          {/* <Field
+            name="dateFrom"
+            component={DateTimeField}
+          />
+          <Field
+            name="dateTo"
+            component={DateTimeField}
+          /> */}
+          <Field
+            name="status"
+            component={SelectField}
+            options={statuses}
+            multiple
+          />
+          <Field
+            name="customerId"
+            component={LookupSelectField}
+            lookupState={customerFilterLookup}
+            lookupActions={{ search: searchFilterCustomer, clear: clearFilterCustomer }}
+          />
+        </Segment>
+        <Segment attached="bottom">
+          <Button primary type="submit" size="small">Filtrar</Button>
+        </Segment>
       </Form>
     )
   }
@@ -61,4 +77,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return bindActionCreators({ searchFilterCustomer, clearFilterCustomer }, dispatch)
 }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({ form: 'filterStock', destroyOnUnmount: false }))(ToolbarForm)
+export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({
+  form: 'filterStock',
+  destroyOnUnmount: false
+}))(ToolbarForm)

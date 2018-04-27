@@ -10,6 +10,12 @@ const crudReducer = getCrudReducer(crudPages.STOCKS, {
   enableTreeTabular: true,
   defaultData: {
     instructions: []
+  },
+  sortingColumns: {
+    date: {
+      direction: 'desc',
+      position: 0
+    }
   }
 })
 const {

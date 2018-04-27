@@ -35,13 +35,13 @@ module.exports = {
       function (hook) {
         const { authorizedSignatory } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
-          raw: false,
+          subQuery: false,
           include: [
-            { ...authorizedSignatory, attributes: ['name', 'email'] }
+            { ...authorizedSignatory, attributes: ['name', 'email'], include: [] }
           ],
           attributes: ['id', 'companyName', 'authorizedSignatoryId'] }
-        processSort(hook, { authorizedSignatory })
-      }
+      },
+      processSort
     ],
     get: [
       function (hook) {

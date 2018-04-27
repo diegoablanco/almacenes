@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Button } from 'semantic-ui-react'
+import { Button, Grid } from 'semantic-ui-react'
 import moment from 'moment'
 import FormModal from './FormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
+import ToolbarForm from './ToolbarForm'
 import getCrudPageActions from '../../actions/stocks'
 import { stocks as selectors } from '../../selectors'
 import StatusColumn from './components/StatusColumn'
@@ -17,12 +18,12 @@ class StockCrud extends Component {
     this.gridColumns = [
       { property: 'id', label: 'Código de Stock' },
       { property: 'date', label: 'Fecha', cellFormatters: [date => moment(date).calendar()] },
-      { property: 'customer.companyName', label: 'Cliente' },
-      { property: 'warehouse.name', label: 'Almacén' },
-      { property: 'lastMovementDate',
+      { property: 'updatedAt',
         label: 'Último Movimiento',
         cellFormatters: [date => date && moment(date).fromNow()]
       },
+      { property: 'customer.companyName', label: 'Cliente' },
+      { property: 'warehouse.name', label: 'Almacén' },
       { property: 'reference', label: 'Referencia' },
       { property: 'goods', label: 'Mercancía' },
       { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' },
@@ -68,31 +69,64 @@ class StockCrud extends Component {
       title: 'Eliminar Transportista',
       message: '¿Confirma eliminar el transportista?'
     }
+    this.filter = this.filter.bind(this)
+    this.buildFilter = this.buildFilter.bind(this)
   }
   shouldComponentUpdate() {
     return false
   }
 
+  buildFilter({ reference, status, customer, dateFrom, dateTo }) {
+    return {
+      reference: reference && {
+        $like: `%${reference}%`
+      },
+      customerId: customer,
+      date: (dateFrom || dateTo) && {
+        $gte: dateFrom,
+        $lte: dateTo
+      },
+      where: {
+        status: status && status.map(x => x.id)
+      },
+      anyFilter: (reference || customer) !== undefined || (status !== undefined && status.length > 0)
+    }
+  }
+  filter(values) {
+    const { filterGrid } = this.props
+    filterGrid(this.buildFilter(values))
+  }
   render() {
     const crudActions = getCrudPageActions()
     return (
-      <div>
-        <CrudContainer
-          gridColumns={this.gridColumns}
-          confirmModalOptions={this.confirmModalOptions}
-          selectors={selectors}
-          formModal={FormModal}
-          toolbar={props => <ToolbarContainer {...props} {...crudActions} />}
-          crudActions={crudActions}
-          enableDelete={false}
-        />
-      </div>
+      <Grid className="filter-grid-container">
+        <Grid.Row >
+          <Grid.Column width={16}>
+            <ToolbarContainer {...{ crudActions }} />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row columns={2}>
+          <Grid.Column width={3}>
+            <ToolbarForm onSubmit={this.filter} {...{ crudActions }} />
+          </Grid.Column>
+          <Grid.Column width={13}>
+            <CrudContainer
+              gridColumns={this.gridColumns}
+              confirmModalOptions={this.confirmModalOptions}
+              selectors={selectors}
+              formModal={FormModal}
+              crudActions={crudActions}
+              enableDelete={false}
+            />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     )
   }
 }
 const mapDispatchToProps = (dispatch) => {
-  const { showFormModal } = getCrudPageActions()
+  const { showFormModal, filterGrid } = getCrudPageActions()
 
-  return bindActionCreators({ showFormModal }, dispatch)
+  return bindActionCreators({ showFormModal, filterGrid }, dispatch)
 }
 export default connect(null, mapDispatchToProps)(StockCrud)
