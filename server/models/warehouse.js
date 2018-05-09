@@ -17,8 +17,7 @@ module.exports = function (sequelize) {
       allowNull: false
     },
     phone: {
-      type: Sequelize.STRING,
-      allowNull: false
+      type: Sequelize.STRING
     }
   })
   Warehouse.associate = function ({ warehouseService }) {

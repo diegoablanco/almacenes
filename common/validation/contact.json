@@ -12,7 +12,6 @@
     },
     "email": {
       "type": "string",
-      "format": "email",
       "minLength": 1
     },
     "phones": {
