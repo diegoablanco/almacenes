@@ -19,10 +19,8 @@ export default function uploadFile(file, fieldName, formName) {
         if (err && err.response.error.status === 401) {
           dispatch(change(formName, `${fieldPrefix}.error`, { percent: 'Error de autenticación' }))
         }
-        const { body: { id: hashName, thumb } } = response
+        const { body: { id: hashName } } = response
         dispatch(change(formName, `${fieldPrefix}.hashName`, hashName))
-        dispatch(change(formName, `${fieldPrefix}.thumb`, thumb))
-        dispatch(change(formName, `${fieldPrefix}.preview`, ''))
         const newValues = getFormValues(formName)(getState())[fieldName]
         const errors = newValues.filter(x => x.error).map(value => {
           const index = newValues.findIndex(x => x.fileName === value.fileName)

@@ -11,7 +11,7 @@ module.exports = function () {
   app.use(
     servicePath,
     {
-      async get(hashName, { user }) {
+      async get(hashName) {
         const { uploads: { path: uploadsPath } } = config
         try {
           return path.join(uploadsPath, hashName)
