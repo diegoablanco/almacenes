@@ -15,10 +15,11 @@ export default function uploadFile(file, fieldName, formName) {
       .on('progress', progress => {
         dispatch(change(formName, `${fieldPrefix}.percent`, progress.percent))
       })
-      .end((err, { body: { id: hashName, thumb } }) => {
+      .end((err, response) => {
         if (err && err.response.error.status === 401) {
           dispatch(change(formName, `${fieldPrefix}.error`, { percent: 'Error de autenticación' }))
         }
+        const { body: { id: hashName, thumb } } = response
         dispatch(change(formName, `${fieldPrefix}.hashName`, hashName))
         dispatch(change(formName, `${fieldPrefix}.thumb`, thumb))
         dispatch(change(formName, `${fieldPrefix}.preview`, ''))

@@ -15,9 +15,10 @@ function renderImage({ input: { value } }) {
   if (value === '') {
     return null
   }
-  const { location: { protocol, host } } = window
-  const { name, ext } = pathParse(value)
-  return (<Image src={`${protocol}//${host}/${name}_thumb${ext}`} size="medium" />)
+  const { ext } = pathParse(value)
+  // context.result.thumb = `data:image/${ext.split('.').pop()};base64,${base64Thumb}`
+  // return (<Image src={`${protocol}//${host}/${name}_thumb${ext}`} size="medium" />)
+  return (value !== '' && <Image src={`data:image/${ext};base64,${value}`} size="medium" />)
 }
 function renderImageAttachment(attachmentItem, index, fields) {
   return (
@@ -28,7 +29,7 @@ function renderImageAttachment(attachmentItem, index, fields) {
           component={renderPreview}
         />
         <Field
-          name={`${attachmentItem}.hashName`}
+          name={`${attachmentItem}.thumb`}
           component={renderImage}
         />
       </Segment>

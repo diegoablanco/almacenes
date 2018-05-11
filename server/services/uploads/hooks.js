@@ -3,6 +3,7 @@ const dauria = require('dauria')
 const { thumb } = require('node-thumbnail')
 const config = require('config')
 const path = require('path')
+const { getBase64String } = require('./helpers')
 
 const { uploads: { path: uploadsPath } } = config
 
@@ -35,23 +36,21 @@ module.exports = {
       function (context) {
         delete context.result.uri
       },
-      function (context) {
+      async function (context) {
         delete context.result.uri
         const { result: { id: filename } } = context
         const { name, ext } = path.parse(filename)
         context.result.thumb = `${name}_thumb${ext}`
-        
+
         if (filename.match(/.(jpg|png|jpeg)+$/gi)) {
-          thumb({
-            width: 400,
+          await thumb({
+            width: 300,
             source: path.join(uploadsPath, filename),
             destination: uploadsPath })
-            .then(() => {
-              const { name, ext } = path.parse(filename)
-              context.result.thumb = `${name}_thumb${ext}`
-              return context
-            })
+          context.result.thumb = await getBase64String(filename)
+          return context
         }
+        return context
       }
     ],
     update: [],

@@ -7,6 +7,7 @@ const setLastMovementDate = require('./setLastMovementDate')
 const expandChildren = require('./expandChildren')
 const setItemsToHighlight = require('./setItemsToHighlight')
 const highlightItems = require('./highlightItems')
+const setImageThumbnails = require('./setImageThumbnails')
 
 module.exports = {
   getIncludes,
@@ -17,6 +18,7 @@ module.exports = {
   setLastMovementDate,
   expandChildren,
   setItemsToHighlight,
-  highlightItems
+  highlightItems,
+  setImageThumbnails
 }
 

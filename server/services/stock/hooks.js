@@ -20,7 +20,8 @@ const {
   setLastMovementDate,
   expandChildren,
   setItemsToHighlight,
-  highlightItems
+  highlightItems,
+  setImageThumbnails
 } = require('./helpers')
 const { getFullStock, getStockForRelease, getStockForIssue } = require('./getHooks')
 const { processSort, processFilter } = require('../helpers')
@@ -184,7 +185,9 @@ module.exports = {
           delete context.result.dataValues.carrierId
         }
       },
-      dehydrate(), setMovementServices
+      dehydrate(),
+      setMovementServices,
+      setImageThumbnails
     ],
     update: [
       hydrate(),
