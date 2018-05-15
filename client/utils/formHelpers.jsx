@@ -9,14 +9,20 @@ export function getFieldTranslationKey(form, inputName) {
 export function renderLabel({ label, required }) {
   return (<label>{label}{required && (<Icon name="asterisk" color="red" />)}</label>)
 }
-export function renderField({ input, type = 'text', width, required, label, meta: { touched, error, form }, ...rest }) {
+export function renderField({ input, type = 'text', width, required, clearable, label, meta: { touched, error, form }, ...rest }) {
   if (label === undefined) {
     label = intl.get(getFieldTranslationKey(form, input.name))
   }
   return (
     <Form.Field className={classnames({ error: touched && error })} width={width}>
       { renderLabel({ label, required })}
-      <Input {...input} {...rest} placeholder={label} type={type} labelPosition="right corner" />
+      <Input
+        {...input}
+        {...rest}
+        placeholder={label}
+        type={type}
+        labelPosition="right corner"
+      />
       {touched && error && <label className="error">{error}</label>}
     </Form.Field>
   )
@@ -63,13 +69,17 @@ export function renderTextArea({ input, width, required, meta: { touched, error,
   )
 }
 
-export function renderSearchField({ input, label, type = 'text', width, meta: { touched, error }, reset, placeholder }) {
+export function renderSearchField({ input, label, type = 'text', width, meta: { touched, error }, placeholder }) {
   return (
     <Form.Field className={classnames({ error: touched && error })} width={width}>
-      <Input {...input} placeholder={placeholder} type={type}>
+      <Input
+        {...input}
+        placeholder={placeholder}
+        type={type}
+        action
+      >
         <input />
-        <Button type="button" icon="remove" basic onClick={reset} />
-        <Button primary type="submit" size="small">Filtrar</Button>
+        <Button type="submit" icon="search" />
       </Input>
       {touched && error && <label className="error">{error}</label>}
     </Form.Field>
@@ -162,9 +172,9 @@ export function formFields(title, fieldTitle, renderFields) {
                               </Grid.Column>
                             </Grid>
                             {renderFields(item)}
-                           </Segment>))}
+                          </Segment>))}
       </Segment.Group>
-    </div>)
+            </div>)
   }
 }
 

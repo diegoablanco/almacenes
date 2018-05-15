@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Menu } from 'semantic-ui-react'
+import { Button, Menu, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { reduxForm, Field } from 'redux-form'
@@ -9,23 +9,31 @@ class Toolbar extends Component {
   constructor(props) {
     super(props)
     this.filterForm = this.filterForm.bind(this)
+    this.resetFilter = this.resetFilter.bind(this)
   }
   shouldComponentUpdate() {
     return false
   }
-
+  resetFilter(reset) {
+    return () => {
+      const { filterGrid } = this.props
+      reset()
+      filterGrid()
+    }
+  }
   filterForm(props) {
     const { handleSubmit, reset } = props
     return (
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Field
           name="search"
           type="text"
-          placeholder="Nombre"
+          placeholder="Buscar por nombre ..."
           component={renderSearchField}
-          reset={reset}
+          reset={this.resetFilter(reset)}
+          search={handleSubmit}
         />
-      </form>
+      </Form>
     )
   }
 
