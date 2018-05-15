@@ -11,6 +11,15 @@ import LookupSelectField from '../../components/LookupSelectField'
 import { DateTimeField } from '../../components'
 
 class ToolbarForm extends Component {
+  constructor(props) {
+    super(props)
+    this.resetFilter = this.resetFilter.bind(this)
+  }
+  resetFilter() {
+    const { reset, filterGrid } = this.props
+    reset()
+    filterGrid()
+  }
   render() {
     const {
       statuses,
@@ -18,7 +27,9 @@ class ToolbarForm extends Component {
       clearFilterCustomer,
       customerFilterLookup,
       reset,
-      handleSubmit
+      handleSubmit,
+      pristine,
+      submitting
     } = this.props
     return (
       <Form onSubmit={handleSubmit}>
@@ -34,7 +45,7 @@ class ToolbarForm extends Component {
           />
           <Field
             name="dateFrom"
-            component={DateTimeField}            
+            component={DateTimeField}
           />
           <Field
             name="dateTo"
@@ -53,8 +64,11 @@ class ToolbarForm extends Component {
             lookupActions={{ search: searchFilterCustomer, clear: clearFilterCustomer }}
           />
         </Segment>
-        <Segment attached="bottom">
-          <Button primary type="submit" size="small">Filtrar</Button>
+        <Segment attached="bottom" clearing>
+          <Button.Group labeled floated="right">
+            <Button basic color="grey" type="button" disabled={pristine || submitting} onClick={this.resetFilter} size="small">Borrar filtros</Button>
+            <Button primary type="submit" size="small">Filtrar</Button>
+          </Button.Group>
         </Segment>
       </Form>
     )
@@ -73,8 +87,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { crudActions: { searchFilterCustomer, clearFilterCustomer } } = ownProps
-  return bindActionCreators({ searchFilterCustomer, clearFilterCustomer }, dispatch)
+  const { crudActions: { searchFilterCustomer, clearFilterCustomer, filterGrid } } = ownProps
+  return bindActionCreators({ searchFilterCustomer, clearFilterCustomer, filterGrid }, dispatch)
 }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({

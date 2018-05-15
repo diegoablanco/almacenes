@@ -32,6 +32,9 @@ table .field {
   overflow-x: auto;
   overflow-y: hidden;
 }
+.ui.selection.dropdown > .delete.icon {
+  margin-top: -7px !important;
+}
   /* Tablet */
   
   @media only screen and (min-width: 768px) and (max-width: 991px) {

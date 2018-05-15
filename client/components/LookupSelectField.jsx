@@ -9,31 +9,12 @@ class LookupField extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchQuery: '',
-      open: false
+      searchQuery: ''
     }
-    this.handleResultSelect = this.handleResultSelect.bind(this)
     this.reset = this.reset.bind(this)
     this.search = this.search.bind(this)
     this.getIcons = this.getIcons.bind(this)
-  }
-  handleResultSelect(e, { value }) {
-    const { input } = this.props
-    input.onChange(value)
-  }
-  reset(e) {
-    const { input } = this.props
-    input.onChange('')
-    e.stopPropagation()
-  }
-  search(event, { searchQuery }) {
-    const { lookupActions: { search }, input } = this.props
-    input.onChange(searchQuery)
-    this.setState({ searchQuery })
-    search(searchQuery)
-  }
-  resultRenderer({ id, description }) {
-    return (<Label content={description} key={id} />)
+    this.handleResultSelect = this.handleResultSelect.bind(this)
   }
   getIcons2() {
     const { input: { value } } = this.props
@@ -45,9 +26,27 @@ class LookupField extends Component {
   getIcons() {
     const { input: { value } } = this.props
     const icon = value
-      ? <Icon name="delete" onClick={this.reset} />
-      : <Icon name="dropdown" className="dropdown" />
+      ? <Icon name="delete" onClick={this.reset} circular />
+      : <Icon name="dropdown" className="dropdown" onClick={this.toggleOpenState} />
     return icon
+  }
+  resultRenderer({ id, description }) {
+    return (<Label content={description} key={id} />)
+  }
+  search(event, { searchQuery }) {
+    const { lookupActions: { search }, input } = this.props
+    input.onChange(searchQuery)
+    this.setState({ searchQuery })
+    search(searchQuery)
+  }
+  reset() {
+    const { input } = this.props
+    input.onChange('')
+    this.dropdown.state.open = true
+  }
+  handleResultSelect(e, { value }) {
+    const { input } = this.props
+    input.onChange(value)
   }
   render() {
     const {
@@ -60,7 +59,7 @@ class LookupField extends Component {
       required
     } = this.props
     const label = intl.get(getFieldTranslationKey(form, name))
-    const { searchQuery } = this.state
+    const { searchQuery, open } = this.state
     let options = (queryResult || []).map(result => ({ key: result.id, value: result.id, text: result.description }))
     if (value && !options.find(x => x.key === value) && initialValue) {
       options = [...options, { ...initialValue, value: initialValue.key }]
@@ -81,6 +80,7 @@ class LookupField extends Component {
           loading={isLoading}
           noResultsMessage={searchQuery !== '' ? 'No se encontraron resultados' : placeholder}
           icon={this.getIcons()}
+          ref={dropdown => { this.dropdown = dropdown }}
         />
         { touched && error && <label className="error">{error}</label> }
       </Form.Field>
