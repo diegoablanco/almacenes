@@ -46,7 +46,7 @@ class LookupField extends Component {
     const { input: { value } } = this.props
     const icon = value
       ? <Icon name="delete" onClick={this.reset} />
-      : <Icon name="dropdown" cssClass="dropdown" />
+      : <Icon name="dropdown" className="dropdown" />
     return icon
   }
   render() {

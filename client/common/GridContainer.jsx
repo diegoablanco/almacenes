@@ -7,7 +7,7 @@ class GridContainer extends Component {
   render() {
     const { crudActions, sortGrid, loadMore, filterGrid, ...rest } = this.props
     return (
-      <div>
+      <div className="grid-container">
         {this.props.toolbar && <this.props.toolbar handleFilter={filterGrid} crudActions={crudActions} />}
         <Grid
           {...rest}

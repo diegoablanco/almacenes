@@ -160,7 +160,7 @@ class Grid extends Component {
       rows
     } = this.props
     return (
-      <Message attached="bottom" info>
+      <Message info>
         <Icon name="arrow down" />
         {`Mostrando ${rows.length} de ${total}`}
       </Message>)

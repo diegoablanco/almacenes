@@ -25,8 +25,13 @@ table .field {
     width: 96%;
     z-index: 10000;
   }
-  
-  
+.DayPickerInput {
+  display: block !important;
+}  
+.grid-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
   /* Tablet */
   
   @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -53,5 +58,8 @@ table .field {
     .messages {
       margin-left: -563.5px;
       width: 1127px;
+    }
+    .ui.container {
+      width: 1427px !important;
     }
   }

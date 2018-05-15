@@ -109,7 +109,7 @@ class StockCrud extends Component {
           <Grid.Column width={3}>
             <ToolbarForm onSubmit={this.filter} {...{ crudActions }} />
           </Grid.Column>
-          <Grid.Column width={10}>
+          <Grid.Column width={13}>
             <CrudContainer
               gridColumns={this.gridColumns}
               confirmModalOptions={this.confirmModalOptions}
