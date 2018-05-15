@@ -83,8 +83,8 @@ class StockCrud extends Component {
       },
       customerId: customer,
       date: (dateFrom || dateTo) && {
-        $gte: dateFrom,
-        $lte: dateTo
+        $gte: dateFrom && moment(dateFrom).startOf('day').toDate(),
+        $lte: dateTo && moment(dateTo).endOf('day').toDate()
       },
       where: {
         status: status && status.map(x => x.id)
@@ -101,22 +101,21 @@ class StockCrud extends Component {
     return (
       <Grid className="filter-grid-container">
         <Grid.Row >
-          <Grid.Column width={16}>
+          <Grid.Column>
             <ToolbarContainer {...{ crudActions }} />
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row columns={2}>
+        <Grid.Row>
           <Grid.Column width={3}>
             <ToolbarForm onSubmit={this.filter} {...{ crudActions }} />
           </Grid.Column>
-          <Grid.Column width={13}>
+          <Grid.Column width={10}>
             <CrudContainer
               gridColumns={this.gridColumns}
               confirmModalOptions={this.confirmModalOptions}
               selectors={selectors}
               formModal={FormModal}
               crudActions={crudActions}
-              enableDelete={false}
             />
           </Grid.Column>
         </Grid.Row>

@@ -8,7 +8,7 @@ const AppWrapper = (props) => (
 );
 
 AppWrapper.propTypes = {
-  children: PropTypes.any,
+  children: PropTypes.any
 };
 
 export default AppWrapper;

@@ -6,6 +6,7 @@ import classnames from 'classnames'
 import 'react-day-picker/lib/style.css'
 import intl from 'react-intl-universal'
 import { getFieldTranslationKey } from '../utils/formHelpers'
+import { InputWithClearButton } from '.'
 
 export default function ({ input, label, width, meta: { touched, error, form } }) {
   const { formatDate, parseDate } = MomentLocaleUtils
@@ -27,6 +28,8 @@ export default function ({ input, label, width, meta: { touched, error, form } }
         placeholder={intl.get(getFieldTranslationKey('common', 'select'))}
         formatDate={formatDate}
         parseDate={parseDate}
+        component={InputWithClearButton(() => handleDayChange(''))}
+        keepFocus={false}
         value={input.value && formatDate(input.value, 'L', 'es')}
       />
       {touched && error && <label className="error">{error}</label>}

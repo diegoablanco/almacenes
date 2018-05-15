@@ -32,14 +32,14 @@ class ToolbarForm extends Component {
             component={renderField}
             reset={reset}
           />
-          {/* <Field
+          <Field
             name="dateFrom"
-            component={DateTimeField}
+            component={DateTimeField}            
           />
           <Field
             name="dateTo"
             component={DateTimeField}
-          /> */}
+          />
           <Field
             name="status"
             component={SelectField}

@@ -10,10 +10,7 @@ module.exports = function () {
   const options = {
     name: 'stocks',
     Model: stock,
-    paginate: {
-      default: 3,
-      max: 100
-    }
+    paginate
   };
   const servicePath = `${config.apiPath}/stocks`
   // Initialize our service with any options it requires
