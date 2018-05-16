@@ -22,7 +22,7 @@ class Toolbar extends Component {
         <Field
           name="search"
           type="text"
-          placeholder="Nombre"
+          placeholder="Buscar por nombre ..."
           component={renderSearchField}
           reset={reset}
         />

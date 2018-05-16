@@ -31,7 +31,6 @@ class Toolbar extends Component {
           placeholder="Buscar por nombre ..."
           component={renderSearchField}
           reset={this.resetFilter(reset)}
-          search={handleSubmit}
         />
       </Form>
     )

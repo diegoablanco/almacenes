@@ -76,12 +76,12 @@ class StockCrud extends Component {
     return false
   }
 
-  buildFilter({ reference, status, customer, dateFrom, dateTo }) {
+  buildFilter({ reference, status, customerId, dateFrom, dateTo }) {
     return {
       reference: reference && {
         $like: `%${reference}%`
       },
-      customerId: customer,
+      customerId,
       date: (dateFrom || dateTo) && {
         $gte: dateFrom && moment(dateFrom).startOf('day').toDate(),
         $lte: dateTo && moment(dateTo).endOf('day').toDate()
@@ -89,7 +89,7 @@ class StockCrud extends Component {
       where: {
         status: status && status.map(x => x.id)
       },
-      anyFilter: (reference || customer) !== undefined || (status !== undefined && status.length > 0)
+      anyFilter: (reference || customerId) !== undefined || (status !== undefined && status.length > 0)
     }
   }
   filter(values) {
