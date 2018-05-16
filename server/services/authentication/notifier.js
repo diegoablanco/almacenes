@@ -5,7 +5,7 @@ const config = require('config')
 const returnEmail = ''
 const jade = require('jade')
 
-const fromEmail = config.email.providers.gmail
+const fromEmail = config.email
 
 module.exports = function (app) {
   function getLink(type, hash) {

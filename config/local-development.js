@@ -26,15 +26,9 @@ module.exports = {
     }
   },
   email: {
-    providers: {
-      gmail: {
-        user: 'diegoablancodev',
-        password: 'almacenes2017'
-      },
-      postmark: {
-        fromEmail: '...@....com', // must be verified with postmarkapp.com
-        postmarkApiToken: '00917934-dbe7-4883-bedc-12b93fc4c7c59' // our account token
-      }
-    }
+    user: 'diegoablancodev',
+    password: 'almacenes2017',
+    host: 'smtp.gmail.com'
   }
-};
+}
+
