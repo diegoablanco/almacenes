@@ -32,6 +32,7 @@ module.exports = {
   email: {
     user: 'pedidos@xarxaspain.com',
     password: 'XarXa2018',
-    host: 'smtp.xarxaspain.com'
+    host: 'smtp.xarxaspain.com',
+    port: 25
   }
 };
