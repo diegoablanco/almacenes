@@ -17,10 +17,10 @@ class StockCrud extends Component {
     const { showFormModal } = props
     this.gridColumns = [
       { property: 'id', label: 'Código de Stock' },
-      { property: 'date', label: 'Fecha', cellFormatters: [date => moment(date).calendar()] },
+      { property: 'date', label: 'Fecha', cellFormatters: [date => moment(date).format('L')] },
       { property: 'updatedAt',
         label: 'Último Movimiento',
-        cellFormatters: [date => date && moment(date).fromNow()]
+        cellFormatters: [date => date && moment(date).format('L')]
       },
       { property: 'customer.companyName', label: 'Cliente' },
       { property: 'warehouse.name', label: 'Almacén' },
