@@ -30,6 +30,7 @@ module.exports = {
     }
   },
   email: {
+    from: 'pedidos@xarxaspain.com',
     user: 'pedidos@xarxaspain.com',
     password: 'XarXa2018',
     host: 'smtp.xarxaspain.com',
