@@ -18,7 +18,7 @@ module.exports = {
       'jwt',
       'local'
     ],
-    path: `${apiPath}/auth/local`,	
+    path: `${apiPath}/auth/local`,
     local: {
       entity: 'user',
       service: `${apiPath}/users`,

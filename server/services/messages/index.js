@@ -5,10 +5,10 @@ const smtpTransport = require('nodemailer-smtp-transport');
 
 module.exports = function () {
   const app = this
-  const { email: { user, password, host } } = config
+  const { email: { user, password, host, port = 25 } } = config
   app.use('/messages', Mailer(smtpTransport({
     host,
-    port: 465,
+    port,
     secure: true, // use SSL
     auth: {
       user,

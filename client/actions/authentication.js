@@ -1,4 +1,4 @@
-import { SubmissionError } from 'redux-form'
+import { SubmissionError, reset } from 'redux-form'
 import { push } from 'react-router-redux'
 import errors from 'feathers-errors'
 import { formatAjvToRf } from '../common/Validation'
@@ -7,13 +7,17 @@ import { config } from '../utils/config'
 import { showTimedMessage, showErrorMessage } from './messageBar'
 
 export function registerUser(user) {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     try {
       await dispatch(feathersServices.users.create(user))
       const message =
                           `Un mail con el link de confirmación se ha enviado a ${user.email}. ` +
                           `Tendrá validez por ${config.authEmails.expires.signUpEmailTokenTimeValidText}.`
-      dispatch(push('/user/signin'))
+      const { auth: { isSignedIn } } = getState()
+      dispatch(reset('UserSignUp'))
+      if (!isSignedIn) {
+        dispatch(push('/user/signin'))
+      }
       dispatch(showTimedMessage(message))
     } catch (error) {
       if (error.errors) throw new SubmissionError(formatAjvToRf(error))

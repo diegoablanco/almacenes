@@ -26,9 +26,10 @@ module.exports = {
     }
   },
   email: {
-    user: 'diegoablancodev',
-    password: 'almacenes2017',
-    host: 'smtp.gmail.com'
+    user: 'pedidos@xarxaspain.com',
+    password: 'XarXa2018',
+    host: 'smtp.xarxaspain.com',
+    port: 25
   }
 }
 

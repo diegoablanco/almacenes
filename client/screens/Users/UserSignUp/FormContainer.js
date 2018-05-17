@@ -22,5 +22,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'UserSignUp',
   asyncBlurFields: ['username', 'email'],
-  validate: signUp.validator
+  validate: signUp.validator,
+  initialValues: { roles: [{ id: 2 }] }
 })(Form))
