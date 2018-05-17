@@ -10,6 +10,7 @@ module.exports = function () {
     host,
     port,
     secure, // use SSL
+    tls: { rejectUnauthorized: false },
     auth: {
       user,
       pass: password
