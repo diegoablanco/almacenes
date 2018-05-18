@@ -27,7 +27,7 @@ class StockCrud extends Component {
       { property: 'reference', label: 'Referencia' },
       { property: 'description', label: 'Descripción' },
       { property: 'goods', label: 'Mercancía' },
-      { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' },
+      { property: 'targetCustomer.companyName', label: 'Cliente Dest.' },
       {
         property: 'status',
         label: 'Estado',
@@ -48,7 +48,7 @@ class StockCrud extends Component {
         return (
           <Popup
             trigger={<Button
-              icon="add"
+              icon="sign in"
               positive
               size="mini"
               onClick={() => showFormModal(id, 'receive')}
@@ -61,7 +61,7 @@ class StockCrud extends Component {
         return (
           [<Popup
             trigger={<Button
-              icon="share"
+              icon="sign out"
               color="blue"
               size="mini"
               onClick={() => showFormModal(id, 'issue')}
