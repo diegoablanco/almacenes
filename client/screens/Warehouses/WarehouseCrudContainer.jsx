@@ -29,8 +29,8 @@ export default class WarehouseCrud extends Component {
     return (
       <div>
         <CrudContainer
+          crudPage="warehouse"
           gridColumns={this.gridColumns}
-          confirmModalOptions={this.confirmModalOptions}
           selectors={selectors}
           formModal={WarehouseFormModal}
           toolbar={ToolbarContainer}

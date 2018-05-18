@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Popup, Confirm, Button } from 'semantic-ui-react'
+import intl from 'react-intl-universal'
 import PropTypes from 'prop-types'
 
 class ConfirmableButton extends Component {
@@ -25,10 +26,10 @@ class ConfirmableButton extends Component {
   handleCancel() {
     const { onCancel } = this.props
     this.hideDialog()
-    onCancel()
+    if (onCancel) onCancel()
   }
   render() {
-    const { confirmMessage, onConfirm, onCancel, content, ...rest } = this.props
+    const { confirmMessage, confirmHeader, onConfirm, onCancel, content, ...rest } = this.props
     const { open } = this.state
     return (
       [<Popup
@@ -40,9 +41,13 @@ class ConfirmableButton extends Component {
       />,
         <Confirm
           content={confirmMessage}
+          header={confirmHeader}
           open={open}
+          cancelButton={intl.get('common.cancel')}
+          confirmButton={{ content: intl.get('common.ok'), positive: true }}
           onCancel={this.handleCancel}
           onConfirm={this.handleConfirm}
+          size="mini"
         />]
     )
   }

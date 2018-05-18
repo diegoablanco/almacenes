@@ -193,17 +193,13 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
         })
       }
     },
-    confirmDeleteItem() {
-      return (dispatch, getState) => new Promise((resolve) => {
-        const { confirmDialog: { id } } = selectors.getUiState(getState())
-        dispatch(serviceActions.remove(id))
-          .then(result => {
-            dispatch(hideConfirmModal())
-            dispatch({ type: actionTypes.ITEM_DELETED, deletedItem: result.value })
-            dispatch(entityDeletedMessage())
-            resolve()
-          })
-      })
+    remove(id) {
+      return async (dispatch) => {
+        const result = await dispatch(serviceActions.remove(id))
+        dispatch(hideConfirmModal())
+        dispatch({ type: actionTypes.ITEM_DELETED, deletedItem: result.value })
+        dispatch(entityDeletedMessage())
+      }
     },
     itemDeleted(deletedItem) {
       return {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Loader, Message, Icon, Label } from 'semantic-ui-react'
+import { Button, Loader, Message, Icon, Label, Popup } from 'semantic-ui-react'
 import { compose } from 'redux'
 import * as Table from 'reactabular-table'
 import * as sort from 'sortabular'
@@ -7,7 +7,9 @@ import * as resolve from 'table-resolver'
 import * as tree from 'treetabular'
 import InfiniteScroll from 'react-infinite-scroller'
 import { findIndex } from 'lodash'
+import intl from 'react-intl-universal'
 import { createColumns, addHeaderTransforms } from '../utils/reactabularHelpers'
+import { ConfirmableButton } from '../screens/components'
 
 class Grid extends Component {
   constructor(props) {
@@ -20,13 +22,14 @@ class Grid extends Component {
   getActionColumns() {
     const {
       editHandler,
-      deleteHandler,
+      removeHandler,
       addHandler,
       enableAdd,
       enableEdit,
       enableDelete,
       canAdd,
-      gridActionButtons
+      gridActionButtons,
+      crudPage
     } = this.props
     return [
       {
@@ -35,22 +38,29 @@ class Grid extends Component {
           formatters: [(id, { rowData }) => (<Button.Group>
             {gridActionButtons && gridActionButtons(rowData)}
             {enableEdit &&
-              <Button
+            <Popup
+              trigger={<Button
                 icon="write"
-                onClick={(e) => {
-                    e.preventDefault()
-                    editHandler(id)
-                }}
-              />}
-            {enableDelete &&
-              <Button
-                negative
-                icon="delete"
+                size="mini"
                 onClick={(e) => {
                   e.preventDefault()
-                  deleteHandler(id)
+                  editHandler(id)
               }}
               />}
+              content={intl.get('common.edit')}
+            />
+            }
+            {enableDelete &&
+              <ConfirmableButton
+                icon="delete"
+                negative
+                size="mini"
+                onConfirm={async () => { await removeHandler(id) }}
+                content={intl.get('common.remove')}
+                confirmMessage={intl.get(`${crudPage}.deleteDialog.message`)}
+                confirmHeader={intl.get(`${crudPage}.deleteDialog.title`)}
+              />
+              }
           </Button.Group>)] // eslint-disable-line react/jsx-closing-tag-location
         },
         header: {

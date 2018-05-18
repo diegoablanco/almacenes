@@ -8,5 +8,9 @@ module.exports = {
   address,
   account,
   authorizedSignatory: contact,
-  authorizedPersons: contact
+  authorizedPersons: contact,
+  deleteDialog: {
+    title: 'Eliminar Cliente',
+    message: '¿Confirma eliminar el cliente?'
+  }
 }

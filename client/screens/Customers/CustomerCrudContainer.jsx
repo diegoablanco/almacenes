@@ -17,10 +17,6 @@ export default class CustomerCrud extends Component {
       { property: 'authorizedSignatory.email', label: 'E-mail' },
       { property: 'authorizedSignatory.phones[0].number', label: 'Teléfono' }
     ]
-    this.confirmModalOptions = {
-      title: 'Eliminar Cliente',
-      message: '¿Confirma eliminar el cliente?'
-    }
   }
   shouldComponentUpdate() {
     return false
@@ -31,8 +27,8 @@ export default class CustomerCrud extends Component {
     return (
       <div>
         <CrudContainer
+          crudPage="customer"
           gridColumns={this.gridColumns}
-          confirmModalOptions={this.confirmModalOptions}
           selectors={selectors}
           formModal={CustomerFormModal}
           toolbar={ToolbarContainer}

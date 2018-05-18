@@ -14,22 +14,17 @@ export default class ServiceCrud extends Component {
       { property: 'description', label: 'Descripción' },
       { property: 'rate', label: 'Tarifa' }
     ]
-    this.confirmModalOptions = {
-      title: 'Eliminar Servicio',
-      message: '¿Confirma eliminar el servicio?'
-    }
   }
   shouldComponentUpdate() {
     return false
   }
-
   render() {
     const crudActions = getCrudPageActions(crudPages.SERVICES, feathersServices.services, selectors)
     return (
       <div>
         <CrudContainer
+          crudPage="service"
           gridColumns={this.gridColumns}
-          confirmModalOptions={this.confirmModalOptions}
           selectors={selectors}
           formModal={ServiceFormModal}
           toolbar={ToolbarContainer}

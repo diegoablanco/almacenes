@@ -14,12 +14,7 @@ export default class CarrierCrud extends Component {
       { property: 'authorizedSignatory.email', label: 'E-mail' },
       { property: 'authorizedSignatory.phones[0].number', label: 'Teléfono' }
     ]
-    this.confirmModalOptions = {
-      title: 'Eliminar Transportista',
-      message: '¿Confirma eliminar el transportista?'
-    }
   }
-
   shouldComponentUpdate() {
     return false
   }
@@ -28,8 +23,8 @@ export default class CarrierCrud extends Component {
     return (
       <div>
         <CrudContainer
+          crudPage="carrier"
           gridColumns={this.gridColumns}
-          confirmModalOptions={this.confirmModalOptions}
           selectors={selectors}
           formModal={FormModal}
           toolbar={ToolbarContainer}

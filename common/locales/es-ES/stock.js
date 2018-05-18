@@ -38,5 +38,9 @@ module.exports = {
   services: {
     rate: 'Tarifa del Servicio',
     serviceId: 'Servicio'
+  },
+  deleteDialog: {
+    title: 'Eliminar Stock',
+    message: '¿Confirma eliminar el stock?'
   }
 }

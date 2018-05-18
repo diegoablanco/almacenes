@@ -4,5 +4,9 @@ const contact = require('./contact')
 module.exports = {
   companyName: 'Nombre de la Compañía',
   address,
-  authorizedSignatory: contact
+  authorizedSignatory: contact,
+  deleteDialog: {
+    title: 'Eliminar Transportista',
+    message: '¿Confirma eliminar el transportista?'
+  }
 }

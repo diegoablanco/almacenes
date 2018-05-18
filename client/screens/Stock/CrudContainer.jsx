@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Button, Grid, Popup, Confirm } from 'semantic-ui-react'
+import { Button, Grid, Popup } from 'semantic-ui-react'
 import moment from 'moment'
 import FormModal from './FormModal'
 import CrudContainer from '../../common/CrudContainer'
@@ -34,10 +34,6 @@ class StockCrud extends Component {
         cellFormatters: [(status, { rowData }) => (status && <StatusColumn status={status} rowData={rowData} />)]
       }
     ]
-    this.confirmModalOptions = {
-      title: 'Eliminar Transportista',
-      message: '¿Confirma eliminar el transportista?'
-    }
     this.filter = this.filter.bind(this)
     this.getActionButtons = this.getActionButtons.bind(this)
     this.buildFilter = this.buildFilter.bind(this)
@@ -133,9 +129,9 @@ class StockCrud extends Component {
           </Grid.Column>
           <Grid.Column width={13}>
             <CrudContainer
+              crudPage="stock"
               gridColumns={this.gridColumns}
               gridActionButtons={this.getActionButtons}
-              confirmModalOptions={this.confirmModalOptions}
               selectors={selectors}
               formModal={FormModal}
               crudActions={crudActions}

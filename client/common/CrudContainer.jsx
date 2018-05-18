@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import ConfirmModal from './ConfirmModal'
 import GridContainer from './GridContainer'
 
 class CrudContainer extends Component {
@@ -25,10 +24,10 @@ class CrudContainer extends Component {
     const {
       gridColumns,
       selectors,
+      crudPage,
       crudActions,
       gridActionButtons,
       toolbar,
-      confirmModalOptions,
       id,
       enableAdd,
       enableEdit,
@@ -37,9 +36,7 @@ class CrudContainer extends Component {
       enableTreeTabular,
       bindActions: {
         createOrUpdate,
-        showConfirmModal,
-        hideConfirmModal,
-        confirmDeleteItem,
+        remove,
         showFormModal,
         hideModal,
         initializeForm
@@ -50,8 +47,18 @@ class CrudContainer extends Component {
         <GridContainer
           columns={gridColumns}
           editHandler={showFormModal}
-          deleteHandler={showConfirmModal}
-          {...{ selectors, crudActions, toolbar, enableAdd, enableEdit, enableDelete, enableActionColumn, gridActionButtons, enableTreeTabular }}
+          removeHandler={remove}
+          {...{
+            selectors,
+            crudActions,
+            toolbar,
+            enableAdd,
+            enableEdit,
+            enableDelete,
+            enableActionColumn,
+            gridActionButtons,
+            enableTreeTabular,
+            crudPage }}
           addHandler={showFormModal}
         />
         <this.props.formModal
@@ -61,12 +68,6 @@ class CrudContainer extends Component {
           handleClose={hideModal}
           initializeForm={initializeForm}
           bindActions={this.props.bindActions}
-        />
-        <ConfirmModal
-          {...confirmModalOptions}
-          showDialogStateSelector={this.deleteDialogStateSelector}
-          onCancel={hideConfirmModal}
-          onConfirm={confirmDeleteItem}
         />
       </div>
     )
