@@ -110,6 +110,12 @@ export default function getGoodsPane({ availableStockItemDetailTypes, stockMovem
   return (
     <div>
       <Field
+        name="description"
+        type="text"
+        component={renderField}
+        required
+      />
+      <Field
         name="quantity"
         type="text"
         parse={parseToInt}

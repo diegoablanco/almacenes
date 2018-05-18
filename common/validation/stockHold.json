@@ -1,0 +1,14 @@
+{
+  "id": "http://xarxa.com/schemas/stockHold.json#",
+  "title": "Stock Hold",
+  "description": "A stock hold",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "id"
+  ]
+}

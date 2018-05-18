@@ -47,7 +47,7 @@ module.exports = {
     appName: 'Xarxa Almacenes',
     // Route for app's root.
     // Used by Express middleware, React-Router config, and app when redirecting.
-    defaultRoute: '/customers'
+    defaultRoute: '/stock'
   },
   database: {
     // folder for NeDn database

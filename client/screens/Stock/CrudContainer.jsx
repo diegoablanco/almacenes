@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Button, Grid } from 'semantic-ui-react'
+import { Button, Grid, Popup, Confirm } from 'semantic-ui-react'
 import moment from 'moment'
 import FormModal from './FormModal'
 import CrudContainer from '../../common/CrudContainer'
@@ -10,59 +10,28 @@ import ToolbarForm from './ToolbarForm'
 import getCrudPageActions from '../../actions/stocks'
 import { stocks as selectors } from '../../selectors'
 import StatusColumn from './components/StatusColumn'
+import { ConfirmableButton } from '../components'
 
 class StockCrud extends Component {
   constructor(props) {
     super(props)
-    const { showFormModal } = props
     this.gridColumns = [
-      { property: 'id', label: 'Código de Stock' },
+      { property: 'id', label: 'Código' },
       { property: 'date', label: 'Fecha', cellFormatters: [date => moment(date).format('L')] },
       { property: 'updatedAt',
-        label: 'Último Movimiento',
+        label: 'Último Mov.',
         cellFormatters: [date => date && moment(date).format('L')]
       },
       { property: 'customer.companyName', label: 'Cliente' },
       { property: 'warehouse.name', label: 'Almacén' },
       { property: 'reference', label: 'Referencia' },
+      { property: 'description', label: 'Descripción' },
       { property: 'goods', label: 'Mercancía' },
       { property: 'targetCustomer.companyName', label: 'Cliente Destinatario' },
       {
         property: 'status',
         label: 'Estado',
         cellFormatters: [(status, { rowData }) => (status && <StatusColumn status={status} rowData={rowData} />)]
-      },
-      { cellFormatters: [(a, { rowData: { id, status = {} } }) => {
-        switch (status.code) {
-          case 'preReceive':
-            return (
-              <Button
-                icon="add"
-                content="alta"
-                positive
-                onClick={() => showFormModal(id, 'receive')}
-              />)
-          case 'receive':
-          case 'released':
-            return (
-              <Button
-                icon="share"
-                content="salida"
-                color="black"
-                onClick={() => showFormModal(id, 'issue')}
-              />)
-          case 'onHold':
-            return (
-              <Button
-                icon="unlock"
-                color="purple"
-                onClick={() => showFormModal(id, 'release')}
-                content="release"
-              />)
-          default:
-            return null
-        }
-      }] // eslint-disable-line react/jsx-closing-tag-location
       }
     ]
     this.confirmModalOptions = {
@@ -70,12 +39,65 @@ class StockCrud extends Component {
       message: '¿Confirma eliminar el transportista?'
     }
     this.filter = this.filter.bind(this)
+    this.getActionButtons = this.getActionButtons.bind(this)
     this.buildFilter = this.buildFilter.bind(this)
   }
   shouldComponentUpdate() {
     return false
   }
+  getActionButtons({ id, status = {} }) {
+    const { showFormModal, hold } = this.props
+    switch (status.code) {
+      case 'preReceive':
+        return (
+          <Popup
+            trigger={<Button
+              icon="add"
+              positive
+              size="mini"
+              onClick={() => showFormModal(id, 'receive')}
+            />}
+            content="Alta"
+          />
+        )
+      case 'receive':
+      case 'released':
+        return (
+          [<Popup
+            trigger={<Button
+              icon="share"
+              color="blue"
+              size="mini"
+              onClick={() => showFormModal(id, 'issue')}
+            />}
+            content="Salida"
+          />,
+            <ConfirmableButton
+              icon="lock icon"
+              color="black"
+              size="mini"
+              onConfirm={() => hold(id)}
+              content="Hold"
+              confirmMessage="¿Pasar el stock a On Hold?"
+            />
+          ]
 
+        )
+      case 'onHold':
+        return (
+          <Popup
+            trigger={<Button
+              icon="unlock"
+              color="purple"
+              size="mini"
+              onClick={() => showFormModal(id, 'release')}
+            />}
+            content="Liberar"
+          />)
+      default:
+        return null
+    }
+  } // eslint-disable-line react/jsx-closing-tag-location
   buildFilter({ reference, status, customerId, dateFrom, dateTo }) {
     return {
       reference: reference && {
@@ -112,6 +134,7 @@ class StockCrud extends Component {
           <Grid.Column width={13}>
             <CrudContainer
               gridColumns={this.gridColumns}
+              gridActionButtons={this.getActionButtons}
               confirmModalOptions={this.confirmModalOptions}
               selectors={selectors}
               formModal={FormModal}
@@ -124,8 +147,8 @@ class StockCrud extends Component {
   }
 }
 const mapDispatchToProps = (dispatch) => {
-  const { showFormModal, filterGrid } = getCrudPageActions()
+  const { showFormModal, filterGrid, hold } = getCrudPageActions()
 
-  return bindActionCreators({ showFormModal, filterGrid }, dispatch)
+  return bindActionCreators({ showFormModal, filterGrid, hold }, dispatch)
 }
 export default connect(null, mapDispatchToProps)(StockCrud)

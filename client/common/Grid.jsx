@@ -25,13 +25,15 @@ class Grid extends Component {
       enableAdd,
       enableEdit,
       enableDelete,
-      canAdd
+      canAdd,
+      gridActionButtons
     } = this.props
     return [
       {
         property: 'id',
         cell: {
-          formatters: [(id) => (<Button.Group>
+          formatters: [(id, { rowData }) => (<Button.Group>
+            {gridActionButtons && gridActionButtons(rowData)}
             {enableEdit &&
               <Button
                 icon="write"

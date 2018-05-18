@@ -95,6 +95,20 @@ export default function getCrudPageActions() {
           await dispatch(baseCrudPageActions.reloadGrid())
         } else dispatch(baseCrudPageActions.createOrUpdate(data))
       }
+    },
+    hold(id) {
+      return async (dispatch, getState) => {
+        const messageAction = showTimedMessage('Se ejecutó correctamente el Hold')
+        const { uneditables: { queryResult: { stockMovementTypes } } } = getState()
+        const stockMovementType = stockMovementTypes.find(x => x.code === 'hold')
+        try {
+          await dispatch(feathersServices.stockMovements.create({ id, movementType: 'hold', movementTypeId: stockMovementType.id }))
+        } catch (error) {
+          throw new SubmissionError(formatAjvToRf(error))
+        }
+        dispatch(messageAction)
+        await dispatch(baseCrudPageActions.reloadGrid())
+      }
     }
   }
 }

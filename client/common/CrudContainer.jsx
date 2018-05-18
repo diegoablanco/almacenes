@@ -26,6 +26,7 @@ class CrudContainer extends Component {
       gridColumns,
       selectors,
       crudActions,
+      gridActionButtons,
       toolbar,
       confirmModalOptions,
       id,
@@ -50,12 +51,8 @@ class CrudContainer extends Component {
           columns={gridColumns}
           editHandler={showFormModal}
           deleteHandler={showConfirmModal}
-          selectors={selectors}
-          crudActions={crudActions}
-          toolbar={toolbar}
-          {...{ enableAdd, enableEdit, enableDelete }}
+          {...{ selectors, crudActions, toolbar, enableAdd, enableEdit, enableDelete, enableActionColumn, gridActionButtons, enableTreeTabular }}
           addHandler={showFormModal}
-          enableActionColumn={enableActionColumn}
         />
         <this.props.formModal
           selectors={selectors}

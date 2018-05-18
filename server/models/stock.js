@@ -17,6 +17,9 @@ module.exports = function (sequelize) {
     reference: {
       type: Sequelize.STRING
     },
+    description: {
+      type: Sequelize.STRING
+    },
     quantity: {
       type: Sequelize.INTEGER,
       allowNull: false

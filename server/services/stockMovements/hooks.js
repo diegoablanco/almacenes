@@ -2,6 +2,7 @@ const auth = require('feathers-authentication').hooks
 const Ajv = require('ajv')
 const { validateSchema } = require('feathers-hooks-common')
 const errors = require('feathers-errors')
+const stockHoldSchema = require('../../../common/validation/stockHold.json')
 const stockReleaseSchema = require('../../../common/validation/stockRelease.json')
 const stockIssueSchema = require('../../../common/validation/stockIssue.json')
 const addressSchema = require('../../../common/validation/address.json')
@@ -18,6 +19,11 @@ function getValidatorByMovementType(movementType) {
   } else if (movementType === 'release') {
     ajv.addSchema(stockReleaseSchema)
     return validateSchema(stockReleaseSchema, ajv, {
+      addNewError: errorReducer
+    })
+  } else if (movementType === 'hold') {
+    ajv.addSchema(stockHoldSchema)
+    return validateSchema(stockHoldSchema, ajv, {
       addNewError: errorReducer
     })
   }
