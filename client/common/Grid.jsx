@@ -77,6 +77,11 @@ class Grid extends Component {
             }}
           /> // eslint-disable-line indent
           )]
+        },
+        props: {
+          style: {
+            textAlign: 'right'
+          }
         }
       }
     ]
