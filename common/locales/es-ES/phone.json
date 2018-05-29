@@ -1,3 +1,7 @@
 {
-    "number": "Número"
+    "number": "Número",
+    "deleteDialog": {
+        "title": "Eliminar Teléfono",
+        "message": "¿Confirma eliminar el teléfono?"
+    }
 }

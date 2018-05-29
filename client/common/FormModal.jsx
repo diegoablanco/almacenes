@@ -20,11 +20,12 @@ class FormModal extends Component {
       dimmed,
       showSave = true,
       showCustomButton = false,
-      CustomButton
+      CustomButton,
+      size
     } = this.props
 
     return (
-      <Modal open={showModal}>
+      <Modal open={showModal} size={size} >
         <Modal.Header content={title} />
         <Modal.Content scrolling size="big" style={{ minHeight: '500px' }}>
           <Dimmer.Dimmable dimmed={dimmed}>

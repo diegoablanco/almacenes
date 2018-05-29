@@ -6,7 +6,7 @@ import { ValidationSummary } from '../../components'
 
 class ServiceForm extends Component {
   render() {
-    const { loading, error } = this.props;
+    const { loading, error } = this.props
 
     return (
       <div>

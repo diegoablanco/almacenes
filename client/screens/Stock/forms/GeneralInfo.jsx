@@ -21,7 +21,8 @@ export default function StockGeneralInfoFields({
   carrier,
   warehouseLookup,
   warehouseLookupActions,
-  warehouse
+  warehouse,
+  addMovementServices
 }) {
   return (
     <Grid verticalAlign="middle" centered textAlign="center">
@@ -44,6 +45,7 @@ export default function StockGeneralInfoFields({
           lookupActions={warehouseLookupActions}
           initialValue={warehouse && { key: warehouse.id, text: warehouse.name }}
           required
+          onResultSelect={addMovementServices}
         />
         <Field
           name="carrierId"

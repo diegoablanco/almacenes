@@ -33,7 +33,15 @@ export default class StockForm extends Component {
     return {
       menuItem: 'Servicios Asociados',
       pane: <Tab.Pane attached={false} key="services">
-        <FieldArray name="services" component={tabulatedFormFields('Servicios Asociados', getServiceFields(setServiceRate), availableServices)} />
+        <FieldArray
+          name="services"
+          component={tabulatedFormFields({
+          title: 'Servicios Asociados',
+          getFieldCells: getServiceFields(setServiceRate),
+          additionalInformation: availableServices,
+          crudPage: 'warehouseService'
+          })}
+        />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   }

@@ -52,6 +52,7 @@ class Grid extends Component {
             }
             {enableDelete &&
               <ConfirmableButton
+                id={id}
                 icon="delete"
                 negative
                 size="mini"
@@ -159,9 +160,9 @@ class Grid extends Component {
       } = this.props
       const index = findIndex(rows, { id })
       const hasChildren = tree.hasChildren({ index, parentField: 'parentId' })(rows)
-      const style = { marginLeft: `${hierarchyLevel * 2}em` }
+      const style = { marginLeft: `${(hierarchyLevel - 1) * 2}em` }
       if (hasChildren) {
-        return (hasChildren && <Label style={style} as="a" icon={`angle ${showingChildren ? 'down' : 'right'}`} onClick={() => toggleShowingChildren(id)} content={id} />)
+        return (<Label style={style} as="a" icon={`angle ${showingChildren ? 'down' : 'right'}`} onClick={() => toggleShowingChildren(id)} content={id} />)
       }
       return (<Label style={style}>{id}</Label>)
     }

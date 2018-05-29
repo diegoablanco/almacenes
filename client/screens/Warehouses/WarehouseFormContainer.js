@@ -16,10 +16,11 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { bindActions } = ownProps
+  const { bindActions, id } = ownProps
   return {
     ...bindActions,
-    onSubmit: bindActions.createOrUpdate
+    onSubmit: bindActions.createOrUpdate,
+    isEdit: id !== undefined
   }
 }
 export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm())(WarehouseForm)

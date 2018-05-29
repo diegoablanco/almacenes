@@ -1,0 +1,20 @@
+{
+  "id": "http://xarxa.com/schemas/warehouseService.json#",
+  "type": "object",
+  "properties": {
+    "serviceId": {
+      "type": "integer"
+    },
+    "stockMovementTypeId": {
+      "type": "integer"
+    },
+    "rate": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "serviceId",
+    "stockMovementTypeId",
+    "rate"
+  ]
+}

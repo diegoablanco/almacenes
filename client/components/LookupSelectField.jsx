@@ -21,7 +21,7 @@ class LookupField extends Component {
     return (<div style={{ float: 'right' }}>
       { value && <Icon name="delete" onClick={this.reset} /> }
       <Icon name="dropdown" />
-    </div>)
+            </div>)
   }
   getIcons() {
     const { input: { value } } = this.props
@@ -45,8 +45,11 @@ class LookupField extends Component {
     this.dropdown.state.open = true
   }
   handleResultSelect(e, { value }) {
-    const { input } = this.props
+    const { input, onResultSelect } = this.props
     input.onChange(value)
+    if (onResultSelect) {
+      onResultSelect(value)
+    }
   }
   render() {
     const {

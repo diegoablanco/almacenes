@@ -27,7 +27,15 @@ function renderContactFields(phoneTypes) {
           />
         </Form.Group>
         <Divider horizontal>Teléfonos</Divider>
-        <FieldArray name={`${contact}.phones`} component={tabulatedFormFields('Teléfonos', getPhoneFieldCells, phoneTypes)} />
+        <FieldArray
+          name={`${contact}.phones`}
+          component={tabulatedFormFields({
+                    title: 'Teléfonos',
+                    getFieldCells: getPhoneFieldCells,
+                    additionalInformation: phoneTypes,
+                    crudPage: 'contact.phones'
+                    })}
+        />
       </div>
     )
   }

@@ -16,7 +16,14 @@ class StockCrud extends Component {
   constructor(props) {
     super(props)
     this.gridColumns = [
-      { property: 'id', label: 'Código' },
+      { property: 'id',
+        label: 'Código',
+        props: {
+          style: {
+            width: 120
+          }
+        }
+      },
       { property: 'date', label: 'Fecha', cellFormatters: [date => moment(date).format('L')] },
       { property: 'updatedAt',
         label: 'Último Mov.',
@@ -135,6 +142,7 @@ class StockCrud extends Component {
               selectors={selectors}
               formModal={FormModal}
               crudActions={crudActions}
+              enableTreeTabular
             />
           </Grid.Column>
         </Grid.Row>

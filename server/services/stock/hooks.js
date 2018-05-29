@@ -70,9 +70,6 @@ module.exports = {
             descendantStock
           ]
         }
-        if (!hook.data.filtered) {
-          hook.params.sequelize.where = { ...(hook.params.sequelize.where || {}), hierarchyLevel: 1 }
-        }
         processSort(hook, { customer, targetCustomer, warehouse, status })
         const { params: { query: { $sort } } } = hook
         if ($sort) {
@@ -186,7 +183,6 @@ module.exports = {
         }
       },
       dehydrate(),
-      setMovementServices,
       setImageThumbnails
     ],
     update: [

@@ -109,6 +109,7 @@ export function renderSelect({ input, label, type, meta: { touched, error }, opt
         onChange={handleChange}
         options={options}
       />
+      {touched && error && <label className="error">{error}</label>}
     </Form.Field>
   )
 }

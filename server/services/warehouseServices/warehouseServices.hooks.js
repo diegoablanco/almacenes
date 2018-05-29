@@ -1,5 +1,6 @@
 const { setNow } = require('feathers-hooks-common')
 const hydrate = require('feathers-sequelize/hooks/hydrate')
+const { processSort } = require('../helpers')
 
 function addIncludes(hook) {
   const {
@@ -18,7 +19,8 @@ module.exports = {
     all: [
     ],
     find: [
-      addIncludes
+      addIncludes,
+      processSort
     ],
     get: [],
     create: [

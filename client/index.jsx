@@ -9,7 +9,6 @@ import 'semantic-ui-less/semantic.less'
 import intl from 'react-intl-universal'
 import 'moment/locale/es' // eslint-disable-line no-unused-vars, camelcase
 import locales from '../common/locales'
-import '../public/App.css'
 import configureStore from './store'
 import {
   feathersServices,

@@ -21,10 +21,6 @@ export default function (setServiceRate) {
               text: option.description
             }))}
         />)
-        // <Field
-        //   name={`${name}.description`}
-        //   component={renderField}
-        // />
       },
       {
         property: 'rate',

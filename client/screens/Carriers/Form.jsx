@@ -12,7 +12,7 @@ class CarrierForm extends Component {
     const panes = [
       { menuItem: 'Información de Contacto',
         pane:
-  <Tab.Pane>
+  <Tab.Pane key="contact">
     <Form.Group>
       <Field
         name="companyName"
@@ -42,7 +42,15 @@ class CarrierForm extends Component {
       />
     </Form.Group>
     <Divider horizontal>Teléfonos</Divider>
-    <FieldArray name="authorizedSignatory.phones" component={tabulatedFormFields('Teléfonos', getPhoneFieldCells, phoneTypes)} />
+    <FieldArray
+      name="authorizedSignatory.phones"
+      component={tabulatedFormFields({
+                    title: 'Teléfonos',
+                    getFieldCells: getPhoneFieldCells,
+                    additionalInformation: phoneTypes,
+                    crudPage: 'contact.phones'
+                    })}
+    />
   </Tab.Pane> }
     ]
     return (

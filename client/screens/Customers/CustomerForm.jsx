@@ -26,7 +26,7 @@ class CustomerForm extends Component {
     const panes = [
       { menuItem: 'Información de Contacto',
         pane:
-  <Tab.Pane>
+  <Tab.Pane key="contact">
     <Form.Group>
       <Field
         name="companyName"
@@ -61,11 +61,19 @@ class CustomerForm extends Component {
       />
     </Form.Group>
     <Divider horizontal>Teléfonos</Divider>
-    <FieldArray name="authorizedSignatory.phones" component={tabulatedFormFields('Teléfonos', getPhoneFieldCells, phoneTypes)} />
+    <FieldArray
+      name="authorizedSignatory.phones"
+      component={tabulatedFormFields({
+        title: 'Teléfonos',
+        getFieldCells: getPhoneFieldCells,
+        additionalInformation: phoneTypes,
+        crudPage: 'contact.phones'
+        })}
+    />
   </Tab.Pane> },
       { menuItem: 'Información de la Cuenta',
         pane:
-  <Tab.Pane>
+  <Tab.Pane key="account">
     <Field
       name="account.bankName"
       type="text"

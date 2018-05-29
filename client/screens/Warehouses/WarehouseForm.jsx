@@ -11,7 +11,7 @@ class WarehouseForm extends Component {
     const panes = [
       {
         menuItem: 'Información de Contacto',
-        pane: <Tab.Pane>
+        pane: <Tab.Pane key="contact">
           <Grid verticalAlign="middle" centered textAlign="center">
             <Grid.Column tablet={10} mobile={16} computer={6}>
               <Field
@@ -42,7 +42,7 @@ class WarehouseForm extends Component {
     if (isEdit) {
       panes.push({
         menuItem: 'Servicios por Movimiento de Stock',
-        pane: <Tab.Pane>
+        pane: <Tab.Pane key="services">
           <WarehouseServiceCrud />
         </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
       })

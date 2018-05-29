@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from '../common/Grid'
 
-export default function tabulatedFormFields(title, getFieldCells, additionalInformation) {
+export default function tabulatedFormFields({ title, getFieldCells, crudPage, additionalInformation }) {
   function addHandler(fields) {
     return () => {
       fields.push({})
@@ -29,6 +29,7 @@ export default function tabulatedFormFields(title, getFieldCells, additionalInfo
         canAdd
         enableAdd
         compact
+        crudPage={crudPage}
         enableEdit={false}
         addHandler={addHandler(fields)}
         deleteHandler={fields.remove}

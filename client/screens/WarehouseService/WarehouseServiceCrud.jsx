@@ -20,12 +20,8 @@ class WarehouseServiceCrud extends Component {
     this.gridColumns = [
       { property: 'stockMovementType.description', label: 'Movimiento de Stock' },
       { property: 'service.description', label: 'Descripción' },
-      { property: 'service.rate', label: 'Tarifa' }
+      { property: 'rate', label: 'Tarifa' }
     ]
-    this.confirmModalOptions = {
-      title: 'Eliminar Servicio',
-      message: '¿Confirma eliminar el servicio?'
-    }
   }
   shouldComponentUpdate() {
     return false
@@ -35,8 +31,8 @@ class WarehouseServiceCrud extends Component {
     return (
       <div>
         <CrudContainer
+          crudPage="warehouseService"
           gridColumns={this.gridColumns}
-          confirmModalOptions={this.confirmModalOptions}
           selectors={selectors}
           formModal={WarehouseServiceFormModal}
           crudActions={crudActions}

@@ -29,10 +29,11 @@ class ConfirmableButton extends Component {
     if (onCancel) onCancel()
   }
   render() {
-    const { confirmMessage, confirmHeader, onConfirm, onCancel, content, ...rest } = this.props
+    const { confirmMessage, confirmHeader, onConfirm, onCancel, content, id, ...rest } = this.props
     const { open } = this.state
     return (
       [<Popup
+        key={`popup${id}`}
         trigger={<Button
           {...rest}
           onClick={this.showDialog}
@@ -40,6 +41,7 @@ class ConfirmableButton extends Component {
         content={content}
       />,
         <Confirm
+          key={`confirm${id}`}
           content={confirmMessage}
           header={confirmHeader}
           open={open}

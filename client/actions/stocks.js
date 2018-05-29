@@ -80,6 +80,21 @@ export default function getCrudPageActions() {
         dispatch(change(formName, `${fieldPrefix}.rate`, rate))
       }
     },
+    addMovementServices(warehouseId) {
+      return async (dispatch) => {
+        const query = { warehouseId, stockMovementTypeId: 1, $sort: { 'service.description': 1 } }
+        const { value: { data: services } } = await dispatch(feathersServices.warehouseServices.find({ query }))
+        dispatch(change(formName, 'services', services.map(({
+          serviceId,
+          warehouseId,
+          rate
+        }) => ({
+          serviceId,
+          warehouseId,
+          rate
+        }))))
+      }
+    },
     createOrUpdate(data) {
       return async (dispatch) => {
         if (data.movementType === 'release' || data.movementType === 'issue') {
