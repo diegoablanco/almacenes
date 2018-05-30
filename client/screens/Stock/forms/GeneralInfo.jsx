@@ -7,6 +7,7 @@ import { renderField } from '../../../utils/formHelpers'
 import { DateTimeField } from '../../../components'
 
 export default function StockGeneralInfoFields({
+  id,
   targetCustomerLookup,
   targetCustomerLookupActions,
   targetCustomer,
@@ -46,6 +47,7 @@ export default function StockGeneralInfoFields({
           initialValue={warehouse && { key: warehouse.id, text: warehouse.name }}
           required
           onResultSelect={addMovementServices}
+          disabled={id !== null}
         />
         <Field
           name="carrierId"

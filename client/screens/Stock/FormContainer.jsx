@@ -21,6 +21,7 @@ function validator(values, propsToValidate) {
 }
 const mapStateToProps = (state, ownProps) => {
   const {
+    id,
     customerLookup,
     targetCustomerLookup,
     carrierLookup,
@@ -46,6 +47,7 @@ const mapStateToProps = (state, ownProps) => {
     setServiceRate
   } } = ownProps
   return {
+    id,
     targetCustomerLookup,
     targetCustomerLookupActions: { search: searchTargetCustomer, clear: clearTargetCustomer },
     billingCustomerLookup,

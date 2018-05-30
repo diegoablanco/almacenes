@@ -59,7 +59,8 @@ class LookupField extends Component {
       width,
       placeholder,
       initialValue,
-      required
+      required,
+      disabled = false
     } = this.props
     const label = intl.get(getFieldTranslationKey(form, name))
     const { searchQuery, open } = this.state
@@ -84,6 +85,7 @@ class LookupField extends Component {
           noResultsMessage={searchQuery !== '' ? 'No se encontraron resultados' : placeholder}
           icon={this.getIcons()}
           ref={dropdown => { this.dropdown = dropdown }}
+          disabled={disabled}
         />
         { touched && error && <label className="error">{error}</label> }
       </Form.Field>

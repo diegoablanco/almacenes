@@ -67,6 +67,7 @@ class StockCrud extends Component {
       case 'released':
         return (
           [<Popup
+            key="issue"
             trigger={<Button
               icon="sign out"
               color="blue"
@@ -76,6 +77,7 @@ class StockCrud extends Component {
             content="Salida"
           />,
             <ConfirmableButton
+              key="hold"
               icon="lock icon"
               color="black"
               size="mini"
