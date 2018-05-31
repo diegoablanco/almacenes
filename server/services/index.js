@@ -48,7 +48,7 @@ module.exports = function () {
   app.use(`${config.apiPath}/logs`, {
     before: {
     },
-    create({ level, msg, payload }, params) {
+    create({ level, msg, payload = {} }, params) {
       const paramsUser = params.user;
 
       if (paramsUser && (paramsUser.email || paramsUser.username)) {
