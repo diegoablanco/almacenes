@@ -26,6 +26,7 @@ import {
 } from './utils/loggerRedux'
 import './utils/react-tap-event'
 import AppRouter from './router'
+import '../public/App.css'
 // __processEnvNODE_ENV__ is replaced during the webpack build process
 const nodeEnv = __processEnvNODE_ENV__; // eslint-disable-line no-undef, camelcase
 const debug = makeDebug('index');
