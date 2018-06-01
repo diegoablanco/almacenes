@@ -1,7 +1,7 @@
 {
-    "id": "http://xarxa.com/schemas/product.json#",
+    "id": "http://xarxa.com/schemas/productType.json#",
     "title": "Product",
-    "description": "A product",
+    "description": "A product type",
     "type": [
         "object"
     ],

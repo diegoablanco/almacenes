@@ -15,7 +15,7 @@ const logger = require('../utils/loggerProduction')
 const upload = require('./uploads/service')
 const stockMovements = require('./stockMovements/service')
 const download = require('./download/service')
-const product = require('./products/service')
+const productTypes = require('./productTypes/service')
 
 debug('Required')
 
@@ -37,7 +37,7 @@ module.exports = function () {
   app.configure(lookupEntities)
   app.configure(stockMovements)
   app.configure(download)
-  app.configure(product)
+  app.configure(productTypes)
 
   // get client config file
   app.use(`${config.apiPath}/config`, {

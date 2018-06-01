@@ -1,8 +1,8 @@
 import { feathersServices } from '../feathers'
 import { getCrudPageActions as getBaseCrudPageActions } from './crudPage'
 import crudPages from '../common/CrudPages'
-import * as selectors from '../selectors/products'
+import { productTypes } from '../selectors'
 
 export function getCrudPageActions() {
-  return getBaseCrudPageActions(crudPages.PRODUCTS, feathersServices.products, selectors)
+  return getBaseCrudPageActions(crudPages.PRODUCTS, feathersServices.productTypes, productTypes)
 }

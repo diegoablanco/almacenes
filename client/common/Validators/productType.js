@@ -1,4 +1,4 @@
-import schema from '../../../common/validation/product.json'
+import schema from '../../../common/validation/productType.json'
 import getValidator from '../../common/Validation'
 
 export default {

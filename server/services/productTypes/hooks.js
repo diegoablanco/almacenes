@@ -1,7 +1,7 @@
 const auth = require('feathers-authentication').hooks
 const Ajv = require('ajv')
 const { setNow, validateSchema } = require('feathers-hooks-common')
-const validationSchema = require('../../../common/validation/product.json')
+const validationSchema = require('../../../common/validation/productType.json')
 const errorReducer = require('../../helpers/errorReducer')
 
 function validate() {

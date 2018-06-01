@@ -11,7 +11,8 @@ sequelize.sync({ force: true }).then(async () => {
     stockItemDetailType,
     documentType,
     stockStatus,
-    role } = sequelize.models
+    role,
+    stockAccount } = sequelize.models
   await role.bulkCreate([
     { description: 'Administrador', code: 'admin' },
     { description: 'Usuario', code: 'user' }
@@ -79,6 +80,9 @@ sequelize.sync({ force: true }).then(async () => {
     { description: 'Contar unidades externamente', code: 'countExternaly' },
     { description: 'Abrir, contar, verificar modelos', code: 'openCountAndCheckModels' },
     { description: 'Lectura IMEIs / Serials', code: 'imeiSerialsReading' }
+  ])
+  stockAccount.bulkCreate([
+    { }
   ])
 })
 

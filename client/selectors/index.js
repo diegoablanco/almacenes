@@ -5,6 +5,7 @@ import stocks from './stocks'
 import uneditables from './uneditables'
 import warehouses from './warehouses'
 import warehouseServices from './warehouseServices'
+import productTypes from './productTypes'
 
 export {
   carriers,
@@ -13,5 +14,6 @@ export {
   stocks,
   uneditables,
   warehouses,
-  warehouseServices
+  warehouseServices,
+  productTypes
 }

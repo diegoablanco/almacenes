@@ -2,14 +2,14 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form'
 import ProductForm from './Form'
-import { product } from '../../common/Validators'
+import { productType } from '../../common/Validators'
 
 export const formName = 'product'
 
 const mapStateToProps = (state, ownProps) => {
   const { showModalLoadingIndicator } = ownProps.selectors.getUiState(state)
   return {
-    validate: product.validator,
+    validate: productType.validator,
     form: formName,
     loading: showModalLoadingIndicator
   }

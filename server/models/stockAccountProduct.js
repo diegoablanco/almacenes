@@ -1,22 +1,22 @@
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {
-  const Product = sequelize.define('product', {
+  const StockAccountProduct = sequelize.define('stockAccountproduct', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true
     },
-    code: {
-      type: Sequelize.STRING,
+    quantity: {
+      type: Sequelize.INTEGER,
       allowNull: false
     }
   })
-  Product.associate = function ({
-    productType
+  StockAccountProduct.associate = function ({
+    product
   }) {
-    Product.belongsTo(productType, { as: 'type' })
+    StockAccountProduct.belongsTo(product)
   }
-  return Product
+  return StockAccountProduct
 }

@@ -3,7 +3,7 @@ import FormModal from './FormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
 import { getCrudPageActions } from '../../actions/products'
-import * as selectors from '../../selectors/products'
+import { productTypes } from '../../selectors'
 
 export default class CarrierCrud extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ export default class CarrierCrud extends Component {
         <CrudContainer
           crudPage="product"
           gridColumns={this.gridColumns}
-          selectors={selectors}
+          selectors={productTypes}
           formModal={FormModal}
           toolbar={ToolbarContainer}
           crudActions={crudActions}

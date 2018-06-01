@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import FormModal from '../../common/FormModal'
 import Form, { formName } from './FormContainer'
 
-export default class CustomerFormModal extends Component {
+export default class ProductFormModal extends Component {
   render() {
     const { id, ...rest } = this.props
     return (

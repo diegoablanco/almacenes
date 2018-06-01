@@ -29,7 +29,7 @@ export default {
   uneditables: feathersServices.uneditables.reducer,
   carriers: feathersServices.carriers.reducer,
   stocks: feathersServices.stocks.reducer,
-  products: feathersServices.products.reducer,
+  productTypes: feathersServices.productTypes.reducer,
   ui: combineReducers({
     customers: customersReducer,
     warehouses: warehousesReducer,
@@ -43,7 +43,7 @@ export default {
     }),
     carriers: getCrudReducer(crudPages.CARRIERS, { formName: 'carrier' }),
     warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),
-    products: getCrudReducer(crudPages.PRODUCTS, { formName: 'product' }),
+    productTypes: getCrudReducer(crudPages.PRODUCTS, { formName: 'product' }),
     stocks: stocksReducer,
     messageBar
   })
