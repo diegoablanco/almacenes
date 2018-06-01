@@ -12,6 +12,7 @@ router.use('/warehouses', serveHtmlForEnvironment)
 router.use('/services', serveHtmlForEnvironment)
 router.use('/carriers', serveHtmlForEnvironment)
 router.use('/stock', serveHtmlForEnvironment)
+router.use('/products', serveHtmlForEnvironment)
 router.use(defaultRoute, serveHtmlForEnvironment)
 
 module.exports = router

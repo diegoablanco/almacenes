@@ -21,6 +21,7 @@ import Warehouses from './screens/Warehouses'
 import Services from './screens/Services'
 import Carriers from './screens/Carriers'
 import Stock from './screens/Stock'
+import Product from './screens/Products'
 
 const authenticatedSelector = state => state.auth.user && state.auth.user.isVerified
 // Authentication Higher Order Components to wrap route components.
@@ -80,6 +81,7 @@ export default class AppRouter extends Component {
               <Route path="/services" component={UserIsAuthenticated(Services)} />
               <Route path="/carriers" component={UserIsAuthenticated(Carriers)} />
               <Route path="/stock" component={UserIsAuthenticated(Stock)} />
+              <Route path="/products" component={UserIsAuthenticated(Product)} />
               <Route component={UserSignIn} />
             </Switch>
           </ErrorBoundary>

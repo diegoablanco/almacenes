@@ -7,6 +7,7 @@ const service = require('./service')
 const filterStock = require('./filterStock')
 const warehouseService = require('./warehouseService')
 const contact = require('./contact')
+const product = require('./product')
 
 module.exports = {
   common,
@@ -17,5 +18,6 @@ module.exports = {
   service,
   filterStock,
   warehouseService,
-  contact
+  contact,
+  product
 }

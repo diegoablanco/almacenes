@@ -7,6 +7,7 @@ import carrier from './carrier'
 import warehouse from './warehouse'
 import service from './service'
 import warehouseService from './warehouseService'
+import product from './product'
 
 export {
   signUp,
@@ -17,5 +18,6 @@ export {
   carrier,
   warehouse,
   service,
-  warehouseService
+  warehouseService,
+  product
 }

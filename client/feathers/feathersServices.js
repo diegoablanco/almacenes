@@ -13,8 +13,9 @@ export const mapServicePathsToNames = [{
   uneditables: 'uneditables',
   carriers: 'carriers',
   stocks: 'stocks',
-  stockMovements: 'stockMovements',  
-  download: 'download'
+  stockMovements: 'stockMovements',
+  download: 'download',
+  products: 'products'
 },
 {
   lookupEntities: 'carrierLookup'
@@ -53,4 +54,5 @@ export const prioritizedListServices = [
   'uneditables',
   'lookupEntities',
   'carriers',
+  'products',
   'logs']
