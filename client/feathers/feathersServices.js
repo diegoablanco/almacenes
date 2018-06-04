@@ -15,7 +15,8 @@ export const mapServicePathsToNames = [{
   stocks: 'stocks',
   stockMovements: 'stockMovements',
   download: 'download',
-  productTypes: 'productTypes'
+  productTypes: 'productTypes',
+  stockAccountMovements: 'stockAccountMovements'
 },
 {
   lookupEntities: 'carrierLookup'
@@ -43,6 +44,7 @@ export const mapServicePathsToNames = [{
 export const prioritizedListServices = [
   'auth',
   'stocks',
+  'stockAccountMovements',
   'users',
   'customers',
   'warehouses',

@@ -1,5 +1,5 @@
 const config = require('config')
-const { BadRequest } = require('feathers-errors');
+const { BadRequest } = require('feathers-errors')
 const hooks = require('./hooks')
 const getDatabase = require('../../../server/database')
 const { getIncludes } = require('../stock/helpers')

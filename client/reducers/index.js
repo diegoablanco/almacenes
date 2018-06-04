@@ -30,6 +30,7 @@ export default {
   carriers: feathersServices.carriers.reducer,
   stocks: feathersServices.stocks.reducer,
   productTypes: feathersServices.productTypes.reducer,
+  stockAccountMovements: feathersServices.stockAccountMovements.reducer,
   ui: combineReducers({
     customers: customersReducer,
     warehouses: warehousesReducer,
@@ -44,6 +45,13 @@ export default {
     carriers: getCrudReducer(crudPages.CARRIERS, { formName: 'carrier' }),
     warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),
     productTypes: getCrudReducer(crudPages.PRODUCTS, { formName: 'product' }),
+    stockAccountMovements: getCrudReducer(crudPages.STOCKACCOUNTMOVEMENTS, { sortingColumns: {
+      date: {
+        direction: 'desc',
+        position: 0
+      }
+    },
+    formName: 'stockAccountMovement' }),
     stocks: stocksReducer,
     messageBar
   })

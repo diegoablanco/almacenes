@@ -1,0 +1,8 @@
+{
+  "id": "http://xarxa.com/schemas/stockAccountIssue.json#",
+  "title": "Stock Account Issue",
+  "description": "A stock account issue",
+  "type": "object",
+  "properties": {},
+  "required": []
+}

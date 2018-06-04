@@ -1,0 +1,8 @@
+{
+  "id": "http://xarxa.com/schemas/stockAccountReceive.json#",
+  "title": "Stock Account Receive",
+  "description": "A stock account reception",
+  "type": "object",
+  "properties": {},
+  "required": []
+}

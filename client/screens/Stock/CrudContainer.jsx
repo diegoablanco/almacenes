@@ -11,6 +11,7 @@ import getCrudPageActions from '../../actions/stocks'
 import { stocks as selectors } from '../../selectors'
 import StatusColumn from './components/StatusColumn'
 import { ConfirmableButton } from '../components'
+import { dateCellFormatter } from '../../utils'
 
 class StockCrud extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class StockCrud extends Component {
           }
         }
       },
-      { property: 'date', label: 'Fecha', cellFormatters: [date => moment(date).format('L')] },
+      { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] },
       { property: 'updatedAt',
         label: 'Último Mov.',
         cellFormatters: [date => date && moment(date).format('L')]
