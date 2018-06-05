@@ -3,6 +3,18 @@
   "title": "Stock Account Receive",
   "description": "A stock account reception",
   "type": "object",
-  "properties": {},
+  "properties": {
+    "date": {
+      "type": "date"
+    },
+    "products": {
+      "type": [
+        "array"
+      ],
+      "items": {
+        "type": "object"
+      }
+    }
+  },
   "required": []
 }

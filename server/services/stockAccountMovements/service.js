@@ -25,7 +25,9 @@ module.exports = function () {
           )
           return {
             total: count,
-            data: results
+            data: results,
+            limit: 0,
+            skip: 0
           }
         } catch (error) {
           throw new BadRequest({ errors: error.message })

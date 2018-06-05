@@ -3,6 +3,18 @@
   "title": "Stock Account Issue",
   "description": "A stock account issue",
   "type": "object",
-  "properties": {},
+  "properties": {
+    "receipt": {
+      "type": "string"
+    },
+    "products": {
+      "type": [
+        "array"
+      ],
+      "items": {
+        "type": "object"
+      }
+    }
+  },
   "required": []
 }

@@ -9,6 +9,7 @@ import customersReducer from './customers'
 import warehousesReducer from './warehouses'
 import stocksReducer from './stocks'
 import commonFormReducer from './formReducer'
+import stocksMovementsReducer from './stocksMovements'
 
 export default {
   routing: routerReducer,
@@ -45,13 +46,7 @@ export default {
     carriers: getCrudReducer(crudPages.CARRIERS, { formName: 'carrier' }),
     warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),
     productTypes: getCrudReducer(crudPages.PRODUCTS, { formName: 'product' }),
-    stockAccountMovements: getCrudReducer(crudPages.STOCKACCOUNTMOVEMENTS, { sortingColumns: {
-      date: {
-        direction: 'desc',
-        position: 0
-      }
-    },
-    formName: 'stockAccountMovement' }),
+    stockAccountMovements: stocksMovementsReducer,
     stocks: stocksReducer,
     messageBar
   })
