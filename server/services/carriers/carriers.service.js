@@ -1,5 +1,5 @@
-const createService = require('feathers-sequelize');
-const hooks = require('./carriers.hooks');
+const createService = require('feathers-sequelize')
+const hooks = require('./carriers.hooks')
 const config = require('config')
 
 module.exports = function () {

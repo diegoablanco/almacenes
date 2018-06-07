@@ -49,8 +49,10 @@ module.exports = function (sequelize) {
     Stock.belongsTo(customer)
     Stock.belongsTo(customer, { as: 'targetCustomer' })
     Stock.belongsTo(customer, { as: 'billingCustomer' })
+
     Stock.belongsTo(stockBox, { as: 'boxes' })
     Stock.belongsTo(stockPallets, { as: 'palets' })
+    
     Stock.belongsToMany(warehouseInstruction, { as: 'instructions', through: 'stock_instructions' })
     Stock.belongsToMany(documentAttachment, { as: 'documents', through: 'stock_documents' })
     Stock.belongsToMany(fileAttachment, { as: 'images', through: 'stock_images' })

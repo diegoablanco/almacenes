@@ -8,7 +8,7 @@ const crudReducer = getCrudReducer(crudPages.STOCKACCOUNTMOVEMENTS, {
   formName: 'stockAccountMovement',
   enableTreeTabular: true,
   defaultData: {
-    instructions: []
+    products: [{}]
   },
   sortingColumns: {
     date: {

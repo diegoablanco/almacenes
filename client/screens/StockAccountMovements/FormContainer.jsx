@@ -23,14 +23,18 @@ const mapStateToProps = (state, ownProps) => {
   return {
     validate: validator,
     form: formName,
-    loading: showModalLoadingIndicator
+    loading: showModalLoadingIndicator,
+    asyncBlurFields: ['products[].ean'],
+    asyncChangeFields: []
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { bindActions } = ownProps
+  const { bindActions: { validateProducts, ...bindActions } } = ownProps
   return {
     ...bindActions,
-    onSubmit: bindActions.createOrUpdate
+    onSubmit: bindActions.createOrUpdate,
+    asyncValidate: validateProducts
   }
 }
-export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm())(StockAccountMovementForm)
+export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({
+}))(StockAccountMovementForm)

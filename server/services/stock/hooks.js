@@ -16,7 +16,6 @@ const {
   setStatus,
   setGoodsDescription,
   getIncludes,
-  setMovementServices,
   setLastMovementDate,
   expandChildren,
   setItemsToHighlight,
