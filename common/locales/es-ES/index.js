@@ -8,6 +8,7 @@ const filterStock = require('./filterStock')
 const warehouseService = require('./warehouseService')
 const contact = require('./contact')
 const product = require('./product')
+const stockAccountMovement = require('./stockAccountMovement')
 
 module.exports = {
   common,
@@ -19,5 +20,6 @@ module.exports = {
   filterStock,
   warehouseService,
   contact,
-  product
+  product,
+  stockAccountMovement
 }

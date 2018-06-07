@@ -73,7 +73,7 @@ class CustomerForm extends Component {
   </Tab.Pane> },
       { menuItem: 'Información de la Cuenta',
         pane:
-  <Tab.Pane key="account">
+  <Tab.Pane key="account" attached={false}>
     <Field
       name="account.bankName"
       type="text"

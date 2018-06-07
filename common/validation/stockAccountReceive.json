@@ -5,7 +5,7 @@
   "type": "object",
   "properties": {
     "date": {
-      "type": "date"
+      "type": "string"
     },
     "products": {
       "type": [
@@ -16,5 +16,7 @@
       }
     }
   },
-  "required": []
+  "required": [
+    "date"
+  ]
 }

@@ -6,14 +6,14 @@ const config = require('config')
 
 module.exports = function () {
   const app = this
-  const { models: { stockAccountReceive: Model } } = app.get('database')
+  const { models: { stockAccountIssue: Model } } = app.get('database')
 
   const options = {
-    name: 'stockAccountReceive',
+    name: 'stockAccountIssues',
     Model,
     paginate: config.paginate
   };
-  const servicePath = `${config.apiPath}/stockAccountReceive`
+  const servicePath = `${config.apiPath}/stockAccountIssues`
   // Initialize our service with any options it requires
   app.use(servicePath, createService(options))
 

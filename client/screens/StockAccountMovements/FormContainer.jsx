@@ -19,13 +19,14 @@ function validator(values, propsToValidate) {
   return getValidatorByMovementType(values.movementType)(values, propsToValidate)
 }
 const mapStateToProps = (state, ownProps) => {
-  const { showModalLoadingIndicator } = ownProps.selectors.getUiState(state)
+  const { showModalLoadingIndicator, stockMovementType } = ownProps.selectors.getUiState(state)
   return {
     validate: validator,
     form: formName,
     loading: showModalLoadingIndicator,
     asyncBlurFields: ['products[].ean'],
-    asyncChangeFields: []
+    asyncChangeFields: [],
+    extras: { stockMovementType }
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

@@ -16,7 +16,9 @@ export const mapServicePathsToNames = [{
   stockMovements: 'stockMovements',
   download: 'download',
   productTypes: 'productTypes',
-  stockAccountMovements: 'stockAccountMovements'
+  stockAccountMovements: 'stockAccountMovements',
+  stockAccountReceives: 'stockAccountReceives',
+  stockAccountIssues: 'stockAccountIssues'
 },
 {
   lookupEntities: 'carrierLookup'

@@ -1,6 +1,6 @@
 import { getCrudReducer } from './crudPage'
 import crudPages from '../common/CrudPages'
-import { getActionTypes } from '../actions/stocks'
+import { getActionTypes } from '../actions/stockAccountMovements'
 
 const actionTypes = getActionTypes()
 const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)))
@@ -8,7 +8,8 @@ const crudReducer = getCrudReducer(crudPages.STOCKACCOUNTMOVEMENTS, {
   formName: 'stockAccountMovement',
   enableTreeTabular: true,
   defaultData: {
-    products: [{}]
+    products: [{}],
+    stockAccountId: 1
   },
   sortingColumns: {
     date: {

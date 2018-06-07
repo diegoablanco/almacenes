@@ -32,6 +32,8 @@ export default {
   stocks: feathersServices.stocks.reducer,
   productTypes: feathersServices.productTypes.reducer,
   stockAccountMovements: feathersServices.stockAccountMovements.reducer,
+  stockAccountReceives: feathersServices.stockAccountReceives.reducer,
+  stockAccountIssues: feathersServices.stockAccountIssues.reducer,
   ui: combineReducers({
     customers: customersReducer,
     warehouses: warehousesReducer,
