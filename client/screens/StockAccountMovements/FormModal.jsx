@@ -31,7 +31,7 @@ class Modal extends Component {
       ...rest } = this.props
     return (
       <FormModal
-        title={`${stockMovementType.code === 'edit' ? 'Modificar' : 'Nuevo'} movimiento de Stock: ${stockMovementType.description}`}
+        title={`${id ? 'Modificar' : 'Nuevo'} movimiento de Stock: ${stockMovementType.description}`}
         form={Form}
         formName={formName}
         id={id}

@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import { Grid } from 'semantic-ui-react'
+import { Grid, Popup, Button } from 'semantic-ui-react'
+import intl from 'react-intl-universal'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import FormModal from './FormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
@@ -9,7 +12,7 @@ import { getCrudPageActions } from '../../actions/stockAccountMovements'
 import { dateCellFormatter } from '../../utils'
 import { MovementTypeColumn } from '../components'
 
-export default class StockAccountMovementsCrud extends Component {
+class StockAccountMovementsCrud extends Component {
   constructor(props) {
     super(props)
     this.gridColumns = [
@@ -24,9 +27,23 @@ export default class StockAccountMovementsCrud extends Component {
         },
         cellFormatters: [(type, { rowData }) => (type && <MovementTypeColumn type={type} rowData={rowData} />)] }
     ]
+    this.getActionButtons = this.getActionButtons.bind(this)
   }
   shouldComponentUpdate() {
     return false
+  }
+  getActionButtons({ id, type }) {
+    const { showFormModal } = this.props
+    return (
+      <Popup
+        trigger={<Button
+          icon="write"
+          size="mini"
+          onClick={() => showFormModal(id, type)}
+        />}
+        content={intl.get('common.edit')}
+      />
+    )
   }
   render() {
     const crudActions = getCrudPageActions()
@@ -45,10 +62,11 @@ export default class StockAccountMovementsCrud extends Component {
             <CrudContainer
               crudPage="stockAccountMovement"
               gridColumns={this.gridColumns}
+              gridActionButtons={this.getActionButtons}
               selectors={stockAccountMovements}
               formModal={FormModal}
               crudActions={crudActions}
-              enableEdit
+              enableEdit={false}
               enableDelete={false}
             />
           </Grid.Column>
@@ -57,3 +75,10 @@ export default class StockAccountMovementsCrud extends Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  const { showFormModal } = getCrudPageActions()
+
+  return bindActionCreators({ showFormModal }, dispatch)
+}
+export default connect(null, mapDispatchToProps)(StockAccountMovementsCrud)
