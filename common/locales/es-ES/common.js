@@ -1,3 +1,5 @@
+const stockMovementType = require('./stockMovementType')
+
 module.exports = {
   searchPlaceholder: 'Buscar ...',
   dateFrom: 'Fecha desde',
@@ -6,5 +8,6 @@ module.exports = {
   remove: 'Eliminar',
   edit: 'Modificar',
   ok: 'Aceptar',
-  cancel: 'Cancelar'
+  cancel: 'Cancelar',
+  stockMovementType
 }

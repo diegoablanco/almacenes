@@ -1,0 +1,62 @@
+{
+  "$id": "http://xarxa.com/schemas/stockAccountMovement.json#",
+  "title": "Stock Account Movement",
+  "description": "A stock account Movement",
+  "type": "object",
+  "properties": {
+    "date": {},
+    "receipt": {
+      "type": "string"
+    },
+    "products": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "product.json#"
+      }
+    }
+  },
+  "required": [
+    "date",
+    "products"
+  ],
+  "definitions": {
+    "isReceive": {
+      "properties": {
+        "type": {
+          "enum": [
+            "receive"
+          ]
+        }
+      }
+    },
+    "isIssue": {
+      "properties": {
+        "type": {
+          "enum": [
+            "issue"
+          ]
+        }
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "allOf": [
+        {
+          "$ref": "#/definitions/isIssue"
+        },
+        {
+          "required": [
+            "receipt"
+          ]
+        }
+      ]
+    },
+    {
+      "not": {
+        "$ref": "#/definitions/isIssue"
+      }
+    }
+  ]
+}

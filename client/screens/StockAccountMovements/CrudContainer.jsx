@@ -7,6 +7,7 @@ import ToolbarForm from './ToolbarForm'
 import { stockAccountMovements } from '../../selectors'
 import { getCrudPageActions } from '../../actions/stockAccountMovements'
 import { dateCellFormatter } from '../../utils'
+import { MovementTypeColumn } from '../components'
 
 export default class StockAccountMovementsCrud extends Component {
   constructor(props) {
@@ -14,7 +15,14 @@ export default class StockAccountMovementsCrud extends Component {
     this.gridColumns = [
       { property: 'id', label: 'Código' },
       { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] },
-      { property: 'type', label: 'Tipo' }
+      { property: 'type',
+        label: 'Tipo',
+        props: {
+          style: {
+            width: 40
+          }
+        },
+        cellFormatters: [(type, { rowData }) => (type && <MovementTypeColumn type={type} rowData={rowData} />)] }
     ]
   }
   shouldComponentUpdate() {
@@ -40,6 +48,8 @@ export default class StockAccountMovementsCrud extends Component {
               selectors={stockAccountMovements}
               formModal={FormModal}
               crudActions={crudActions}
+              enableEdit
+              enableDelete={false}
             />
           </Grid.Column>
         </Grid.Row>

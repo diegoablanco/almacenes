@@ -36,8 +36,7 @@ module.exports = function () {
   sequelize.import('../server/models/stockIssue')
   sequelize.import('../server/models/product')
   sequelize.import('../server/models/productType')
-  sequelize.import('../server/models/stockAccountReceive')
-  sequelize.import('../server/models/stockAccountIssue')
+  sequelize.import('../server/models/stockAccountMovement')
   sequelize.import('../server/models/stockAccount')
 
   Object.keys(sequelize.models).forEach((modelName) => {

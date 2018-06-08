@@ -17,8 +17,6 @@ const stockMovements = require('./stockMovements/service')
 const download = require('./download/service')
 const productTypes = require('./productTypes/service')
 const stockAccountMovements = require('./stockAccountMovements/service')
-const stockAccountReceives = require('./stockAccountReceives/service')
-const stockAccountIssues = require('./stockAccountIssues/service')
 
 debug('Required')
 
@@ -42,8 +40,6 @@ module.exports = function () {
   app.configure(download)
   app.configure(productTypes)
   app.configure(stockAccountMovements)
-  app.configure(stockAccountReceives)
-  app.configure(stockAccountIssues)
 
   // get client config file
   app.use(`${config.apiPath}/config`, {

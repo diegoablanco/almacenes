@@ -1,5 +1,5 @@
 {
-  "id": "http://xarxa.com/schemas/customer.json#",
+  "$id": "http://xarxa.com/schemas/customer.json#",
   "title": "Warehouse customer",
   "description": "A warehouse customer",
   "type": "object",

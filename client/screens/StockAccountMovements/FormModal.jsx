@@ -22,6 +22,7 @@ class Modal extends Component {
         <Icon name="save" />
         {stockMovement === 'receive' && 'Ingresar'}
         {stockMovement === 'issue' && 'Salida'}
+        {stockMovement === 'edit' && 'Guardar'}
       </Button>)
   }
   render() {
@@ -30,7 +31,7 @@ class Modal extends Component {
       ...rest } = this.props
     return (
       <FormModal
-        title={`Movimiento de Stock: ${stockMovementType.description}`}
+        title={`${stockMovementType.code === 'edit' ? 'Modificar' : 'Nuevo'} movimiento de Stock: ${stockMovementType.description}`}
         form={Form}
         formName={formName}
         id={id}

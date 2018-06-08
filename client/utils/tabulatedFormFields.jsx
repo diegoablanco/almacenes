@@ -32,7 +32,7 @@ export default function tabulatedFormFields({ title, getFieldCells, crudPage, ad
         crudPage={crudPage}
         enableEdit={false}
         addHandler={addHandler(fields)}
-        deleteHandler={fields.remove}
+        removeHandler={fields.remove}
         columns={getColumns(fields)}
         rows={getRows(fields)}
       />

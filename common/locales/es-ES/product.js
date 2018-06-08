@@ -1,8 +1,9 @@
 module.exports = {
   description: 'Descripción',
   ean: 'EAN',
+  code: 'Código',
   deleteDialog: {
-    title: 'Eliminar Product',
+    title: 'Eliminar Producto',
     message: '¿Confirma eliminar el producto?'
   }
 }

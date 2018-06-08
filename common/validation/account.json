@@ -1,5 +1,5 @@
 {
-  "id": "http://xarxa.com/schemas/account.json#",
+  "$id": "http://xarxa.com/schemas/account.json#",
   "title": "Customer account",
   "description": "A customer account",
   "type": [
@@ -7,15 +7,19 @@
   ],
   "properties": {
     "bankName": {
-      "type": "string", "minLength": 1
+      "type": "string",
+      "minLength": 1
     },
     "number": {
-      "type": "string", "minLength": 1
+      "type": "string",
+      "minLength": 1
     },
     "authorizedPerson": {
       "$ref": "contact.json#"
     },
-    "address": {"$ref": "address.json#"}
+    "address": {
+      "$ref": "address.json#"
+    }
   },
   "required": [
     "bankName",

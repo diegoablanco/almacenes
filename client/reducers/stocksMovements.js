@@ -6,7 +6,6 @@ const actionTypes = getActionTypes()
 const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)))
 const crudReducer = getCrudReducer(crudPages.STOCKACCOUNTMOVEMENTS, {
   formName: 'stockAccountMovement',
-  enableTreeTabular: true,
   defaultData: {
     products: [{}],
     stockAccountId: 1

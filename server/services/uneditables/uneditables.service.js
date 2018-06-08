@@ -19,7 +19,7 @@ module.exports = function () {
           role
         } } = sequelize
         const phoneTypes = await phoneType.findAll({ attributes: ['id', 'description'] })
-        const stockMovementTypes = await stockMovementType.findAll({ attributes: ['id', 'description', 'code'] })
+        const stockMovementTypes = await stockMovementType.findAll()
         const usersCount = await user.findAll({ attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'total']] })
         const warehouseInstructions = await warehouseInstruction.findAll({ attributes: ['id', 'description'] })
         const documentTypes = await documentType.findAll({ attributes: ['id', 'description', 'type'] })

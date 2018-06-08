@@ -1,5 +1,5 @@
 {
-    "id": "http://xarxa.com/schemas/address.json#",
+    "$id": "http://xarxa.com/schemas/address.json#",
     "title": "Address",
     "description": "An address",
     "properties": {

@@ -1,5 +1,5 @@
 {
-    "id": "http://xarxa.com/schemas/stockMovement.json#",
+    "$id": "http://xarxa.com/schemas/stockMovement.json#",
     "title": "Stock Movement",
     "description": "A Stock Movement",
     "type": [

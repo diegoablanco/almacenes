@@ -1,5 +1,5 @@
 {
-  "id": "http://xarxa.com/schemas/warehouseService.json#",
+  "$id": "http://xarxa.com/schemas/warehouseService.json#",
   "type": "object",
   "properties": {
     "serviceId": {

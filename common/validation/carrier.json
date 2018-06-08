@@ -1,5 +1,5 @@
 {
-  "id": "http://xarxa.com/schemas/carrier.json#",
+  "$id": "http://xarxa.com/schemas/carrier.json#",
   "title": "Carrier",
   "description": "A carrier",
   "type": "object",

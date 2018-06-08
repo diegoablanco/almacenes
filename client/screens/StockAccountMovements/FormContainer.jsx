@@ -3,30 +3,21 @@ import { compose } from 'redux'
 import { reduxForm } from 'redux-form'
 import StockAccountMovementForm from './Form'
 import { stockAccountMovement } from '../../common/Validators'
+import getUneditables from '../../selectors/uneditables'
 
 export const formName = 'stockAccountMovement'
-function getValidatorByMovementType(movementType) {
-  if (movementType === 'issue') {
-    return stockAccountMovement.issue
-  }
-  if (movementType === 'release') {
-    return stockAccountMovement.receive
-  }
-  return stockAccountMovement.issue
-}
-
-function validator(values, propsToValidate) {
-  return getValidatorByMovementType(values.movementType)(values, propsToValidate)
-}
 const mapStateToProps = (state, ownProps) => {
   const { showModalLoadingIndicator, stockMovementType } = ownProps.selectors.getUiState(state)
+  const { data } = ownProps.selectors.getServiceState(state)
+  const type = (data || {}).type
+  const { stockMovementTypes } = getUneditables(state)
   return {
-    validate: validator,
+    validate: stockAccountMovement.validator,
     form: formName,
     loading: showModalLoadingIndicator,
     asyncBlurFields: ['products[].ean'],
     asyncChangeFields: [],
-    extras: { stockMovementType }
+    extras: { stockMovementType: stockMovementType.code === 'edit' && type ? stockMovementTypes.find(x => x.code === type) : stockMovementType }
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

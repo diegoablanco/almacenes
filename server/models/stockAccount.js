@@ -11,12 +11,11 @@ module.exports = function (sequelize) {
   })
   StockAccount.associate = function ({
     product,
-    stockAccountReceive,
-    stockAccountIssue
+    stockAccountMovement
   }) {
     StockAccount.hasMany(product, { as: 'products' })
-    StockAccount.hasMany(stockAccountReceive, { as: 'receives' })
-    StockAccount.hasMany(stockAccountIssue, { as: 'issues' })
+    StockAccount.hasMany(stockAccountMovement, { as: 'receives', scope: { type: 'receive' } })
+    StockAccount.hasMany(stockAccountMovement, { as: 'issues', scope: { type: 'issue' } })
   }
   return StockAccount
 }

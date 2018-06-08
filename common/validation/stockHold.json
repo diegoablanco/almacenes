@@ -1,5 +1,5 @@
 {
-  "id": "http://xarxa.com/schemas/stockHold.json#",
+  "$id": "http://xarxa.com/schemas/stockHold.json#",
   "title": "Stock Hold",
   "description": "A stock hold",
   "type": "object",

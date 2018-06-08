@@ -12,7 +12,7 @@ class ProductForm extends Component {
     this.productsFieldsComponent = tabulatedFormFields({
       title: 'Productos',
       getFieldCells: ProductFields,
-      crudPage: 'products'
+      crudPage: 'product'
     })
     this.getReceivePanes = this.getReceivePanes.bind(this)
     this.getIssuePanes = this.getIssuePanes.bind(this)

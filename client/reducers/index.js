@@ -21,7 +21,8 @@ export default {
     customer: commonFormReducer('customer'),
     carrier: commonFormReducer('carrier'),
     warehouse: commonFormReducer('warehouse'),
-    Service: commonFormReducer('service')
+    Service: commonFormReducer('service'),
+    stockAccountMovement: commonFormReducer('stockAccountMovement')
   }),
   customers: feathersServices.customers.reducer,
   warehouses: feathersServices.warehouses.reducer,

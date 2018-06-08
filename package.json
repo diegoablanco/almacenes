@@ -47,7 +47,7 @@
   "dependencies": {
     "@feathersjs/authentication-client": "feathersjs/authentication-client",
     "@feathersjs/express": "feathersjs/express",
-    "ajv": "^5.2.2",
+    "ajv": "^6.5.0",
     "ajv-errors": "^1.0.0",
     "ajv-i18n": "^2.1.1",
     "babel-preset-es2017": "^6.24.1",

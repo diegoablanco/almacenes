@@ -1,8 +1,7 @@
 import getValidator from '../../common/Validation'
-import stockAccountIssue from '../../../common/validation/stockAccountIssue.json'
-import stockAccountReceive from '../../../common/validation/stockAccountReceive.json'
+import schema from '../../../common/validation/stockAccountMovement.json'
+import productSchema from '../../../common/validation/product.json'
 
 export default {
-  issue: getValidator(stockAccountIssue),
-  receive: getValidator(stockAccountReceive)
+  validator: getValidator(schema, [productSchema])
 }
