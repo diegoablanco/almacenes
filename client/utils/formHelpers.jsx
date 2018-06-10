@@ -12,7 +12,39 @@ export function renderLabel({ label, required }) {
 export function renderLabel2({ input: { value } }) {
   return (<label>{value}</label>)
 }
-export function renderField({ input, type = 'text', width, required, clearable, label, meta: { touched, error, form }, ...rest }) {
+export class renderField extends Component {
+  componentDidMount() {
+    const { autofocus } = this.props
+    if (autofocus) {
+      this.control.focus()
+    }
+  }
+  componentDidUpdate(prevProps) {
+    if (!prevProps.meta.active && this.props.meta.active) {
+      this.control.focus()
+    }
+  }
+  render() {
+    const { input, type = 'text', width, required, clearable, label, meta: { touched, error, form }, ...rest } = this.props
+    const labelText = label || intl.get(getFieldTranslationKey(form, input.name))
+    
+    return (
+      <Form.Field className={classnames({ error: touched && error })} width={width}>
+        { renderLabel({ label: labelText, required })}
+        <Input
+          {...input}
+          {...rest}
+          placeholder={labelText}
+          type={type}
+          labelPosition="right corner"
+          ref={control => { this.control = control }}
+        />
+        {touched && error && <label className="error">{error}</label>}
+      </Form.Field>
+    )
+  }
+}
+export function renderField2({ input, type = 'text', width, required, clearable, label, meta: { touched, error, form }, ...rest }) {
   if (label === undefined) {
     label = intl.get(getFieldTranslationKey(form, input.name))
   }

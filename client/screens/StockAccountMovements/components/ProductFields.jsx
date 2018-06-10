@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field } from 'redux-form'
-import { renderField, renderLabel2 } from '../../../utils/formHelpers'
+import { renderLabel2 } from '../../../utils/formHelpers'
 
 export default function () {
   return [
@@ -29,7 +29,7 @@ export default function () {
       formatter(value, { name: fieldName }) {
         return (<Field
           name={`${fieldName}.type.ean`}
-          component={renderField}
+          component={renderLabel2}
           label=""
         />)
       }
@@ -39,7 +39,7 @@ export default function () {
       label: 'Código',
       formatter: (value, { name: fieldName }) => (<Field
         name={`${fieldName}.code`}
-        component={renderField}
+        component={renderLabel2}
         label=""
       />)
     }

@@ -11,8 +11,6 @@ const mapStateToProps = (state, ownProps) => {
     validate: stockAccountMovement.validator,
     form: formName,
     loading: showModalLoadingIndicator,
-    asyncBlurFields: ['products[].type.ean'],
-    asyncChangeFields: [],
     extras: { stockMovementType }
   }
 }
@@ -20,9 +18,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   const { bindActions: { validateProducts, focusLastRowField, ...bindActions } } = ownProps
   return {
     ...bindActions,
-    onSubmit: bindActions.createOrUpdate,
-    asyncValidate: validateProducts,
-    //extras: { ...ownProps.extras, focusLastRowField }
+    onSubmit: bindActions.createOrUpdate
   }
 }
 export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({

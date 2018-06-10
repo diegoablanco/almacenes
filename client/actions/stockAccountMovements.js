@@ -1,5 +1,4 @@
-import { change, SubmissionError, focus } from 'redux-form'
-import { get, setWith } from 'lodash'
+import { change, SubmissionError, arrayPush, reset, focus } from 'redux-form'
 import moment from 'moment'
 import { feathersServices } from '../feathers'
 import { getCrudPageActions as getBaseCrudPageActions, getActionTypes as getBaseActionTypes } from './crudPage'
@@ -15,17 +14,6 @@ export function getActionTypes() {
     SET_STOCK_MOVEMENT_TYPE: 'SET_STOCK_MOVEMENT_TYPE',
     SET_AVAILABLE_SERVICES: 'SET_AVAILABLE_SERVICES'
   }
-}
-async function setProductId(index, ean, dispatch, formName) {
-  const query = { ean, $sort: { id: 1 } }
-  const { value: { data } } = await dispatch(feathersServices.productTypes.find({ query }))
-  if (data.length === 0) {
-    return false
-  }
-  const [{ id: typeId, description }] = data
-  dispatch(change(formName, `products[${index}].typeId`, typeId))
-  dispatch(change(formName, `products[${index}].type.description`, description))
-  return true
 }
 export function getCrudPageActions() {
   const baseCrudPageActions = getBaseCrudPageActions(crudPages.STOCKACCOUNTMOVEMENTS, feathersServices.stockAccountMovements, selectors)
@@ -45,20 +33,6 @@ export function getCrudPageActions() {
         dispatch(change(formName, 'date', moment().toDate()))
       }
     },
-    validateProducts(values, dispatch, form, field) {
-      return async (dispatch, getState) => {
-        if (!field) return
-        const { formName } = selectors.getUiState(getState())
-        const index = parseInt(field.match(/\w+\[(\d)\][\w.]*/)[1], 10)
-        const value = get(values, field)
-        const valid = await setProductId(index, value, dispatch, formName)
-        if (!valid) {
-          const errors = { products: values.products.map(() => undefined) }
-          setWith(errors, field, 'EAN no encontrado')
-          return errors
-        }
-      }
-    },
     createOrUpdate(data) {
       return async (dispatch) => {
         const messageAction = showTimedMessage(`Se ejecutó correctamente ${data.movementType === 'release' ? 'el Release' : 'la Salida'}`)
@@ -72,10 +46,18 @@ export function getCrudPageActions() {
         await dispatch(baseCrudPageActions.reloadGrid())
       }
     },
-    focusLastRowField({ length }) {
-      return (dispatch, getState) => {
+    addProduct({ ean, code }) {
+      return async (dispatch, getState) => {
         const { formName } = selectors.getUiState(getState())
-        setTimeout(() => dispatch(focus(formName, `products[${length}].ean`)), 500)
+        const query = { ean, $sort: { id: 1 } }
+        const { value: { data } } = await dispatch(feathersServices.productTypes.find({ query }))
+        if (data.length === 0) {
+          throw new SubmissionError({ ean: 'EAN no encontrado' })
+        }
+        const [{ id: typeId, description }] = data
+        dispatch(arrayPush(formName, 'products', { typeId, code, type: { ean, description } }))
+        dispatch(reset('addProduct'))
+        dispatch(focus('addProduct', 'ean'))
       }
     }
   }

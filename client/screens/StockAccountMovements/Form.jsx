@@ -3,7 +3,7 @@ import { Field, FieldArray } from 'redux-form'
 import { Form, Grid, Tab } from 'semantic-ui-react'
 import { renderField } from '../../utils/formHelpers'
 import tabulatedFormFields from '../../utils/tabulatedFormFields'
-import ProductFields from './components/ProductFields'
+import { ProductFields, ProductReceiveForm } from './components'
 import { DateTimeField, ValidationSummary } from '../../components'
 
 class ProductForm extends Component {
@@ -21,7 +21,21 @@ class ProductForm extends Component {
     this.getPanesByMovementType = this.getPanesByMovementType.bind(this)
   }
   getReceivePanes() {
+    const { bindActions: { addProduct } } = this.props
     return [
+      { menuItem: 'Productos',
+        pane: <Tab.Pane key="products" attached={false}>
+          <Grid verticalAlign="middle" centered textAlign="center">
+            <Grid.Column tablet={10} mobile={16} computer={16}>
+              <ProductReceiveForm addProduct={addProduct} />
+              <FieldArray
+                name="products"
+                component={this.productsFieldsComponent}
+              />
+            </Grid.Column>
+          </Grid>
+        </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
+      },
       { menuItem: 'Detalles',
         pane: <Tab.Pane key="details">
           <Grid verticalAlign="middle" centered textAlign="center">
@@ -29,18 +43,6 @@ class ProductForm extends Component {
               <Field
                 name="date"
                 component={DateTimeField}
-              />
-            </Grid.Column>
-          </Grid>
-        </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
-      },
-      { menuItem: 'Productos',
-        pane: <Tab.Pane key="products" attached={false}>
-          <Grid verticalAlign="middle" centered textAlign="center">
-            <Grid.Column tablet={10} mobile={16} computer={16}>
-              <FieldArray
-                name="products"
-                component={this.productsFieldsComponent}
               />
             </Grid.Column>
           </Grid>

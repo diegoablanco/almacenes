@@ -7,7 +7,6 @@ const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)))
 const crudReducer = getCrudReducer(crudPages.STOCKACCOUNTMOVEMENTS, {
   formName: 'stockAccountMovement',
   defaultData: {
-    products: [{}],
     stockAccountId: 1
   },
   sortingColumns: {

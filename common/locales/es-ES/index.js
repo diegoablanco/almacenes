@@ -21,5 +21,6 @@ module.exports = {
   warehouseService,
   contact,
   product,
+  addProduct: product,
   stockAccountMovement
 }
