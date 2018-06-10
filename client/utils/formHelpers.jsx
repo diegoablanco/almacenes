@@ -9,6 +9,9 @@ export function getFieldTranslationKey(form, inputName) {
 export function renderLabel({ label, required }) {
   return (<label>{label}{required && (<Icon name="asterisk" color="red" />)}</label>)
 }
+export function renderLabel2({ input: { value } }) {
+  return (<label>{value}</label>)
+}
 export function renderField({ input, type = 'text', width, required, clearable, label, meta: { touched, error, form }, ...rest }) {
   if (label === undefined) {
     label = intl.get(getFieldTranslationKey(form, input.name))

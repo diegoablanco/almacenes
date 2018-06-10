@@ -1,4 +1,4 @@
-import { change, SubmissionError } from 'redux-form'
+import { change, SubmissionError, focus } from 'redux-form'
 import { get, setWith } from 'lodash'
 import moment from 'moment'
 import { feathersServices } from '../feathers'
@@ -22,8 +22,9 @@ async function setProductId(index, ean, dispatch, formName) {
   if (data.length === 0) {
     return false
   }
-  const [{ id: typeId }] = data
+  const [{ id: typeId, description }] = data
   dispatch(change(formName, `products[${index}].typeId`, typeId))
+  dispatch(change(formName, `products[${index}].type.description`, description))
   return true
 }
 export function getCrudPageActions() {
@@ -69,6 +70,12 @@ export function getCrudPageActions() {
         dispatch(baseCrudPageActions.hideModal())
         dispatch(messageAction)
         await dispatch(baseCrudPageActions.reloadGrid())
+      }
+    },
+    focusLastRowField({ length }) {
+      return (dispatch, getState) => {
+        const { formName } = selectors.getUiState(getState())
+        setTimeout(() => dispatch(focus(formName, `products[${length}].ean`)), 500)
       }
     }
   }

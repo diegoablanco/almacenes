@@ -1,10 +1,11 @@
 import React from 'react'
 import Grid from '../common/Grid'
 
-export default function tabulatedFormFields({ title, getFieldCells, crudPage, additionalInformation }) {
+export default function tabulatedFormFields({ title, getFieldCells, crudPage, additionalInformation, onRowAdded }) {
   function addHandler(fields) {
     return () => {
       fields.push({})
+      if (onRowAdded) onRowAdded(fields)
       return false
     }
   }
@@ -17,10 +18,11 @@ export default function tabulatedFormFields({ title, getFieldCells, crudPage, ad
     }
   }
   function getColumns(fields) {
-    return getFieldCells(title, fields, additionalInformation).map(fieldCell => ({
-      property: fieldCell.property,
-      cellFormatters: [getFieldCellFormatter(fieldCell.formatter)],
-      label: fieldCell.label
+    return getFieldCells(title, fields, additionalInformation).map(({ property, formatter, label, props }) => ({
+      property,
+      cellFormatters: [getFieldCellFormatter(formatter)],
+      label,
+      props
     }))
   }
   return function ({ fields }) {

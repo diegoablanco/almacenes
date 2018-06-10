@@ -1,13 +1,15 @@
 module.exports = function getIncludes(database) {
   const {
     models: {
-      product
+      product,
+      productType
     }
   } = database
   return {
     products: {
       model: product,
-      as: 'products'
+      as: 'products',
+      include: { model: productType, as: 'type' }
     }
   }
 }

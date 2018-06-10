@@ -9,10 +9,12 @@ import { DateTimeField, ValidationSummary } from '../../components'
 class ProductForm extends Component {
   constructor(props) {
     super(props)
+    const { bindActions: { focusLastRowField } } = props
     this.productsFieldsComponent = tabulatedFormFields({
       title: 'Productos',
       getFieldCells: ProductFields,
-      crudPage: 'product'
+      crudPage: 'product',
+      onRowAdded: focusLastRowField
     })
     this.getReceivePanes = this.getReceivePanes.bind(this)
     this.getIssuePanes = this.getIssuePanes.bind(this)
@@ -35,7 +37,7 @@ class ProductForm extends Component {
       { menuItem: 'Productos',
         pane: <Tab.Pane key="products" attached={false}>
           <Grid verticalAlign="middle" centered textAlign="center">
-            <Grid.Column tablet={10} mobile={16} computer={10}>
+            <Grid.Column tablet={10} mobile={16} computer={16}>
               <FieldArray
                 name="products"
                 component={this.productsFieldsComponent}

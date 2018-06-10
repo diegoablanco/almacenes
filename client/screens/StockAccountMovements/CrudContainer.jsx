@@ -16,8 +16,6 @@ class StockAccountMovementsCrud extends Component {
   constructor(props) {
     super(props)
     this.gridColumns = [
-      { property: 'id', label: 'Código' },
-      { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] },
       { property: 'type',
         label: 'Tipo',
         props: {
@@ -25,7 +23,16 @@ class StockAccountMovementsCrud extends Component {
             width: 40
           }
         },
-        cellFormatters: [(type, { rowData }) => (type && <MovementTypeColumn type={type} rowData={rowData} />)] }
+        cellFormatters: [(type, { rowData }) => (type && <MovementTypeColumn type={type} rowData={rowData} />)]
+      },
+      { property: 'id',
+        label: 'Código',
+        props: {
+          style: {
+            width: 40
+          }
+        } },
+      { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] }
     ]
     this.getActionButtons = this.getActionButtons.bind(this)
   }
