@@ -3,7 +3,7 @@ import { Field, FieldArray } from 'redux-form'
 import { Form, Grid, Tab } from 'semantic-ui-react'
 import { renderField } from '../../utils/formHelpers'
 import tabulatedFormFields from '../../utils/tabulatedFormFields'
-import { ProductFields, ProductReceiveForm } from './components'
+import { ProductFields, ProductReceiveForm, ProductIssueForm } from './components'
 import { DateTimeField, ValidationSummary } from '../../components'
 
 class ProductForm extends Component {
@@ -51,7 +51,21 @@ class ProductForm extends Component {
     ]
   }
   getIssuePanes() {
+    const { bindActions: { issueProduct } } = this.props
     return [
+      { menuItem: 'Productos',
+        pane: <Tab.Pane key="products" attached={false}>
+          <Grid verticalAlign="middle" centered textAlign="center">
+            <Grid.Column tablet={10} mobile={16} computer={10}>
+              <ProductIssueForm issueProduct={issueProduct} />
+              <FieldArray
+                name="products"
+                component={this.productsFieldsComponent}
+              />
+            </Grid.Column>
+          </Grid>
+        </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
+      },
       { menuItem: 'Detalles',
         pane: <Tab.Pane key="details">
           <Grid verticalAlign="middle" centered textAlign="center">
@@ -65,18 +79,6 @@ class ProductForm extends Component {
                 type="text"
                 component={renderField}
                 required
-              />
-            </Grid.Column>
-          </Grid>
-        </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
-      },
-      { menuItem: 'Productos',
-        pane: <Tab.Pane key="products" attached={false}>
-          <Grid verticalAlign="middle" centered textAlign="center">
-            <Grid.Column tablet={10} mobile={16} computer={10}>
-              <FieldArray
-                name="products"
-                component={this.productsFieldsComponent}
               />
             </Grid.Column>
           </Grid>

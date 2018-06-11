@@ -22,5 +22,6 @@ module.exports = {
   contact,
   product,
   addProduct: product,
+  issueProduct: product,
   stockAccountMovement
 }

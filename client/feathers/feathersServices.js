@@ -15,6 +15,7 @@ export const mapServicePathsToNames = [{
   stocks: 'stocks',
   stockMovements: 'stockMovements',
   download: 'download',
+  products: 'products',
   productTypes: 'productTypes',
   stockAccountMovements: 'stockAccountMovements',
   stockAccountReceives: 'stockAccountReceives',

@@ -59,6 +59,20 @@ export function getCrudPageActions() {
         dispatch(reset('addProduct'))
         dispatch(focus('addProduct', 'ean'))
       }
+    },
+    issueProduct({ code }) {
+      return async (dispatch, getState) => {
+        const { formName } = selectors.getUiState(getState())
+        const query = { code, $sort: { id: 1 } }
+        const { value: data } = await dispatch(feathersServices.products.find({ query }))
+        if (data.length === 0) {
+          throw new SubmissionError({ code: 'Código no encontrado' })
+        }
+        const [{ id: typeId, type: { description, ean } }] = data
+        dispatch(arrayPush(formName, 'products', { typeId, code, type: { ean, description } }))
+        dispatch(reset('issueProduct'))
+        dispatch(focus('issueProduct', 'code'))
+      }
     }
   }
 }

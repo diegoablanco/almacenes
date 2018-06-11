@@ -32,6 +32,7 @@ export default {
   carriers: feathersServices.carriers.reducer,
   stocks: feathersServices.stocks.reducer,
   productTypes: feathersServices.productTypes.reducer,
+  products: feathersServices.products.reducer,
   stockAccountMovements: feathersServices.stockAccountMovements.reducer,
   stockAccountReceives: feathersServices.stockAccountReceives.reducer,
   stockAccountIssues: feathersServices.stockAccountIssues.reducer,
