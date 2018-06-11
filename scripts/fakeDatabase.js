@@ -1,6 +1,6 @@
 const getDatabase = require('../server/database')
 const { getIncludes } = require('../server/services/customers/helpers')
-const { createCustomer, createCarrier, createWarehouse, createService, createProduct } = require('./fakes')
+const { createCustomer, createCarrier, createWarehouse, createService, createProduct, createProductCategory } = require('./fakes')
 
 const sequelize = getDatabase()
 
@@ -10,6 +10,7 @@ sequelize.sync({ force: false }).then(async () => {
     carrier,
     warehouse,
     service,
+    productCategory,
     productType
   } = sequelize.models
   const customerIncludes = getIncludes(sequelize)
@@ -31,5 +32,6 @@ sequelize.sync({ force: false }).then(async () => {
   }
   for (let index = 0; index < 10; index += 1) { warehouse.create(createWarehouse()) }
   for (let index = 0; index < 10; index += 1) { service.create(createService()) }
-  for (let index = 0; index < 10; index += 1) { productType.create(createProduct()) }
+  for (let index = 0; index < 10; index += 1) { productCategory.create(createProductCategory()) }
+  for (let index = 0; index < 10; index += 1) { productType.create(createProduct({ numberOfExistingCategories: 10 })) }
 })

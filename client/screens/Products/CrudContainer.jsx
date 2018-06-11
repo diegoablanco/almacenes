@@ -9,8 +9,9 @@ export default class CarrierCrud extends Component {
   constructor(props) {
     super(props)
     this.gridColumns = [
-      { property: 'description', label: 'Descripción' },
-      { property: 'ean', label: 'EAN' }
+      { property: 'ean', label: 'EAN' },
+      { property: 'category.description', label: 'Categoría' },
+      { property: 'description', label: 'Descripción' }
     ]
   }
   shouldComponentUpdate() {

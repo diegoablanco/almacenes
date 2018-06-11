@@ -9,6 +9,7 @@ const createService = require('./createService')
 const createWarehouse = require('./createWarehouse')
 const createWarehouseInstruction = require('./createWarehouseInstruction')
 const createProduct = require('./createProduct')
+const createProductCategory = require('./createProductCategory')
 
 module.exports = {
   createCustomer,
@@ -20,5 +21,6 @@ module.exports = {
   createService,
   createWarehouse,
   createWarehouseInstruction,
-  createProduct
+  createProduct,
+  createProductCategory
 }
