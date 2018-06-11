@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Form, Button, Segment } from 'semantic-ui-react'
 import { reduxForm, Field } from 'redux-form'
 import { renderField } from '../../../utils/formHelpers'
+import { productReceive } from '../../../common/Validators'
 
 const productForm = ({ pristine, submitting, handleSubmit }) => (
   <Form onSubmit={handleSubmit}>
@@ -23,11 +24,13 @@ const productForm = ({ pristine, submitting, handleSubmit }) => (
     </Segment>
   </Form>
 )
+
 class ProductForm extends Component {
   constructor(props) {
     super(props)
     this.productReceiveForm = reduxForm({
-      form: 'addProduct'
+      form: 'addProduct',
+      validate: productReceive.validator
     })(productForm)
   }
   render() {

@@ -18,7 +18,7 @@ export default curry((form, state, action) => {
       const errors = flatten(state.syncErrors)
       return {
         ...state,
-        error: Object.keys(errors).map(key => ({ property: key, message: errors[key] })).map(error => ({
+        error: Object.keys(errors).filter(key => key).map(key => ({ property: key, message: errors[key] })).map(error => ({
           property: intl.get(getPropertyTranslationKey(form, error.property)),
           message: error.message
         }))

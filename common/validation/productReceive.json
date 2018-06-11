@@ -1,0 +1,20 @@
+{
+    "$id": "http://xarxa.com/schemas/product.json#",
+    "title": "Product Receive",
+    "description": "A product receive",
+    "type": [
+        "object"
+    ],
+    "properties": {
+        "code": {
+            "type": "string"
+        },
+        "ean": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "code",
+        "ean"
+    ]
+}

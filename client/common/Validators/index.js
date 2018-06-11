@@ -9,6 +9,7 @@ import service from './service'
 import warehouseService from './warehouseService'
 import productType from './productType'
 import stockAccountMovement from './stockAccountMovement'
+import productReceive from './productReceive'
 
 export {
   signUp,
@@ -21,5 +22,6 @@ export {
   service,
   warehouseService,
   productType,
-  stockAccountMovement
+  stockAccountMovement,
+  productReceive
 }

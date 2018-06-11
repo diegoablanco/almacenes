@@ -49,6 +49,9 @@ export function getCrudPageActions() {
     addProduct({ ean, code }) {
       return async (dispatch, getState) => {
         const { formName } = selectors.getUiState(getState())
+        const { form: { stockAccountMovement: { values: { products = [] } } } } = getState()
+        if (products.some(x => x.code === code)) throw new SubmissionError({ code: 'Ya se agregó un producto con este código' })
+
         const query = { ean, $sort: { id: 1 } }
         const { value: { data } } = await dispatch(feathersServices.productTypes.find({ query }))
         if (data.length === 0) {
@@ -63,6 +66,9 @@ export function getCrudPageActions() {
     issueProduct({ code }) {
       return async (dispatch, getState) => {
         const { formName } = selectors.getUiState(getState())
+        const { form: { stockAccountMovement: { values: { products = [] } } } } = getState()
+        if (products.some(x => x.code === code)) throw new SubmissionError({ code: 'Ya se agregó un producto con este código' })
+        
         const query = { code, $sort: { id: 1 } }
         const { value: data } = await dispatch(feathersServices.products.find({ query }))
         if (data.length === 0) {

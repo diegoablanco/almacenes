@@ -14,7 +14,8 @@ class ProductForm extends Component {
       title: 'Productos',
       getFieldCells: ProductFields,
       crudPage: 'product',
-      onRowAdded: focusLastRowField
+      onRowAdded: focusLastRowField,
+      enableAdd: false
     })
     this.getReceivePanes = this.getReceivePanes.bind(this)
     this.getIssuePanes = this.getIssuePanes.bind(this)
@@ -79,6 +80,7 @@ class ProductForm extends Component {
                 type="text"
                 component={renderField}
                 required
+                enableAdd={false}
               />
             </Grid.Column>
           </Grid>
