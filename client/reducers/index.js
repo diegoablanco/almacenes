@@ -8,6 +8,7 @@ import messageBar from './messageBar'
 import customersReducer from './customers'
 import warehousesReducer from './warehouses'
 import stocksReducer from './stocks'
+import productTypesReducer from './productTypes'
 import commonFormReducer from './formReducer'
 import stocksMovementsReducer from './stocksMovements'
 
@@ -32,6 +33,7 @@ export default {
   carriers: feathersServices.carriers.reducer,
   stocks: feathersServices.stocks.reducer,
   productTypes: feathersServices.productTypes.reducer,
+  productCategories: feathersServices.productCategories.reducer,
   products: feathersServices.products.reducer,
   stockAccountMovements: feathersServices.stockAccountMovements.reducer,
   stockAccountReceives: feathersServices.stockAccountReceives.reducer,
@@ -49,7 +51,8 @@ export default {
     }),
     carriers: getCrudReducer(crudPages.CARRIERS, { formName: 'carrier' }),
     warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),
-    productTypes: getCrudReducer(crudPages.PRODUCTS, { formName: 'product' }),
+    productTypes: productTypesReducer,
+    productCategories: getCrudReducer(crudPages.PRODUCTCATEGORIES, { formName: 'productCategory' }),
     stockAccountMovements: stocksMovementsReducer,
     stocks: stocksReducer,
     messageBar

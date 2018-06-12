@@ -4,6 +4,7 @@ import Address from './Address'
 import ErrorBoundary from './ErrorBoundary'
 import ValidationSummary from './ValidationSummary'
 import InputWithClearButton from './InputWithClearButton'
+import LookupSelectField from './LookupSelectField'
 
 export {
   DateTimeField,
@@ -11,5 +12,6 @@ export {
   Address,
   ErrorBoundary,
   ValidationSummary,
-  InputWithClearButton
+  InputWithClearButton,
+  LookupSelectField
 }

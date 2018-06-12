@@ -16,9 +16,11 @@ module.exports = function () {
           documentType,
           stockItemDetailType,
           stockStatus,
-          role
+          role,
+          productCategory
         } } = sequelize
         const phoneTypes = await phoneType.findAll({ attributes: ['id', 'description'] })
+        const productCategories = await productCategory.findAll({ attributes: ['id', 'description'] })
         const stockMovementTypes = await stockMovementType.findAll()
         const usersCount = await user.findAll({ attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'total']] })
         const warehouseInstructions = await warehouseInstruction.findAll({ attributes: ['id', 'description'] })
@@ -35,7 +37,8 @@ module.exports = function () {
           documentTypes,
           stockItemDetailTypes,
           stockStatuses,
-          roles
+          roles,
+          productCategories
         })
       } catch (e) {
         next(e)

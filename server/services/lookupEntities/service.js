@@ -27,6 +27,10 @@ module.exports = function () {
           model = models.warehouse
           attributes = ['id', ['name', 'description']]
           break
+        case 'productCategory':
+          model = models.productCategory
+          attributes = ['id', 'description']
+          break
         default:
           return ''
       }

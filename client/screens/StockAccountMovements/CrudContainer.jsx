@@ -11,6 +11,7 @@ import { stockAccountMovements } from '../../selectors'
 import { getCrudPageActions } from '../../actions/stockAccountMovements'
 import { dateCellFormatter } from '../../utils'
 import { MovementTypeColumn } from '../components'
+import { ProductsDetailColumn } from './components'
 
 class StockAccountMovementsCrud extends Component {
   constructor(props) {
@@ -32,7 +33,8 @@ class StockAccountMovementsCrud extends Component {
             width: 40
           }
         } },
-      { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] }
+      { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] },
+      { property: 'detail', label: 'Detalle', cellFormatters: [ProductsDetailColumn] }
     ]
     this.getActionButtons = this.getActionButtons.bind(this)
   }

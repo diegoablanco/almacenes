@@ -16,6 +16,7 @@ export const mapServicePathsToNames = [{
   stockMovements: 'stockMovements',
   download: 'download',
   products: 'products',
+  productCategories: 'productCategories',
   productTypes: 'productTypes',
   stockAccountMovements: 'stockAccountMovements',
   stockAccountReceives: 'stockAccountReceives',
@@ -38,6 +39,9 @@ export const mapServicePathsToNames = [{
 },
 {
   lookupEntities: 'instructionsLookup'
+},
+{
+  lookupEntities: 'productCategoryLookup'
 },
 {
   lookupEntities: 'targetCustomerLookup'

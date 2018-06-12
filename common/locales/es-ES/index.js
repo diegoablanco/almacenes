@@ -8,6 +8,7 @@ const filterStock = require('./filterStock')
 const warehouseService = require('./warehouseService')
 const contact = require('./contact')
 const product = require('./product')
+const productCategory = require('./productCategory')
 const stockAccountMovement = require('./stockAccountMovement')
 
 module.exports = {
@@ -21,6 +22,7 @@ module.exports = {
   warehouseService,
   contact,
   product,
+  productCategory,
   addProduct: product,
   issueProduct: product,
   stockAccountMovement

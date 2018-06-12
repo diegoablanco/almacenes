@@ -1,0 +1,17 @@
+{
+    "$id": "http://xarxa.com/schemas/productCategory.json#",
+    "title": "Product Category",
+    "description": "A product category",
+    "type": [
+        "object"
+    ],
+    "properties": {
+        "description": {
+            "type": "string",
+            "minLength": 1
+        }
+    },
+    "required": [
+        "description"
+    ]
+}

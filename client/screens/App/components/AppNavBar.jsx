@@ -31,6 +31,9 @@ class AppNavBar extends Component {
       <Menu.Item key="products" active={pathname === '/products'}>
         <Link to="products">Productos</Link>
       </Menu.Item>,
+      <Menu.Item key="productCategories" active={pathname === '/productCategories'}>
+        <Link to="productCategories">Categorías de Producto</Link>
+      </Menu.Item>,
       <Menu.Item key="stockAccountMovements" active={pathname === '/stockAccountMovements'}>
         <Link to="stockAccountMovements">Movimientos de Stock</Link>
       </Menu.Item>,

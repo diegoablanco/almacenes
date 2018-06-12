@@ -5,7 +5,7 @@ import ToolbarContainer from './ToolbarContainer'
 import { getCrudPageActions } from '../../actions/products'
 import { productTypes } from '../../selectors'
 
-export default class CarrierCrud extends Component {
+export default class ProductCrud extends Component {
   constructor(props) {
     super(props)
     this.gridColumns = [

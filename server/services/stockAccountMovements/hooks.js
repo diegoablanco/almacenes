@@ -1,11 +1,14 @@
 const auth = require('feathers-authentication').hooks
 const Ajv = require('ajv')
 const { setNow, validateSchema } = require('feathers-hooks-common')
+const dehydrate = require('feathers-sequelize/hooks/dehydrate')
 const validationSchema = require('../../../common/validation/stockAccountMovement.json')
 const productSchema = require('../../../common/validation/product.json')
 const errorReducer = require('../../helpers/errorReducer')
 const debugHook = require('../hooks/debugHook')
 const getIncludes = require('./includes')
+const computeDetail = require('./computeDetail')
+const stripProductInfo = require('./stripProductInfo')
 
 function validate() {
   const ajv = Ajv({ allErrors: true })
@@ -28,9 +31,9 @@ module.exports = {
       auth.authenticate(['jwt', 'local']),
       debugHook()
     ],
-    find: [],
+    find: [includes],
     get: [includes],
-    create: [includes, setNow('createdAt'), validate()],
+    create: [includes, stripProductInfo, setNow('createdAt'), validate()],
     update: [validate()],
     patch: [],
     remove: []
@@ -38,7 +41,9 @@ module.exports = {
 
   after: {
     all: [debugHook()],
-    find: [],
+    find: [
+      dehydrate(),
+      computeDetail],
     get: [],
     create: [],
     update: [],

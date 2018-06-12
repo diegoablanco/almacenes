@@ -10033,9 +10033,9 @@ sequelize@^4.3.1:
     validator "^8.0.0"
     wkx "^0.4.1"
 
-sequelize@^4.37.6:
-  version "4.37.6"
-  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-4.37.6.tgz#f37eec55a285cfdeab27f8a85c5db38034f87126"
+sequelize@^4.37.10:
+  version "4.37.10"
+  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-4.37.10.tgz#1ccca570956a5bfe1c4c00abbc927633ca8d12d8"
   dependencies:
     bluebird "^3.5.0"
     cls-bluebird "^2.1.0"

@@ -17,6 +17,7 @@ const stockMovements = require('./stockMovements/service')
 const download = require('./download/service')
 const productTypes = require('./productTypes/service')
 const products = require('./products/service')
+const productCategories = require('./productCategories/service')
 const stockAccountMovements = require('./stockAccountMovements/service')
 
 debug('Required')
@@ -41,6 +42,7 @@ module.exports = function () {
   app.configure(download)
   app.configure(productTypes)
   app.configure(products)
+  app.configure(productCategories)
   app.configure(stockAccountMovements)
 
   // get client config file

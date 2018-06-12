@@ -22,6 +22,7 @@ import Services from './screens/Services'
 import Carriers from './screens/Carriers'
 import Stock from './screens/Stock'
 import Product from './screens/Products'
+import ProductCategories from './screens/ProductCategories'
 import StockAccountMovements from './screens/StockAccountMovements'
 
 const authenticatedSelector = state => state.auth.user && state.auth.user.isVerified
@@ -83,6 +84,7 @@ export default class AppRouter extends Component {
               <Route path="/carriers" component={UserIsAuthenticated(Carriers)} />
               <Route path="/stock" component={UserIsAuthenticated(Stock)} />
               <Route path="/products" component={UserIsAuthenticated(Product)} />
+              <Route path="/productCategories" component={UserIsAuthenticated(ProductCategories)} />
               <Route path="/stockAccountMovements" component={UserIsAuthenticated(StockAccountMovements)} />
               <Route component={UserSignIn} />
             </Switch>

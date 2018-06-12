@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Field } from 'redux-form'
 import { Form, Segment, Grid } from 'semantic-ui-react'
 import { renderField, renderTextArea, parseToFloat } from '../../utils/formHelpers'
-import { ValidationSummary } from '../../components'
+import { ValidationSummary, LookupSelectField } from '../../components'
 
 class ProductForm extends Component {
   render() {
-    const { loading, error } = this.props
+    const { loading, error, productCategoryLookup, productCategoryLookupActions, category } = this.props
 
     return (
       <div>
@@ -18,8 +18,15 @@ class ProductForm extends Component {
                 <Field
                   name="ean"
                   type="text"
-                  parse={parseToFloat}
                   component={renderField}
+                  required
+                />
+                <Field
+                  name="categoryId"
+                  component={LookupSelectField}
+                  lookupState={productCategoryLookup}
+                  lookupActions={productCategoryLookupActions}
+                  initialValue={category && { key: category.id, text: category.companyName }}
                   required
                 />
                 <Field

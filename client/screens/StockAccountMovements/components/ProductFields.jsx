@@ -5,6 +5,20 @@ import { renderLabel2 } from '../../../utils/formHelpers'
 export default function () {
   return [
     {
+      property: 'type.category.description',
+      label: 'Categoría',
+      props: {
+        style: {
+          width: 300
+        }
+      },
+      formatter: (value, { name: fieldName }) => (<Field
+        name={`${fieldName}.type.category.description`}
+        component={renderLabel2}
+        label=""
+      />)
+    },
+    {
       property: 'description',
       label: 'Descripción',
       props: {

@@ -8,6 +8,7 @@ import warehouse from './warehouse'
 import service from './service'
 import warehouseService from './warehouseService'
 import productType from './productType'
+import productCategory from './productCategory'
 import stockAccountMovement from './stockAccountMovement'
 import productReceive from './productReceive'
 
@@ -22,6 +23,7 @@ export {
   service,
   warehouseService,
   productType,
+  productCategory,
   stockAccountMovement,
   productReceive
 }

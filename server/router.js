@@ -13,6 +13,7 @@ router.use('/services', serveHtmlForEnvironment)
 router.use('/carriers', serveHtmlForEnvironment)
 router.use('/stock', serveHtmlForEnvironment)
 router.use('/products', serveHtmlForEnvironment)
+router.use('/productCategories', serveHtmlForEnvironment)
 router.use('/stockAccountMovements', serveHtmlForEnvironment)
 router.use(defaultRoute, serveHtmlForEnvironment)
 
