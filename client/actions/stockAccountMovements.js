@@ -69,12 +69,12 @@ export function getCrudPageActions() {
         const { form: { stockAccountMovement: { values: { products = [] } } } } = getState()
         if (products.some(x => x.code === code)) throw new SubmissionError({ code: 'Ya se agregó un producto con este código' })
         
-        const query = { code, $sort: { description: 1 } }
+        const query = { code, $sort: { code: 1 } }
         const { value: data } = await dispatch(feathersServices.products.find({ query }))
         if (data.length === 0) {
           throw new SubmissionError({ code: 'Código no encontrado' })
         }
-        const [{ id: typeId, type: { description, ean }, category }] = data
+        const [{ id: typeId, type: { description, ean, category } }] = data
         dispatch(arrayPush(formName, 'products', { typeId, code, type: { ean, description, category } }))
         dispatch(reset('issueProduct'))
         dispatch(focus('issueProduct', 'code'))
