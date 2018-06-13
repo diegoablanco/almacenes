@@ -26,13 +26,6 @@ class StockAccountMovementsCrud extends Component {
         },
         cellFormatters: [(type, { rowData }) => (type && <MovementTypeColumn type={type} rowData={rowData} />)]
       },
-      { property: 'id',
-        label: 'Código',
-        props: {
-          style: {
-            width: 40
-          }
-        } },
       { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] },
       { property: 'detail', label: 'Detalle', cellFormatters: [ProductsDetailColumn], sortable: false }
     ]

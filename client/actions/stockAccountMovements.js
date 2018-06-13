@@ -74,7 +74,7 @@ export function getCrudPageActions() {
         if (data.length === 0) {
           throw new SubmissionError({ code: 'Código no encontrado' })
         }
-        const [{ id: typeId, type: { description, ean, category } }] = data
+        const [{ typeId, type: { description, ean, category } }] = data
         dispatch(arrayPush(formName, 'products', { typeId, code, type: { ean, description, category } }))
         dispatch(reset('issueProduct'))
         dispatch(focus('issueProduct', 'code'))
