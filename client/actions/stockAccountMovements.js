@@ -1,4 +1,4 @@
-import { change, SubmissionError, arrayPush, reset, focus } from 'redux-form'
+import { change, SubmissionError, arrayPush, reset, focus, submit } from 'redux-form'
 import moment from 'moment'
 import { feathersServices } from '../feathers'
 import { getCrudPageActions as getBaseCrudPageActions, getActionTypes as getBaseActionTypes } from './crudPage'
@@ -68,7 +68,7 @@ export function getCrudPageActions() {
         const { formName } = selectors.getUiState(getState())
         const { form: { stockAccountMovement: { values: { products = [] } } } } = getState()
         if (products.some(x => x.code === code)) throw new SubmissionError({ code: 'Ya se agregó un producto con este código' })
-        
+
         const query = { code, $sort: { code: 1 } }
         const { value: data } = await dispatch(feathersServices.products.find({ query }))
         if (data.length === 0) {
@@ -78,6 +78,18 @@ export function getCrudPageActions() {
         dispatch(arrayPush(formName, 'products', { typeId, code, type: { ean, description, category } }))
         dispatch(reset('issueProduct'))
         dispatch(focus('issueProduct', 'code'))
+      }
+    },
+    handleEanChange(ean) {
+      return async (dispatch) => {
+        if (ean.length === 13) { dispatch(focus('addProduct', 'code')) }
+      }
+    },
+    handleProductCodeChange({ formName, code }) {
+      return async (dispatch) => {
+        if (code.length === 15) {
+          setTimeout(() => dispatch(submit(formName)), 200)
+        }
       }
     }
   }

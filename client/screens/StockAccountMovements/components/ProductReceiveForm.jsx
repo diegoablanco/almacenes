@@ -4,7 +4,7 @@ import { reduxForm, Field } from 'redux-form'
 import { renderField } from '../../../utils/formHelpers'
 import { productReceive } from '../../../common/Validators'
 
-const productForm = ({ pristine, submitting, handleSubmit }) => (
+const productForm = ({ pristine, submitting, handleSubmit, handleEanChange, handleProductCodeChange }) => (
   <Form onSubmit={handleSubmit}>
     <Segment attached>
       <Field
@@ -13,12 +13,14 @@ const productForm = ({ pristine, submitting, handleSubmit }) => (
         component={renderField}
         required
         autofocus
+        onChange={(e, value) => handleEanChange(value)}
       />
       <Field
         name="code"
         type="text"
         component={renderField}
         required
+        onChange={(event, code) => handleProductCodeChange({ formName: 'addProduct', code })}
       />
       <Button primary type="submit" size="small" disabled={pristine || submitting} loading={submitting}>Agregar</Button>
     </Segment>
@@ -33,10 +35,11 @@ class ProductForm extends Component {
       validate: productReceive.validator
     })(productForm)
   }
+  
   render() {
-    const { addProduct } = this.props
+    const { addProduct, handleEanChange, handleProductCodeChange } = this.props
     return (
-      <this.productReceiveForm onSubmit={addProduct} />
+      <this.productReceiveForm onSubmit={addProduct} {...{ handleEanChange, handleProductCodeChange }} />
     )
   }
 }

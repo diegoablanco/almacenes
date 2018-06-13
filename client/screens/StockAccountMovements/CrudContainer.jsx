@@ -34,7 +34,7 @@ class StockAccountMovementsCrud extends Component {
           }
         } },
       { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] },
-      { property: 'detail', label: 'Detalle', cellFormatters: [ProductsDetailColumn] }
+      { property: 'detail', label: 'Detalle', cellFormatters: [ProductsDetailColumn], sortable: false }
     ]
     this.getActionButtons = this.getActionButtons.bind(this)
   }

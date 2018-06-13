@@ -3,7 +3,7 @@ import { Form, Button, Segment } from 'semantic-ui-react'
 import { reduxForm, Field } from 'redux-form'
 import { renderField } from '../../../utils/formHelpers'
 
-const productForm = ({ pristine, submitting, handleSubmit }) => (
+const productForm = ({ pristine, submitting, handleSubmit, handleProductCodeChange }) => (
   <Form onSubmit={handleSubmit}>
     <Segment attached>
       <Field
@@ -12,6 +12,7 @@ const productForm = ({ pristine, submitting, handleSubmit }) => (
         component={renderField}
         required
         autofocus
+        onChange={(e, code) => handleProductCodeChange({ formName: 'issueProduct', code })}
       />
       <Button primary type="submit" size="small" disabled={pristine || submitting} loading={submitting}>Agregar</Button>
     </Segment>
@@ -25,9 +26,9 @@ class ProductForm extends Component {
     })(productForm)
   }
   render() {
-    const { issueProduct } = this.props
+    const { issueProduct, handleProductCodeChange } = this.props
     return (
-      <this.productReceiveForm onSubmit={issueProduct} />
+      <this.productReceiveForm {...{ onSubmit: issueProduct, handleProductCodeChange }} />
     )
   }
 }

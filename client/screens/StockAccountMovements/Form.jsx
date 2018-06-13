@@ -22,13 +22,13 @@ class ProductForm extends Component {
     this.getPanesByMovementType = this.getPanesByMovementType.bind(this)
   }
   getReceivePanes() {
-    const { bindActions: { addProduct } } = this.props
+    const { bindActions: { addProduct, handleEanChange, handleProductCodeChange } } = this.props
     return [
       { menuItem: 'Productos',
         pane: <Tab.Pane key="products" attached={false}>
           <Grid verticalAlign="middle" centered textAlign="center">
             <Grid.Column tablet={10} mobile={16} computer={16}>
-              <ProductReceiveForm addProduct={addProduct} />
+              <ProductReceiveForm {...{ addProduct, handleEanChange, handleProductCodeChange }} />
               <FieldArray
                 name="products"
                 component={this.productsFieldsComponent}
@@ -52,13 +52,13 @@ class ProductForm extends Component {
     ]
   }
   getIssuePanes() {
-    const { bindActions: { issueProduct } } = this.props
+    const { bindActions: { issueProduct, handleProductCodeChange } } = this.props
     return [
       { menuItem: 'Productos',
         pane: <Tab.Pane key="products" attached={false}>
           <Grid verticalAlign="middle" centered textAlign="center">
             <Grid.Column tablet={10} mobile={16} computer={10}>
-              <ProductIssueForm issueProduct={issueProduct} />
+              <ProductIssueForm {...{ issueProduct, handleProductCodeChange }} />
               <FieldArray
                 name="products"
                 component={this.productsFieldsComponent}
