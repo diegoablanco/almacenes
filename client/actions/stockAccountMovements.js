@@ -6,6 +6,7 @@ import crudPages from '../common/CrudPages'
 import { stockAccountMovements as selectors } from '../selectors'
 import { formatAjvToRf } from '../common/Validation'
 import { showTimedMessage } from './messageBar'
+import getLookupEntities from './lookupEntities'
 
 
 export function getActionTypes() {
@@ -18,9 +19,12 @@ export function getActionTypes() {
 export function getCrudPageActions() {
   const baseCrudPageActions = getBaseCrudPageActions(crudPages.STOCKACCOUNTMOVEMENTS, feathersServices.stockAccountMovements, selectors)
   const actionTypes = getActionTypes()
+  const { search: searchProductType, clear: clearProductType } = getLookupEntities(feathersServices.productTypeLookup, 'productType', 'description')
 
   return {
     ...baseCrudPageActions,
+    searchProductType,
+    clearProductType,
     showFormModal(id, stockMovementTypeCode = 'edit') {
       return async (dispatch, getState) => {
         const { uneditables: { queryResult: { stockMovementTypes } } } = getState()
@@ -63,7 +67,7 @@ export function getCrudPageActions() {
         dispatch(focus('addProduct', 'ean'))
       }
     },
-    issueProduct({ code }) {
+    issueProduct({ productTypeId, code }) {
       return async (dispatch, getState) => {
         const { formName } = selectors.getUiState(getState())
         const { form: { stockAccountMovement: { values: { products = [] } } } } = getState()
@@ -75,8 +79,11 @@ export function getCrudPageActions() {
           throw new SubmissionError({ code: 'Código no encontrado' })
         }
         const [{ typeId, type: { description, ean, category } }] = data
+        if (typeId !== productTypeId) {
+          throw new SubmissionError({ code: 'El código no pertenece al producto seleccionado' })
+        }
         dispatch(arrayPush(formName, 'products', { typeId, code, type: { ean, description, category } }))
-        dispatch(reset('issueProduct'))
+        dispatch(change('issueProduct', 'code', ''))
         dispatch(focus('issueProduct', 'code'))
       }
     },

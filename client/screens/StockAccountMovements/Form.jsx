@@ -52,13 +52,13 @@ class ProductForm extends Component {
     ]
   }
   getIssuePanes() {
-    const { bindActions: { issueProduct, handleProductCodeChange } } = this.props
+    const { bindActions: { issueProduct, handleProductCodeChange }, productTypeLookup, productTypeLookupActions, productType } = this.props
     return [
       { menuItem: 'Productos',
         pane: <Tab.Pane key="products" attached={false}>
           <Grid verticalAlign="middle" centered textAlign="center">
             <Grid.Column tablet={10} mobile={16} computer={10}>
-              <ProductIssueForm {...{ issueProduct, handleProductCodeChange }} />
+              <ProductIssueForm {...{ issueProduct, handleProductCodeChange, productTypeLookup, productTypeLookupActions, productType }} />
               <FieldArray
                 name="products"
                 component={this.productsFieldsComponent}

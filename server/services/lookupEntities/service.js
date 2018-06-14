@@ -31,6 +31,10 @@ module.exports = function () {
           model = models.productCategory
           attributes = ['id', 'description']
           break
+        case 'productType':
+          model = models.productType
+          attributes = ['id', 'description']
+          break
         default:
           return ''
       }

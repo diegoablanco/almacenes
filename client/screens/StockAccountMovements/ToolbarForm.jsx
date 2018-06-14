@@ -22,10 +22,7 @@ class ToolbarForm extends Component {
   }
   render() {
     const {
-      statuses,
-      searchFilterCustomer,
-      clearFilterCustomer,
-      customerFilterLookup,
+      types,
       reset,
       handleSubmit,
       pristine,
@@ -38,7 +35,7 @@ class ToolbarForm extends Component {
         </Segment>
         <Segment attached>
           <Field
-            name="reference"
+            name="receipt"
             type="text"
             component={renderField}
             reset={reset}
@@ -52,16 +49,10 @@ class ToolbarForm extends Component {
             component={DateTimeField}
           />
           <Field
-            name="status"
+            name="type"
             component={SelectField}
-            options={statuses}
+            options={types}
             multiple
-          />
-          <Field
-            name="customerId"
-            component={LookupSelectField}
-            lookupState={customerFilterLookup}
-            lookupActions={{ search: searchFilterCustomer, clear: clearFilterCustomer }}
           />
         </Segment>
         <Segment attached="bottom" clearing>
@@ -92,6 +83,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({
-  form: 'filterStock',
+  form: 'filterStockAccountMovement',
   destroyOnUnmount: false
 }))(ToolbarForm)

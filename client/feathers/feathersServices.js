@@ -44,6 +44,9 @@ export const mapServicePathsToNames = [{
   lookupEntities: 'productCategoryLookup'
 },
 {
+  lookupEntities: 'productTypeLookup'
+},
+{
   lookupEntities: 'targetCustomerLookup'
 }]
 

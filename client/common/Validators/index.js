@@ -11,6 +11,7 @@ import productType from './productType'
 import productCategory from './productCategory'
 import stockAccountMovement from './stockAccountMovement'
 import productReceive from './productReceive'
+import productIssue from './productIssue'
 
 export {
   signUp,
@@ -25,5 +26,6 @@ export {
   productType,
   productCategory,
   stockAccountMovement,
-  productReceive
+  productReceive,
+  productIssue
 }

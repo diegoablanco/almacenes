@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Field } from 'redux-form'
 import { Form, Segment, Grid } from 'semantic-ui-react'
-import { renderField, renderTextArea, parseToFloat } from '../../utils/formHelpers'
+import { renderField, renderTextArea } from '../../utils/formHelpers'
 import { ValidationSummary, LookupSelectField } from '../../components'
 
 class ProductForm extends Component {

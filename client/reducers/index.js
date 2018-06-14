@@ -10,7 +10,7 @@ import warehousesReducer from './warehouses'
 import stocksReducer from './stocks'
 import productTypesReducer from './productTypes'
 import commonFormReducer from './formReducer'
-import stocksMovementsReducer from './stocksMovements'
+import stockAccountMovements from './stockAccountMovements'
 
 export default {
   routing: routerReducer,
@@ -53,7 +53,7 @@ export default {
     warehouseServices: getCrudReducer(crudPages.WAREHOUSESERVICES),
     productTypes: productTypesReducer,
     productCategories: getCrudReducer(crudPages.PRODUCTCATEGORIES, { formName: 'productCategory' }),
-    stockAccountMovements: stocksMovementsReducer,
+    stockAccountMovements,
     stocks: stocksReducer,
     messageBar
   })

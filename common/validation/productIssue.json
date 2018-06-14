@@ -1,0 +1,20 @@
+{
+    "$id": "http://xarxa.com/schemas/product.json#",
+    "title": "Product Issue",
+    "description": "A product issue",
+    "type": [
+        "object"
+    ],
+    "properties": {
+        "productTypeId": {
+            "type": "integer"
+        },
+        "code": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "productTypeId",
+        "code"
+    ]
+}

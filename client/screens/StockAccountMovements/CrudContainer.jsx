@@ -27,6 +27,7 @@ class StockAccountMovementsCrud extends Component {
         cellFormatters: [(type, { rowData }) => (type && <MovementTypeColumn type={type} rowData={rowData} />)]
       },
       { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] },
+      { property: 'receipt', label: 'Albarán' },
       { property: 'detail', label: 'Detalle', cellFormatters: [ProductsDetailColumn], sortable: false }
     ]
     this.getActionButtons = this.getActionButtons.bind(this)

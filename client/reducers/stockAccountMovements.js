@@ -1,9 +1,13 @@
 import { getCrudReducer } from './crudPage'
 import crudPages from '../common/CrudPages'
 import { getActionTypes } from '../actions/stockAccountMovements'
+import { feathersServices } from '../feathers'
+import { composeReducers } from '../utils'
 
 const actionTypes = getActionTypes()
-const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(...args)))
+const {
+  productTypeLookup
+} = feathersServices
 const crudReducer = getCrudReducer(crudPages.STOCKACCOUNTMOVEMENTS, {
   formName: 'stockAccountMovement',
   defaultData: {
@@ -21,8 +25,11 @@ function stockAccountMovementReducer(state, action) {
   if (action.type === actionTypes.SET_STOCK_MOVEMENT_TYPE) {
     newState = { ...state, stockMovementType: action.stockMovementType }
   }
-  return newState
+  return {
+    ...newState,
+    productTypeLookup: productTypeLookup.reducer(state.productTypeLookup, action)
+  }
 }
 export default function (state, action) {
-  return compose(state2 => stockAccountMovementReducer(state2, action), crudReducer)(state, action)
+  return composeReducers({ state, action, reducer1: crudReducer, reducer2: stockAccountMovementReducer })
 }

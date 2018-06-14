@@ -10,6 +10,7 @@ const contact = require('./contact')
 const product = require('./product')
 const productCategory = require('./productCategory')
 const stockAccountMovement = require('./stockAccountMovement')
+const filterStockAccountMovement = require('./filterStockAccountMovement')
 
 module.exports = {
   common,
@@ -25,5 +26,6 @@ module.exports = {
   productCategory,
   addProduct: product,
   issueProduct: product,
-  stockAccountMovement
+  stockAccountMovement,
+  filterStockAccountMovement
 }
