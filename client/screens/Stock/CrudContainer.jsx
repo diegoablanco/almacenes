@@ -12,6 +12,7 @@ import { stocks as selectors } from '../../selectors'
 import StatusColumn from './components/StatusColumn'
 import { ConfirmableButton } from '../components'
 import { dateCellFormatter } from '../../utils'
+import { filter } from './filter'
 
 class StockCrud extends Component {
   constructor(props) {
@@ -42,9 +43,7 @@ class StockCrud extends Component {
         cellFormatters: [(status, { rowData }) => (status && <StatusColumn status={status} rowData={rowData} />)]
       }
     ]
-    this.filter = this.filter.bind(this)
     this.getActionButtons = this.getActionButtons.bind(this)
-    this.buildFilter = this.buildFilter.bind(this)
   }
   shouldComponentUpdate() {
     return false
@@ -104,26 +103,6 @@ class StockCrud extends Component {
         return null
     }
   } // eslint-disable-line react/jsx-closing-tag-location
-  buildFilter({ reference, status, customerId, dateFrom, dateTo }) {
-    return {
-      reference: reference && {
-        $like: `%${reference}%`
-      },
-      customerId,
-      date: (dateFrom || dateTo) && {
-        $gte: dateFrom && moment(dateFrom).startOf('day').toDate(),
-        $lte: dateTo && moment(dateTo).endOf('day').toDate()
-      },
-      where: {
-        status: status && status.map(x => x.id)
-      },
-      anyFilter: (reference || customerId) !== undefined || (status !== undefined && status.length > 0)
-    }
-  }
-  filter(values) {
-    const { filterGrid } = this.props
-    filterGrid(this.buildFilter(values))
-  }
   render() {
     const crudActions = getCrudPageActions()
     return (
@@ -135,7 +114,7 @@ class StockCrud extends Component {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={3}>
-            <ToolbarForm onSubmit={this.filter} {...{ crudActions }} />
+            <ToolbarForm onSubmit={filter} {...{ crudActions }} />
           </Grid.Column>
           <Grid.Column width={13}>
             <CrudContainer

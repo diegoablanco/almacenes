@@ -22,7 +22,7 @@ class ToolbarForm extends Component {
   }
   render() {
     const {
-      types,
+      stockMovementTypes,
       reset,
       handleSubmit,
       pristine,
@@ -51,7 +51,7 @@ class ToolbarForm extends Component {
           <Field
             name="type"
             component={SelectField}
-            options={types}
+            options={stockMovementTypes}
             multiple
           />
         </Segment>
@@ -67,19 +67,15 @@ class ToolbarForm extends Component {
 }
 
 const mapStateToProps = state => {
-  const { stockStatuses } = getUneditables(state)
-  const {
-    customerFilterLookup
-  } = selectors.getUiState(state)
+  const { stockMovementTypes } = getUneditables(state)
   return {
-    statuses: stockStatuses.map(x => ({ key: x.id, value: x.id, text: x.description })),
-    customerFilterLookup
+    stockMovementTypes: stockMovementTypes.filter(({ code }) => ['receive', 'issue'].includes(code)).map(x => ({ key: x.id, value: x.id, text: x.description }))
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { crudActions: { searchFilterCustomer, clearFilterCustomer, filterGrid } } = ownProps
-  return bindActionCreators({ searchFilterCustomer, clearFilterCustomer, filterGrid }, dispatch)
+  const { crudActions: { filterGrid } } = ownProps
+  return bindActionCreators({ filterGrid }, dispatch)
 }
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), reduxForm({

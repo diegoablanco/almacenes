@@ -12,6 +12,7 @@ import { getCrudPageActions } from '../../actions/stockAccountMovements'
 import { dateCellFormatter } from '../../utils'
 import { MovementTypeColumn } from '../components'
 import { ProductsDetailColumn } from './components'
+import { filter } from './filter'
 
 class StockAccountMovementsCrud extends Component {
   constructor(props) {
@@ -59,7 +60,7 @@ class StockAccountMovementsCrud extends Component {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={3}>
-            <ToolbarForm onSubmit={this.filter} {...{ crudActions }} />
+            <ToolbarForm onSubmit={filter} {...{ crudActions }} />
           </Grid.Column>
           <Grid.Column width={13}>
             <CrudContainer
