@@ -9,6 +9,7 @@ const debugHook = require('../hooks/debugHook')
 const getIncludes = require('./includes')
 const computeDetail = require('./computeDetail')
 const stripProductInfo = require('./stripProductInfo')
+const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 
 function validate() {
   const ajv = Ajv({ allErrors: true })
@@ -34,7 +35,25 @@ module.exports = {
     find: [includes],
     get: [includes],
     create: [includes, stripProductInfo, setNow('createdAt'), validate()],
-    update: [validate()],
+    update: [validate(),
+      function (hook) {
+        const {
+          models: {
+            stockAccountMovement
+          }
+        } = hook.app.get('database')
+        const { products } = getIncludes(hook.app.get('database'))
+        const filter = {
+          where: {
+            id: hook.data.id
+          },
+          include: [products]
+        }
+        stockAccountMovement.findOne(filter).then(m => {
+          m.set(hook.data)
+          createOrUpdateAssociations(m, hook.data, m._options.include)
+        })
+      }],
     patch: [],
     remove: []
   },

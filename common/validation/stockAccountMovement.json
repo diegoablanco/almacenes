@@ -6,7 +6,10 @@
   "properties": {
     "date": {},
     "receipt": {
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "products": {
       "type": "array",

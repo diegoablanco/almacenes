@@ -9,8 +9,8 @@ class MovementTypeColumn extends Component {
     return (<Label color={color} horizontal>{intl.get(`common.stockMovementType.${code}`)}</Label>)
   }
   render() {
-    const { type, stockMovementTypes } = this.props
-    const stockMovementType = stockMovementTypes.find(({ code }) => code === type)
+    const { rowData: { stockMovementTypeId }, stockMovementTypes } = this.props
+    const stockMovementType = stockMovementTypes.find(({ id }) => id === stockMovementTypeId)
     return (
       <div>
         { this.renderLabel(stockMovementType) }

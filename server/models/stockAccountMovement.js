@@ -22,10 +22,12 @@ module.exports = function (sequelize, DataTypes) {
   })
   StockAccountMovement.associate = function ({
     product,
-    stockAccount
+    stockAccount,
+    stockMovementType
   }) {
     StockAccountMovement.hasMany(product, { as: 'products' })
     StockAccountMovement.belongsTo(stockAccount)
+    StockAccountMovement.belongsTo(stockMovementType)
   }
   return StockAccountMovement
 }

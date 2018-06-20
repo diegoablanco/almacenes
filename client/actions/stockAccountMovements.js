@@ -33,15 +33,19 @@ export function getCrudPageActions() {
         dispatch({ type: actionTypes.SET_STOCK_MOVEMENT_TYPE, stockMovementType })
         await dispatch(baseCrudPageActions.showFormModal(id))
         dispatch(change(formName, 'type', stockMovementType.code))
-        dispatch(change(formName, 'movementTypeId', stockMovementType.id))
+        dispatch(change(formName, 'stockMovementTypeId', stockMovementType.id))
         dispatch(change(formName, 'date', moment().toDate()))
       }
     },
     createOrUpdate(data) {
       return async (dispatch) => {
-        const messageAction = showTimedMessage(`Se ejecutó correctamente ${data.movementType === 'release' ? 'el Release' : 'la Salida'}`)
+        const isUpdate = data.id !== undefined
+        const serviceAction = (isUpdate
+          ? feathersServices.stockAccountMovements.update(data.id, data)
+          : feathersServices.stockAccountMovements.create(data))
+        const messageAction = showTimedMessage(`Se ${isUpdate ? 'actualizó' : 'modificó'} correctamente ${data.type === 'receive' ? 'la Entrada' : 'la Salida'}`)
         try {
-          await dispatch(feathersServices.stockAccountMovements.create(data))
+          await dispatch(serviceAction)
         } catch (error) {
           throw new SubmissionError(formatAjvToRf(error))
         }

@@ -18,14 +18,14 @@ class StockAccountMovementsCrud extends Component {
   constructor(props) {
     super(props)
     this.gridColumns = [
-      { property: 'type',
+      { property: 'stockMovementTypeId',
         label: 'Tipo',
         props: {
           style: {
             width: 40
           }
         },
-        cellFormatters: [(type, { rowData }) => (type && <MovementTypeColumn type={type} rowData={rowData} />)]
+        cellFormatters: [(value, rowData) => <MovementTypeColumn {...{ value, ...rowData }} />]
       },
       { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] },
       { property: 'receipt', label: 'Albarán' },
