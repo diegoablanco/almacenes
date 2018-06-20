@@ -10,6 +10,7 @@ const getIncludes = require('./includes')
 const computeDetail = require('./computeDetail')
 const stripProductInfo = require('./stripProductInfo')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
+const { processFilter } = require('../helpers')
 
 function validate() {
   const ajv = Ajv({ allErrors: true })
@@ -20,10 +21,10 @@ function validate() {
   })
 }
 function includes(hook) {
-  const { products } = getIncludes(hook.app.get('database'))
+  const { products, stockMovementType } = getIncludes(hook.app.get('database'))
   hook.params.sequelize = {
     raw: false,
-    include: [products]
+    include: [products, stockMovementType]
   }
 }
 module.exports = {
@@ -32,7 +33,13 @@ module.exports = {
       auth.authenticate(['jwt', 'local']),
       debugHook()
     ],
-    find: [includes],
+    find: [
+      includes,
+      hook => {
+        const stockMovementType = hook.params.sequelize.include.find(x => x.as === 'stockMovementType')
+        processFilter(hook, { stockMovementType })
+      }
+    ],
     get: [includes],
     create: [includes, stripProductInfo, setNow('createdAt'), validate()],
     update: [validate(),

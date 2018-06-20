@@ -11,7 +11,7 @@ function buildFilter({ receipt, type, dateFrom, dateTo }) {
       $lte: dateTo && moment(dateTo).endOf('day').toDate()
     },
     where: {
-      type: type && type.map(x => x.code)
+      stockMovementType: type && type.map(x => x.id)
     },
     anyFilter: (receipt) !== undefined || (type !== undefined && type.length > 0)
   }

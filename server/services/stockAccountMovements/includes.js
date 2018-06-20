@@ -3,7 +3,8 @@ module.exports = function getIncludes(database) {
     models: {
       product,
       productType,
-      productCategory
+      productCategory,
+      stockMovementType
     }
   } = database
   return {
@@ -11,6 +12,10 @@ module.exports = function getIncludes(database) {
       model: product,
       as: 'products',
       include: { model: productType, as: 'type', include: { model: productCategory, as: 'category' } }
+    },
+    stockMovementType: {
+      model: stockMovementType,
+      as: 'stockMovementType'
     }
   }
 }
