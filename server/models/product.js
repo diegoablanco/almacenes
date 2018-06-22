@@ -14,9 +14,11 @@ module.exports = function (sequelize) {
     }
   })
   Product.associate = function ({
-    productType
+    productType,
+    stockAccountMovement
   }) {
     Product.belongsTo(productType, { as: 'type' })
+    Product.belongsTo(stockAccountMovement)
   }
   return Product
 }

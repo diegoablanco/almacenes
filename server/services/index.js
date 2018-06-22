@@ -19,6 +19,7 @@ const productTypes = require('./productTypes/service')
 const products = require('./products/service')
 const productCategories = require('./productCategories/service')
 const stockAccountMovements = require('./stockAccountMovements/service')
+// const reports = require('./reports/service')
 
 debug('Required')
 
@@ -44,6 +45,7 @@ module.exports = function () {
   app.configure(products)
   app.configure(productCategories)
   app.configure(stockAccountMovements)
+  // app.configure(reports)
 
   // get client config file
   app.use(`${config.apiPath}/config`, {
@@ -80,6 +82,5 @@ module.exports = function () {
       return Promise.resolve(null);
     }
   });
-
   debug('Config complete');
 };

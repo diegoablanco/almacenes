@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {
-  const StockAccountProduct = sequelize.define('stockAccountproduct', {
+  const StockAccountProduct = sequelize.define('stockAccountProduct', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
@@ -14,9 +14,11 @@ module.exports = function (sequelize) {
     }
   })
   StockAccountProduct.associate = function ({
-    product
+    stockAccount,
+    productType
   }) {
-    StockAccountProduct.belongsTo(product)
+    StockAccountProduct.belongsTo(stockAccount)
+    StockAccountProduct.belongsTo(productType)
   }
   return StockAccountProduct
 }

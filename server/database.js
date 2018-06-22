@@ -39,6 +39,7 @@ module.exports = function () {
   sequelize.import('../server/models/productType')
   sequelize.import('../server/models/stockAccountMovement')
   sequelize.import('../server/models/stockAccount')
+  sequelize.import('../server/models/stockAccountProduct')
 
   Object.keys(sequelize.models).forEach((modelName) => {
     if ('associate' in sequelize.models[modelName]) {

@@ -4,5 +4,9 @@ module.exports = {
   date: 'Fecha',
   receipt: 'Albarán',
   products: 'Productos',
-  product
+  product,
+  deleteDialog: {
+    title: 'Eliminar Movimiento de Stock',
+    message: '¿Confirma eliminar el movimiento de stock?'
+  }
 }

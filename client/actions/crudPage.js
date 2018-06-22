@@ -1,6 +1,6 @@
 import { initialize as initializeReduxForm, SubmissionError } from 'redux-form'
 import * as sort from 'sortabular'
-import { entityDeletedMessage, entityCreatedMessage, entityUpdatedMessage } from './messageBar'
+import { entityDeletedMessage, entityCreatedMessage, entityUpdatedMessage, showTimedMessage } from './messageBar'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
 import { formatAjvToRf } from '../common/Validation'
 import { expandHighlightedAncestors } from './helpers'
@@ -195,10 +195,15 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
     },
     remove(id) {
       return async (dispatch) => {
-        const result = await dispatch(serviceActions.remove(id))
-        dispatch(hideConfirmModal())
-        dispatch({ type: actionTypes.ITEM_DELETED, deletedItem: result.value })
-        dispatch(entityDeletedMessage())
+        try {
+          const result = await dispatch(serviceActions.remove(id))
+          dispatch(hideConfirmModal())
+          dispatch({ type: actionTypes.ITEM_DELETED, deletedItem: result.value })
+          dispatch(entityDeletedMessage())
+        } catch (error) {
+          dispatch(hideConfirmModal())
+          dispatch(showTimedMessage(error.message, 'error'))
+        }
       }
     },
     itemDeleted(deletedItem) {

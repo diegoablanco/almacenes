@@ -1,4 +1,3 @@
-
 const debug = require('debug')('server:app')
 const path = require('path')
 const cors = require('cors')
@@ -49,7 +48,6 @@ const app = feathers()
 
   // Utilities
   .use(compress())
-
   // Feathers setup with REST and socketio support
   .configure(hooks())
   .configure(rest())

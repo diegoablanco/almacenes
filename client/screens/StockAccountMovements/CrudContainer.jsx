@@ -71,7 +71,6 @@ class StockAccountMovementsCrud extends Component {
               formModal={FormModal}
               crudActions={crudActions}
               enableEdit={false}
-              enableDelete={false}
             />
           </Grid.Column>
         </Grid.Row>
