@@ -41,7 +41,8 @@ module.exports = function () {
       }
 	  },
     async (req, res) => {
-      const template = xlsx.readFile('./server/services/reports/stock/StockReportTemplate.xlsx', { cellStyles: true, sheetStubs: true })
+      const { server: { serverPath } } = config
+      const template = xlsx.readFile(path.join(serverPath, 'services', 'reports', 'stock', 'StockReportTemplate.xlsx'), { cellStyles: true, sheetStubs: true })
       const { sheets, fileName } = res.data
       sheets.forEach((data, index) => writeArrayToSheet({ sheet: template.Sheets[template.SheetNames[index]], array: data, startingAddress: { cell: 0, row: 1 } }))
       
