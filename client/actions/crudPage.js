@@ -1,5 +1,8 @@
-import { initialize as initializeReduxForm, SubmissionError } from 'redux-form'
+import { initialize as initializeReduxForm, SubmissionError, change } from 'redux-form'
 import * as sort from 'sortabular'
+import request from 'superagent'
+import download from 'downloadjs'
+import moment from 'moment'
 import { entityDeletedMessage, entityCreatedMessage, entityUpdatedMessage, showTimedMessage } from './messageBar'
 import { buildSortFromSortingColumns } from '../utils/reactabularHelpers'
 import { formatAjvToRf } from '../common/Validation'
@@ -14,8 +17,10 @@ const sortingOrder = {
 export function getActionTypes(crudPage = '') {
   return {
     SHOW_MODAL: `${crudPage}/SHOW_MODAL`,
+    SHOW_REPORT_MODAL: `${crudPage}/SHOW_REPORT_MODAL`,
     SHOW_MODAL_LOADING_INDICATOR: `${crudPage}/SHOW_MODAL_LOADING_INDICATOR`,
     HIDE_MODAL: `${crudPage}/HIDE_MODAL`,
+    HIDE_REPORT_MODAL: `${crudPage}/HIDE_REPORT_MODAL`,
     HIDE_MODAL_LOADING_INDICATOR: `${crudPage}/HIDE_MODAL_LOADING_INDICATOR`,
     SHOW_CONFIRM_MODAL: `${crudPage}/SHOW_CONFIRM_MODAL`,
     HIDE_CONFIRM_MODAL: `${crudPage}/HIDE_CONFIRM_MODAL`,
@@ -50,6 +55,31 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
   function hideModal() {
     return {
       type: actionTypes.HIDE_MODAL
+    }
+  }
+  function hideReportModal() {
+    return {
+      type: actionTypes.HIDE_REPORT_MODAL
+    }
+  }
+  function generateReport(reportType, options) {
+    return async (dispatch) => {
+      const { body, header: { filename } } = await request
+        .post('api/reports')
+        .responseType('arraybuffer')
+        .send({ reportType, options })
+        .set('authorization', localStorage['feathers-jwt'])
+      download(body, filename, 'application/vnd.openxmlformats')
+      dispatch(hideReportModal())
+      dispatch(showTimedMessage(`Se generó el reporte ${filename}`))
+    }
+  }
+  function showReportModal() {
+    return dispatch => {
+      dispatch({
+        type: actionTypes.SHOW_REPORT_MODAL
+      })
+      dispatch(change('reportForm', 'dateTo', moment().toDate()))
     }
   }
   function hideConfirmModal() {
@@ -107,6 +137,7 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
     }
   }
   return {
+    generateReport,
     initializeForm,
     initializeCrud,
     buildRows,
@@ -249,6 +280,8 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
       return {
         type: actionTypes.INCREASE_PAGE_NUMBER
       }
-    }
+    },
+    showReportModal,
+    hideReportModal
   }
 }

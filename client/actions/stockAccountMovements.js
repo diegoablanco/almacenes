@@ -1,7 +1,5 @@
 import { change, SubmissionError, arrayPush, reset, focus, submit } from 'redux-form'
 import moment from 'moment'
-import request from 'superagent'
-import download from 'downloadjs'
 import { feathersServices } from '../feathers'
 import { getCrudPageActions as getBaseCrudPageActions, getActionTypes as getBaseActionTypes } from './crudPage'
 import crudPages from '../common/CrudPages'
@@ -103,17 +101,6 @@ export function getCrudPageActions() {
         if (code.length === 15) {
           setTimeout(() => dispatch(submit(formName)), 200)
         }
-      }
-    },
-    showReportModal() {
-      return async (dispatch) => {
-        const file = await request
-          .post('api/reports')
-          .responseType('arraybuffer')
-          .send({ type: 'stockAccount' })
-          .type('application/vnd.openxmlformats')
-          .set('authorization', localStorage['feathers-jwt'])
-        download(file.body, 'Reporte de Stock.xlsx', 'application/vnd.openxmlformats')
       }
     }
   }

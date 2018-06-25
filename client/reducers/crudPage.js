@@ -6,6 +6,7 @@ export function getCrudReducer(crudPage, defaultInitialState = {}) {
   const initialState = { ...{
     reloadGrid: false,
     showModal: false,
+    showReportModal: false,
     dimmed: false,
     filter: {},
     rows: [],
@@ -71,6 +72,10 @@ export function getCrudReducer(crudPage, defaultInitialState = {}) {
       }
       case actionTypes.TOGGLE_CAN_ADD:
         return { ...state, canAdd: action.canAdd }
+      case actionTypes.SHOW_REPORT_MODAL:
+        return { ...state, showReportModal: true }
+      case actionTypes.HIDE_REPORT_MODAL:
+        return { ...state, showReportModal: false }
       default:
         return state
     }

@@ -4,5 +4,7 @@ module.exports = `
     join [dbo].[stockAccountMovements] sam on p.stockAccountMovementId = sam.id
     join [dbo].[productTypes] pt on p.typeId = pt.id
     where sam.type = 'receive'
+    and (:dateFrom is null OR sam.date >= :dateFrom)
+    and (:dateTo is null OR sam.date <= :dateTo)
     order by sam.date, pt.description
 `

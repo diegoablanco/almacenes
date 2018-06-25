@@ -4,10 +4,8 @@ import { compose, bindActionCreators } from 'redux'
 import { Form, Button, Segment } from 'semantic-ui-react'
 import { reduxForm, Field } from 'redux-form'
 import { renderField } from '../../utils/formHelpers'
-import { stocks as selectors } from '../../selectors'
 import getUneditables from '../../selectors/uneditables'
 import SelectField from '../../common/SelectField'
-import LookupSelectField from '../../components/LookupSelectField'
 import { DateTimeField } from '../../components'
 
 class ToolbarForm extends Component {

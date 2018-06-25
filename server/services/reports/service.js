@@ -1,4 +1,5 @@
 const config = require('config')
+const moment = require('moment')
 const { BadRequest } = require('feathers-errors');
 const path = require('path')
 const fs = require('fs')
@@ -17,18 +18,23 @@ module.exports = function () {
   app.use(
     servicePath,
     {
-      async get(a, b, c) {
+      async create({ reportType, options }) {
         const sequelize = getDatabase()
-        const select = `SELECT id, date, 'issue' as type FROM stockAccountIssues sai
-          WHERE sai.stockAccountId = :stockAccountId
-          UNION (SELECT id, date, 'receive' as type FROM stockAccountReceives sar
-          WHERE sar.stockAccountId = :stockAccountId)`
+        const replacements = {
+          dateFrom: options.dateFrom || null,
+          dateTo: options.dateTo || moment().endOf('day').toDate(),
+          receipt: options.receipt || null
+        }
         try {
-          const [receivedStocks] = await sequelize.query(receivedStock)
-          const [issuedStocks] = await sequelize.query(issuedStock)
-          const [actualStocks] = await sequelize.query(actualStock)
-          const [stockCounts] = await sequelize.query(stockCount)
-          return [receivedStocks, issuedStocks, actualStocks, stockCounts]
+          const [receivedStocks] = await sequelize.query(receivedStock, { replacements })
+          const [issuedStocks] = await sequelize.query(issuedStock, { replacements })
+          const [actualStocks] = await sequelize.query(actualStock, { replacements })
+          const [stockCounts] = await sequelize.query(stockCount, { replacements })
+
+          return {
+            sheets: [receivedStocks, issuedStocks, actualStocks, stockCounts],
+            fileName: `Reporte de Stock ${replacements.dateFrom ? `del ${moment(replacements.dateFrom).format('D-MM-YYYY')}` : ''} al ${moment(replacements.dateTo).format('D-MM-YYYY')}.xlsx`
+          }
         } catch (error) {
           throw new BadRequest({ errors: error.message })
         }
@@ -36,15 +42,17 @@ module.exports = function () {
 	  },
     async (req, res) => {
       const template = xlsx.readFile('./server/services/reports/stock/StockReportTemplate.xlsx', { cellStyles: true, sheetStubs: true })
-      res.data.forEach((data, index) => writeArrayToSheet({ sheet: template.Sheets[template.SheetNames[index]], array: data, startingAddress: { cell: 0, row: 1 } }))
+      const { sheets, fileName } = res.data
+      sheets.forEach((data, index) => writeArrayToSheet({ sheet: template.Sheets[template.SheetNames[index]], array: data, startingAddress: { cell: 0, row: 1 } }))
       
       const result = xlsx.write(template, { type: 'buffer', bookType: 'xlsx', bookSST: true })
       res.setHeader('Content-Type', 'application/vnd.openxmlformats')
       res.setHeader('Content-Disposition', 'attachment; filename=Report.xlsx')
+      res.set({ fileName })
       res.end(result, 'binary')
     }
   )
   const service = app.service(servicePath)
-  // service.hooks(hooks)
+  service.hooks(hooks)
 }
 

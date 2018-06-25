@@ -7,6 +7,7 @@ import FormModal from './FormModal'
 import CrudContainer from '../../common/CrudContainer'
 import ToolbarContainer from './ToolbarContainer'
 import ToolbarForm from './ToolbarForm'
+import ReportFormModal from './ReportFormModal'
 import { stockAccountMovements } from '../../selectors'
 import { getCrudPageActions } from '../../actions/stockAccountMovements'
 import { dateCellFormatter } from '../../utils'
@@ -33,9 +34,6 @@ class StockAccountMovementsCrud extends Component {
     ]
     this.getActionButtons = this.getActionButtons.bind(this)
   }
-  shouldComponentUpdate() {
-    return false
-  }
   getActionButtons({ id, type }) {
     const { showFormModal } = this.props
     return (
@@ -51,11 +49,13 @@ class StockAccountMovementsCrud extends Component {
   }
   render() {
     const crudActions = getCrudPageActions()
+    const { showReportModal, hideReportModal, generateReport } = this.props
     return (
       <Grid className="filter-grid-container">
         <Grid.Row >
           <Grid.Column>
             <ToolbarContainer {...{ crudActions }} />
+            <ReportFormModal {...{ showReportModal, hideReportModal, generateReport }} />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
@@ -78,10 +78,16 @@ class StockAccountMovementsCrud extends Component {
     )
   }
 }
+const mapStateToProps = state => {
+  const { showReportModal } = stockAccountMovements.getUiState(state)
+  return {
+    showReportModal
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
-  const { showFormModal } = getCrudPageActions()
+  const { showFormModal, hideReportModal, generateReport } = getCrudPageActions()
 
-  return bindActionCreators({ showFormModal }, dispatch)
+  return bindActionCreators({ showFormModal, hideReportModal, generateReport }, dispatch)
 }
-export default connect(null, mapDispatchToProps)(StockAccountMovementsCrud)
+export default connect(mapStateToProps, mapDispatchToProps)(StockAccountMovementsCrud)

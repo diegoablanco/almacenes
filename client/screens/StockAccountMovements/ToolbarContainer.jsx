@@ -52,6 +52,7 @@ class Toolbar extends Component {
         </Menu.Item>
         <Menu.Item position="right">
           <Button.Group labeled>
+            <Button color="black" size="small" icon="file excel outline" content="Generar Reporte" onClick={() => showReportModal()} />
             <Button icon="sign in" content="Entrada" positive onClick={() => showFormModal(null, 'receive')} />
             <Button icon="sign out" content="Salida" color="blue" onClick={() => showFormModal(null, 'issue')} />
           </Button.Group>
@@ -61,10 +62,9 @@ class Toolbar extends Component {
   }
 }
 
-const mapStateToProps = (state) => state.ui.carriers
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { crudActions } = ownProps
   return bindActionCreators(crudActions, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Toolbar)
+export default connect(null, mapDispatchToProps)(Toolbar)
