@@ -4,11 +4,14 @@ const path = require('path')
 const fs = require('fs')
 const hooks = require('./hooks')
 const getDatabase = require('../../../server/database')
-const nodeExcel = require('excel-export')
-const { receivedStock } = require('./queries')
+const xlsx = require('xlsx')
+const { receivedStock, issuedStock, actualStock, stockCount } = require('./queries')
+const { writeArrayToSheet } = require('./helpers')
 
 
 const servicePath = `${config.apiPath}/reports`
+
+
 module.exports = function () {
   const app = this
   app.use(
@@ -21,63 +24,21 @@ module.exports = function () {
           UNION (SELECT id, date, 'receive' as type FROM stockAccountReceives sar
           WHERE sar.stockAccountId = :stockAccountId)`
         try {
-          const [results] = await sequelize.query(`${receivedStock}`)
-          return results
+          const [receivedStocks] = await sequelize.query(receivedStock)
+          const [issuedStocks] = await sequelize.query(issuedStock)
+          const [actualStocks] = await sequelize.query(actualStock)
+          const [stockCounts] = await sequelize.query(stockCount)
+          return [receivedStocks, issuedStocks, actualStocks, stockCounts]
         } catch (error) {
           throw new BadRequest({ errors: error.message })
         }
       }
 	  },
     async (req, res) => {
-      const reportConfig =
-        [{
-          stylesXmlFile: './server/services/reports/stockReportStyle.xml',
-          name: 'Entradas',
-          rows: res.data.map(Object.values),
-          cols: [
-            {
-              caption: 'Fecha',
-              width: 10
-            },
-            {
-              caption: 'EMEI',
-              width: 15
-            },
-            {
-              caption: 'Descripción',
-              width: 80
-            },
-            {
-              caption: 'EAN',
-              width: 15
-            }
-          ]
-        },{
-          stylesXmlFile: './server/services/reports/stockReportStyle.xml',
-          name: 'Entradas2',
-          rows: res.data.map(Object.values),
-          cols: [
-            {
-              caption: 'Fecha',
-              width: 10
-            },
-            {
-              caption: 'EMEI',
-              width: 15
-            },
-            {
-              caption: 'Descripción',
-              width: 800
-            },
-            {
-              caption: 'EAN',
-              width: 15
-            }
-          ]
-        }
-        ]
+      const template = xlsx.readFile('./server/services/reports/stock/StockReportTemplate.xlsx', { cellStyles: true, sheetStubs: true })
+      res.data.forEach((data, index) => writeArrayToSheet({ sheet: template.Sheets[template.SheetNames[index]], array: data, startingAddress: { cell: 0, row: 1 } }))
       
-      const result = nodeExcel.execute(reportConfig)
+      const result = xlsx.write(template, { type: 'buffer', bookType: 'xlsx', bookSST: true })
       res.setHeader('Content-Type', 'application/vnd.openxmlformats')
       res.setHeader('Content-Disposition', 'attachment; filename=Report.xlsx')
       res.end(result, 'binary')
