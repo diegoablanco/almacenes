@@ -38,6 +38,10 @@ module.exports = {
       includes,
       hook => {
         const stockMovementType = hook.params.sequelize.include.find(x => x.as === 'stockMovementType')
+        if (hook.params.query.hasProduct) {
+          hook.params.sequelize.include.find(x => x.as === 'products').where = { code: hook.params.query.hasProduct }
+          delete hook.params.query.hasProduct
+        }
         processFilter(hook, { stockMovementType })
       }
     ],

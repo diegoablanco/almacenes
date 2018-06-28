@@ -32,9 +32,11 @@ export function getCrudPageActions() {
         const stockMovementType = stockMovementTypes.find(x => x.code === stockMovementTypeCode)
         dispatch({ type: actionTypes.SET_STOCK_MOVEMENT_TYPE, stockMovementType })
         await dispatch(baseCrudPageActions.showFormModal(id))
-        dispatch(change(formName, 'type', stockMovementType.code))
-        dispatch(change(formName, 'stockMovementTypeId', stockMovementType.id))
-        dispatch(change(formName, 'date', moment().toDate()))
+        if (!id) {
+          dispatch(change(formName, 'type', stockMovementType.code))
+          dispatch(change(formName, 'stockMovementTypeId', stockMovementType.id))
+          dispatch(change(formName, 'date', moment().toDate()))
+        }
       }
     },
     createOrUpdate(data) {
@@ -60,6 +62,15 @@ export function getCrudPageActions() {
         const { form: { stockAccountMovement: { values: { products = [] } } } } = getState()
         if (products.some(x => x.code === code)) throw new SubmissionError({ code: 'Ya se agregó un producto con este código' })
 
+        const { value: { data: existingProduct } } = await dispatch(feathersServices.stockAccountMovements.find({
+          query: {
+            type: 'receive',
+            hasProduct: code,
+            $sort: { id: 1 }
+          } }))
+        if (existingProduct.length > 0) {
+          throw new SubmissionError({ code: 'Ya existe una entrada para este producto' })
+        }
         const query = { ean, $sort: { description: 1 } }
         const { value: { data } } = await dispatch(feathersServices.productTypes.find({ query }))
         if (data.length === 0) {
