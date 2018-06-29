@@ -88,6 +88,16 @@ export function getCrudPageActions() {
         const { form: { stockAccountMovement: { values: { products = [] } } } } = getState()
         if (products.some(x => x.code === code)) throw new SubmissionError({ code: 'Ya se agregó un producto con este código' })
 
+        const { value: { data: existingProduct } } = await dispatch(feathersServices.stockAccountMovements.find({
+          query: {
+            type: 'issue',
+            hasProduct: code,
+            $sort: { id: 1 }
+          } }))
+        if (existingProduct.length > 0) {
+          throw new SubmissionError({ code: 'Ya existe una salida para este producto' })
+        }
+
         const query = { code, $sort: { code: 1 } }
         const { value: data } = await dispatch(feathersServices.products.find({ query }))
         if (data.length === 0) {

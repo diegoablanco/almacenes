@@ -1,5 +1,5 @@
 module.exports = `
-    select count(pt.description) as Cantidad, pt.description as Descripción, pt.ean as EAN
+    select count(pt.description) as Cantidad, pt.ean as EAN, pt.description as Descripción
     from products p
     join [dbo].[stockAccountMovements] sam on p.stockAccountMovementId = sam.id
     join [dbo].[productTypes] pt on p.typeId = pt.id
