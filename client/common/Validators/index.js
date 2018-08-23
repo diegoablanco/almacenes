@@ -12,6 +12,7 @@ import productCategory from './productCategory'
 import stockAccountMovement from './stockAccountMovement'
 import productReceive from './productReceive'
 import productIssue from './productIssue'
+import productReference from './productReference'
 
 export {
   signUp,
@@ -27,5 +28,6 @@ export {
   productCategory,
   stockAccountMovement,
   productReceive,
-  productIssue
+  productIssue,
+  productReference
 }

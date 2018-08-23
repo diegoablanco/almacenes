@@ -44,7 +44,8 @@ const mapStateToProps = (state, ownProps) => {
     searchWarehouse,
     clearWarehouse,
     fileUploadActions,
-    setServiceRate
+    setServiceRate,
+    addReference
   } } = ownProps
   return {
     id,
@@ -65,6 +66,7 @@ const mapStateToProps = (state, ownProps) => {
     availableServices,
     fileUploadActions,
     setServiceRate,
+    addReference,
     ...getFormValues(state, 'customer', 'targetCustomer', 'billingCustomer', 'warehouse', 'carrier', 'instructions'),
     extras: {
       stockMovementType,

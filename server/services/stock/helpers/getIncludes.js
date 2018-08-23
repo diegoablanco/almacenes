@@ -13,6 +13,7 @@ module.exports = function (database) {
       stockService,
       stockMovement,
       stockStatus,
+      stockReference,
       stock
     }
   } = database
@@ -74,6 +75,11 @@ module.exports = function (database) {
     movements: {
       model: stockMovement,
       as: 'movements'
+    },
+    references: {
+      model: stockReference,
+      as: 'references',
+      through: 'stock_references'
     }
   })
   const { customer: ancestorCustomer, targetCustomer, status, warehouse: ancestorWarehouse } = getIncludes()

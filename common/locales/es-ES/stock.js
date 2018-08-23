@@ -11,7 +11,8 @@ const details = {
   description: 'Descripción'
 }
 module.exports = {
-  reference: 'Referencia',
+  reference: 'Referencia General',
+  references: 'Referencias',
   description: 'Descripción',
   quantity: 'Cantidad de Unidades',
   address,

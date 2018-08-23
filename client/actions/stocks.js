@@ -1,4 +1,4 @@
-import { change, SubmissionError, getFormValues } from 'redux-form'
+import { change, SubmissionError, getFormValues, arrayPush, reset } from 'redux-form'
 import moment from 'moment'
 import { feathersServices } from '../feathers'
 import { getCrudPageActions as getBaseCrudPageActions, getActionTypes as getBaseActionTypes } from './crudPage'
@@ -123,6 +123,13 @@ export default function getCrudPageActions() {
         }
         dispatch(messageAction)
         await dispatch(baseCrudPageActions.reloadGrid())
+      }
+    },
+    addReference(reference) {
+      return async (dispatch) => {
+        const addReferenceFormName = 'addReference'
+        dispatch(arrayPush(formName, 'references', reference))
+        dispatch(reset(addReferenceFormName))
       }
     }
   }

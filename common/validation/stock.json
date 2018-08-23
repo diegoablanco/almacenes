@@ -33,18 +33,17 @@
                 "$ref": "stockService.json#"
             }
         },
-        "reference": {
-            "type": "string",
-            "minLength": 1
-        },
-        "quantity": {
-            "type": "integer"
+        "references": {
+            "type": "array",
+            "items": {
+                "$ref": "stockReference.json#"
+            }
         }
     },
     "required": [
         "customerId",
         "warehouseId",
         "reference",
-        "quantity"
+        "references"
     ]
 }

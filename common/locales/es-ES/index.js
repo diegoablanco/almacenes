@@ -27,5 +27,13 @@ module.exports = {
   addProduct: product,
   issueProduct: product,
   stockAccountMovement,
-  filterStockAccountMovement
+  filterStockAccountMovement,
+  addReference: {
+    quantity: stock.quantity,
+    reference: 'Referencia',
+    deleteDialog: {
+      title: 'Eliminar Referencia',
+      message: '¿Confirma eliminar la referencia?'
+    }
+  }
 }

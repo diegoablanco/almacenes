@@ -2,9 +2,22 @@ import React from 'react'
 import { Field, FieldArray } from 'redux-form'
 import { Grid, Tab, Form } from 'semantic-ui-react'
 import { renderCheckbox, renderField, parseToInt } from '../../../utils/formHelpers'
+import tabulatedFormFields from '../../../utils/tabulatedFormFields'
 import AditionalStockDetailFields from '../components/AditionalStockDetailFields'
+import ReferenceForm from "../components/ReferenceForm";
+import ReferencesFields from "../components/ReferencesFields";
 
-export default function getGoodsPane({ availableStockItemDetailTypes, stockMovementType }) {
+export default function getGoodsPane({
+  availableStockItemDetailTypes,
+  stockMovementType,
+  addReference }) {
+    
+  const referenceFields = tabulatedFormFields({
+    title: 'Referencias',
+    getFieldCells: ReferencesFields,
+    crudPage: 'addReference',
+    enableAdd: false
+  })
   const boxesPane = {
     menuItem: 'Cajas',
     pane: <Tab.Pane attached={false} key="boxes">
@@ -109,24 +122,16 @@ export default function getGoodsPane({ availableStockItemDetailTypes, stockMovem
   }
   return (
     <div>
-      <Field
-        name="description"
-        type="text"
-        component={renderField}
-      />
-      <Field
-        name="quantity"
-        type="text"
-        parse={parseToInt}
-        component={renderField}
-        width={4}
-        required
-      />
       { stockMovementType.code === 'receive' && <Field
         name="onHold"
         label="On Hold"
         component={renderCheckbox}
       /> }
+      <ReferenceForm {...{ addReference }} />
+      <FieldArray
+        name="references"
+        component={referenceFields}
+      />
       <Tab
         panes={[boxesPane, paletsPane]}
         menu={{ secondary: true, pointing: true }}

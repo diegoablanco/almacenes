@@ -1,0 +1,20 @@
+{
+    "$id": "http://xarxa.com/schemas/stockReference.json#",
+    "title": "Stock Reference",
+    "description": "A stock Reference",
+    "type": [
+        "object"
+    ],
+    "properties": {
+        "quantity": {
+            "type": "integer"
+        },
+        "reference": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "reference",
+        "quantity"
+    ]
+}

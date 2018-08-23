@@ -25,8 +25,8 @@ export class renderField extends Component {
     }
   }
   render() {
-    const { input, type = 'text', width, required, clearable, label, meta: { touched, error, form }, ...rest } = this.props
-    const labelText = label || intl.get(getFieldTranslationKey(form, input.name))
+    const { input, type = 'text', width, required, clearable, label, resourceKey, meta: { touched, error, form }, ...rest } = this.props
+    const labelText = label || intl.get(getFieldTranslationKey(resourceKey || form, input.name))
     
     return (
       <Form.Field className={classnames({ error: touched && error })} width={width}>

@@ -1,9 +1,6 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import reduxifyServices, { getServicesStatus } from 'feathers-redux';
 import { Message, Icon } from 'semantic-ui-react'
-import style from './style.css'
 
 class MessageBar extends Component {
     static defaultProps = {

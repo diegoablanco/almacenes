@@ -8,7 +8,6 @@ const NODE_MODULES_DIR = path.resolve(__dirname, 'node_modules');
 const WebpackBundleSizeAnalyzerPlugin = require('webpack-bundle-size-analyzer').WebpackBundleSizeAnalyzerPlugin
 
 // ********** Note require('config') is not used here. Any params must be set in process.env *******
-var reactDomLibPath = path.join(__dirname, "./node_modules/react-dom/lib");
 var alias = {};
 ["EventPluginHub", "EventConstants", "EventPluginUtils", "EventPropagators",
  "SyntheticUIEvent", "CSSPropertyOperations", "ViewportMetrics"].forEach(function(filename){
@@ -29,7 +28,7 @@ module.exports = {
     headers: { "Access-Control-Allow-Origin": "*" }
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,

@@ -11,6 +11,7 @@ import GoodsPane from './forms/Goods'
 import ReleasePane from './forms/Release'
 import IssuePane from './forms/Issue'
 import getServiceFields from './components/ServiceFields'
+import ReferenceFields from './components/ReferencesFields'
 import tabulatedFormFields from '../../utils/tabulatedFormFields'
 
 export default class StockForm extends Component {
@@ -24,6 +25,12 @@ export default class StockForm extends Component {
     this.getServicesPane = this.getServicesPane.bind(this)
     this.getReleasePane = this.getReleasePane.bind(this)
     this.getIssuePane = this.getIssuePane.bind(this)
+    this.referencesFieldsComponent = tabulatedFormFields({
+      title: 'Referencias',
+      getFieldCells: ReferenceFields,
+      crudPage: 'reference',
+      enableAdd: false
+    })
   }
   getServicesPane() {
     const {
@@ -72,12 +79,13 @@ export default class StockForm extends Component {
   getGoodsPane() {
     const {
       availableStockItemDetailTypes,
+      addReference,
       extras: { stockMovementType }
     } = this.props
     return {
       menuItem: 'Mercancía',
       pane: <Tab.Pane attached={false} key="goods">
-        <GoodsPane {...{ availableStockItemDetailTypes, stockMovementType }} />
+        <GoodsPane {...{ availableStockItemDetailTypes, stockMovementType, addReference }} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   }

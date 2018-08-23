@@ -20,10 +20,6 @@ module.exports = function (sequelize) {
     description: {
       type: Sequelize.STRING
     },
-    quantity: {
-      type: Sequelize.INTEGER,
-      allowNull: false
-    },
     date: {
       type: Sequelize.DataTypes.DATE,
       defaultValue: Sequelize.Now
@@ -42,6 +38,7 @@ module.exports = function (sequelize) {
     stockService,
     stockStatus,
     stockIssue,
+    stockReference,
     user
   }) {
     Stock.belongsTo(warehouse)
@@ -56,6 +53,7 @@ module.exports = function (sequelize) {
     Stock.belongsToMany(warehouseInstruction, { as: 'instructions', through: 'stock_instructions' })
     Stock.belongsToMany(documentAttachment, { as: 'documents', through: 'stock_documents' })
     Stock.belongsToMany(fileAttachment, { as: 'images', through: 'stock_images' })
+    Stock.belongsToMany(stockReference, { as: 'references', through: 'stock_references' })
     Stock.hasMany(stockMovement, { as: 'movements' })
     Stock.hasMany(stockService, { as: 'services' })
     Stock.belongsTo(stockStatus, { as: 'status' })

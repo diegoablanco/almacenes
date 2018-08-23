@@ -11,6 +11,7 @@ import getCrudPageActions from '../../actions/stocks'
 import { stocks as selectors } from '../../selectors'
 import StatusColumn from './components/StatusColumn'
 import { ConfirmableButton } from '../components'
+import ReferencesColumn from './components/ReferencesColumn'
 import { dateCellFormatter } from '../../utils'
 import { filter } from './filter'
 
@@ -18,7 +19,8 @@ class StockCrud extends Component {
   constructor(props) {
     super(props)
     this.gridColumns = [
-      { property: 'id',
+      {
+        property: 'id',
         label: 'Código',
         props: {
           style: {
@@ -26,16 +28,22 @@ class StockCrud extends Component {
           }
         }
       },
-      { property: 'date', label: 'Fecha', cellFormatters: [dateCellFormatter] },
-      { property: 'updatedAt',
+      {
+        property: 'updatedAt',
         label: 'Último Mov.',
         cellFormatters: [date => date && moment(date).format('L')]
       },
-      { property: 'customer.companyName', label: 'Cliente' },
+      {
+        property: 'customer.companyName', label: 'Cliente',
+        props: {
+          style: {
+            width: 100
+          }
+        }
+      },
       { property: 'warehouse.name', label: 'Almacén' },
-      { property: 'reference', label: 'Referencia' },
       { property: 'description', label: 'Descripción' },
-      { property: 'goods', label: 'Mercancía' },
+      { property: 'references', label: 'Referencias', cellFormatters: [ReferencesColumn], sortable: false },
       { property: 'targetCustomer.companyName', label: 'Cliente Dest.' },
       {
         property: 'status',
@@ -76,15 +84,15 @@ class StockCrud extends Component {
             />}
             content="Salida"
           />,
-            <ConfirmableButton
-              key="hold"
-              icon="lock icon"
-              color="black"
-              size="mini"
-              onConfirm={() => hold(id)}
-              content="Hold"
-              confirmMessage="¿Pasar el stock a On Hold?"
-            />
+          <ConfirmableButton
+            key="hold"
+            icon="lock icon"
+            color="black"
+            size="mini"
+            onConfirm={() => hold(id)}
+            content="Hold"
+            confirmMessage="¿Pasar el stock a On Hold?"
+          />
           ]
 
         )

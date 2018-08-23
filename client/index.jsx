@@ -28,7 +28,7 @@ import './utils/react-tap-event'
 import AppRouter from './router'
 import '../public/App.css'
 // __processEnvNODE_ENV__ is replaced during the webpack build process
-const nodeEnv = __processEnvNODE_ENV__; // eslint-disable-line no-undef, camelcase
+const nodeEnv = process.env.NODE_ENV; // eslint-disable-line no-undef, camelcase
 const debug = makeDebug('index');
 
 debug(`client starting. Built for ${nodeEnv} env.`);
@@ -81,11 +81,11 @@ configLoad(store, feathersServices)
         document.getElementById('root')
       )
     }
-    render(AppRouter)
-
+    
     if (module.hot) {
       module.hot.accept('./router', () => { render(require('./router').default) })
     }
+    render(AppRouter)
   });
 // you cannot place a catch here because of the require inside then()
 

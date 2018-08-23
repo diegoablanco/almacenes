@@ -16,8 +16,7 @@ module.exports.configLoad = (store, feathersServices) =>
         clientConfig.agent = {};
       }
       clientConfig.agent.deviceId = localStorage.deviceId;
-      clientConfig.agent.clientBuiltFor =
-        __processEnvNODE_ENV__; // eslint-disable-line no-undef, camelcase
+      clientConfig.agent.clientBuiltFor = process.env.NODE_ENV; // eslint-disable-line no-undef, camelcase
 
       Object.freeze(clientConfig);
 

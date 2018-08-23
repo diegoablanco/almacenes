@@ -7,6 +7,7 @@ import stockPalletSchema from '../../../common/validation/stockPallet.json'
 import stockItemDetailSchema from '../../../common/validation/stockItemDetail.json'
 import stockReleaseSchema from '../../../common/validation/stockRelease.json'
 import stockServiceSchema from '../../../common/validation/stockService.json'
+import stockReferenceSchema from '../../../common/validation/stockReference.json'
 import getValidator from '../../common/Validation'
 
 export default {
@@ -18,7 +19,9 @@ export default {
     stockBoxSchema,
     stockPalletSchema,
     documentAttachmentSchema,
+    
     stockItemDetailSchema,
-    stockServiceSchema
+    stockServiceSchema,
+    stockReferenceSchema
   ])
 }

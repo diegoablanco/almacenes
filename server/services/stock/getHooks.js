@@ -54,7 +54,7 @@ module.exports = {
     } = getIncludes(hook.app.get('database'))
     hook.params.sequelize = {
       raw: false,
-      attributes: ['id', 'carrierId', 'quantity', 'reference'],
+      attributes: ['id', 'carrierId', 'reference'],
       include: [
         { ...carrier, attributes: ['id', 'companyName'] },
         stockBox,
@@ -87,7 +87,7 @@ module.exports = {
       stockDetailIncludeSettings }
     hook.params.sequelize = {
       raw: false,
-      attributes: ['id', 'targetCustomerId', 'quantity', 'reference'],
+      attributes: ['id', 'targetCustomerId', 'reference'],
       include: [
         { ...customer, attributes: ['id', 'companyName'] },
         { ...targetCustomer, attributes: ['id', 'companyName'] },

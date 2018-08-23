@@ -9,6 +9,7 @@ const stockPalletSchema = require('../../../common/validation/stockPallet.json')
 const documentAttachmentSchema = require('../../../common/validation/documentAttachment.json')
 const stockItemDetailSchema = require('../../../common/validation/stockItemDetail.json')
 const stockServiceDetailSchema = require('../../../common/validation/stockService.json')
+const stockReferenceSchema = require('../../../common/validation/stockReference.json')
 const errorReducer = require('../../helpers/errorReducer')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 const {
@@ -35,6 +36,7 @@ function validate() {
   ajv.addSchema(documentAttachmentSchema)
   ajv.addSchema(stockItemDetailSchema)
   ajv.addSchema(stockServiceDetailSchema)
+  ajv.addSchema(stockReferenceSchema)
   return validateSchema(stockSchema, ajv, {
     addNewError: errorReducer
   })
@@ -52,7 +54,7 @@ module.exports = {
     ],
     find: [
       function (hook) {
-        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements, stock, descendantStock } = getIncludes(hook.app.get('database'))
+        const { customer, targetCustomer, warehouse, status, stockBox, stockPallets, movements, stock, descendantStock, references } = getIncludes(hook.app.get('database'))
         processFilter(hook, { status })
         hook.params.sequelize = {
           raw: false,
@@ -66,7 +68,8 @@ module.exports = {
             stockPallets,
             movements,
             stock,
-            descendantStock
+            descendantStock,
+            references
           ]
         }
         if (!hook.data.filtered) {
@@ -117,10 +120,10 @@ module.exports = {
     create: [
       validate(),
       function (hook) {
-        const { stockBox, stockPallets, documents, images, services } = getIncludes(hook.app.get('database'))
+        const { stockBox, stockPallets, documents, images, services, references } = getIncludes(hook.app.get('database'))
         hook.params.sequelize = {
           raw: false,
-          include: [stockBox, stockPallets, documents, images, services]
+          include: [stockBox, stockPallets, documents, images, services, references]
         }
       },
       setNow('createdAt'),

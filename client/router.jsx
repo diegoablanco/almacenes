@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 /* eslint new-cap: 0 */
 import { Route, Switch } from 'react-router-dom'
-import { AppContainer } from 'react-hot-loader'
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
 import { routerActions } from 'react-router-redux'
 import { ErrorBoundary } from './components'
@@ -64,33 +63,31 @@ const UserIsAdmin = connectedRouterRedirect({
 export default class AppRouter extends Component {
   render() {
     return (
-      <AppContainer>
-        <App>
-          <ErrorBoundary>
-            <Switch>
-              <Route path="/user/signin" component={UserSignIn} />
-              <Route path="/user/signup" component={UserIsAdmin(UserSignUp)} />
-              <Route path="/user/signupsendemail" component={UserSignUpSendEmail} />
-              <Route path="/user/verify/:token" component={UserSignUpValidateEmail} />
-              <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />
-              <Route path="/user/forgot/:token" component={UserForgotPwdReset} />
-              <Route
-                path="/user/passwordchange"
-                component={UserIsAuthenticated(UserPasswordChange)}
-              />
-              <Route path="/customers" component={UserIsAuthenticated(Customers)} />
-              <Route path="/warehouses" component={UserIsAuthenticated(Warehouses)} />
-              <Route path="/services" component={UserIsAuthenticated(Services)} />
-              <Route path="/carriers" component={UserIsAuthenticated(Carriers)} />
-              <Route path="/stock" component={UserIsAuthenticated(Stock)} />
-              <Route path="/products" component={UserIsAuthenticated(Product)} />
-              <Route path="/productCategories" component={UserIsAuthenticated(ProductCategories)} />
-              <Route path="/stockAccountMovements" component={UserIsAuthenticated(StockAccountMovements)} />
-              <Route component={UserSignIn} />
-            </Switch>
-          </ErrorBoundary>
-        </App>
-      </AppContainer>
+      <App>
+        <ErrorBoundary>
+          <Switch>
+            <Route path="/user/signin" component={UserSignIn} />
+            <Route path="/user/signup" component={UserIsAdmin(UserSignUp)} />
+            <Route path="/user/signupsendemail" component={UserSignUpSendEmail} />
+            <Route path="/user/verify/:token" component={UserSignUpValidateEmail} />
+            <Route path="/user/forgotpwdsendemail" component={UserForgotPwdSendEmail} />
+            <Route path="/user/forgot/:token" component={UserForgotPwdReset} />
+            <Route
+              path="/user/passwordchange"
+              component={UserIsAuthenticated(UserPasswordChange)}
+            />
+            <Route path="/customers" component={UserIsAuthenticated(Customers)} />
+            <Route path="/warehouses" component={UserIsAuthenticated(Warehouses)} />
+            <Route path="/services" component={UserIsAuthenticated(Services)} />
+            <Route path="/carriers" component={UserIsAuthenticated(Carriers)} />
+            <Route path="/stock" component={UserIsAuthenticated(Stock)} />
+            <Route path="/products" component={UserIsAuthenticated(Product)} />
+            <Route path="/productCategories" component={UserIsAuthenticated(ProductCategories)} />
+            <Route path="/stockAccountMovements" component={UserIsAuthenticated(StockAccountMovements)} />
+            <Route component={UserSignIn} />
+          </Switch>
+        </ErrorBoundary>
+      </App>
     )
   }
 }
