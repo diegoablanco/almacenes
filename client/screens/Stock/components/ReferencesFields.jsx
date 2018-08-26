@@ -1,9 +1,9 @@
 import React from 'react'
 import { Field } from 'redux-form'
-import { renderLabel2 } from '../../../utils/formHelpers'
+import { renderLabel2, renderField, parseToInt } from '../../../utils/formHelpers'
 
-export default function () {
-  return [
+export default function (title, fields, { enableRelease }) {
+  const columns = [
     {
       property: 'reference',
       label: 'Referencia',
@@ -35,4 +35,23 @@ export default function () {
       }
     }
   ]
+  if (enableRelease)
+    columns.push({
+      property: 'quantity',
+      label: 'Cantidad a liberar',
+      props: {
+        style: {
+          width: 150
+        }
+      },
+      formatter(value, { name: fieldName }) {
+        return (<Field
+          name={`${fieldName}.releaseQuantity`}
+          component={renderField}
+          parse={parseToInt}
+          label=""
+        />)
+      }
+    })
+  return columns
 }

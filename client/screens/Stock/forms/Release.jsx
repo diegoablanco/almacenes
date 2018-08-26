@@ -1,25 +1,39 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Field, formValues, getFormValues } from 'redux-form'
+import { Field, FieldArray, formValues, getFormValues } from 'redux-form'
 import { Grid } from 'semantic-ui-react'
 import LookupSelectField from '../../../components/LookupSelectField'
-import GoodsResume from '../components/GoodsResume'
+import tabulatedFormFields from '../../../utils/tabulatedFormFields'
 import { renderRadio, renderField, parseToInt, renderCheckbox } from '../../../utils/formHelpers'
 import { DateTimeField } from '../../../components'
+import ReferencesFields from "../components/ReferencesFields"
 
 class ReleaseForm extends Component {
+  constructor(props) {
+    super(props)
+    const {stock = {}} = props
+    this.referenceFields = tabulatedFormFields({
+      title: 'Referencias',
+      getFieldCells: ReferencesFields,
+      crudPage: 'addReference',
+      enableAdd: false,
+      enableDelete: false,
+      additionalInformation: {
+        enableRelease: stock.releaseType === 'partial'
+      }
+    })
+  }
   render() {
     const {
       targetCustomerLookup,
       targetCustomerLookupActions,
-      targetCustomer,
-      stock = {}
+      targetCustomer
     } = this.props
+    
     return (
       <Grid verticalAlign="middle" centered textAlign="center">
         <Grid.Column >
-          <GoodsResume stock={stock} />
           <Field
             name="date"
             component={DateTimeField}
@@ -36,6 +50,11 @@ class ReleaseForm extends Component {
             placeholder="Buscar un cliente..."
           />
           <Field
+            name="onHold"
+            label="On Hold"
+            component={renderCheckbox}
+          />          
+          <Field
             name="releaseType"
             label="Liberación Total"
             radioValue="full"
@@ -49,18 +68,9 @@ class ReleaseForm extends Component {
             value="partial"
             component={formValues({ currentValue: 'releaseType' })(renderRadio)}
           />
-          { stock && stock.releaseType === 'partial' && <Field
-            name="releaseQuantity"
-            type="text"
-            label="Cantidad a Liberar"
-            width={2}
-            parse={parseToInt}
-            component={renderField}
-          />}
-          <Field
-            name="onHold"
-            label="On Hold"
-            component={renderCheckbox}
+          <FieldArray
+            name="references"
+            component={this.referenceFields}
           />
         </Grid.Column>
       </Grid>

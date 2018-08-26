@@ -4,8 +4,8 @@ import { Grid, Tab, Form } from 'semantic-ui-react'
 import { renderCheckbox, renderField, parseToInt } from '../../../utils/formHelpers'
 import tabulatedFormFields from '../../../utils/tabulatedFormFields'
 import AditionalStockDetailFields from '../components/AditionalStockDetailFields'
-import ReferenceForm from "../components/ReferenceForm";
-import ReferencesFields from "../components/ReferencesFields";
+import ReferenceForm from "../components/ReferenceForm"
+import ReferencesFields from "../components/ReferencesFields"
 
 export default function getGoodsPane({
   availableStockItemDetailTypes,

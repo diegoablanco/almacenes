@@ -15,7 +15,8 @@ module.exports = {
       images,
       services,
       movements,
-      status } = getIncludes(hook.app.get('database'))
+      status,
+      references } = getIncludes(hook.app.get('database'))
     const stockDetailIncludeSettings = {
       attributes: ['id', 'description', 'quantity', 'stockItemDetailTypeId'],
       through: { attributes: [] }
@@ -41,7 +42,8 @@ module.exports = {
         images,
         services,
         movements,
-        status
+        status,
+        references
       ]
     }
   },
@@ -74,7 +76,8 @@ module.exports = {
       documents,
       images,
       services,
-      status } = getIncludes(hook.app.get('database'))
+      status,
+      references } = getIncludes(hook.app.get('database'))
     const stockDetailIncludeSettings = {
       attributes: ['id', 'description', 'quantity', 'stockItemDetailTypeId'],
       through: { attributes: [] }
@@ -98,7 +101,8 @@ module.exports = {
         documents,
         images,
         services,
-        status
+        status,
+        references
       ]
     }
   }

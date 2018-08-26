@@ -11,6 +11,13 @@
         },
         "reference": {
             "type": "string"
+        },
+        "releaseQuantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": {
+              "$data": "1/quantity"
+            }
         }
     },
     "required": [

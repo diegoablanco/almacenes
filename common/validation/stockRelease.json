@@ -7,8 +7,11 @@
     "releaseType": {
       "type": "string"
     },
-    "quantity": {
-      "type": "integer"
+    "references": {
+      "type": "array",
+      "items": {
+          "$ref": "stockReference.json#"
+      }
     }
   },
   "required": [
@@ -33,16 +36,8 @@
         },
         {
           "required": [
-            "releaseQuantity"
-          ],
-          "properties": {
-            "releaseQuantity": {
-              "minimum": 1,
-              "maximum": {
-                "$data": "1/quantity"
-              }
-            }
-          }
+            "references"
+          ]
         }
       ]
     },

@@ -14,7 +14,7 @@ export default {
   issue: getValidator(stockIssueSchema, [
     addressSchema
   ]),
-  release: getValidator(stockReleaseSchema),
+  release: getValidator(stockReleaseSchema, [stockReferenceSchema]),
   default: getValidator(stockSchema, [
     stockBoxSchema,
     stockPalletSchema,

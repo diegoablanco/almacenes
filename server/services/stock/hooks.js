@@ -29,7 +29,7 @@ const { setUser } = require('../hooks')
 
 
 function validate() {
-  const ajv = Ajv({ allErrors: true })
+  const ajv = Ajv({ allErrors: true, $data: true })
   ajv.addSchema(stockSchema)
   ajv.addSchema(stockBoxSchema)
   ajv.addSchema(stockPalletSchema)

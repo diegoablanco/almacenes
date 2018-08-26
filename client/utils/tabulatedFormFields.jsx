@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from '../common/Grid'
 
-export default function tabulatedFormFields({ title, getFieldCells, crudPage, additionalInformation, enableAdd = true }) {
+export default function tabulatedFormFields({ title, getFieldCells, crudPage, additionalInformation, enableAdd = true, ...options }) {
   function addHandler(fields) {
     return () => {
       fields.push({})
@@ -36,6 +36,7 @@ export default function tabulatedFormFields({ title, getFieldCells, crudPage, ad
         removeHandler={fields.remove}
         columns={getColumns(fields)}
         rows={getRows(fields)}
+        {...options}
       />
     )
   }
