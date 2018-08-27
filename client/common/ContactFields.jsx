@@ -32,9 +32,9 @@ function renderContactFields(phoneTypes) {
           component={tabulatedFormFields({
                     title: 'Teléfonos',
                     getFieldCells: getPhoneFieldCells,
-                    additionalInformation: phoneTypes,
                     crudPage: 'contact.phones'
                     })}
+          phoneTypes={phoneTypes}
         />
       </div>
     )

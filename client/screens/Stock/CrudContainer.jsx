@@ -53,9 +53,6 @@ class StockCrud extends Component {
     ]
     this.getActionButtons = this.getActionButtons.bind(this)
   }
-  shouldComponentUpdate() {
-    return false
-  }
   getActionButtons({ id, status = {} }) {
     const { showFormModal, hold } = this.props
     switch (status.code) {

@@ -2,7 +2,7 @@ import React from 'react'
 import { Field } from 'redux-form'
 import { renderField, renderSelect } from '../utils/formHelpers'
 
-export function getPhoneFieldCells(title, phone, options = []) {
+export function getPhoneFieldCells(title, phone, { phoneTypes = []}) {
   return [
     {
       property: 'number',
@@ -24,7 +24,7 @@ export function getPhoneFieldCells(title, phone, options = []) {
         iconPosition="left"
         component={renderSelect}
         label=""
-        options={options.map(option => ({
+        options={phoneTypes.map(option => ({
           key: option.id,
           value: option.id,
           text: option.description

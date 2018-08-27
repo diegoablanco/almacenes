@@ -16,15 +16,15 @@ export default function tabulatedFormFields({ title, getFieldCells, crudPage, ad
       return fieldCellFormatter(value, rowData, additionalInformation)
     }
   }
-  function getColumns(fields) {
-    return getFieldCells(title, fields, additionalInformation).map(({ property, formatter, label, props }) => ({
+  function getColumns(fields, extra) {
+    return getFieldCells(title, fields, { ...additionalInformation, ...extra }).map(({ property, formatter, label, props }) => ({
       property,
       cellFormatters: [getFieldCellFormatter(formatter)],
       label,
       props
     }))
   }
-  return function ({ fields }) {
+  return function ({ fields, meta, ...extra = {} }) {
     return (
       <Grid
         canAdd
@@ -34,7 +34,7 @@ export default function tabulatedFormFields({ title, getFieldCells, crudPage, ad
         enableEdit={false}
         addHandler={addHandler(fields)}
         removeHandler={fields.remove}
-        columns={getColumns(fields)}
+        columns={getColumns(fields, extra)}
         rows={getRows(fields)}
         {...options}
       />

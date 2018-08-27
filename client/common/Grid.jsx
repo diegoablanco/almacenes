@@ -14,8 +14,6 @@ import { ConfirmableButton } from '../screens/components'
 class Grid extends Component {
   constructor(props) {
     super(props)
-    const { columns } = props
-    this.columns = createColumns(...columns)
     this.moreRowsMessage = this.moreRowsMessage.bind(this)
     this.treeCellFormatter = this.treeCellFormatter.bind(this)
   }
@@ -88,7 +86,7 @@ class Grid extends Component {
     ]
   }
 
-  getSortableColumns() {
+  getSortableColumns(columns) {
     const {
       sortingColumns,
       handleSort
@@ -102,7 +100,7 @@ class Grid extends Component {
 
     const customSortableTransform = (value, extra) =>
       this.transformSortClasses(sortable(value, extra))
-    return this.columns.map(column => (column.sortable ? addHeaderTransforms([column], [sortable, customSortableTransform])[0] : column))
+    return columns.map(column => (column.sortable ? addHeaderTransforms([column], [sortable, customSortableTransform])[0] : column))
   }
   getTable() {
     const {
@@ -112,7 +110,8 @@ class Grid extends Component {
       enableTreeTabular = false
     } = this.props
     let { rows } = this.props
-    const columns = enableSort ? this.getSortableColumns(this.columns) : this.columns
+    let columns = createColumns(...this.props.columns)
+    columns = enableSort ? this.getSortableColumns(columns) : columns
     const gridColumns = [...columns]
     const rowTransformers = [this.resolveNestedColumns(columns)]
     if (enableTreeTabular) {

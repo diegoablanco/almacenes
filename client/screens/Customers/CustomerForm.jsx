@@ -66,9 +66,9 @@ class CustomerForm extends Component {
       component={tabulatedFormFields({
         title: 'Teléfonos',
         getFieldCells: getPhoneFieldCells,
-        additionalInformation: phoneTypes,
         crudPage: 'contact.phones'
         })}
+      phoneTypes={phoneTypes}
     />
   </Tab.Pane> },
       { menuItem: 'Información de la Cuenta',
@@ -99,7 +99,10 @@ class CustomerForm extends Component {
     <FormSection name="account.address">
       <Address />
     </FormSection>
-    <FieldArray name="authorizedPersons" component={renderContactFields('Personas Autorizadas', 'Persona Autorizada', phoneTypes)} />
+    <FieldArray 
+      name="authorizedPersons" 
+      component={renderContactFields('Personas Autorizadas', 'Persona Autorizada')}
+      phoneTypes={phoneTypes} />
   </Tab.Pane> },
       this.getDocumentsPane()
     ]

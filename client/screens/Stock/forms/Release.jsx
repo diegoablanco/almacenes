@@ -18,17 +18,15 @@ class ReleaseForm extends Component {
       getFieldCells: ReferencesFields,
       crudPage: 'addReference',
       enableAdd: false,
-      enableDelete: false,
-      additionalInformation: {
-        enableRelease: stock.releaseType === 'partial'
-      }
+      enableDelete: false
     })
   }
   render() {
     const {
       targetCustomerLookup,
       targetCustomerLookupActions,
-      targetCustomer
+      targetCustomer,
+      stock = {}
     } = this.props
     
     return (
@@ -71,6 +69,7 @@ class ReleaseForm extends Component {
           <FieldArray
             name="references"
             component={this.referenceFields}
+            enableRelease={stock.releaseType === 'partial'}
           />
         </Grid.Column>
       </Grid>
