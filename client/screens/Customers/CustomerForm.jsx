@@ -101,8 +101,8 @@ class CustomerForm extends Component {
     </FormSection>
     <FieldArray 
       name="authorizedPersons" 
-      component={renderContactFields('Personas Autorizadas', 'Persona Autorizada')}
-      phoneTypes={phoneTypes} />
+      component={renderContactFields('Personas Autorizadas', 'Persona Autorizada', phoneTypes)}
+    />
   </Tab.Pane> },
       this.getDocumentsPane()
     ]

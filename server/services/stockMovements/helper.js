@@ -26,7 +26,8 @@ module.exports = {
       stockBox,
       stockPallets,
       documents,
-      images
+      images,
+      references
     } = getStockIncludes(database)
     const sourceStock = await stocks.findById(stockId, {
       include: [
@@ -34,6 +35,7 @@ module.exports = {
         stockBox,
         stockPallets,
         documents,
+        references,
         images]
     })
     const {
@@ -51,9 +53,15 @@ module.exports = {
       quantity: originalQuantity,
       images: originalImages,
       documents: originalDocuments,
+      references: originalReferences,
       ...originalStock
     } = sourceStock.get({ plain: true })
-    const newStock = await stocks.create({ ...originalStock, customerId, parentId, quantity: quantity || originalQuantity }, { transaction })
+    const newStock = await stocks.create({
+      ...originalStock,
+      customerId,
+      parentId,
+      references: originalReferences.map(({reference, quantity}) => ({reference, quantity}))
+    }, { transaction, include: [references] })
     await newStock.setInstructions((instructions || []).map(x => x.id), { transaction })
     
     await setStatusByCode(newStock, onHold ? 'onHold' : 'released', transaction)

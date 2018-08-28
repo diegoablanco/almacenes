@@ -83,7 +83,7 @@ module.exports = function (database) {
     }
   })
   const { customer: ancestorCustomer, targetCustomer, status, warehouse: ancestorWarehouse } = getIncludes()
-  const { customer: descendentCustomer, targetCustomer: descendentTargetCustomer, status: descendentStatus, warehouse: descendentWarehouse } = getIncludes()
+  const { customer: descendentCustomer, targetCustomer: descendentTargetCustomer, status: descendentStatus, warehouse: descendentWarehouse, references: descendantReferences } = getIncludes()
   return {
     ...getIncludes(),
     stock: {
@@ -94,7 +94,7 @@ module.exports = function (database) {
     descendantStock: {
       model: stock,
       as: 'descendents',
-      include: [descendentCustomer, descendentTargetCustomer, descendentStatus, descendentWarehouse],
+      include: [descendentCustomer, descendentTargetCustomer, descendentStatus, descendentWarehouse, descendantReferences],
       hierarchy: true
     }
   }
