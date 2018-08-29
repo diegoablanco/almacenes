@@ -82,19 +82,43 @@ module.exports = function (database) {
       through: 'stock_references'
     }
   })
-  const { customer: ancestorCustomer, targetCustomer, status, warehouse: ancestorWarehouse } = getIncludes()
-  const { customer: descendentCustomer, targetCustomer: descendentTargetCustomer, status: descendentStatus, warehouse: descendentWarehouse, references: descendantReferences } = getIncludes()
+  const {
+    customer: ancestorCustomer,
+    targetCustomer,
+    status,
+    warehouse: ancestorWarehouse,
+    references: ancestorReferences
+  } = getIncludes()
+  const {
+    customer: descendentCustomer,
+    targetCustomer: descendentTargetCustomer,
+    status: descendentStatus,
+    warehouse: descendentWarehouse,
+    references: descendantReferences
+  } = getIncludes()
   return {
     ...getIncludes(),
     stock: {
       model: stock,
       as: 'ancestors',
-      include: [ancestorCustomer, targetCustomer, status, ancestorWarehouse]
+      include: [
+        ancestorCustomer,
+        targetCustomer,
+        status,
+        ancestorWarehouse,
+        ancestorReferences
+      ]
     },
     descendantStock: {
       model: stock,
       as: 'descendents',
-      include: [descendentCustomer, descendentTargetCustomer, descendentStatus, descendentWarehouse, descendantReferences],
+      include: [
+        descendentCustomer,
+        descendentTargetCustomer,
+        descendentStatus,
+        descendentWarehouse,
+        descendantReferences
+      ],
       hierarchy: true
     }
   }

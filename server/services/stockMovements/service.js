@@ -6,7 +6,7 @@ const { getIncludes } = require('../stock/helpers')
 const {
   setStatusByCode,
   releaseToCustomer,
-  reduceUnitsBy,
+  reduceUnitsByReferences,
   reduceUnitsTotally,
   issue
 } = require('./helper')
@@ -22,7 +22,7 @@ module.exports = function () {
         try {
           const database = getDatabase()
           const { models: { stock: stocks } } = database
-          const { stockBox, stockPallets } = getIncludes(getDatabase())
+          const { stockBox, stockPallets, references } = getIncludes(getDatabase())
           const {
             id,
             date,
@@ -30,14 +30,13 @@ module.exports = function () {
             releaseType,
             movementTypeId,
             targetCustomerId,
-            releaseQuantity,
             onHold
           } = data
           const filter = {
             where: {
               id
             },
-            include: [stockBox, stockPallets]
+            include: [stockBox, stockPallets, references]
           }
           const stock = await stocks.findOne(filter)
           await database.transaction(async transaction => {
@@ -54,15 +53,18 @@ module.exports = function () {
                     await setStatusByCode(stock, 'released', transaction)
                   } else {
                     await releaseToCustomer({ stock, customerId: targetCustomerId, onHold, transaction })
-                    //await reduceUnitsTotally(stock, transaction)
+                    await reduceUnitsTotally(stock, transaction)
                   }
                 } else {
+                  const referencesToRelease = data.references
+                    .filter(({ releaseQuantity }) => releaseQuantity && releaseQuantity > 0)
+                    .map(({ id: referenceId, reference, releaseQuantity }) => ({ id: referenceId, reference, quantity: releaseQuantity }))
                   if (sameCustomer) {
-                    await releaseToCustomer({ stock, customerId: stock.customerId, quantity: releaseQuantity, transaction })
+                    await releaseToCustomer({ stock, customerId: stock.customerId, referencesToRelease, transaction })
                   } else {
-                    await releaseToCustomer({ stock, customerId: targetCustomerId, quantity: releaseQuantity, onHold, transaction })
+                    await releaseToCustomer({ stock, customerId: targetCustomerId, referencesToRelease, onHold, transaction })
                   }
-                  await reduceUnitsBy(stock, releaseQuantity, transaction)
+                  await reduceUnitsByReferences(stock, referencesToRelease, transaction)
                 }
                 break
               case 'issue':

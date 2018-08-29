@@ -1,3 +1,4 @@
+const { sumBy } = require('lodash')
 const getDatabase = require('../../../server/database')
 const getStockIncludes = require('../stock/helpers/getIncludes')
 const getIssueIncludes = require('./includes')
@@ -8,17 +9,23 @@ async function setStatusByCode(stock, code, transaction) {
   const status = await stockStatus.find({ where: { code } })
   await stock.setStatus(status.id, { transaction })
 }
-async function reduceUnitsBy(stock, quantity, transaction) {
-  stock.quantity -= quantity
-  if (stock.quantity === 0) await setStatusByCode(stock, 'fulfilled', transaction)
+async function reduceUnitsByReferences(stock, references, transaction) {
+  await Promise.all(references.map(async ({ id, quantity }) => {
+    const stockReference = stock.references.find(reference => reference.id === id)
+    stockReference.quantity -= quantity
+    await stockReference.save({ transaction })
+  }));
+  if (sumBy(stock.references, ref => ref.quantity) === 0) {
+    await setStatusByCode(stock, 'fulfilled', transaction)
+  }
 }
 module.exports = {
   setStatusByCode,
-  reduceUnitsBy,
+  reduceUnitsByReferences,
   async reduceUnitsTotally(stock, transaction) {
-    reduceUnitsBy(stock, stock.quantity, transaction)
+    await reduceUnitsByReferences(stock, stock.references, transaction)
   },
-  async releaseToCustomer({ stock: { id: stockId }, customerId, quantity, onHold = false, transaction }) {
+  async releaseToCustomer({ stock: { id: stockId }, customerId, onHold = false, referencesToRelease, transaction }) {
     const database = getDatabase()
     const { models: { stock: stocks } } = database
     const {
@@ -60,10 +67,10 @@ module.exports = {
       ...originalStock,
       customerId,
       parentId,
-      references: originalReferences.map(({reference, quantity}) => ({reference, quantity}))
+      references: referencesToRelease.map(({ reference, quantity }) => ({ reference, quantity }))
     }, { transaction, include: [references] })
     await newStock.setInstructions((instructions || []).map(x => x.id), { transaction })
-    
+
     await setStatusByCode(newStock, onHold ? 'onHold' : 'released', transaction)
   },
   async issue({ stock, date, carrierId, address, documents = [], images = [], transaction }) {
