@@ -24,7 +24,7 @@ export default function tabulatedFormFields({ title, getFieldCells, crudPage, ad
       props
     }))
   }
-  return function ({ fields, meta, ...extra = {} }) {
+  return function ({ fields, meta, ...extra }) {
     return (
       <Grid
         canAdd

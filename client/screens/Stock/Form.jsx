@@ -8,6 +8,7 @@ import ImageAttachmentFields from '../../components/ImageAttachmentFields'
 import SelectField from '../../common/SelectField'
 import GeneralInfo from './forms/GeneralInfo'
 import GoodsPane from './forms/Goods'
+import ReferencesPane from './forms/References'
 import ReleasePane from './forms/Release'
 import IssuePane from './forms/Issue'
 import getServiceFields from './components/ServiceFields'
@@ -21,6 +22,7 @@ export default class StockForm extends Component {
     this.getDocumentsPane = this.getDocumentsPane.bind(this)
     this.getInstructionsPane = this.getInstructionsPane.bind(this)
     this.getGoodsPane = this.getGoodsPane.bind(this)
+    this.getReferencesPane = this.getReferencesPane.bind(this)
     this.getFormContentMovementType = this.getFormContentMovementType.bind(this)
     this.getServicesPane = this.getServicesPane.bind(this)
     this.getReleasePane = this.getReleasePane.bind(this)
@@ -78,14 +80,24 @@ export default class StockForm extends Component {
   }
   getGoodsPane() {
     const {
-      availableStockItemDetailTypes,
-      addReference,
-      extras: { stockMovementType }
+      availableStockItemDetailTypes
     } = this.props
     return {
       menuItem: 'Mercancía',
       pane: <Tab.Pane attached={false} key="goods">
-        <GoodsPane {...{ availableStockItemDetailTypes, stockMovementType, addReference }} />
+        <GoodsPane {...{ availableStockItemDetailTypes }} />
+      </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
+    }
+  }
+  getReferencesPane() {
+    const {
+      addReference,
+      extras: { stockMovementType }
+    } = this.props
+    return {
+      menuItem: 'Referencias',
+      pane: <Tab.Pane attached={false} key="references">
+        <ReferencesPane {...{ stockMovementType, addReference }} />
       </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
     }
   }
@@ -146,6 +158,7 @@ export default class StockForm extends Component {
       getGeneralInfoPane,
       getInstructionsPane,
       getGoodsPane,
+      getReferencesPane,
       getDocumentsPane,
       getImagesPane,
       getServicesPane,
@@ -154,14 +167,14 @@ export default class StockForm extends Component {
     } = this
     switch (movementType.code) {
       case 'preReceive':
-        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane(), getGoodsPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane(), getReferencesPane(), getGoodsPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
       case 'release':
         return getReleasePane()
       case 'issue':
         return getIssuePane()
       case 'receive':
       case 'edit':
-        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane(), getGoodsPane(), getDocumentsPane(), getImagesPane(), getServicesPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane(), getReferencesPane(), getGoodsPane(), getDocumentsPane(), getImagesPane(), getServicesPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
       default:
         return []
     }

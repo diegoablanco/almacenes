@@ -1,23 +1,11 @@
 import React from 'react'
 import { Field, FieldArray } from 'redux-form'
 import { Grid, Tab, Form } from 'semantic-ui-react'
-import { renderCheckbox, renderField, parseToInt } from '../../../utils/formHelpers'
-import tabulatedFormFields from '../../../utils/tabulatedFormFields'
+import { renderField, parseToInt } from '../../../utils/formHelpers'
 import AditionalStockDetailFields from '../components/AditionalStockDetailFields'
-import ReferenceForm from "../components/ReferenceForm"
-import ReferencesFields from "../components/ReferencesFields"
 
 export default function getGoodsPane({
-  availableStockItemDetailTypes,
-  stockMovementType,
-  addReference }) {
-    
-  const referenceFields = tabulatedFormFields({
-    title: 'Referencias',
-    getFieldCells: ReferencesFields,
-    crudPage: 'addReference',
-    enableAdd: false
-  })
+  availableStockItemDetailTypes }) {
   const boxesPane = {
     menuItem: 'Cajas',
     pane: <Tab.Pane attached={false} key="boxes">
@@ -121,22 +109,10 @@ export default function getGoodsPane({
     </Tab.Pane> // eslint-disable-line react/jsx-closing-tag-location
   }
   return (
-    <div>
-      { stockMovementType.code === 'receive' && <Field
-        name="onHold"
-        label="On Hold"
-        component={renderCheckbox}
-      /> }
-      <ReferenceForm {...{ addReference }} />
-      <FieldArray
-        name="references"
-        component={referenceFields}
-      />
-      <Tab
-        panes={[boxesPane, paletsPane]}
-        menu={{ secondary: true, pointing: true }}
-        renderActiveOnly={false}
-      />
-    </div>
+    <Tab
+      panes={[boxesPane, paletsPane]}
+      menu={{ secondary: true, pointing: true }}
+      renderActiveOnly={false}
+    />
   )
 }
