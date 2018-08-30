@@ -9,7 +9,7 @@ const {
   reduceUnitsByReferences,
   reduceUnitsTotally,
   issue
-} = require('./helper')
+} = require('./helpers')
 
 
 const servicePath = `${config.apiPath}/stockMovements`
@@ -59,11 +59,15 @@ module.exports = function () {
                   const referencesToRelease = data.references
                     .filter(({ releaseQuantity }) => releaseQuantity && releaseQuantity > 0)
                     .map(({ id: referenceId, reference, releaseQuantity }) => ({ id: referenceId, reference, quantity: releaseQuantity }))
-                  if (sameCustomer) {
-                    await releaseToCustomer({ stock, customerId: stock.customerId, referencesToRelease, transaction })
-                  } else {
-                    await releaseToCustomer({ stock, customerId: targetCustomerId, referencesToRelease, onHold, transaction })
-                  }
+                  
+                  await releaseToCustomer({
+                    stock,
+                    customerId: sameCustomer ? stock.customerId : targetCustomerId,
+                    referencesToRelease,
+                    transaction,
+                    onHold
+                  })
+                  
                   await reduceUnitsByReferences(stock, referencesToRelease, transaction)
                 }
                 break

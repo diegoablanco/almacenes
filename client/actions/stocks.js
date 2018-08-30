@@ -107,7 +107,7 @@ export default function getCrudPageActions() {
           }
           dispatch(baseCrudPageActions.hideModal())
           dispatch(messageAction)
-          await dispatch(baseCrudPageActions.reloadGrid())
+          dispatch(baseCrudPageActions.reloadGrid())
         } else dispatch(baseCrudPageActions.createOrUpdate(data))
       }
     },
