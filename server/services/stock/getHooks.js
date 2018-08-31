@@ -52,7 +52,8 @@ module.exports = {
       carrier,
       stockBox,
       stockPallets,
-      services
+      services,
+      references
     } = getIncludes(hook.app.get('database'))
     hook.params.sequelize = {
       raw: false,
@@ -61,7 +62,8 @@ module.exports = {
         { ...carrier, attributes: ['id', 'companyName'] },
         stockBox,
         stockPallets,
-        services
+        services,
+        references
       ]
     }
   },

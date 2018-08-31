@@ -4,23 +4,11 @@ import { connect } from 'react-redux'
 import { Field, FieldArray, formValues, getFormValues } from 'redux-form'
 import { Grid } from 'semantic-ui-react'
 import LookupSelectField from '../../../components/LookupSelectField'
-import tabulatedFormFields from '../../../utils/tabulatedFormFields'
-import { renderRadio, renderField, parseToInt, renderCheckbox } from '../../../utils/formHelpers'
+import { renderRadio, renderCheckbox } from '../../../utils/formHelpers'
 import { DateTimeField } from '../../../components'
-import ReferencesFields from "../components/ReferencesFields"
+import ReferencesFields from '../components/ReferencesFields'
 
 class ReleaseForm extends Component {
-  constructor(props) {
-    super(props)
-    const {stock = {}} = props
-    this.referenceFields = tabulatedFormFields({
-      title: 'Referencias',
-      getFieldCells: ReferencesFields,
-      crudPage: 'addReference',
-      enableAdd: false,
-      enableDelete: false
-    })
-  }
   render() {
     const {
       targetCustomerLookup,
@@ -28,7 +16,6 @@ class ReleaseForm extends Component {
       targetCustomer,
       stock = {}
     } = this.props
-    
     return (
       <Grid verticalAlign="middle" centered textAlign="center">
         <Grid.Column >
@@ -51,7 +38,7 @@ class ReleaseForm extends Component {
             name="onHold"
             label="On Hold"
             component={renderCheckbox}
-          />          
+          />
           <Field
             name="releaseType"
             label="Liberación Total"
@@ -68,8 +55,9 @@ class ReleaseForm extends Component {
           />
           <FieldArray
             name="references"
-            component={this.referenceFields}
+            component={ReferencesFields}
             enableRelease={stock.releaseType === 'partial'}
+            enableDelete={false}
           />
         </Grid.Column>
       </Grid>

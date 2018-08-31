@@ -1,8 +1,9 @@
 import React from 'react'
 import { Field } from 'redux-form'
 import { renderLabel2, renderField, parseToInt } from '../../../utils/formHelpers'
+import tabulatedFormFields from '../../../utils/tabulatedFormFields'
 
-export default function (title, fields, { enableRelease }) {
+function referencesFieldCells(title, fields, { enableRelease }) {
   const columns = [
     {
       property: 'reference',
@@ -35,7 +36,7 @@ export default function (title, fields, { enableRelease }) {
       }
     }
   ]
-  if (enableRelease)
+  if (enableRelease) {
     columns.push({
       property: 'quantity',
       label: 'Cantidad a liberar',
@@ -53,5 +54,12 @@ export default function (title, fields, { enableRelease }) {
         />)
       }
     })
+  }
   return columns
 }
+export default tabulatedFormFields({
+  title: 'Referencias',
+  getFieldCells: referencesFieldCells,
+  crudPage: 'addReference',
+  enableAdd: false
+})

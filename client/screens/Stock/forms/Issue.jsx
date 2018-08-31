@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Field, getFormValues, FormSection } from 'redux-form'
+import { Field, formValues, getFormValues, FormSection, FieldArray } from 'redux-form'
 import { Grid, Tab } from 'semantic-ui-react'
+import { renderRadio } from '../../../utils/formHelpers'
 import LookupSelectField from '../../../components/LookupSelectField'
-import GoodsResume from '../components/GoodsResume'
 import { DateTimeField, Address } from '../../../components'
+import ReferencesFields from '../components/ReferencesFields'
 
 class IssueForm extends Component {
   constructor(props) {
@@ -16,17 +17,16 @@ class IssueForm extends Component {
       carrierLookup,
       carrierLookupActions,
       carrier,
-      stock,
       getServicesPane,
       getDocumentsPane,
-      getImagesPane } = this.props
+      getImagesPane,
+      stock = {} } = this.props
     return [
       { menuItem: 'Detalles',
         pane:
   <Tab.Pane>
     <Grid verticalAlign="middle" centered textAlign="center">
       <Grid.Column >
-        <GoodsResume stock={stock} />
         <Field
           name="date"
           component={DateTimeField}
@@ -44,6 +44,35 @@ class IssueForm extends Component {
         <FormSection name="address">
           <Address />
         </FormSection>
+      </Grid.Column>
+    </Grid>
+  </Tab.Pane>
+      },
+      { menuItem: 'Referencias',
+        pane:
+  <Tab.Pane>
+    <Grid verticalAlign="middle" centered textAlign="center">
+      <Grid.Column >
+        <Field
+          name="issueType"
+          label="Salida Total"
+          radioValue="full"
+          value="full"
+          component={formValues({ currentValue: 'issueType' })(renderRadio)}
+        />
+        <Field
+          name="issueType"
+          label="Salida Parcial"
+          radioValue="partial"
+          value="partial"
+          component={formValues({ currentValue: 'issueType' })(renderRadio)}
+        />
+        <FieldArray
+          name="references"
+          component={ReferencesFields}
+          enableRelease={stock.issueType === 'partial'}
+          enableDelete={false}
+        />
       </Grid.Column>
     </Grid>
   </Tab.Pane>

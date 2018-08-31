@@ -11,6 +11,7 @@ import GoodsPane from './forms/Goods'
 import ReferencesPane from './forms/References'
 import ReleasePane from './forms/Release'
 import IssuePane from './forms/Issue'
+import { references } from './forms/panes'
 import getServiceFields from './components/ServiceFields'
 import ReferenceFields from './components/ReferencesFields'
 import tabulatedFormFields from '../../utils/tabulatedFormFields'
@@ -27,12 +28,6 @@ export default class StockForm extends Component {
     this.getServicesPane = this.getServicesPane.bind(this)
     this.getReleasePane = this.getReleasePane.bind(this)
     this.getIssuePane = this.getIssuePane.bind(this)
-    this.referencesFieldsComponent = tabulatedFormFields({
-      title: 'Referencias',
-      getFieldCells: ReferenceFields,
-      crudPage: 'reference',
-      enableAdd: false
-    })
   }
   getServicesPane() {
     const {
@@ -158,7 +153,6 @@ export default class StockForm extends Component {
       getGeneralInfoPane,
       getInstructionsPane,
       getGoodsPane,
-      getReferencesPane,
       getDocumentsPane,
       getImagesPane,
       getServicesPane,
@@ -167,14 +161,14 @@ export default class StockForm extends Component {
     } = this
     switch (movementType.code) {
       case 'preReceive':
-        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane(), getReferencesPane(), getGoodsPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane(), references(this.props), getGoodsPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
       case 'release':
         return getReleasePane()
       case 'issue':
         return getIssuePane()
       case 'receive':
       case 'edit':
-        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane(), getReferencesPane(), getGoodsPane(), getDocumentsPane(), getImagesPane(), getServicesPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
+        return <Tab panes={[getGeneralInfoPane(), getInstructionsPane(), references(this.props), getGoodsPane(), getDocumentsPane(), getImagesPane(), getServicesPane()]} menu={{ secondary: true, pointing: true }} renderActiveOnly={false} />
       default:
         return []
     }
