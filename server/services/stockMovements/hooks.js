@@ -14,6 +14,7 @@ function getValidatorByMovementType(movementType) {
   if (movementType === 'issue') {
     ajv.addSchema(stockIssueSchema)
     ajv.addSchema(addressSchema)
+    ajv.addSchema(stockReferenceSchema)
     return validateSchema(stockIssueSchema, ajv, {
       addNewError: errorReducer
     })

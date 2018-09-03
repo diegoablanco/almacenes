@@ -18,12 +18,14 @@ module.exports = function (sequelize) {
     carrier,
     documentAttachment,
     fileAttachment,
+    stockReference,
     user
   }) {
     StockIssue.belongsTo(address)
     StockIssue.belongsTo(carrier)
     StockIssue.belongsToMany(documentAttachment, { as: 'documents', through: 'stockIssue_documents' })
     StockIssue.belongsToMany(fileAttachment, { as: 'images', through: 'stockIssue_images' })
+    StockIssue.belongsToMany(stockReference, { as: 'references', through: 'stock_issue_references' })
     StockIssue.belongsTo(user, { as: 'createdBy' })
     StockIssue.belongsTo(user, { as: 'updatedBy' })
   }

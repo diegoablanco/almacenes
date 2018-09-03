@@ -12,7 +12,7 @@ import getValidator from '../../common/Validation'
 
 export default {
   issue: getValidator(stockIssueSchema, [
-    addressSchema
+    addressSchema, stockReferenceSchema
   ]),
   release: getValidator(stockReleaseSchema, [stockReferenceSchema]),
   default: getValidator(stockSchema, [

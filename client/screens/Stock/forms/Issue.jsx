@@ -70,7 +70,7 @@ class IssueForm extends Component {
         <FieldArray
           name="references"
           component={ReferencesFields}
-          enableRelease={stock.issueType === 'partial'}
+          enableIssue={stock.issueType === 'partial'}
           enableDelete={false}
         />
       </Grid.Column>

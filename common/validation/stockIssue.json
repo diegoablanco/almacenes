@@ -9,9 +9,48 @@
     },
     "address": {
       "$ref": "address.json#"
+    },
+    "issueType": {
+      "type": "string"
+    },
+    "references": {
+      "type": "array",
+      "items": {
+          "$ref": "stockReference.json#"
+      }
     }
   },
   "required": [
-    "carrierId"
+    "issueType"
+  ],
+  "definitions": {
+    "isPartial": {
+      "properties": {
+        "issueType": {
+          "enum": [
+            "partial"
+          ]
+        }
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "allOf": [
+        {
+          "$ref": "#/definitions/isPartial"
+        },
+        {
+          "required": [
+            "references"
+          ]
+        }
+      ]
+    },
+    {
+      "not": {
+        "$ref": "#/definitions/isPartial"
+      }
+    }
   ]
 }

@@ -56,10 +56,10 @@ module.exports = function (sequelize) {
     Stock.belongsToMany(stockReference, { as: 'references', through: 'stock_references' })
     Stock.hasMany(stockMovement, { as: 'movements' })
     Stock.hasMany(stockService, { as: 'services' })
+    Stock.hasMany(stockIssue, { as: 'issues' })
     Stock.belongsTo(stockStatus, { as: 'status' })
     Stock.belongsTo(user, { as: 'createdBy' })
     Stock.belongsTo(user, { as: 'updatedBy' })
-    Stock.belongsTo(stockIssue, { as: 'issue' })
   }
   Stock.isHierarchy({
     through: 'stock_ancestors',

@@ -73,7 +73,6 @@ module.exports = function () {
                 break
               case 'issue':
                 await issue({ stock, ...data, transaction })
-                await setStatusByCode(stock, 'fulfilled', transaction)
                 break
               case 'hold':
                 stock.onHold = true

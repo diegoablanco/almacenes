@@ -3,7 +3,7 @@ import { Field } from 'redux-form'
 import { renderLabel2, renderField, parseToInt } from '../../../utils/formHelpers'
 import tabulatedFormFields from '../../../utils/tabulatedFormFields'
 
-function referencesFieldCells(title, fields, { enableRelease }) {
+function referencesFieldCells(title, fields, { enableRelease, enableIssue }) {
   const columns = [
     {
       property: 'reference',
@@ -48,6 +48,25 @@ function referencesFieldCells(title, fields, { enableRelease }) {
       formatter(value, { name: fieldName }) {
         return (<Field
           name={`${fieldName}.releaseQuantity`}
+          component={renderField}
+          parse={parseToInt}
+          label=""
+        />)
+      }
+    })
+  }
+  if (enableIssue) {
+    columns.push({
+      property: 'quantity',
+      label: 'Cantidad a entregar',
+      props: {
+        style: {
+          width: 150
+        }
+      },
+      formatter(value, { name: fieldName }) {
+        return (<Field
+          name={`${fieldName}.issueQuantity`}
           component={renderField}
           parse={parseToInt}
           label=""
