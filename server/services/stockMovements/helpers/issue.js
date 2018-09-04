@@ -24,16 +24,21 @@ module.exports =
       addressId = newAddress.id
     }
 
-    const referencesToIssue = references
-      .filter(({ issueQuantity }) => issueQuantity && issueQuantity > 0)
-      .map(({
-        id: referenceId,
-        reference,
-        issueQuantity }) => ({
-        id: referenceId,
-        reference,
-        quantity: issueQuantity
-      }))
+    let referencesToIssue = []
+    if (issueType === 'partial') {
+      referencesToIssue = references
+        .filter(({ issueQuantity }) => issueQuantity && issueQuantity > 0)
+        .map(({
+          id,
+          reference,
+          issueQuantity }) => ({
+          id,
+          reference,
+          quantity: issueQuantity
+        }))
+    } else {
+      referencesToIssue = references
+    }
     await stock.createIssue(
       {
         date,
