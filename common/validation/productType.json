@@ -13,10 +13,12 @@
         "description": {
             "type": "string",
             "minLength": 1
-        }
+        },
+        "price": { "type": "number"  }
     },
     "required": [
         "ean",
-        "description"
+        "description",
+        "price"
     ]
 }

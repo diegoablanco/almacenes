@@ -11,6 +11,9 @@ module.exports = function (sequelize) {
     quantity: {
       type: Sequelize.INTEGER,
       allowNull: false
+    },
+    price: {
+      type: Sequelize.DataTypes.DECIMAL(10, 2)
     }
   })
   StockAccountProduct.associate = function ({

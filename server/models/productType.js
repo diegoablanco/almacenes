@@ -15,6 +15,9 @@ module.exports = function (sequelize) {
     ean: {
       type: Sequelize.STRING,
       allowNull: false
+    },
+    price: {
+      type: Sequelize.DataTypes.DECIMAL(10, 2)
     }
   })
   ProductType.associate = function ({

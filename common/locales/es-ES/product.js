@@ -4,6 +4,7 @@ module.exports = {
   code: 'Código',
   categoryId: 'Categoría',
   productTypeId: 'Producto',
+  price: 'Precio',
   deleteDialog: {
     title: 'Eliminar Producto',
     message: '¿Confirma eliminar el producto?'
