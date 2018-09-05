@@ -42,7 +42,7 @@ class StockCrud extends Component {
         }
       },
       { property: 'warehouse.name', label: 'Almacén' },
-      { property: 'description', label: 'Descripción' },
+      { property: 'reference', label: 'Referencia General' },
       { property: 'references', label: 'Referencias', cellFormatters: [ReferencesColumn], sortable: false },
       { property: 'targetCustomer.companyName', label: 'Cliente Dest.' },
       {

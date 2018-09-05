@@ -51,7 +51,7 @@ export default function getCrudPageActions() {
             movementType: stockMovementType.code
           }
         ))
-        if (stockMovementTypeCode === 'receive') {
+        if (!id ) {
           dispatch(change('stock', 'references', []))
         }
         dispatch(change('stock', 'movementTypeId', stockMovementType.id))
