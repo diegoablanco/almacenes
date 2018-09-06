@@ -56,6 +56,15 @@ export default function () {
         component={renderLabel2}
         label=""
       />)
+    },
+    {
+      property: 'price',
+      label: 'Precio',
+      formatter: (value, { name: fieldName }) => (<Field
+        name={`${fieldName}.price`}
+        component={renderLabel2}
+        label=""
+      />)
     }
   ]
 }

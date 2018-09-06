@@ -11,6 +11,9 @@ module.exports = function (sequelize) {
     code: {
       type: Sequelize.STRING,
       allowNull: false
+    },
+    price: {
+      type: Sequelize.DataTypes.DECIMAL(10, 2)
     }
   })
   Product.associate = function ({

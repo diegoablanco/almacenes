@@ -11,7 +11,7 @@ const computeDetail = require('./computeDetail')
 const stripProductInfo = require('./stripProductInfo')
 const createOrUpdateAssociations = require('../../models/helpers/createOrUpdateAssociations')
 const { processFilter } = require('../helpers')
-const { setStockAccountProducts, validateProductRemoval } = require('./helpers')
+const { validateProductRemoval } = require('./helpers')
 
 function validate() {
   const ajv = Ajv({ allErrors: true })

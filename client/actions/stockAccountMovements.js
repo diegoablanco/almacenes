@@ -76,8 +76,8 @@ export function getCrudPageActions() {
         if (data.length === 0) {
           throw new SubmissionError({ ean: 'EAN no encontrado' })
         }
-        const [{ id: typeId, description, category }] = data
-        dispatch(arrayPush(formName, 'products', { typeId, code, type: { ean, description, category } }))
+        const [{ id: typeId, price, ...typeDetails }] = data
+        dispatch(arrayPush(formName, 'products', { typeId, code, price, type: { ean, ...typeDetails } }))
         dispatch(reset('addProduct'))
         dispatch(focus('addProduct', 'ean'))
       }

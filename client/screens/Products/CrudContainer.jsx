@@ -11,7 +11,8 @@ export default class ProductCrud extends Component {
     this.gridColumns = [
       { property: 'ean', label: 'EAN' },
       { property: 'category.description', label: 'Categoría' },
-      { property: 'description', label: 'Descripción' }
+      { property: 'description', label: 'Descripción' },
+      { property: 'price', label: 'Precio' }
     ]
   }
   shouldComponentUpdate() {
