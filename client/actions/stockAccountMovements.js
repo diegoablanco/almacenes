@@ -64,11 +64,10 @@ export function getCrudPageActions() {
 
         const { value: { data: existingProduct } } = await dispatch(feathersServices.stockAccountMovements.find({
           query: {
-            type: 'receive',
             hasProduct: code,
             $sort: { id: 1 }
           } }))
-        if (existingProduct.length > 0) {
+        if (existingProduct.length > 0 && existingProduct[existingProduct.length - 1].type === 'receive') {
           throw new SubmissionError({ code: 'Ya existe una entrada para este producto' })
         }
         const query = { ean, $sort: { description: 1 } }
