@@ -2,7 +2,6 @@ const config = require('config')
 const moment = require('moment')
 const { BadRequest } = require('feathers-errors');
 const path = require('path')
-const fs = require('fs')
 const hooks = require('./hooks')
 const getDatabase = require('../../../server/database')
 const xlsx = require('xlsx')

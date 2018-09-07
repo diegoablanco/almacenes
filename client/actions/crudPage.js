@@ -65,7 +65,7 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
   function generateReport(reportType, options) {
     return async (dispatch) => {
       const { body, header: { filename } } = await request
-        .post('api/reports')
+        .post('http://localhost:3030/almacenes/api/reports')
         .responseType('arraybuffer')
         .send({ reportType, options })
         .set('authorization', localStorage['feathers-jwt'])
