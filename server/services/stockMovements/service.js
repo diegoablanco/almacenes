@@ -52,7 +52,7 @@ module.exports = function () {
                   if (sameCustomer) {
                     await setStatusByCode(stock, 'released', transaction)
                   } else {
-                    await releaseToCustomer({ stock, customerId: targetCustomerId, onHold, transaction })
+                    await releaseToCustomer({ stock, customerId: targetCustomerId, referencesToRelease: stock.references, onHold, transaction })
                     await reduceUnitsTotally(stock, transaction)
                   }
                 } else {
