@@ -138,12 +138,12 @@ module.exports = {
             stock
           }
         } = hook.app.get('database')
-        const { stockBox, stockPallets, documents, images, services } = getIncludes(hook.app.get('database'))
+        const { stockBox, stockPallets, documents, images, services, references } = getIncludes(hook.app.get('database'))
         const filter = {
           where: {
             id: hook.data.id
           },
-          include: [stockBox, stockPallets, documents, images, services]
+          include: [stockBox, stockPallets, documents, images, services, references]
         }
         stock.findOne(filter).then(s => {
           s.set(hook.data)
