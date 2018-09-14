@@ -51,7 +51,7 @@ export default function getCrudPageActions() {
             movementType: stockMovementType.code
           }
         ))
-        if (!id ) {
+        if (!id) {
           dispatch(change('stock', 'references', []))
         }
         dispatch(change('stock', 'movementTypeId', stockMovementType.id))
@@ -101,8 +101,11 @@ export default function getCrudPageActions() {
         }))))
       }
     },
-    createOrUpdate(data) {
+    createOrUpdate({ images, movements, ...data }) {
       return async (dispatch) => {
+        if (images) {
+          data.images = images.map(({ preview, percent, ...image }) => image)
+        }
         if (data.movementType === 'release' || data.movementType === 'issue') {
           const messageAction = showTimedMessage(`Se ejecutó correctamente ${data.movementType === 'release' ? 'el Release' : 'la Salida'}`)
           const serviceAction = feathersServices.stockMovements.create(data)
