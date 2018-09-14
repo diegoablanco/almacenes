@@ -104,7 +104,7 @@ export default function getCrudPageActions() {
     createOrUpdate({ images, movements, ...data }) {
       return async (dispatch) => {
         if (images) {
-          data.images = images.map(({ preview, percent, ...image }) => image)
+          data.images = images.map(({ preview, percent, thumb, stock_images, ...image }) => image)
         }
         if (data.movementType === 'release' || data.movementType === 'issue') {
           const messageAction = showTimedMessage(`Se ejecutó correctamente ${data.movementType === 'release' ? 'el Release' : 'la Salida'}`)
