@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
+import 'moment/locale/es' // eslint-disable-line no-unused-vars, camelcase
 import { Button, Modal, Icon, Form } from 'semantic-ui-react'
 import { DateTimeField } from '../../components'
 

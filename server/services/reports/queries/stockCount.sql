@@ -7,20 +7,15 @@ from
   products p
   join [dbo].[stockAccountMovements] sam on p.stockAccountMovementId = sam.id
   join [dbo].[productTypes] pt on p.typeId = pt.id
-  left join (
-    select top 1
-      code
-    from
-      products p
-      join [dbo].[stockAccountMovements] sam on p.stockAccountMovementId = sam.id
-    where
-      sam.date <= :dateTo
-	order by
-	  sam.id desc
-  ) ip on p.code = ip.code
+  inner join (
+    select p2.stockAccountMovementId, stockAccountMovements.type from products p
+    cross apply (select top 1 * from products p2 where p.code = p2.code order by createdAt desc) p2
+    join stockAccountMovements on stockAccountMovements.id = p2.stockAccountMovementId
+    group by p2.stockAccountMovementId, stockAccountMovements.type
+    having stockAccountMovements.type = 'receive'
+  ) lastProductMovement on lastProductMovement.stockAccountMovementId = p.stockAccountMovementId
 where
-  sam.type = 'receive'
-  and (
+  (
     :dateTo is null
     OR sam.date <= :dateTo
   )

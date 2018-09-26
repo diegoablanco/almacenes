@@ -11,7 +11,7 @@ import { InputWithClearButton } from '.'
 
 export default function ({ input, label, width, meta: { touched, error, form } }) {
   const { parseDate } = MomentLocaleUtils
-  function formatDate(date, format = 'L', locale = 'en') {
+  function formatDate(date, format = 'L', locale = 'es') {
     const m = moment(date)
     return m.locale(locale)
       .startOf('day')
