@@ -64,14 +64,16 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
   }
   function generateReport(reportType, options) {
     return async (dispatch) => {
-      const { body, header: { filename } } = await request
+      const response = await request
         .post('http://localhost:3030/almacenes/api/reports')
         .responseType('arraybuffer')
         .send({ reportType, options })
         .set('authorization', localStorage['feathers-jwt'])
-      download(body, filename, 'application/vnd.openxmlformats')
+      const { body } = response
+      const fileName = 'reporte.xlsx'
+      download(body, fileName, 'application/vnd.openxmlformats')
       dispatch(hideReportModal())
-      dispatch(showTimedMessage(`Se generó el reporte ${filename}`))
+      dispatch(showTimedMessage(`Se generó el reporte ${fileName}`))
     }
   }
   function showReportModal() {

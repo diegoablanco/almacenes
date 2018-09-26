@@ -192,7 +192,7 @@
     "prettier-eslint": "^8.2.2",
     "redux-auth-wrapper": "^2.0.1",
     "redux-multi": "^0.1.12",
-    "request": "^2.74.0",
+    "request": "^2.88.0",
     "rimraf": "2.5.4",
     "rucksack-css": "0.8.6",
     "style-loader": "^0.13.1",
