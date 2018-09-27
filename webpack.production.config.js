@@ -10,7 +10,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const envalid = require('envalid');
 const path = require('path');
 const RewriteImportPlugin = require('less-plugin-rewrite-import')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 
@@ -323,20 +322,6 @@ const webpackConfig = {
     hot: true
   },
   */
-}
-
-// Production customization
-
-if (isProduction && false) {
-  webpackConfig.plugins.push(new UglifyJsPlugin({
-    sourceMap: true,
-    uglifyOptions: {
-      ecma: 8,
-      compress: {
-        warnings: false
-      }
-    }
-  }))
 }
 
 module.exports = webpackConfig
