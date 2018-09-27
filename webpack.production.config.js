@@ -142,7 +142,7 @@ const webpackConfig = {
     publicPath: outputPublicPaths[config.NODE_ENV]
   },
   module: {
-    loaders: [
+    rules: [
       {
         // File index.html is created by html-webpack-plugin. It should be a file webpack processes.
         test: /\.html$/,
@@ -159,11 +159,18 @@ const webpackConfig = {
         // after being made unique. The css with the modified class names is injected into the DOM.
         test: /^(?!.*\.inject\.css).*\.css$/,
         include: /client/,
-        loaders: [
-          'style-loader',
-          'css-loader?modules&sourceMap&importLoaders=1&localIdentName=' +
-          '[name]__[local]___[hash:base64:5]'
-          // 'postcss-loader',
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              importLoaders: 1,
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            }
+          }
         ]
       },
       {
