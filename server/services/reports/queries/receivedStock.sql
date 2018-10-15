@@ -3,7 +3,7 @@ select
     p.code as IMEI, 
     pt.ean as EAN, 
     pt.description as Descripción,
-    COALESCE(p.price, pt.price) as Precio
+    COALESCE(p.price, pt.price, 0) as Precio
 from products p
 join [dbo].[stockAccountMovements] sam on p.stockAccountMovementId = sam.id
 join [dbo].[productTypes] pt on p.typeId = pt.id
