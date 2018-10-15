@@ -72,4 +72,4 @@ coverage
 /server/services/uploads/uploads
 /public/uploads
 /server/iisnode
-/server/public/dist
+/server/public
