@@ -5,7 +5,7 @@ module.exports = {
   },
   database: {
     host: 'localhost',
-    name: 'almacenes',
+    name: 'almacenes_test',
     user: 'sa',
     password: 'Sage2017@'
   },

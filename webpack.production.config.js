@@ -61,7 +61,7 @@ if (config.NODE_ENV === 'devserver') {
 const { isProduction } = config
 
 const outputPublicPaths = {
-  production: '/almacenes/server/public/dist/',
+  production: '/almacenes-test/server/public/dist/',
   development: '/dist/',
   devserver: 'http://localhost:8080/' // we don't use this config for webpack-dev-server
 };

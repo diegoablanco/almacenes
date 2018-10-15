@@ -66,6 +66,7 @@ const server = app.listen(port)
 // Consider enhancements at: https://coderwall.com/p/4yis4w/node-js-uncaught-exceptions
 function handleUncaughtException() {
   process.on('uncaughtException', (error) => {
+    logger.info('uncaughtException', error);
     debug('Uncaught exception');
     console.error('\n\n=== uncaught exception ================='); // eslint-disable-line no-console
     console.error(error.message); // eslint-disable-line no-console

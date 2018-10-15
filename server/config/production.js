@@ -6,13 +6,12 @@ const root = process.cwd();
 module.exports = {
   server: {
     host: 'localhost',
-    port: process.env.PORT,
-    serverPath: root
+    port: process.env.PORT
   },
   logs: {
-    logLevel: 'error',
+    logLevel: 'info',
     path: path.join(root, 'logs'),
-    logConsoleLevel: 'error'
+    logConsoleLevel: 'info'
   },
   database: {
     path: path.join(root, 'data')

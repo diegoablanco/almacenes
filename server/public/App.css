@@ -1,0 +1,68 @@
+.main-container{
+    margin-top: 70px;
+}
+.ui.message {
+    z-index: 1000;
+}
+table .field {
+  min-height: 55px;
+}
+.filter-grid-container {  
+  margin-left: -150px;
+}
+/*******************************
+      Messages Container
+*******************************/
+
+
+/* All Sizes */
+
+.messages {
+    left: 50%;
+    margin-left: -48%;
+    position: fixed;
+    top: 10px;
+    width: 96%;
+    z-index: 10000;
+  }
+.DayPickerInput {
+  display: block !important;
+}  
+.grid-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.ui.selection.dropdown > .delete.icon {
+  margin-top: -7px !important;
+}
+  /* Tablet */
+  
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    .messages {
+      margin-left: -361.5px;
+      width: 723px;
+    }
+  }
+  
+  
+  /* Small Monitor */
+  
+  @media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .messages {
+      margin-left: -466.5px;
+      width: 933px;
+    }
+  }
+  
+  
+  /* Large Monitor */
+  
+  @media only screen and (min-width: 1200px) {
+    .messages {
+      margin-left: -563.5px;
+      width: 1127px;
+    }
+    .ui.container {
+      width: 1427px !important;
+    }
+  }

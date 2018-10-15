@@ -35,7 +35,7 @@ debug(`client starting. Built for ${nodeEnv} env.`);
 console.log(`..This bundle was built for the ${nodeEnv} env.`); // eslint-disable-line no-console
 
 // Initialize Redux
-const history = createHistory({ basename: '/almacenes' })
+const history = createHistory({ basename: '/almacenes-test' })
 const store = configureStore(history);
 
 intl.init({

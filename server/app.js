@@ -56,6 +56,7 @@ const app = feathers()
   .configure(services)
   .configure(middleware)
   .configure(authentication);
+  logger.info('config.appPath', config.appPath);
 
 module.exports = app;
 
