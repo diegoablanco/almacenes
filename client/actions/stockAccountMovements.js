@@ -90,11 +90,10 @@ export function getCrudPageActions() {
 
         const { value: { data: existingProduct } } = await dispatch(feathersServices.stockAccountMovements.find({
           query: {
-            type: 'issue',
             hasProduct: code,
             $sort: { id: 1 }
           } }))
-        if (existingProduct.length > 0) {
+        if (existingProduct.length > 0 && existingProduct[existingProduct.length - 1].type === 'issue') {
           throw new SubmissionError({ code: 'Ya existe una salida para este producto' })
         }
 
