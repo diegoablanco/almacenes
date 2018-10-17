@@ -2,7 +2,7 @@ select
   count(pt.description) as Cantidad,
   pt.ean as EAN,
   pt.description as Descripción,
-  sum(COALESCE(p.price, pt.price, 0)) as Precio
+  sum(COALESCE(nullif(p.price, 0), pt.price, 0)) as Precio
 from
   products p
   join [dbo].[stockAccountMovements] sam on p.stockAccountMovementId = sam.id
