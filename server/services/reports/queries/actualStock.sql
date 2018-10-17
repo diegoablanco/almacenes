@@ -14,4 +14,5 @@ from products p
     ) lastProductMovement on lastProductMovement.stockAccountMovementId = p.stockAccountMovementId
 	and lastProductMovement.code = p.code
 where (:dateTo is null OR sam.date <= :dateTo)
+and sam.type = 'receive'
 order by pt.ean
