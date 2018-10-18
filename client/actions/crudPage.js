@@ -62,7 +62,7 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
       type: actionTypes.HIDE_REPORT_MODAL
     }
   }
-  function generateReport(reportType, options) {
+  function generateReport({ reportType, ...options }) {
     return async (dispatch) => {
       const response = await request
         .post('http://localhost:3030/almacenes/api/reports')
@@ -82,6 +82,7 @@ export function getCrudPageActions(crudPage, serviceActions, selectors, getQuery
         type: actionTypes.SHOW_REPORT_MODAL
       })
       dispatch(change('reportForm', 'dateTo', moment().toDate()))
+      dispatch(change('reportForm', 'reportType', 'stock'))
     }
   }
   function hideConfirmModal() {

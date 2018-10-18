@@ -132,7 +132,10 @@ function basicField(props) {
   )
 }
 
-export function renderSelect({ input, label, type, meta: { touched, error }, options, placeholder }) {
+export function renderSelect({ input, label, meta: { touched, error, form }, options }) {
+  if (!label) {
+    label = intl.get(getFieldTranslationKey(form, input.name))
+  }
   function handleChange(e, { value }) {
     input.onChange(value)
   }

@@ -35,5 +35,8 @@ module.exports = {
       title: 'Eliminar Referencia',
       message: '¿Confirma eliminar la referencia?'
     }
+  },
+  reportForm: {
+    reportType: 'Tipo de reporte'
   }
 }

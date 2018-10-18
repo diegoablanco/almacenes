@@ -3,6 +3,7 @@ import { reduxForm, Field } from 'redux-form'
 import 'moment/locale/es' // eslint-disable-line no-unused-vars, camelcase
 import { Button, Modal, Icon, Form } from 'semantic-ui-react'
 import { DateTimeField } from '../../components'
+import { renderSelect } from '../../utils/formHelpers'
 
 class ReportFormModal extends Component {
   render() {
@@ -12,6 +13,14 @@ class ReportFormModal extends Component {
         <Modal.Header content="Generar Reporte de Stock" />
         <Modal.Content scrolling size="big" style={{ minHeight: '500px' }}>
           <Form onSubmit={handleSubmit}>
+            <Field
+              name="reportType"
+              component={renderSelect}
+              options={[
+                { key: 1, value: 'stock', text: 'Stock' },
+                { key: 2, value: 'stockValue', text: 'Stock Valorizado' }
+              ]}
+            />
             <Field
               name="dateFrom"
               component={DateTimeField}
@@ -26,7 +35,7 @@ class ReportFormModal extends Component {
           <Button onClick={() => hideReportModal()}>
             <Icon name="cancel" /> Cancelar
           </Button>
-          <Button onClick={handleSubmit(values => generateReport('stock', values))} disabled={submitting} loading={submitting}>
+          <Button onClick={handleSubmit(values => generateReport(values))} disabled={submitting} loading={submitting}>
             <Icon name="file excel outline" /> Generar Reporte
           </Button>
         </Modal.Actions>
