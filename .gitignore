@@ -73,3 +73,4 @@ coverage
 /public/uploads
 /server/iisnode
 /server/public
+server/services/reports/stock/.~lock*
