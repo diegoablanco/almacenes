@@ -1,5 +1,5 @@
 select 
-    FORMAT(COALESCE(sam.date, sam.createdAt),  'dd/MM/yyyy', 'en-US') as Fecha,
+    COALESCE(sam.date, sam.createdAt) as Fecha,
     p.code as IMEI,
     pt.EAN,
     pt.description as Descripción,
@@ -11,7 +11,7 @@ from products p
 		select p2.code, max(p2.stockAccountMovementId) as stockAccountMovementId
         from products p2
         join stockAccountMovements on stockAccountMovements.id = p2.stockAccountMovementId
-		where DATEADD(Day, DATEDIFF(Day, 0, COALESCE(stockAccountMovements.date, stockAccountMovements.createdAt)), 0) <= :date
+		where DATEADD(Day, DATEDIFF(Day, 0, COALESCE(stockAccountMovements.date, stockAccountMovements.createdAt)), 0) <= convert(date, :date)
 		group by p2.code
     ) lastProductMovement on lastProductMovement.stockAccountMovementId = p.stockAccountMovementId
 	and lastProductMovement.code = p.code

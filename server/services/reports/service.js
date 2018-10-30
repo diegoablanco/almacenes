@@ -5,9 +5,8 @@ const path = require('path')
 const hooks = require('./hooks')
 const getDatabase = require('../../../server/database')
 const xlsx = require('xlsx')
-const { receivedStock, issuedStock, actualStock, stockCount, dailyStockValue, monthlyStockValue } = require('./queries')
+const queries = require('./queries')
 const { writeArrayToSheet } = require('./helpers')
-
 
 const servicePath = `${config.apiPath}/reports`
 
@@ -28,6 +27,7 @@ module.exports = function () {
                 dateTo: options.dateTo || moment().endOf('day').toDate(),
                 receipt: options.receipt || null
               }
+              const { receivedStock, issuedStock, actualStock, stockCount } = queries
               const [receivedStocks] = await sequelize.query(receivedStock, { replacements })
               const [issuedStocks] = await sequelize.query(issuedStock, { replacements })
               const [actualStocks] = await sequelize.query(actualStock, { replacements })
@@ -45,11 +45,12 @@ module.exports = function () {
                 dateFrom: options.dateFrom || null,
                 dateTo: options.dateTo || moment().endOf('day').toDate()
               }
-              const [monthlyStockValues] = await sequelize.query(monthlyStockValue, { replacements })
-              const [dailyStockValues] = await sequelize.query(dailyStockValue, { replacements })
+              const { maxStockValue, stockValueDetailByDate } = queries
+              const [[{ date }]] = await sequelize.query(maxStockValue, { replacements })
+              const [dailyStockValues] = await sequelize.query(stockValueDetailByDate, { replacements: { date } })
 
               return {
-                sheets: [monthlyStockValues, dailyStockValues],
+                sheets: [dailyStockValues],
                 fileName: `Reporte de Stock Valorizado ${replacements.dateFrom ? `del ${moment(replacements.dateFrom).format('D-MM-YYYY')}` : ''} al ${moment(replacements.dateTo).format('D-MM-YYYY')}.xlsx`,
                 templateName: 'StockValueTemplate.xlsx'
               }

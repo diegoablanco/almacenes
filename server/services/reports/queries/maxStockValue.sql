@@ -1,16 +1,13 @@
-DECLARE :dateFrom DATETIME='06/09/2018' -- mm/dd/yyyy
-DECLARE :dateTo DATETIME= GETDATE() -- mm/dd/yyyy
-
 ;WITH Calendar AS 
 (
-    SELECT :dateFrom AS CalendarDate
+    SELECT Convert(datetime, :dateFrom) AS CalendarDate
     UNION ALL
     SELECT CalendarDate + 1 FROM Calendar
     WHERE CalendarDate + 1 <= :dateTo
 )
 
 select top 1 
-    productMovement.calendarDate, 
+    productMovement.calendarDate as date, 
     sum(productMovement.value * productMovement.multiplier) as value from
 (
 select 
