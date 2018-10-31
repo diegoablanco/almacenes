@@ -7,6 +7,7 @@ const receivedStock = fs.readFileSync(path.resolve(__dirname, 'receivedStock.sql
 const stockCount = fs.readFileSync(path.resolve(__dirname, 'stockCount.sql')).toString()
 const maxStockValue = fs.readFileSync(path.resolve(__dirname, 'maxStockValue.sql')).toString()
 const stockValueDetailByDate = fs.readFileSync(path.resolve(__dirname, 'stockValueDetailByDate.sql')).toString()
+const stockValueByDate = fs.readFileSync(path.resolve(__dirname, 'stockValueByDate.sql')).toString()
 
 module.exports = {
   receivedStock,
@@ -14,6 +15,7 @@ module.exports = {
   actualStock,
   stockCount,
   maxStockValue,
-  stockValueDetailByDate
+  stockValueDetailByDate,
+  stockValueByDate
 }
 

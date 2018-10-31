@@ -8,7 +8,7 @@
 
 select top 1 
     productMovement.calendarDate as date, 
-    sum(productMovement.value * productMovement.multiplier) as value from
+    :previousValue + sum(productMovement.value * productMovement.multiplier) as value from
 (
 select 
 	calendarDate,

@@ -45,8 +45,10 @@ module.exports = function () {
                 dateFrom: options.dateFrom || null,
                 dateTo: options.dateTo || moment().endOf('day').toDate()
               }
-              const { maxStockValue, stockValueDetailByDate } = queries
-              const [[{ date, value }]] = await sequelize.query(maxStockValue, { replacements })
+              const { maxStockValue, stockValueDetailByDate, stockValueByDate } = queries
+              const previousDate = moment(options.dateFrom).subtract(1, 'days').toISOString()
+              const [[{ value: previousValue }]] = await sequelize.query(stockValueByDate, { replacements: { date: previousDate } })
+              const [[{ date, value }]] = await sequelize.query(maxStockValue, { replacements: { previousValue, ...replacements } })
               const [dailyStockValues] = await sequelize.query(stockValueDetailByDate, { replacements: { date } })
 
               return {
