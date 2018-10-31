@@ -46,11 +46,11 @@ module.exports = function () {
                 dateTo: options.dateTo || moment().endOf('day').toDate()
               }
               const { maxStockValue, stockValueDetailByDate } = queries
-              const [[{ date }]] = await sequelize.query(maxStockValue, { replacements })
+              const [[{ date, value }]] = await sequelize.query(maxStockValue, { replacements })
               const [dailyStockValues] = await sequelize.query(stockValueDetailByDate, { replacements: { date } })
 
               return {
-                sheets: [dailyStockValues],
+                sheets: [[{ date, value }], dailyStockValues],
                 fileName: `Reporte de Stock Valorizado ${replacements.dateFrom ? `del ${moment(replacements.dateFrom).format('D-MM-YYYY')}` : ''} al ${moment(replacements.dateTo).format('D-MM-YYYY')}.xlsx`,
                 templateName: 'StockValueTemplate.xlsx'
               }
