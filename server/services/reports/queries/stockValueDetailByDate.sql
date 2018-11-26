@@ -1,20 +1,22 @@
+;WITH Calendar AS 
+(
+    SELECT Convert(datetime, :dateFrom) AS CalendarDate
+    UNION ALL
+    SELECT CalendarDate + 1 FROM Calendar
+    WHERE CalendarDate + 1 <= :dateTo
+)
 select 
-    COALESCE(sam.date, sam.createdAt) as Fecha,
+    CalendarDate as Fecha,
+    case when sam.type = 'receive' then COALESCE(nullif(p.price, 0), pt.price, 0) else -1 * COALESCE(nullif(p.price, 0), pt.price, 0) end as Valor,
+    sam.type as Tipo,
     p.code as IMEI,
     pt.EAN,
-    pt.description as Descripción,
-    COALESCE(nullif(p.price, 0), pt.price, 0) as Precio
+    pt.description as Descripción
 from products p
     join [dbo].[stockAccountMovements] sam on p.stockAccountMovementId = sam.id
     join [dbo].[productTypes] pt on p.typeId = pt.id
-	join (
-		select p2.code, max(p2.stockAccountMovementId) as stockAccountMovementId
-        from products p2
-        join stockAccountMovements on stockAccountMovements.id = p2.stockAccountMovementId
-		where DATEADD(Day, DATEDIFF(Day, 0, COALESCE(stockAccountMovements.date, stockAccountMovements.createdAt)), 0) <= convert(date, :date)
-		group by p2.code
-    ) lastProductMovement on lastProductMovement.stockAccountMovementId = p.stockAccountMovementId
-	and lastProductMovement.code = p.code
-where sam.type = 'receive'
-order by Fecha
+    join Calendar cal 
+        on cal.CalendarDate >= DATEADD(Day, DATEDIFF(Day, 0, COALESCE(sam.date, sam.createdAt)), 0) 
+        and DATEADD(Day, DATEDIFF(Day, -1, COALESCE(sam.date, sam.createdAt)), 0) >= :dateFrom
+order by CalendarDate
 

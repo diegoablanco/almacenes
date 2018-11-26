@@ -46,13 +46,19 @@ module.exports = function () {
                 dateTo: options.dateTo || moment().endOf('day').toDate()
               }
               const { maxStockValue, stockValueDetailByDate, stockValueByDate } = queries
-              const previousDate = moment(options.dateFrom).subtract(1, 'days').toISOString()
-              const [[{ value: previousValue }]] = await sequelize.query(stockValueByDate, { replacements: { date: previousDate } })
-              const [[{ date, value }]] = await sequelize.query(maxStockValue, { replacements: { previousValue, ...replacements } })
-              const [dailyStockValues] = await sequelize.query(stockValueDetailByDate, { replacements: { date } })
+              const [[{ value: previousValue }]] = await sequelize.query(stockValueByDate, { replacements: { date: options.dateFrom } })
+              const [[{ date, value }]] = await sequelize.query(maxStockValue, { replacements: { previousValue, dateFrom: replacements.dateFrom, dateTo: replacements.dateTo } })
+              const [dailyStockValues] = await sequelize.query(stockValueDetailByDate, { replacements: { dateFrom: replacements.dateFrom, dateTo: moment(date).toISOString() } })
 
               return {
-                sheets: [[{ date, value }], dailyStockValues],
+                sheets: [[{ date, value }], [
+                  { Fecha: moment(options.dateFrom).toDate(),
+                    Valor: previousValue,
+                    Tipo: 'Valor anterior',
+                    IMEI: '',
+                    EAN: '',
+                    Descripción: ''
+                  }, ...dailyStockValues]],
                 fileName: `Reporte de Stock Valorizado ${replacements.dateFrom ? `del ${moment(replacements.dateFrom).format('D-MM-YYYY')}` : ''} al ${moment(replacements.dateTo).format('D-MM-YYYY')}.xlsx`,
                 templateName: 'StockValueTemplate.xlsx'
               }

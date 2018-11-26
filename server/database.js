@@ -5,7 +5,10 @@ module.exports = function () {
   const { database: { user, password, host, name } } = config
   const sequelize = new Sequelize(name, user, password, {
     dialect: 'mssql',
-    host
+    host,
+    dialectOptions: {
+      requestTimeout: 30000
+    }
   })
   
   sequelize.import('../server/models/role')
